@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>遊創舎スロット Ver.0.3</title>
+<title>遊創舎スロット Ver.0.4</title>
 <style>
 body{
   margin:0;
-  background:#101010;
+  background:radial-gradient(circle,#2b2b2b,#080808);
   color:white;
   font-family:sans-serif;
   text-align:center;
@@ -18,21 +18,24 @@ body{
   padding:18px;
 }
 h1{
-  font-size:24px;
+  font-size:26px;
   margin-bottom:4px;
+  color:#ffd76b;
+  text-shadow:0 0 12px #ff9900;
 }
 .machine{
-  background:#222;
-  border:4px solid #666;
-  border-radius:22px;
+  background:linear-gradient(#333,#171717);
+  border:5px solid #b88a2b;
+  border-radius:24px;
   padding:18px;
+  box-shadow:0 0 25px #000;
 }
 .lamp{
-  width:115px;
-  height:115px;
+  width:120px;
+  height:120px;
   border-radius:50%;
   background:#333;
-  border:5px solid #777;
+  border:6px solid #777;
   margin:0 auto 18px;
   display:flex;
   align-items:center;
@@ -43,7 +46,12 @@ h1{
 .lamp.on{
   background:gold;
   color:#442200;
-  box-shadow:0 0 35px gold;
+  box-shadow:0 0 45px gold,0 0 80px orange;
+  animation:peka 0.8s infinite alternate;
+}
+@keyframes peka{
+  from{transform:scale(1);filter:brightness(1);}
+  to{transform:scale(1.08);filter:brightness(1.5);}
 }
 .reels{
   display:flex;
@@ -53,21 +61,30 @@ h1{
 }
 .reel{
   width:86px;
-  height:100px;
-  background:white;
+  height:105px;
+  background:linear-gradient(#fff,#ddd);
   color:#111;
-  border-radius:12px;
-  border:3px solid #999;
+  border-radius:14px;
+  border:4px solid #c9a646;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:32px;
+  font-size:34px;
   font-weight:bold;
+  box-shadow:inset 0 0 12px #777,0 4px 0 #5b4218;
+}
+.reel.stopFlash{
+  animation:stopFlash 0.25s;
+}
+@keyframes stopFlash{
+  0%{transform:scale(1.12);}
+  100%{transform:scale(1);}
 }
 .info{
   display:flex;
   justify-content:space-around;
   background:#111;
+  border:2px solid #555;
   border-radius:12px;
   padding:10px;
   margin-bottom:14px;
@@ -88,8 +105,46 @@ button:disabled{opacity:0.35;}
 .msg{
   color:#ffd76b;
   font-weight:bold;
-  min-height:30px;
+  min-height:34px;
   margin:12px;
+  font-size:18px;
+}
+.msg.big{
+  color:#fff200;
+  font-size:26px;
+  animation:bigFlash 0.6s infinite alternate;
+}
+@keyframes bigFlash{
+  from{text-shadow:0 0 8px yellow;}
+  to{text-shadow:0 0 25px red;transform:scale(1.08);}
+}
+.payEffect{
+  position:fixed;
+  top:45%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:42px;
+  font-weight:bold;
+  color:#fff200;
+  text-shadow:0 0 18px orange;
+  display:none;
+  pointer-events:none;
+}
+.payEffect.show{
+  display:block;
+  animation:payPop 1s forwards;
+}
+@keyframes payPop{
+  0%{opacity:0;transform:translate(-50%,-30%) scale(0.5);}
+  30%{opacity:1;transform:translate(-50%,-50%) scale(1.2);}
+  100%{opacity:0;transform:translate(-50%,-90%) scale(1);}
+}
+.flash{
+  animation:screenFlash 0.35s 4;
+}
+@keyframes screenFlash{
+  0%{background:white;}
+  100%{background:radial-gradient(circle,#2b2b2b,#080808);}
 }
 .role{
   font-size:13px;
@@ -101,19 +156,23 @@ button:disabled{opacity:0.35;}
 <body>
 <div class="wrap">
   <h1>遊創舎スロット</h1>
-  <p>Ver.0.3 小役・ペカッ搭載版</p>
+  <p>Ver.0.4 演出強化版</p>
+
   <div class="machine">
     <div id="lamp" class="lamp">CHANCE</div>
+
     <div class="reels">
       <div id="r1" class="reel">🍒</div>
       <div id="r2" class="reel">🍇</div>
       <div id="r3" class="reel">🔔</div>
     </div>
+
     <div class="info">
       <div>クレジット<br><span id="credit">50</span></div>
       <div>BET<br><span id="bet">0</span></div>
       <div>払出<br><span id="pay">0</span></div>
     </div>
+
     <button class="bet" onclick="betOne()">BET 1</button>
     <button class="bet" onclick="maxBet()">MAX BET</button>
     <br>
@@ -122,8 +181,10 @@ button:disabled{opacity:0.35;}
     <button id="s1" class="stop" onclick="stop(0)" disabled>STOP</button>
     <button id="s2" class="stop" onclick="stop(1)" disabled>STOP</button>
     <button id="s3" class="stop" onclick="stop(2)" disabled>STOP</button>
+
     <div id="msg" class="msg">BETしてください</div>
     <button class="reset" onclick="resetGame()">リセット</button>
+
     <div class="role">
       777：BIG 50枚<br>
       🍇🍇🍇：ブドウ 8枚<br>
@@ -132,6 +193,9 @@ button:disabled{opacity:0.35;}
     </div>
   </div>
 </div>
+
+<div id="payEffect" class="payEffect"></div>
+
 <script>
 const symbols = ["7","BAR","🍒","🍇","🔔","⭐"];
 let credit = 50;
@@ -142,21 +206,28 @@ let spinning = [false,false,false];
 let timers = [null,null,null];
 let stopped = 0;
 let bonus = false;
+
 function update(){
   document.getElementById("credit").textContent = credit;
   document.getElementById("bet").textContent = bet;
   document.getElementById("pay").textContent = pay;
   document.getElementById("startBtn").disabled = bet !== 3 || spinning.includes(true);
+
   for(let i=0;i<3;i++){
     document.getElementById("s"+(i+1)).disabled = !spinning[i];
   }
 }
-function msg(t){
-  document.getElementById("msg").textContent = t;
+
+function msg(t,big=false){
+  const m = document.getElementById("msg");
+  m.textContent = t;
+  m.classList.toggle("big",big);
 }
+
 function rand(){
   return symbols[Math.floor(Math.random()*symbols.length)];
 }
+
 function betOne(){
   if(credit <= 0 || bet >= 3 || spinning.includes(true)) return;
   credit--;
@@ -166,6 +237,7 @@ function betOne(){
   msg(bet === 3 ? "STARTできます" : "BET中");
   update();
 }
+
 function maxBet(){
   if(spinning.includes(true)) return;
   while(bet < 3 && credit > 0){
@@ -177,11 +249,14 @@ function maxBet(){
   msg(bet === 3 ? "STARTできます" : "クレジット不足");
   update();
 }
+
 function start(){
   if(bet !== 3) return;
+
   stopped = 0;
   pay = 0;
   bonus = Math.random() < 0.06;
+
   if(bonus){
     document.getElementById("lamp").classList.add("on");
     msg("ペカッ！");
@@ -189,60 +264,99 @@ function start(){
     document.getElementById("lamp").classList.remove("on");
     msg("リール回転中");
   }
+
   for(let i=0;i<3;i++){
     spinning[i] = true;
     timers[i] = setInterval(()=>{
       reels[i] = rand();
       document.getElementById("r"+(i+1)).textContent = reels[i];
-    },80);
+    },70);
   }
+
   update();
 }
+
 function stop(i){
   if(!spinning[i]) return;
+
   clearInterval(timers[i]);
   spinning[i] = false;
+
   if(bonus){
     reels[i] = "7";
   }else{
     reels[i] = rand();
   }
-  document.getElementById("r"+(i+1)).textContent = reels[i];
+
+  const reelEl = document.getElementById("r"+(i+1));
+  reelEl.textContent = reels[i];
+  reelEl.classList.remove("stopFlash");
+  void reelEl.offsetWidth;
+  reelEl.classList.add("stopFlash");
+
   stopped++;
+
   if(stopped === 3){
     judge();
   }
+
   update();
 }
+
+function showPayEffect(amount){
+  if(amount <= 0) return;
+
+  const effect = document.getElementById("payEffect");
+  effect.textContent = "+" + amount;
+  effect.classList.remove("show");
+  void effect.offsetWidth;
+  effect.classList.add("show");
+}
+
 function judge(){
+  let resultMsg = "";
+
   if(reels[0] === "7" && reels[1] === "7" && reels[2] === "7"){
     pay = 50;
     credit += pay;
     document.getElementById("lamp").classList.add("on");
-    msg("BIG BONUS！");
+    document.body.classList.add("flash");
+    setTimeout(()=>document.body.classList.remove("flash"),1500);
+    msg("BIG BONUS！！",true);
+    showPayEffect(pay);
+
   }else if(reels[0] === "🍇" && reels[1] === "🍇" && reels[2] === "🍇"){
     pay = 8;
     credit += pay;
     msg("ブドウ 8枚");
+    showPayEffect(pay);
+
   }else if(reels[0] === "🔔" && reels[1] === "🔔" && reels[2] === "🔔"){
     pay = 10;
     credit += pay;
     msg("ベル 10枚");
+    showPayEffect(pay);
+
   }else if(reels.includes("🍒")){
     pay = 2;
     credit += pay;
     msg("チェリー 2枚");
+    showPayEffect(pay);
+
   }else{
     pay = 0;
     msg("ハズレ");
   }
+
   bet = 0;
   update();
 }
+
 function resetGame(){
   for(let i=0;i<3;i++){
     clearInterval(timers[i]);
   }
+
   credit = 50;
   bet = 0;
   pay = 0;
@@ -250,13 +364,17 @@ function resetGame(){
   spinning = [false,false,false];
   stopped = 0;
   bonus = false;
+
   for(let i=0;i<3;i++){
     document.getElementById("r"+(i+1)).textContent = reels[i];
   }
+
   document.getElementById("lamp").classList.remove("on");
+  document.body.classList.remove("flash");
   msg("BETしてください");
   update();
 }
+
 update();
 </script>
 </body>
