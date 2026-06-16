@@ -167,7 +167,11 @@ function start(){
   if(bet !== 3) return;
   stopped = 0;
   pay = 0;
-  bonus = Math.random() < 0.12;
+  bonus = Math.random() < 0.05;
+  if(bonus){
+  document.getElementById("lamp").classList.add("on");
+  msg("ペカッ！");
+}
   msg("リール回転中");
   for(let i=0;i<3;i++){
     spinning[i] = true;
