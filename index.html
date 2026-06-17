@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>遊創舎スロット Ver.0.4</title>
+<title>遊創舎スロット Ver.0.4.1</title>
 <style>
 body{
   margin:0;
@@ -13,69 +13,169 @@ body{
   text-align:center;
 }
 .wrap{
-  max-width:420px;
+  max-width:390px;
   margin:auto;
-  padding:18px;
+  padding:8px;
 }
 .machine{
   background:linear-gradient(#333,#171717);
-  border:5px solid #b88a2b;
-  border-radius:24px;
-  padding:16px;
-  box-shadow:0 0 25px #000;
+  border:4px solid #b88a2b;
+  border-radius:20px;
+  padding:10px;
 }
-
-/* 上部：機種名・ロゴ・機種デザイン */
 .top-panel{
   background:linear-gradient(#4a3412,#19120a);
   border:3px solid #d6a84a;
-  border-radius:18px;
-  padding:12px;
-  margin-bottom:14px;
+  border-radius:16px;
+  padding:8px;
+  margin-bottom:8px;
 }
 .logo{
-  font-size:18px;
+  font-size:15px;
   color:#9cff9c;
   font-weight:bold;
 }
 h1{
-  font-size:26px;
-  margin:6px 0 2px;
+  font-size:22px;
+  margin:4px 0;
   color:#ffd76b;
-  text-shadow:0 0 12px #ff9900;
+  text-shadow:0 0 10px #ff9900;
 }
 .version{
-  font-size:13px;
+  font-size:11px;
   color:#ddd;
 }
-
-/* 中央：リール・メッセージ欄・ペカリ */
 .center-panel{
   background:#1b1b1b;
   border:3px solid #555;
-  border-radius:18px;
-  padding:14px;
-  margin-bottom:14px;
+  border-radius:16px;
+  padding:10px;
+  margin-bottom:8px;
 }
 .reels{
   display:flex;
   justify-content:center;
-  gap:8px;
-  margin-bottom:12px;
+  gap:7px;
+  margin-bottom:8px;
 }
 .reel{
-  width:86px;
-  height:105px;
+  width:74px;
+  height:82px;
   background:linear-gradient(#fff,#ddd);
   color:#111;
-  border-radius:14px;
+  border-radius:12px;
   border:4px solid #c9a646;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:34px;
+  font-size:28px;
   font-weight:bold;
-  box-shadow:inset 0 0 12px #777,0 4px 0 #5b4218;
+}
+.msg{
+  color:#ffd76b;
+  font-weight:bold;
+  min-height:26px;
+  margin:5px 0 8px;
+  font-size:16px;
+}
+.msg.big{
+  color:#fff200;
+  font-size:22px;
+  animation:bigFlash 0.6s infinite alternate;
+}
+.lamp{
+  width:68px;
+  height:68px;
+  border-radius:50%;
+  background:#333;
+  border:5px solid #777;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  color:#777;
+  font-weight:bold;
+  font-size:15px;
+}
+.lamp.on{
+  background:gold;
+  color:#442200;
+  box-shadow:0 0 35px gold,0 0 60px orange;
+  animation:peka 0.8s infinite alternate;
+}
+.info-panel{
+  display:flex;
+  justify-content:space-around;
+  background:#111;
+  border:2px solid #555;
+  border-radius:12px;
+  padding:7px;
+  margin-bottom:8px;
+}
+.info-box{
+  width:32%;
+}
+.info-label{
+  font-size:11px;
+  color:#aaa;
+}
+.info-value{
+  font-size:22px;
+  font-weight:bold;
+}
+.control-panel{
+  display:flex;
+  gap:6px;
+  background:#1a1a1a;
+  border:2px solid #444;
+  border-radius:12px;
+  padding:8px;
+  margin-bottom:8px;
+}
+.stop-panel{
+  display:flex;
+  gap:6px;
+  background:#1a1a1a;
+  border:2px solid #444;
+  border-radius:12px;
+  padding:8px;
+  margin-bottom:8px;
+}
+button{
+  font-size:14px;
+  font-weight:bold;
+  padding:11px 4px;
+  border:none;
+  border-radius:10px;
+}
+.start{
+  background:#ff3b30;
+  color:white;
+  flex:1.25;
+}
+.bet{
+  background:#34c759;
+  color:white;
+  flex:1;
+}
+.stop{
+  background:#0a84ff;
+  color:white;
+  flex:1;
+}
+.reset{
+  background:#777;
+  color:white;
+  font-size:12px;
+  padding:8px 12px;
+}
+button:disabled{
+  opacity:0.35;
+}
+.role{
+  font-size:11px;
+  color:#bbb;
+  line-height:1.35;
 }
 .reel.stopFlash{
   animation:stopFlash 0.25s;
@@ -84,130 +184,20 @@ h1{
   0%{transform:scale(1.12);}
   100%{transform:scale(1);}
 }
-.msg{
-  color:#ffd76b;
-  font-weight:bold;
-  min-height:34px;
-  margin:8px 0 12px;
-  font-size:18px;
-}
-.msg.big{
-  color:#fff200;
-  font-size:26px;
-  animation:bigFlash 0.6s infinite alternate;
-}
-@keyframes bigFlash{
-  from{text-shadow:0 0 8px yellow;}
-  to{text-shadow:0 0 25px red;transform:scale(1.08);}
-}
-.lamp{
-  width:100px;
-  height:100px;
-  border-radius:50%;
-  background:#333;
-  border:6px solid #777;
-  margin:0 auto;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  color:#777;
-  font-weight:bold;
-}
-.lamp.on{
-  background:gold;
-  color:#442200;
-  box-shadow:0 0 45px gold,0 0 80px orange;
-  animation:peka 0.8s infinite alternate;
-}
 @keyframes peka{
   from{transform:scale(1);filter:brightness(1);}
   to{transform:scale(1.08);filter:brightness(1.5);}
 }
-
-/* 情報表示：CREDIT・BET・PAYOUT */
-.info-panel{
-  display:flex;
-  justify-content:space-around;
-  background:#111;
-  border:2px solid #555;
-  border-radius:14px;
-  padding:10px;
-  margin-bottom:14px;
-}
-.info-box{
-  width:32%;
-}
-.info-label{
-  font-size:12px;
-  color:#aaa;
-}
-.info-value{
-  font-size:22px;
-  font-weight:bold;
-  color:#fff;
-}
-
-/* 操作部：START・BET・MAX BET */
-.control-panel{
-  background:#1a1a1a;
-  border:2px solid #444;
-  border-radius:14px;
-  padding:10px;
-  margin-bottom:12px;
-}
-button{
-  font-size:17px;
-  font-weight:bold;
-  padding:14px;
-  margin:5px;
-  border:none;
-  border-radius:12px;
-}
-.bet{
-  background:#34c759;
-  color:white;
-  width:42%;
-}
-.start{
-  background:#ff3b30;
-  color:white;
-  width:90%;
-  font-size:19px;
-}
-.stop{
-  background:#0a84ff;
-  color:white;
-  width:28%;
-}
-.reset{
-  background:#777;
-  color:white;
-  font-size:14px;
-}
-button:disabled{
-  opacity:0.35;
-}
-
-/* 停止部：STOP×3 */
-.stop-panel{
-  background:#1a1a1a;
-  border:2px solid #444;
-  border-radius:14px;
-  padding:10px;
-  margin-bottom:12px;
-}
-
-.role{
-  font-size:13px;
-  color:#bbb;
-  line-height:1.6;
+@keyframes bigFlash{
+  from{text-shadow:0 0 8px yellow;}
+  to{text-shadow:0 0 22px red;transform:scale(1.05);}
 }
 .payEffect{
   position:fixed;
   top:45%;
   left:50%;
   transform:translate(-50%,-50%);
-  font-size:42px;
+  font-size:38px;
   font-weight:bold;
   color:#fff200;
   text-shadow:0 0 18px orange;
@@ -237,14 +227,12 @@ button:disabled{
 <div class="wrap">
   <div class="machine">
 
-    <!-- 上部：機種名・ロゴ・機種デザイン -->
     <div class="top-panel">
       <div class="logo">🌱 遊創舎</div>
       <h1>遊創舎スロット</h1>
-      <div class="version">Ver.0.4 共通筐体レイアウト反映版</div>
+      <div class="version">Ver.0.4.1 画面内収め調整版</div>
     </div>
 
-    <!-- 中央：リール ×3・メッセージ欄・ペカリ -->
     <div class="center-panel">
       <div class="reels">
         <div id="r1" class="reel">🍒</div>
@@ -253,11 +241,9 @@ button:disabled{
       </div>
 
       <div id="msg" class="msg">BETしてください</div>
-
       <div id="lamp" class="lamp">PEKA</div>
     </div>
 
-    <!-- 情報表示：CREDIT・BET・PAYOUT -->
     <div class="info-panel">
       <div class="info-box">
         <div class="info-label">CREDIT</div>
@@ -273,15 +259,12 @@ button:disabled{
       </div>
     </div>
 
-    <!-- 操作部：START（レバー）・BET・MAX BET -->
     <div class="control-panel">
-      <button id="startBtn" class="start" onclick="start()" disabled>START レバー</button>
-      <br>
+      <button id="startBtn" class="start" onclick="start()" disabled>レバー</button>
       <button class="bet" onclick="betOne()">BET</button>
-      <button class="bet" onclick="maxBet()">MAX BET</button>
+      <button class="bet" onclick="maxBet()">MAX</button>
     </div>
 
-    <!-- 停止部：STOP ×3 -->
     <div class="stop-panel">
       <button id="s1" class="stop" onclick="stop(0)" disabled>STOP</button>
       <button id="s2" class="stop" onclick="stop(1)" disabled>STOP</button>
@@ -291,10 +274,8 @@ button:disabled{
     <button class="reset" onclick="resetGame()">リセット</button>
 
     <div class="role">
-      777：BIG 50枚<br>
-      🍇🍇🍇：ブドウ 8枚<br>
-      🔔🔔🔔：ベル 10枚<br>
-      🍒：チェリー 2枚
+      777：BIG 50枚 / 🍇🍇🍇：8枚<br>
+      🔔🔔🔔：10枚 / 🍒：2枚
     </div>
 
   </div>
@@ -318,7 +299,6 @@ function update(){
   document.getElementById("credit").textContent = credit;
   document.getElementById("bet").textContent = bet;
   document.getElementById("pay").textContent = pay;
-
   document.getElementById("startBtn").disabled = bet !== 3 || spinning.includes(true);
 
   for(let i=0;i<3;i++){
@@ -338,29 +318,23 @@ function rand(){
 
 function betOne(){
   if(credit <= 0 || bet >= 3 || spinning.includes(true)) return;
-
   credit--;
   bet++;
   pay = 0;
-
   document.getElementById("lamp").classList.remove("on");
   msg(bet === 3 ? "STARTできます" : "BET中");
-
   update();
 }
 
 function maxBet(){
   if(spinning.includes(true)) return;
-
   while(bet < 3 && credit > 0){
     credit--;
     bet++;
   }
-
   pay = 0;
   document.getElementById("lamp").classList.remove("on");
   msg(bet === 3 ? "STARTできます" : "クレジット不足");
-
   update();
 }
 
