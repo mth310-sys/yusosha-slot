@@ -218,6 +218,14 @@ h1{
   position:relative;
 }
 
+.symbol{
+  width:72px;
+  height:72px;
+  object-fit:contain;
+  pointer-events:none;
+  user-select:none;
+}
+
 .reel.spark{
   box-shadow:
     inset 0 0 14px #999,
@@ -526,7 +534,7 @@ button:disabled{opacity:0.35;}
     <div class="top-panel">
       <div class="logo">🌱 遊創舎</div>
       <h1>⚡ペカチュウ⚡</h1>
-      <div class="version">PEKACHU SLOT Ver.0.6.1 LED強化版</div>
+      <div class="version">PEKACHU SLOT Ver.0.6.1 PNGリール版</div>
     </div>
 
     <div class="center-panel">
@@ -534,9 +542,9 @@ button:disabled{opacity:0.35;}
         <div id="lamp" class="lamp">PEKA</div>
 
         <div class="reels">
-          <div id="r1" class="reel">🍒</div>
-          <div id="r2" class="reel">🍇</div>
-          <div id="r3" class="reel">🔔</div>
+          <div id="r1" class="reel"></div>
+          <div id="r2" class="reel"></div>
+          <div id="r3" class="reel"></div>
         </div>
       </div>
 
@@ -577,7 +585,7 @@ button:disabled{opacity:0.35;}
     <button class="reset" onclick="resetGame()">リセット</button>
 
     <div class="role">
-      777：BIG 50枚 / 🍇：8枚 / 🔔：10枚 / 🍒：2枚
+      赤7揃い：BIG 50枚 / ブドウ：8枚 / ベル：10枚 / チェリー：2枚
     </div>
 
   </div>
@@ -586,16 +594,37 @@ button:disabled{opacity:0.35;}
 <div id="payEffect" class="payEffect"></div>
 
 <script>
-const symbols = ["7","BAR","🍒","🍇","🔔","⭐"];
+const symbols = ["7R","7W","BAR","CHERRY","GRAPE","BELL","STAR"];
+
+const symbolFiles = {
+  "7R":"img/7_red.png",
+  "7W":"img/7_white_purple.png",
+  "BAR":"img/bar.png",
+  "CHERRY":"img/cherry.png",
+  "GRAPE":"img/grape.png",
+  "BELL":"img/bell.png",
+  "STAR":"img/star.png"
+};
 
 let credit = 50;
 let bet = 0;
 let pay = 0;
-let reels = ["🍒","🍇","🔔"];
+let reels = ["CHERRY","GRAPE","BELL"];
 let spinning = [false,false,false];
 let timers = [null,null,null];
 let stopped = 0;
 let bonus = false;
+
+function drawReel(i){
+  const reelEl = document.getElementById("r"+(i+1));
+  reelEl.innerHTML = `<img src="${symbolFiles[reels[i]]}" class="symbol" alt="${reels[i]}">`;
+}
+
+function drawAllReels(){
+  for(let i=0;i<3;i++){
+    drawReel(i);
+  }
+}
 
 function update(){
   document.getElementById("credit").textContent = credit;
@@ -682,7 +711,7 @@ function start(){
     spinning[i] = true;
     timers[i] = setInterval(()=>{
       reels[i] = rand();
-      document.getElementById("r"+(i+1)).textContent = reels[i];
+      drawReel(i);
     },70);
   }
 
@@ -696,13 +725,13 @@ function stop(i){
   spinning[i] = false;
 
   if(bonus){
-    reels[i] = "7";
+    reels[i] = "7R";
   }else{
     reels[i] = rand();
   }
 
   const reelEl = document.getElementById("r"+(i+1));
-  reelEl.textContent = reels[i];
+  drawReel(i);
   reelEl.classList.remove("stopFlash");
   void reelEl.offsetWidth;
   reelEl.classList.add("stopFlash");
@@ -728,7 +757,7 @@ function showPayEffect(amount){
 }
 
 function judge(){
-  if(reels[0] === "7" && reels[1] === "7" && reels[2] === "7"){
+  if(reels[0] === "7R" && reels[1] === "7R" && reels[2] === "7R"){
     pay = 50;
     credit += pay;
     document.getElementById("lamp").classList.add("on");
@@ -742,19 +771,19 @@ function judge(){
     msg("BIG BONUS！！",true);
     showPayEffect(pay);
 
-  }else if(reels[0] === "🍇" && reels[1] === "🍇" && reels[2] === "🍇"){
+  }else if(reels[0] === "GRAPE" && reels[1] === "GRAPE" && reels[2] === "GRAPE"){
     pay = 8;
     credit += pay;
     msg("ブドウ 8枚");
     showPayEffect(pay);
 
-  }else if(reels[0] === "🔔" && reels[1] === "🔔" && reels[2] === "🔔"){
+  }else if(reels[0] === "BELL" && reels[1] === "BELL" && reels[2] === "BELL"){
     pay = 10;
     credit += pay;
     msg("ベル 10枚");
     showPayEffect(pay);
 
-  }else if(reels.includes("🍒")){
+  }else if(reels.includes("CHERRY")){
     pay = 2;
     credit += pay;
     msg("チェリー 2枚");
@@ -778,14 +807,12 @@ function resetGame(){
   credit = 50;
   bet = 0;
   pay = 0;
-  reels = ["🍒","🍇","🔔"];
+  reels = ["CHERRY","GRAPE","BELL"];
   spinning = [false,false,false];
   stopped = 0;
   bonus = false;
 
-  for(let i=0;i<3;i++){
-    document.getElementById("r"+(i+1)).textContent = reels[i];
-  }
+  drawAllReels();
 
   document.getElementById("lamp").classList.remove("on");
   document.body.classList.remove("flash");
@@ -795,6 +822,7 @@ function resetGame(){
   update();
 }
 
+drawAllReels();
 update();
 </script>
 </body>
