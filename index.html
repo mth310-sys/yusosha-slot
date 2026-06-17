@@ -3,8 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>遊創舎スロット Ver.0.4.1</title>
+<title>遊創舎スロット Ver.0.4.2</title>
 <style>
+*{box-sizing:border-box;}
+
 body{
   margin:0;
   background:radial-gradient(circle,#2b2b2b,#080808);
@@ -12,210 +14,247 @@ body{
   font-family:sans-serif;
   text-align:center;
 }
+
 .wrap{
   max-width:390px;
   margin:auto;
-  padding:8px;
+  padding:6px;
 }
+
 .machine{
   background:linear-gradient(#333,#171717);
   border:4px solid #b88a2b;
-  border-radius:20px;
-  padding:10px;
+  border-radius:18px;
+  padding:8px;
 }
+
 .top-panel{
   background:linear-gradient(#4a3412,#19120a);
-  border:3px solid #d6a84a;
-  border-radius:16px;
-  padding:8px;
-  margin-bottom:8px;
+  border:2px solid #d6a84a;
+  border-radius:14px;
+  padding:6px;
+  margin-bottom:6px;
 }
+
 .logo{
-  font-size:15px;
+  font-size:14px;
   color:#9cff9c;
   font-weight:bold;
 }
+
 h1{
-  font-size:22px;
-  margin:4px 0;
+  font-size:20px;
+  margin:3px 0;
   color:#ffd76b;
   text-shadow:0 0 10px #ff9900;
 }
+
 .version{
-  font-size:11px;
+  font-size:10px;
   color:#ddd;
 }
+
 .center-panel{
   background:#1b1b1b;
-  border:3px solid #555;
-  border-radius:16px;
-  padding:10px;
-  margin-bottom:8px;
+  border:2px solid #555;
+  border-radius:14px;
+  padding:8px;
+  margin-bottom:6px;
 }
+
 .reels{
   display:flex;
   justify-content:center;
-  gap:7px;
-  margin-bottom:8px;
+  gap:6px;
+  margin-bottom:6px;
 }
+
 .reel{
-  width:74px;
-  height:82px;
+  width:72px;
+  height:78px;
   background:linear-gradient(#fff,#ddd);
   color:#111;
-  border-radius:12px;
-  border:4px solid #c9a646;
+  border-radius:10px;
+  border:3px solid #c9a646;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:28px;
+  font-size:27px;
   font-weight:bold;
 }
+
 .msg{
   color:#ffd76b;
   font-weight:bold;
-  min-height:26px;
-  margin:5px 0 8px;
-  font-size:16px;
+  min-height:24px;
+  margin:4px 0 6px;
+  font-size:15px;
 }
+
 .msg.big{
   color:#fff200;
-  font-size:22px;
+  font-size:20px;
   animation:bigFlash 0.6s infinite alternate;
 }
+
 .lamp{
-  width:68px;
-  height:68px;
+  width:62px;
+  height:62px;
   border-radius:50%;
   background:#333;
-  border:5px solid #777;
+  border:4px solid #777;
   margin:0 auto;
   display:flex;
   align-items:center;
   justify-content:center;
   color:#777;
   font-weight:bold;
-  font-size:15px;
+  font-size:13px;
 }
+
 .lamp.on{
   background:gold;
   color:#442200;
   box-shadow:0 0 35px gold,0 0 60px orange;
   animation:peka 0.8s infinite alternate;
 }
+
 .info-panel{
   display:flex;
   justify-content:space-around;
   background:#111;
   border:2px solid #555;
   border-radius:12px;
-  padding:7px;
-  margin-bottom:8px;
+  padding:6px;
+  margin-bottom:6px;
 }
+
 .info-box{
   width:32%;
 }
+
 .info-label{
-  font-size:11px;
+  font-size:10px;
   color:#aaa;
 }
+
 .info-value{
-  font-size:22px;
+  font-size:20px;
   font-weight:bold;
 }
+
 .control-panel{
-  display:flex;
+  display:grid;
+  grid-template-columns:1.3fr 1fr 1fr;
   gap:6px;
   background:#1a1a1a;
   border:2px solid #444;
   border-radius:12px;
-  padding:8px;
-  margin-bottom:8px;
+  padding:7px;
+  margin-bottom:6px;
 }
+
 .stop-panel{
-  display:flex;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
   gap:6px;
   background:#1a1a1a;
   border:2px solid #444;
   border-radius:12px;
-  padding:8px;
-  margin-bottom:8px;
+  padding:7px;
+  margin-bottom:6px;
 }
+
 button{
+  width:100%;
   font-size:14px;
   font-weight:bold;
-  padding:11px 4px;
+  padding:10px 2px;
   border:none;
   border-radius:10px;
 }
-.start{
+
+.btn-lever{
   background:#ff3b30;
   color:white;
-  flex:1.25;
 }
-.bet{
+
+.btn-bet{
   background:#34c759;
   color:white;
-  flex:1;
 }
+
 .stop{
   background:#0a84ff;
   color:white;
-  flex:1;
 }
+
 .reset{
   background:#777;
   color:white;
   font-size:12px;
-  padding:8px 12px;
+  padding:7px 12px;
+  width:auto;
+  margin-bottom:4px;
 }
+
 button:disabled{
   opacity:0.35;
 }
+
 .role{
-  font-size:11px;
+  font-size:10px;
   color:#bbb;
   line-height:1.35;
 }
+
 .reel.stopFlash{
   animation:stopFlash 0.25s;
 }
-@keyframes stopFlash{
-  0%{transform:scale(1.12);}
-  100%{transform:scale(1);}
-}
-@keyframes peka{
-  from{transform:scale(1);filter:brightness(1);}
-  to{transform:scale(1.08);filter:brightness(1.5);}
-}
-@keyframes bigFlash{
-  from{text-shadow:0 0 8px yellow;}
-  to{text-shadow:0 0 22px red;transform:scale(1.05);}
-}
+
 .payEffect{
   position:fixed;
   top:45%;
   left:50%;
   transform:translate(-50%,-50%);
-  font-size:38px;
+  font-size:36px;
   font-weight:bold;
   color:#fff200;
   text-shadow:0 0 18px orange;
   display:none;
   pointer-events:none;
 }
+
 .payEffect.show{
   display:block;
   animation:payPop 1s forwards;
 }
+
+.flash{
+  animation:screenFlash 0.35s 4;
+}
+
+@keyframes stopFlash{
+  0%{transform:scale(1.12);}
+  100%{transform:scale(1);}
+}
+
+@keyframes peka{
+  from{transform:scale(1);filter:brightness(1);}
+  to{transform:scale(1.08);filter:brightness(1.5);}
+}
+
+@keyframes bigFlash{
+  from{text-shadow:0 0 8px yellow;}
+  to{text-shadow:0 0 22px red;transform:scale(1.05);}
+}
+
 @keyframes payPop{
   0%{opacity:0;transform:translate(-50%,-30%) scale(0.5);}
   30%{opacity:1;transform:translate(-50%,-50%) scale(1.2);}
   100%{opacity:0;transform:translate(-50%,-90%) scale(1);}
 }
-.flash{
-  animation:screenFlash 0.35s 4;
-}
+
 @keyframes screenFlash{
   0%{background:white;}
   100%{background:radial-gradient(circle,#2b2b2b,#080808);}
@@ -230,7 +269,7 @@ button:disabled{
     <div class="top-panel">
       <div class="logo">🌱 遊創舎</div>
       <h1>遊創舎スロット</h1>
-      <div class="version">Ver.0.4.1 画面内収め調整版</div>
+      <div class="version">Ver.0.4.2 画面内収め・操作横一列版</div>
     </div>
 
     <div class="center-panel">
@@ -260,9 +299,9 @@ button:disabled{
     </div>
 
     <div class="control-panel">
-      <button id="startBtn" class="start" onclick="start()" disabled>レバー</button>
-      <button class="bet" onclick="betOne()">BET</button>
-      <button class="bet" onclick="maxBet()">MAX</button>
+      <button id="startBtn" class="btn-lever" onclick="start()" disabled>レバー</button>
+      <button class="btn-bet" onclick="betOne()">BET</button>
+      <button class="btn-bet" onclick="maxBet()">MAX</button>
     </div>
 
     <div class="stop-panel">
@@ -299,6 +338,7 @@ function update(){
   document.getElementById("credit").textContent = credit;
   document.getElementById("bet").textContent = bet;
   document.getElementById("pay").textContent = pay;
+
   document.getElementById("startBtn").disabled = bet !== 3 || spinning.includes(true);
 
   for(let i=0;i<3;i++){
@@ -318,23 +358,29 @@ function rand(){
 
 function betOne(){
   if(credit <= 0 || bet >= 3 || spinning.includes(true)) return;
+
   credit--;
   bet++;
   pay = 0;
+
   document.getElementById("lamp").classList.remove("on");
   msg(bet === 3 ? "STARTできます" : "BET中");
+
   update();
 }
 
 function maxBet(){
   if(spinning.includes(true)) return;
+
   while(bet < 3 && credit > 0){
     credit--;
     bet++;
   }
+
   pay = 0;
   document.getElementById("lamp").classList.remove("on");
   msg(bet === 3 ? "STARTできます" : "クレジット不足");
+
   update();
 }
 
