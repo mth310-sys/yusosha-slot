@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>遊創舎スロット Ver.0.5.4</title>
+<title>ペカチュウ Ver.0.6</title>
 <style>
 *{box-sizing:border-box;}
 
 body{
   margin:0;
-  background:radial-gradient(circle,#1b1b1b,#020202);
+  background:radial-gradient(circle,#2a2200,#020202);
   color:white;
   font-family:sans-serif;
   text-align:center;
@@ -25,36 +25,38 @@ body{
   position:relative;
   overflow:hidden;
   background:
-    linear-gradient(135deg,#f7f7f7 0%,#5a6068 5%,#050505 18%,#101010 50%,#050505 82%,#6d737a 95%,#ffffff 100%);
-  border:6px solid #b7bec5;
+    linear-gradient(135deg,#fff7a8 0%,#8b7b27 5%,#050505 18%,#120f00 50%,#050505 82%,#9b8529 95%,#fff4a0 100%);
+  border:6px solid #d8b900;
   border-radius:26px;
   padding:9px;
   box-shadow:
-    0 0 30px #0077ff,
-    0 0 55px #001bff,
+    0 0 30px #ffe600,
+    0 0 55px #ff9900,
     inset 0 0 28px #000,
-    inset 0 0 0 3px #1e2228;
+    inset 0 0 0 3px #25200a;
 }
 
 .machine:before{
   content:"";
   position:absolute;
   inset:8px;
-  border:2px solid #008cff;
+  border:2px solid #ffe600;
   border-radius:19px;
   box-shadow:
-    0 0 24px #00aaff,
-    inset 0 0 18px #003b88;
+    0 0 24px #fff200,
+    inset 0 0 18px #7c5a00;
   pointer-events:none;
 }
 
 .machine:after{
-  content:"";
+  content:"⚡";
   position:absolute;
-  inset:18px 16px auto 16px;
+  inset:15px 16px auto 16px;
   height:34px;
-  background:linear-gradient(135deg,transparent 8%,#e6e6e6 12%,#595f66 20%,transparent 34%,transparent 66%,#595f66 80%,#f5f5f5 88%,transparent 92%);
-  opacity:.75;
+  color:#fff200;
+  font-size:30px;
+  text-shadow:0 0 16px #fff200,0 0 30px #ff9900;
+  opacity:.9;
   pointer-events:none;
 }
 
@@ -65,11 +67,11 @@ body{
   width:12px;
   border-radius:8px;
   background:
-    radial-gradient(circle,#e9ffff 0 18%,#00c8ff 22%,#004cff 42%,#001a66 70%);
+    radial-gradient(circle,#fffde8 0 18%,#fff200 22%,#ffb300 42%,#5b3a00 70%);
   background-size:12px 16px;
   box-shadow:
-    0 0 18px #00aaff,
-    0 0 34px #006dff;
+    0 0 18px #fff200,
+    0 0 34px #ff9900;
   animation:ledPulse 1s infinite alternate;
 }
 
@@ -82,8 +84,8 @@ body{
   height:24px;
   margin:0 42px 7px;
   border-radius:0 0 18px 18px;
-  background:linear-gradient(90deg,#001633,#00b7ff,#003dff,#00b7ff,#001633);
-  box-shadow:0 0 22px #00aaff,inset 0 0 12px #bdefff;
+  background:linear-gradient(90deg,#1c1600,#ffe600,#ff9d00,#ffe600,#1c1600);
+  box-shadow:0 0 22px #fff200,inset 0 0 12px #fff7b0;
   clip-path:polygon(10% 0,90% 0,100% 100%,0 100%);
 }
 
@@ -93,45 +95,55 @@ body{
 }
 
 .top-panel{
-  background:radial-gradient(circle,#171717,#030303 75%);
-  border:2px solid #636b72;
+  background:
+    linear-gradient(135deg,rgba(255,230,0,.18),transparent 24%,transparent 76%,rgba(255,180,0,.18)),
+    radial-gradient(circle,#1b1700,#030303 75%);
+  border:2px solid #9d8621;
   border-radius:16px;
   padding:8px 6px;
   margin-bottom:7px;
   box-shadow:
     inset 0 0 18px #000,
     0 0 0 2px #111,
-    0 0 14px #004cff;
+    0 0 14px #ffd000;
 }
 
 .logo{
-  font-size:14px;
+  font-size:10px;
   color:#9cff9c;
   font-weight:bold;
   text-shadow:0 0 8px #3cff3c;
+  opacity:.72;
 }
 
 h1{
-  font-size:29px;
-  margin:4px 0;
-  color:#ffd24a;
-  text-shadow:0 0 12px #ff9d00,0 0 26px #9b5c00;
+  font-size:34px;
+  margin:2px 0;
+  color:#fff200;
+  letter-spacing:1px;
+  text-shadow:
+    0 0 12px #fff200,
+    0 0 26px #ff9d00,
+    2px 2px 0 #111;
 }
 
 .version{
   font-size:11px;
-  color:#eee;
+  color:#fff7b0;
 }
 
 .center-panel{
-  background:linear-gradient(#060606,#111,#050505);
-  border:2px solid #596069;
+  background:
+    linear-gradient(120deg,transparent 0 20%,rgba(255,230,0,.12) 21%,transparent 24%,transparent 70%,rgba(255,230,0,.12) 72%,transparent 75%),
+    linear-gradient(#060606,#111,#050505);
+  border:2px solid #8b7825;
   border-radius:16px;
   padding:9px 6px 6px;
   margin-bottom:7px;
   box-shadow:
     inset 0 0 18px #000,
-    0 0 0 2px #111;
+    0 0 0 2px #111,
+    0 0 14px #ffcc00;
 }
 
 .reel-area{
@@ -147,14 +159,14 @@ h1{
   flex:0 0 52px;
   border-radius:10px;
   background:radial-gradient(circle,#302200,#120900 75%);
-  border:3px solid #b47a00;
-  color:#ffd45a;
+  border:3px solid #d8aa00;
+  color:#ffe56b;
   display:flex;
   align-items:center;
   justify-content:center;
   font-weight:bold;
   font-size:13px;
-  box-shadow:inset 0 0 10px #000,0 0 10px #3b2300;
+  box-shadow:inset 0 0 10px #000,0 0 10px #4d3500;
 }
 
 .lamp.on{
@@ -185,12 +197,12 @@ h1{
 }
 
 .msg{
-  color:#ffd76b;
+  color:#fff200;
   font-weight:bold;
   min-height:28px;
   margin:7px 0 1px;
   font-size:20px;
-  text-shadow:0 0 10px #b56b00;
+  text-shadow:0 0 10px #ff9900;
 }
 
 .msg.big{
@@ -203,11 +215,11 @@ h1{
   display:flex;
   justify-content:space-around;
   background:#020202;
-  border:2px solid #5f6870;
+  border:2px solid #8d7920;
   border-radius:13px;
   padding:7px;
   margin-bottom:7px;
-  box-shadow:inset 0 0 12px #000,0 0 10px #005ed1;
+  box-shadow:inset 0 0 12px #000,0 0 10px #ffd000;
 }
 
 .info-box{
@@ -219,7 +231,7 @@ h1{
 
 .info-label{
   font-size:10px;
-  color:#e7e7e7;
+  color:#fff7b0;
 }
 
 .info-value{
@@ -232,15 +244,15 @@ h1{
 
 .play-panel{
   display:block;
-  background:linear-gradient(145deg,#727982,#151515 30%,#080808 55%,#333941 78%,#9098a0);
-  border:2px solid #aab2ba;
+  background:linear-gradient(145deg,#8a741e,#151515 30%,#080808 55%,#3f350d 78%,#f0cf42);
+  border:2px solid #e0c84a;
   border-radius:17px;
   padding:8px;
   margin-bottom:8px;
   box-shadow:
     inset 0 0 14px #000,
-    0 0 16px #005dcb,
-    inset 0 0 0 2px #282d33;
+    0 0 16px #ffd000,
+    inset 0 0 0 2px #2b260f;
 }
 
 .operation-unit{
@@ -253,13 +265,13 @@ h1{
   display:grid;
   grid-template-columns:1.15fr 1fr 1fr;
   gap:8px;
-  background:linear-gradient(145deg,#143d6f,#050505,#08275a);
-  border:2px solid #1495ff;
+  background:linear-gradient(145deg,#4c3f00,#050505,#2b2300);
+  border:2px solid #ffe600;
   border-radius:14px;
   padding:7px;
   box-shadow:
     inset 0 0 12px #000,
-    0 0 16px #008cff,
+    0 0 16px #ffd000,
     inset 0 0 0 2px #111;
 }
 
@@ -267,13 +279,13 @@ h1{
   display:grid;
   grid-template-columns:1fr 1fr 1fr;
   gap:8px;
-  background:linear-gradient(145deg,#143f1c,#050505,#0c3311);
-  border:2px solid #57ff62;
+  background:linear-gradient(145deg,#3a3000,#050505,#241d00);
+  border:2px solid #fff200;
   border-radius:14px;
   padding:7px;
   box-shadow:
     inset 0 0 12px #000,
-    0 0 16px #29ff3a,
+    0 0 16px #ffe600,
     inset 0 0 0 2px #111;
 }
 
@@ -319,26 +331,30 @@ button:active{
 
 .btn-lever{
   background:
-    linear-gradient(145deg,#f4f4f4 0 8%,#6b6f75 10%,#1b1b1b 18%,transparent 20%),
-    linear-gradient(#ff8a82,#e51919 45%,#6d0000);
+    linear-gradient(145deg,#fff8c5 0 8%,#766b3a 10%,#1b1b1b 18%,transparent 20%),
+    linear-gradient(#ffe96b,#e6b800 45%,#7a5200);
+  color:#111;
+  text-shadow:0 0 8px #fff2a0;
   box-shadow:
     inset 0 2px 5px rgba(255,255,255,.8),
     inset 0 -7px 12px rgba(0,0,0,.75),
     0 4px 0 #050505,
     0 0 0 3px #262a2f,
-    0 0 18px #ff1b1b;
+    0 0 18px #ffd000;
 }
 
 .btn-bet{
   background:
-    linear-gradient(145deg,#f4f4f4 0 8%,#6b6f75 10%,#1b1b1b 18%,transparent 20%),
-    linear-gradient(#56c7ff,#006eff 45%,#001f91);
+    linear-gradient(145deg,#fff8c5 0 8%,#766b3a 10%,#1b1b1b 18%,transparent 20%),
+    linear-gradient(#fff479,#ffd000 45%,#9a6700);
+  color:#111;
+  text-shadow:0 0 8px #fff2a0;
   box-shadow:
     inset 0 2px 5px rgba(255,255,255,.8),
     inset 0 -7px 12px rgba(0,0,0,.75),
     0 4px 0 #050505,
     0 0 0 3px #262a2f,
-    0 0 20px #008cff;
+    0 0 20px #ffe600;
 }
 
 .stop{
@@ -346,17 +362,17 @@ button:active{
   border-radius:12px;
   font-size:15px;
   padding:8px 2px;
-  border:4px solid #aeb6bd;
+  border:4px solid #d8c85a;
   background:
-    radial-gradient(circle at 35% 25%,#e8ffff 0 6%,#48c8ff 14%,#006eff 45%,#001f91 78%);
+    radial-gradient(circle at 35% 25%,#fffde8 0 6%,#fff200 14%,#d6a800 45%,#3b2c00 78%);
   box-shadow:
     inset 0 3px 7px rgba(255,255,255,.85),
     inset 0 -7px 13px rgba(0,0,0,.75),
     0 4px 0 #030303,
     0 0 0 3px #161a1f,
-    0 0 0 5px #666f78,
-    0 0 18px #008cff;
-  text-shadow:0 0 12px #bde9ff;
+    0 0 0 5px #6f641f,
+    0 0 18px #ffe600;
+  text-shadow:0 0 12px #fff7b0;
 }
 
 .stop:before{
@@ -365,12 +381,12 @@ button:active{
   inset:3px;
   border-radius:8px;
   border:1px solid rgba(255,255,255,.65);
-  box-shadow:0 0 10px #00aaff;
+  box-shadow:0 0 10px #fff200;
   pointer-events:none;
 }
 
 .reset{
-  background:linear-gradient(#aaa,#555,#333);
+  background:linear-gradient(#c9b44a,#665300,#333);
   color:white;
   font-size:12px;
   padding:7px 20px;
@@ -383,7 +399,7 @@ button:disabled{opacity:0.35;}
 
 .role{
   font-size:11px;
-  color:#e2e2e2;
+  color:#f3eab0;
   line-height:1.35;
 }
 
@@ -427,7 +443,7 @@ button:disabled{opacity:0.35;}
 
 @keyframes bigFlash{
   from{text-shadow:0 0 8px yellow;}
-  to{text-shadow:0 0 24px red;transform:scale(1.05);}
+  to{text-shadow:0 0 24px orange;transform:scale(1.05);}
 }
 
 @keyframes payPop{
@@ -437,8 +453,8 @@ button:disabled{opacity:0.35;}
 }
 
 @keyframes screenFlash{
-  0%{background:white;}
-  100%{background:radial-gradient(circle,#1b1b1b,#020202);}
+  0%{background:#fff200;}
+  100%{background:radial-gradient(circle,#2a2200,#020202);}
 }
 </style>
 </head>
@@ -453,8 +469,8 @@ button:disabled{opacity:0.35;}
 
     <div class="top-panel">
       <div class="logo">🌱 遊創舎</div>
-      <h1>遊創舎スロット</h1>
-      <div class="version">Ver.0.5.4 レバー削除・操作パネル整理版</div>
+      <h1>⚡ペカチュウ⚡</h1>
+      <div class="version">PEKACHU SLOT Ver.0.6 黄LED・雷モチーフ版</div>
     </div>
 
     <div class="center-panel">
