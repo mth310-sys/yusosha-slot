@@ -1,0 +1,709 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>遊創舎スロット Ver.0.5.4</title>
+<style>
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  background:radial-gradient(circle,#1b1b1b,#020202);
+  color:white;
+  font-family:sans-serif;
+  text-align:center;
+}
+
+.wrap{
+  max-width:390px;
+  margin:auto;
+  padding:4px;
+}
+
+.machine{
+  position:relative;
+  overflow:hidden;
+  background:
+    linear-gradient(135deg,#f7f7f7 0%,#5a6068 5%,#050505 18%,#101010 50%,#050505 82%,#6d737a 95%,#ffffff 100%);
+  border:6px solid #b7bec5;
+  border-radius:26px;
+  padding:9px;
+  box-shadow:
+    0 0 30px #0077ff,
+    0 0 55px #001bff,
+    inset 0 0 28px #000,
+    inset 0 0 0 3px #1e2228;
+}
+
+.machine:before{
+  content:"";
+  position:absolute;
+  inset:8px;
+  border:2px solid #008cff;
+  border-radius:19px;
+  box-shadow:
+    0 0 24px #00aaff,
+    inset 0 0 18px #003b88;
+  pointer-events:none;
+}
+
+.machine:after{
+  content:"";
+  position:absolute;
+  inset:18px 16px auto 16px;
+  height:34px;
+  background:linear-gradient(135deg,transparent 8%,#e6e6e6 12%,#595f66 20%,transparent 34%,transparent 66%,#595f66 80%,#f5f5f5 88%,transparent 92%);
+  opacity:.75;
+  pointer-events:none;
+}
+
+.led-side{
+  position:absolute;
+  top:42px;
+  bottom:44px;
+  width:12px;
+  border-radius:8px;
+  background:
+    radial-gradient(circle,#e9ffff 0 18%,#00c8ff 22%,#004cff 42%,#001a66 70%);
+  background-size:12px 16px;
+  box-shadow:
+    0 0 18px #00aaff,
+    0 0 34px #006dff;
+  animation:ledPulse 1s infinite alternate;
+}
+
+.led-left{left:8px;}
+.led-right{right:8px;}
+
+.top-led{
+  position:relative;
+  z-index:1;
+  height:24px;
+  margin:0 42px 7px;
+  border-radius:0 0 18px 18px;
+  background:linear-gradient(90deg,#001633,#00b7ff,#003dff,#00b7ff,#001633);
+  box-shadow:0 0 22px #00aaff,inset 0 0 12px #bdefff;
+  clip-path:polygon(10% 0,90% 0,100% 100%,0 100%);
+}
+
+.top-panel,.center-panel,.info-panel,.play-panel,.role,.reset{
+  position:relative;
+  z-index:1;
+}
+
+.top-panel{
+  background:radial-gradient(circle,#171717,#030303 75%);
+  border:2px solid #636b72;
+  border-radius:16px;
+  padding:8px 6px;
+  margin-bottom:7px;
+  box-shadow:
+    inset 0 0 18px #000,
+    0 0 0 2px #111,
+    0 0 14px #004cff;
+}
+
+.logo{
+  font-size:14px;
+  color:#9cff9c;
+  font-weight:bold;
+  text-shadow:0 0 8px #3cff3c;
+}
+
+h1{
+  font-size:29px;
+  margin:4px 0;
+  color:#ffd24a;
+  text-shadow:0 0 12px #ff9d00,0 0 26px #9b5c00;
+}
+
+.version{
+  font-size:11px;
+  color:#eee;
+}
+
+.center-panel{
+  background:linear-gradient(#060606,#111,#050505);
+  border:2px solid #596069;
+  border-radius:16px;
+  padding:9px 6px 6px;
+  margin-bottom:7px;
+  box-shadow:
+    inset 0 0 18px #000,
+    0 0 0 2px #111;
+}
+
+.reel-area{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+}
+
+.lamp{
+  width:52px;
+  height:52px;
+  flex:0 0 52px;
+  border-radius:10px;
+  background:radial-gradient(circle,#302200,#120900 75%);
+  border:3px solid #b47a00;
+  color:#ffd45a;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  font-size:13px;
+  box-shadow:inset 0 0 10px #000,0 0 10px #3b2300;
+}
+
+.lamp.on{
+  background:radial-gradient(circle,#fff47a,#ffd000 45%,#ff9900);
+  color:#402000;
+  box-shadow:0 0 32px gold,0 0 65px orange,inset 0 0 8px #fff;
+  animation:peka 0.65s infinite alternate;
+}
+
+.reels{
+  display:flex;
+  gap:6px;
+}
+
+.reel{
+  width:80px;
+  height:112px;
+  background:linear-gradient(#fff,#e7e7e7 45%,#f7f7f7 55%,#d5d5d5);
+  color:#111;
+  border-radius:12px;
+  border:4px solid #777;
+  box-shadow:inset 0 0 14px #999,0 0 0 2px #151515,0 0 10px #000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:34px;
+  font-weight:bold;
+}
+
+.msg{
+  color:#ffd76b;
+  font-weight:bold;
+  min-height:28px;
+  margin:7px 0 1px;
+  font-size:20px;
+  text-shadow:0 0 10px #b56b00;
+}
+
+.msg.big{
+  color:#fff200;
+  font-size:23px;
+  animation:bigFlash 0.55s infinite alternate;
+}
+
+.info-panel{
+  display:flex;
+  justify-content:space-around;
+  background:#020202;
+  border:2px solid #5f6870;
+  border-radius:13px;
+  padding:7px;
+  margin-bottom:7px;
+  box-shadow:inset 0 0 12px #000,0 0 10px #005ed1;
+}
+
+.info-box{
+  width:32%;
+  border-right:1px solid #252525;
+}
+
+.info-box:last-child{border-right:none;}
+
+.info-label{
+  font-size:10px;
+  color:#e7e7e7;
+}
+
+.info-value{
+  font-size:30px;
+  font-weight:bold;
+  color:#ff2c2c;
+  font-family:"Courier New",monospace;
+  text-shadow:0 0 8px red,0 0 14px #5a0000;
+}
+
+.play-panel{
+  display:block;
+  background:linear-gradient(145deg,#727982,#151515 30%,#080808 55%,#333941 78%,#9098a0);
+  border:2px solid #aab2ba;
+  border-radius:17px;
+  padding:8px;
+  margin-bottom:8px;
+  box-shadow:
+    inset 0 0 14px #000,
+    0 0 16px #005dcb,
+    inset 0 0 0 2px #282d33;
+}
+
+.operation-unit{
+  display:grid;
+  grid-template-rows:auto auto;
+  gap:8px;
+}
+
+.control-panel{
+  display:grid;
+  grid-template-columns:1.15fr 1fr 1fr;
+  gap:8px;
+  background:linear-gradient(145deg,#143d6f,#050505,#08275a);
+  border:2px solid #1495ff;
+  border-radius:14px;
+  padding:7px;
+  box-shadow:
+    inset 0 0 12px #000,
+    0 0 16px #008cff,
+    inset 0 0 0 2px #111;
+}
+
+.stop-panel{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:8px;
+  background:linear-gradient(145deg,#143f1c,#050505,#0c3311);
+  border:2px solid #57ff62;
+  border-radius:14px;
+  padding:7px;
+  box-shadow:
+    inset 0 0 12px #000,
+    0 0 16px #29ff3a,
+    inset 0 0 0 2px #111;
+}
+
+button{
+  width:100%;
+  font-size:15px;
+  font-weight:bold;
+  padding:8px 2px;
+  border:none;
+  color:white;
+  position:relative;
+  overflow:hidden;
+  text-shadow:0 0 8px #fff;
+}
+
+button:active{
+  transform:translateY(3px) scale(.98);
+  filter:brightness(.82);
+}
+
+.btn-lever,
+.btn-bet{
+  height:56px;
+  border-radius:12px;
+  border:3px solid #8f969d;
+  box-shadow:
+    inset 0 2px 5px rgba(255,255,255,.75),
+    inset 0 -6px 10px rgba(0,0,0,.75),
+    0 4px 0 #050505,
+    0 0 0 3px #24282d,
+    0 0 12px #000;
+}
+
+.btn-lever:before,
+.btn-bet:before{
+  content:"";
+  position:absolute;
+  inset:3px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,.55);
+  pointer-events:none;
+}
+
+.btn-lever{
+  background:
+    linear-gradient(145deg,#f4f4f4 0 8%,#6b6f75 10%,#1b1b1b 18%,transparent 20%),
+    linear-gradient(#ff8a82,#e51919 45%,#6d0000);
+  box-shadow:
+    inset 0 2px 5px rgba(255,255,255,.8),
+    inset 0 -7px 12px rgba(0,0,0,.75),
+    0 4px 0 #050505,
+    0 0 0 3px #262a2f,
+    0 0 18px #ff1b1b;
+}
+
+.btn-bet{
+  background:
+    linear-gradient(145deg,#f4f4f4 0 8%,#6b6f75 10%,#1b1b1b 18%,transparent 20%),
+    linear-gradient(#56c7ff,#006eff 45%,#001f91);
+  box-shadow:
+    inset 0 2px 5px rgba(255,255,255,.8),
+    inset 0 -7px 12px rgba(0,0,0,.75),
+    0 4px 0 #050505,
+    0 0 0 3px #262a2f,
+    0 0 20px #008cff;
+}
+
+.stop{
+  height:56px;
+  border-radius:12px;
+  font-size:15px;
+  padding:8px 2px;
+  border:4px solid #aeb6bd;
+  background:
+    radial-gradient(circle at 35% 25%,#e8ffff 0 6%,#48c8ff 14%,#006eff 45%,#001f91 78%);
+  box-shadow:
+    inset 0 3px 7px rgba(255,255,255,.85),
+    inset 0 -7px 13px rgba(0,0,0,.75),
+    0 4px 0 #030303,
+    0 0 0 3px #161a1f,
+    0 0 0 5px #666f78,
+    0 0 18px #008cff;
+  text-shadow:0 0 12px #bde9ff;
+}
+
+.stop:before{
+  content:"";
+  position:absolute;
+  inset:3px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,.65);
+  box-shadow:0 0 10px #00aaff;
+  pointer-events:none;
+}
+
+.reset{
+  background:linear-gradient(#aaa,#555,#333);
+  color:white;
+  font-size:12px;
+  padding:7px 20px;
+  width:auto;
+  margin-bottom:5px;
+  border-radius:10px;
+}
+
+button:disabled{opacity:0.35;}
+
+.role{
+  font-size:11px;
+  color:#e2e2e2;
+  line-height:1.35;
+}
+
+.reel.stopFlash{animation:stopFlash 0.25s;}
+
+.payEffect{
+  position:fixed;
+  top:45%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  font-size:38px;
+  font-weight:bold;
+  color:#fff200;
+  text-shadow:0 0 18px orange;
+  display:none;
+  pointer-events:none;
+  z-index:10;
+}
+
+.payEffect.show{
+  display:block;
+  animation:payPop 1s forwards;
+}
+
+.flash{animation:screenFlash 0.35s 4;}
+
+@keyframes ledPulse{
+  from{opacity:.55;filter:brightness(1);}
+  to{opacity:1;filter:brightness(1.9);}
+}
+
+@keyframes stopFlash{
+  0%{transform:scale(1.12);}
+  100%{transform:scale(1);}
+}
+
+@keyframes peka{
+  from{transform:scale(1);filter:brightness(1);}
+  to{transform:scale(1.08);filter:brightness(1.75);}
+}
+
+@keyframes bigFlash{
+  from{text-shadow:0 0 8px yellow;}
+  to{text-shadow:0 0 24px red;transform:scale(1.05);}
+}
+
+@keyframes payPop{
+  0%{opacity:0;transform:translate(-50%,-30%) scale(0.5);}
+  30%{opacity:1;transform:translate(-50%,-50%) scale(1.2);}
+  100%{opacity:0;transform:translate(-50%,-90%) scale(1);}
+}
+
+@keyframes screenFlash{
+  0%{background:white;}
+  100%{background:radial-gradient(circle,#1b1b1b,#020202);}
+}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+  <div class="machine">
+    <div class="led-side led-left"></div>
+    <div class="led-side led-right"></div>
+
+    <div class="top-led"></div>
+
+    <div class="top-panel">
+      <div class="logo">🌱 遊創舎</div>
+      <h1>遊創舎スロット</h1>
+      <div class="version">Ver.0.5.4 レバー削除・操作パネル整理版</div>
+    </div>
+
+    <div class="center-panel">
+      <div class="reel-area">
+        <div id="lamp" class="lamp">PEKA</div>
+
+        <div class="reels">
+          <div id="r1" class="reel">🍒</div>
+          <div id="r2" class="reel">🍇</div>
+          <div id="r3" class="reel">🔔</div>
+        </div>
+      </div>
+
+      <div id="msg" class="msg">BETしてください</div>
+    </div>
+
+    <div class="info-panel">
+      <div class="info-box">
+        <div class="info-label">CREDIT</div>
+        <div id="credit" class="info-value">50</div>
+      </div>
+      <div class="info-box">
+        <div class="info-label">BET</div>
+        <div id="bet" class="info-value">0</div>
+      </div>
+      <div class="info-box">
+        <div class="info-label">PAYOUT</div>
+        <div id="pay" class="info-value">0</div>
+      </div>
+    </div>
+
+    <div class="play-panel">
+      <div class="operation-unit">
+        <div class="control-panel">
+          <button id="startBtn" class="btn-lever" onclick="start()" disabled>START<br>レバー</button>
+          <button class="btn-bet" onclick="betOne()">BET</button>
+          <button class="btn-bet" onclick="maxBet()">MAX<br>BET</button>
+        </div>
+
+        <div class="stop-panel">
+          <button id="s1" class="stop" onclick="stop(0)" disabled>STOP</button>
+          <button id="s2" class="stop" onclick="stop(1)" disabled>STOP</button>
+          <button id="s3" class="stop" onclick="stop(2)" disabled>STOP</button>
+        </div>
+      </div>
+    </div>
+
+    <button class="reset" onclick="resetGame()">リセット</button>
+
+    <div class="role">
+      777：BIG 50枚 / 🍇：8枚 / 🔔：10枚 / 🍒：2枚
+    </div>
+
+  </div>
+</div>
+
+<div id="payEffect" class="payEffect"></div>
+
+<script>
+const symbols = ["7","BAR","🍒","🍇","🔔","⭐"];
+
+let credit = 50;
+let bet = 0;
+let pay = 0;
+let reels = ["🍒","🍇","🔔"];
+let spinning = [false,false,false];
+let timers = [null,null,null];
+let stopped = 0;
+let bonus = false;
+
+function update(){
+  document.getElementById("credit").textContent = credit;
+  document.getElementById("bet").textContent = bet;
+  document.getElementById("pay").textContent = pay;
+
+  document.getElementById("startBtn").disabled = bet !== 3 || spinning.includes(true);
+
+  for(let i=0;i<3;i++){
+    document.getElementById("s"+(i+1)).disabled = !spinning[i];
+  }
+}
+
+function msg(t,big=false){
+  const m = document.getElementById("msg");
+  m.textContent = t;
+  m.classList.toggle("big",big);
+}
+
+function rand(){
+  return symbols[Math.floor(Math.random()*symbols.length)];
+}
+
+function betOne(){
+  if(credit <= 0 || bet >= 3 || spinning.includes(true)) return;
+
+  credit--;
+  bet++;
+  pay = 0;
+
+  document.getElementById("lamp").classList.remove("on");
+  msg(bet === 3 ? "STARTできます" : "BET中");
+
+  update();
+}
+
+function maxBet(){
+  if(spinning.includes(true)) return;
+
+  while(bet < 3 && credit > 0){
+    credit--;
+    bet++;
+  }
+
+  pay = 0;
+  document.getElementById("lamp").classList.remove("on");
+  msg(bet === 3 ? "STARTできます" : "クレジット不足");
+
+  update();
+}
+
+function start(){
+  if(bet !== 3) return;
+
+  stopped = 0;
+  pay = 0;
+  bonus = Math.random() < 0.06;
+
+  if(bonus){
+    document.getElementById("lamp").classList.add("on");
+    msg("ペカッ！");
+  }else{
+    document.getElementById("lamp").classList.remove("on");
+    msg("リール回転中");
+  }
+
+  for(let i=0;i<3;i++){
+    spinning[i] = true;
+    timers[i] = setInterval(()=>{
+      reels[i] = rand();
+      document.getElementById("r"+(i+1)).textContent = reels[i];
+    },70);
+  }
+
+  update();
+}
+
+function stop(i){
+  if(!spinning[i]) return;
+
+  clearInterval(timers[i]);
+  spinning[i] = false;
+
+  if(bonus){
+    reels[i] = "7";
+  }else{
+    reels[i] = rand();
+  }
+
+  const reelEl = document.getElementById("r"+(i+1));
+  reelEl.textContent = reels[i];
+  reelEl.classList.remove("stopFlash");
+  void reelEl.offsetWidth;
+  reelEl.classList.add("stopFlash");
+
+  stopped++;
+
+  if(stopped === 3){
+    judge();
+  }
+
+  update();
+}
+
+function showPayEffect(amount){
+  if(amount <= 0) return;
+
+  const effect = document.getElementById("payEffect");
+  effect.textContent = "+" + amount;
+  effect.classList.remove("show");
+  void effect.offsetWidth;
+  effect.classList.add("show");
+}
+
+function judge(){
+  if(reels[0] === "7" && reels[1] === "7" && reels[2] === "7"){
+    pay = 50;
+    credit += pay;
+    document.getElementById("lamp").classList.add("on");
+    document.body.classList.add("flash");
+
+    setTimeout(()=>{
+      document.body.classList.remove("flash");
+    },1500);
+
+    msg("BIG BONUS！！",true);
+    showPayEffect(pay);
+
+  }else if(reels[0] === "🍇" && reels[1] === "🍇" && reels[2] === "🍇"){
+    pay = 8;
+    credit += pay;
+    msg("ブドウ 8枚");
+    showPayEffect(pay);
+
+  }else if(reels[0] === "🔔" && reels[1] === "🔔" && reels[2] === "🔔"){
+    pay = 10;
+    credit += pay;
+    msg("ベル 10枚");
+    showPayEffect(pay);
+
+  }else if(reels.includes("🍒")){
+    pay = 2;
+    credit += pay;
+    msg("チェリー 2枚");
+    showPayEffect(pay);
+
+  }else{
+    pay = 0;
+    msg("ハズレ");
+  }
+
+  bet = 0;
+  update();
+}
+
+function resetGame(){
+  for(let i=0;i<3;i++){
+    clearInterval(timers[i]);
+  }
+
+  credit = 50;
+  bet = 0;
+  pay = 0;
+  reels = ["🍒","🍇","🔔"];
+  spinning = [false,false,false];
+  stopped = 0;
+  bonus = false;
+
+  for(let i=0;i<3;i++){
+    document.getElementById("r"+(i+1)).textContent = reels[i];
+  }
+
+  document.getElementById("lamp").classList.remove("on");
+  document.body.classList.remove("flash");
+  msg("BETしてください");
+
+  update();
+}
+
+update();
+</script>
+</body>
+</html>
