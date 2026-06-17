@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>遊創舎スロット Ver.0.5.3</title>
+<title>遊創舎スロット Ver.0.5.3 レイアウト改良版</title>
 <style>
 *{box-sizing:border-box;}
 
@@ -87,7 +87,7 @@ body{
   clip-path:polygon(10% 0,90% 0,100% 100%,0 100%);
 }
 
-.top-panel,.center-panel,.info-panel,.play-panel,.stop-panel,.role,.reset{
+.top-panel,.center-panel,.info-panel,.play-panel,.role,.reset{
   position:relative;
   z-index:1;
 }
@@ -234,7 +234,7 @@ h1{
   display:grid;
   grid-template-columns:76px 1fr;
   gap:8px;
-  align-items:end;
+  align-items:stretch;
   background:linear-gradient(145deg,#727982,#151515 30%,#080808 55%,#333941 78%,#9098a0);
   border:2px solid #aab2ba;
   border-radius:17px;
@@ -247,7 +247,7 @@ h1{
 }
 
 .lever-deco{
-  height:142px;
+  height:160px;
   position:relative;
   border-radius:15px;
   background:radial-gradient(circle at center,#101820,#050505 75%);
@@ -262,7 +262,7 @@ h1{
   left:35px;
   bottom:15px;
   width:10px;
-  height:92px;
+  height:96px;
   border-radius:8px;
   background:linear-gradient(90deg,#333,#fff,#aaa,#222);
   transform:rotate(-8deg);
@@ -274,7 +274,7 @@ h1{
   content:"";
   position:absolute;
   left:14px;
-  top:4px;
+  top:8px;
   width:50px;
   height:50px;
   border-radius:50%;
@@ -282,32 +282,45 @@ h1{
   box-shadow:0 0 14px #fff,0 0 22px #0077ff;
 }
 
+.operation-unit{
+  display:grid;
+  grid-template-rows:1fr 1fr;
+  gap:8px;
+}
+
 .control-panel{
   display:grid;
   grid-template-columns:1.15fr 1fr 1fr;
   gap:8px;
+  background:linear-gradient(145deg,#143d6f,#050505,#08275a);
+  border:2px solid #1495ff;
+  border-radius:14px;
+  padding:7px;
+  box-shadow:
+    inset 0 0 12px #000,
+    0 0 16px #008cff,
+    inset 0 0 0 2px #111;
 }
 
 .stop-panel{
   display:grid;
   grid-template-columns:1fr 1fr 1fr;
   gap:8px;
-  background:linear-gradient(145deg,#40464d,#070707,#31363c);
-  border:2px solid #8b949c;
-  border-radius:18px;
-  padding:10px;
-  margin-bottom:8px;
+  background:linear-gradient(145deg,#143f1c,#050505,#0c3311);
+  border:2px solid #57ff62;
+  border-radius:14px;
+  padding:7px;
   box-shadow:
-    inset 0 0 14px #000,
-    0 0 18px #006dff,
-    inset 0 0 0 2px #1b1f24;
+    inset 0 0 12px #000,
+    0 0 16px #29ff3a,
+    inset 0 0 0 2px #111;
 }
 
 button{
   width:100%;
   font-size:15px;
   font-weight:bold;
-  padding:11px 2px;
+  padding:8px 2px;
   border:none;
   color:white;
   position:relative;
@@ -322,7 +335,7 @@ button:active{
 
 .btn-lever,
 .btn-bet{
-  height:64px;
+  height:58px;
   border-radius:12px;
   border:3px solid #8f969d;
   box-shadow:
@@ -368,39 +381,30 @@ button:active{
 }
 
 .stop{
-  height:82px;
-  border-radius:50%;
-  font-size:20px;
-  padding:18px 2px;
-  border:6px solid #aeb6bd;
+  height:58px;
+  border-radius:12px;
+  font-size:15px;
+  padding:8px 2px;
+  border:4px solid #aeb6bd;
   background:
     radial-gradient(circle at 35% 25%,#e8ffff 0 6%,#48c8ff 14%,#006eff 45%,#001f91 78%);
   box-shadow:
     inset 0 3px 7px rgba(255,255,255,.85),
     inset 0 -7px 13px rgba(0,0,0,.75),
     0 4px 0 #030303,
-    0 0 0 4px #161a1f,
-    0 0 0 7px #666f78,
-    0 0 24px #008cff;
+    0 0 0 3px #161a1f,
+    0 0 0 5px #666f78,
+    0 0 18px #008cff;
   text-shadow:0 0 12px #bde9ff;
 }
 
 .stop:before{
   content:"";
   position:absolute;
-  inset:-3px;
-  border-radius:50%;
-  border:2px dotted #e9f7ff;
-  box-shadow:0 0 12px #00aaff;
-  pointer-events:none;
-}
-
-.stop:after{
-  content:"";
-  position:absolute;
-  inset:9px;
-  border-radius:50%;
-  border:1px solid rgba(255,255,255,.6);
+  inset:3px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,.65);
+  box-shadow:0 0 10px #00aaff;
   pointer-events:none;
 }
 
@@ -489,7 +493,7 @@ button:disabled{opacity:0.35;}
     <div class="top-panel">
       <div class="logo">🌱 遊創舎</div>
       <h1>遊創舎スロット</h1>
-      <div class="version">Ver.0.5.3 実機風ボタン版</div>
+      <div class="version">Ver.0.5.3 レイアウト改良版</div>
     </div>
 
     <div class="center-panel">
@@ -524,17 +528,19 @@ button:disabled{opacity:0.35;}
     <div class="play-panel">
       <div class="lever-deco"></div>
 
-      <div class="control-panel">
-        <button id="startBtn" class="btn-lever" onclick="start()" disabled>START<br>レバー</button>
-        <button class="btn-bet" onclick="betOne()">BET</button>
-        <button class="btn-bet" onclick="maxBet()">MAX<br>BET</button>
-      </div>
-    </div>
+      <div class="operation-unit">
+        <div class="control-panel">
+          <button id="startBtn" class="btn-lever" onclick="start()" disabled>START<br>レバー</button>
+          <button class="btn-bet" onclick="betOne()">BET</button>
+          <button class="btn-bet" onclick="maxBet()">MAX<br>BET</button>
+        </div>
 
-    <div class="stop-panel">
-      <button id="s1" class="stop" onclick="stop(0)" disabled>STOP</button>
-      <button id="s2" class="stop" onclick="stop(1)" disabled>STOP</button>
-      <button id="s3" class="stop" onclick="stop(2)" disabled>STOP</button>
+        <div class="stop-panel">
+          <button id="s1" class="stop" onclick="stop(0)" disabled>STOP</button>
+          <button id="s2" class="stop" onclick="stop(1)" disabled>STOP</button>
+          <button id="s3" class="stop" onclick="stop(2)" disabled>STOP</button>
+        </div>
+      </div>
     </div>
 
     <button class="reset" onclick="resetGame()">リセット</button>
