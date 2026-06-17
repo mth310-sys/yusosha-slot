@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>遊創舎スロット Ver.0.5.2</title>
+<title>遊創舎スロット Ver.0.5.3</title>
 <style>
 *{box-sizing:border-box;}
 
@@ -24,31 +24,52 @@ body{
 .machine{
   position:relative;
   overflow:hidden;
-  background:linear-gradient(135deg,#cfd3d6,#171717 13%,#050505 50%,#171717 87%,#cfd3d6);
-  border:5px solid #aeb5ba;
-  border-radius:24px;
+  background:
+    linear-gradient(135deg,#f7f7f7 0%,#5a6068 5%,#050505 18%,#101010 50%,#050505 82%,#6d737a 95%,#ffffff 100%);
+  border:6px solid #b7bec5;
+  border-radius:26px;
   padding:9px;
-  box-shadow:0 0 28px #0077ff,inset 0 0 28px #000;
+  box-shadow:
+    0 0 30px #0077ff,
+    0 0 55px #001bff,
+    inset 0 0 28px #000,
+    inset 0 0 0 3px #1e2228;
 }
 
 .machine:before{
   content:"";
   position:absolute;
   inset:8px;
-  border:2px solid #0077ff;
-  border-radius:18px;
-  box-shadow:0 0 22px #009dff,inset 0 0 14px #003b88;
+  border:2px solid #008cff;
+  border-radius:19px;
+  box-shadow:
+    0 0 24px #00aaff,
+    inset 0 0 18px #003b88;
+  pointer-events:none;
+}
+
+.machine:after{
+  content:"";
+  position:absolute;
+  inset:18px 16px auto 16px;
+  height:34px;
+  background:linear-gradient(135deg,transparent 8%,#e6e6e6 12%,#595f66 20%,transparent 34%,transparent 66%,#595f66 80%,#f5f5f5 88%,transparent 92%);
+  opacity:.75;
   pointer-events:none;
 }
 
 .led-side{
   position:absolute;
-  top:44px;
-  bottom:42px;
-  width:11px;
+  top:42px;
+  bottom:44px;
+  width:12px;
   border-radius:8px;
-  background:repeating-linear-gradient(to bottom,#00b7ff 0 8px,#003a99 8px 14px);
-  box-shadow:0 0 18px #00aaff;
+  background:
+    radial-gradient(circle,#e9ffff 0 18%,#00c8ff 22%,#004cff 42%,#001a66 70%);
+  background-size:12px 16px;
+  box-shadow:
+    0 0 18px #00aaff,
+    0 0 34px #006dff;
   animation:ledPulse 1s infinite alternate;
 }
 
@@ -73,11 +94,14 @@ body{
 
 .top-panel{
   background:radial-gradient(circle,#171717,#030303 75%);
-  border:2px solid #4d4d4d;
+  border:2px solid #636b72;
   border-radius:16px;
   padding:8px 6px;
   margin-bottom:7px;
-  box-shadow:inset 0 0 18px #000;
+  box-shadow:
+    inset 0 0 18px #000,
+    0 0 0 2px #111,
+    0 0 14px #004cff;
 }
 
 .logo{
@@ -101,10 +125,13 @@ h1{
 
 .center-panel{
   background:linear-gradient(#060606,#111,#050505);
-  border:2px solid #444;
+  border:2px solid #596069;
   border-radius:16px;
   padding:9px 6px 6px;
   margin-bottom:7px;
+  box-shadow:
+    inset 0 0 18px #000,
+    0 0 0 2px #111;
 }
 
 .reel-area{
@@ -176,11 +203,11 @@ h1{
   display:flex;
   justify-content:space-around;
   background:#020202;
-  border:2px solid #454545;
+  border:2px solid #5f6870;
   border-radius:13px;
   padding:7px;
   margin-bottom:7px;
-  box-shadow:inset 0 0 12px #000,0 0 8px #002e66;
+  box-shadow:inset 0 0 12px #000,0 0 10px #005ed1;
 }
 
 .info-box{
@@ -208,12 +235,15 @@ h1{
   grid-template-columns:76px 1fr;
   gap:8px;
   align-items:end;
-  background:linear-gradient(145deg,#555,#090909 35%,#151515 65%,#666);
-  border:2px solid #8b9298;
-  border-radius:16px;
+  background:linear-gradient(145deg,#727982,#151515 30%,#080808 55%,#333941 78%,#9098a0);
+  border:2px solid #aab2ba;
+  border-radius:17px;
   padding:9px;
   margin-bottom:8px;
-  box-shadow:inset 0 0 14px #000,0 0 14px #005dcb;
+  box-shadow:
+    inset 0 0 14px #000,
+    0 0 16px #005dcb,
+    inset 0 0 0 2px #282d33;
 }
 
 .lever-deco{
@@ -221,7 +251,7 @@ h1{
   position:relative;
   border-radius:15px;
   background:radial-gradient(circle at center,#101820,#050505 75%);
-  border:2px solid #666;
+  border:2px solid #777;
   box-shadow:inset 0 0 12px #000,0 0 16px #0077ff;
   pointer-events:none;
 }
@@ -262,12 +292,15 @@ h1{
   display:grid;
   grid-template-columns:1fr 1fr 1fr;
   gap:8px;
-  background:linear-gradient(145deg,#2c2c2c,#070707,#2a2a2a);
-  border:2px solid #6f767c;
-  border-radius:16px;
+  background:linear-gradient(145deg,#40464d,#070707,#31363c);
+  border:2px solid #8b949c;
+  border-radius:18px;
   padding:10px;
   margin-bottom:8px;
-  box-shadow:inset 0 0 14px #000,0 0 16px #006dff;
+  box-shadow:
+    inset 0 0 14px #000,
+    0 0 18px #006dff,
+    inset 0 0 0 2px #1b1f24;
 }
 
 button{
@@ -276,34 +309,99 @@ button{
   font-weight:bold;
   padding:11px 2px;
   border:none;
-  border-radius:12px;
   color:white;
-  box-shadow:inset 0 2px 5px rgba(255,255,255,.65),inset 0 -5px 9px rgba(0,0,0,.65),0 4px 0 #050505,0 0 8px #000;
+  position:relative;
+  overflow:hidden;
+  text-shadow:0 0 8px #fff;
 }
 
 button:active{
-  transform:translateY(2px);
+  transform:translateY(3px) scale(.98);
+  filter:brightness(.82);
+}
+
+.btn-lever,
+.btn-bet{
+  height:64px;
+  border-radius:12px;
+  border:3px solid #8f969d;
+  box-shadow:
+    inset 0 2px 5px rgba(255,255,255,.75),
+    inset 0 -6px 10px rgba(0,0,0,.75),
+    0 4px 0 #050505,
+    0 0 0 3px #24282d,
+    0 0 12px #000;
+}
+
+.btn-lever:before,
+.btn-bet:before{
+  content:"";
+  position:absolute;
+  inset:3px;
+  border-radius:8px;
+  border:1px solid rgba(255,255,255,.55);
+  pointer-events:none;
 }
 
 .btn-lever{
-  height:64px;
-  background:linear-gradient(#ff6f66,#cf1010 45%,#6d0000);
-  text-shadow:0 0 8px #ffb0b0;
+  background:
+    linear-gradient(145deg,#f4f4f4 0 8%,#6b6f75 10%,#1b1b1b 18%,transparent 20%),
+    linear-gradient(#ff8a82,#e51919 45%,#6d0000);
+  box-shadow:
+    inset 0 2px 5px rgba(255,255,255,.8),
+    inset 0 -7px 12px rgba(0,0,0,.75),
+    0 4px 0 #050505,
+    0 0 0 3px #262a2f,
+    0 0 18px #ff1b1b;
 }
 
 .btn-bet{
-  height:64px;
-  background:linear-gradient(#66ff85,#00a82b 45%,#004f13);
-  text-shadow:0 0 8px #b7ffc4;
+  background:
+    linear-gradient(145deg,#f4f4f4 0 8%,#6b6f75 10%,#1b1b1b 18%,transparent 20%),
+    linear-gradient(#56c7ff,#006eff 45%,#001f91);
+  box-shadow:
+    inset 0 2px 5px rgba(255,255,255,.8),
+    inset 0 -7px 12px rgba(0,0,0,.75),
+    0 4px 0 #050505,
+    0 0 0 3px #262a2f,
+    0 0 20px #008cff;
 }
 
 .stop{
   height:82px;
-  background:linear-gradient(#4fc3ff,#006eff 45%,#001f91);
-  font-size:22px;
+  border-radius:50%;
+  font-size:20px;
   padding:18px 2px;
-  box-shadow:inset 0 2px 6px rgba(255,255,255,.75),inset 0 -5px 12px rgba(0,0,0,.7),0 4px 0 #030303,0 0 20px #008cff;
+  border:6px solid #aeb6bd;
+  background:
+    radial-gradient(circle at 35% 25%,#e8ffff 0 6%,#48c8ff 14%,#006eff 45%,#001f91 78%);
+  box-shadow:
+    inset 0 3px 7px rgba(255,255,255,.85),
+    inset 0 -7px 13px rgba(0,0,0,.75),
+    0 4px 0 #030303,
+    0 0 0 4px #161a1f,
+    0 0 0 7px #666f78,
+    0 0 24px #008cff;
   text-shadow:0 0 12px #bde9ff;
+}
+
+.stop:before{
+  content:"";
+  position:absolute;
+  inset:-3px;
+  border-radius:50%;
+  border:2px dotted #e9f7ff;
+  box-shadow:0 0 12px #00aaff;
+  pointer-events:none;
+}
+
+.stop:after{
+  content:"";
+  position:absolute;
+  inset:9px;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.6);
+  pointer-events:none;
 }
 
 .reset{
@@ -313,6 +411,7 @@ button:active{
   padding:7px 20px;
   width:auto;
   margin-bottom:5px;
+  border-radius:10px;
 }
 
 button:disabled{opacity:0.35;}
@@ -390,7 +489,7 @@ button:disabled{opacity:0.35;}
     <div class="top-panel">
       <div class="logo">🌱 遊創舎</div>
       <h1>遊創舎スロット</h1>
-      <div class="version">Ver.0.5.2 YD-001調整版</div>
+      <div class="version">Ver.0.5.3 実機風ボタン版</div>
     </div>
 
     <div class="center-panel">
