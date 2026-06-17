@@ -3,16 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>遊創舎スロット Ver.0.4.3</title>
+<title>遊創舎スロット Ver.0.5</title>
 <style>
 *{box-sizing:border-box;}
 
 body{
   margin:0;
-  background:radial-gradient(circle,#1b1b1b,#020202);
+  min-height:100vh;
+  background:
+    radial-gradient(circle at center,#202020 0%,#050505 70%);
   color:white;
   font-family:sans-serif;
   text-align:center;
+  overflow-x:hidden;
 }
 
 .wrap{
@@ -22,46 +25,84 @@ body{
 }
 
 .machine{
-  background:linear-gradient(145deg,#050505,#151515,#050505);
-  border:4px solid #9a9a9a;
-  border-radius:20px;
-  padding:7px;
-  box-shadow:
-    0 0 18px #0077ff,
-    inset 0 0 18px #000;
   position:relative;
+  overflow:hidden;
+  background:
+    linear-gradient(135deg,#7c7c7c 0%,#1b1b1b 8%,#050505 18%,#171717 50%,#050505 82%,#8b8b8b 100%);
+  border:4px solid #bfc4c8;
+  border-radius:22px;
+  padding:9px;
+  box-shadow:
+    0 0 22px #0077ff,
+    inset 0 0 18px #000,
+    inset 0 0 42px #111;
 }
 
-.machine:before{
+.machine::before{
   content:"";
   position:absolute;
-  inset:6px;
-  border:2px solid #005dff;
-  border-radius:16px;
-  box-shadow:0 0 18px #008cff;
+  inset:7px;
+  border:2px solid #005cff;
+  border-radius:17px;
+  box-shadow:
+    0 0 12px #0095ff,
+    inset 0 0 12px #003b88;
   pointer-events:none;
 }
 
+.machine::after{
+  content:"";
+  position:absolute;
+  inset:0;
+  background:
+    linear-gradient(90deg,
+      transparent 0%,
+      rgba(0,140,255,.35) 3%,
+      transparent 6%,
+      transparent 94%,
+      rgba(0,140,255,.35) 97%,
+      transparent 100%);
+  pointer-events:none;
+  animation:ledPulse 1.4s infinite alternate;
+}
+
+.top-led{
+  height:14px;
+  margin:1px 34px 7px;
+  border-radius:0 0 12px 12px;
+  background:linear-gradient(90deg,#001633,#009dff,#001633);
+  box-shadow:0 0 16px #009dff;
+}
+
 .top-panel{
-  background:linear-gradient(#111,#050505);
-  border:2px solid #555;
-  border-radius:14px;
-  padding:7px;
-  margin-bottom:6px;
-  box-shadow:inset 0 0 12px #000;
+  position:relative;
+  z-index:1;
+  background:
+    radial-gradient(circle at center,#191919,#030303 75%);
+  border:2px solid #444;
+  border-radius:15px;
+  padding:8px 6px;
+  margin-bottom:7px;
+  box-shadow:
+    inset 0 0 18px #000,
+    0 0 8px #111;
 }
 
 .logo{
   font-size:14px;
   color:#9cff9c;
   font-weight:bold;
+  text-shadow:0 0 8px #3cff3c;
 }
 
 h1{
-  font-size:26px;
+  font-size:28px;
   margin:4px 0;
-  color:#ffd34f;
-  text-shadow:0 0 14px #ffb000;
+  color:#ffd24a;
+  text-shadow:
+    0 0 10px #ff9d00,
+    0 0 22px #9b5c00;
+  letter-spacing:1px;
 }
 
 .version{
@@ -70,11 +111,16 @@ h1{
 }
 
 .center-panel{
-  background:#050505;
-  border:2px solid #444;
-  border-radius:14px;
-  padding:7px;
-  margin-bottom:6px;
+  position:relative;
+  z-index:1;
+  background:linear-gradient(#060606,#111,#050505);
+  border:2px solid #3d3d3d;
+  border-radius:15px;
+  padding:8px 6px 6px;
+  margin-bottom:7px;
+  box-shadow:
+    inset 0 0 18px #000,
+    0 0 7px #001e4d;
 }
 
 .reel-area{
@@ -85,25 +131,44 @@ h1{
 }
 
 .lamp{
-  width:54px;
-  height:54px;
+  width:55px;
+  height:55px;
+  flex:0 0 55px;
   border-radius:8px;
-  background:#1a1200;
-  border:3px solid #a06b00;
-  color:#ffcc3d;
+  background:
+    radial-gradient(circle,#302200 0%,#120900 70%);
+  border:3px solid #b47a00;
+  color:#ffd45a;
   display:flex;
   align-items:center;
   justify-content:center;
   font-weight:bold;
   font-size:14px;
-  box-shadow:inset 0 0 10px #000;
+  box-shadow:
+    inset 0 0 10px #000,
+    0 0 8px #3b2300;
+  position:relative;
+}
+
+.lamp::before{
+  content:"✦";
+  position:absolute;
+  top:-14px;
+  left:50%;
+  transform:translateX(-50%);
+  color:#ffc400;
+  text-shadow:0 0 8px #ff9d00;
+  font-size:19px;
 }
 
 .lamp.on{
-  background:gold;
-  color:#442200;
-  box-shadow:0 0 28px gold,0 0 55px orange;
-  animation:peka 0.7s infinite alternate;
+  background:radial-gradient(circle,#fff47a 0%,#ffd000 45%,#ff9900 100%);
+  color:#402000;
+  box-shadow:
+    0 0 30px gold,
+    0 0 60px orange,
+    inset 0 0 8px #fff;
+  animation:peka 0.65s infinite alternate;
 }
 
 .reels{
@@ -114,49 +179,56 @@ h1{
 
 .reel{
   width:75px;
-  height:92px;
-  background:linear-gradient(#fff,#ddd);
+  height:96px;
+  background:
+    linear-gradient(#ffffff,#e7e7e7 45%,#f7f7f7 55%,#d5d5d5);
   color:#111;
-  border-radius:9px;
-  border:3px solid #777;
+  border-radius:10px;
+  border:3px solid #7d7d7d;
   box-shadow:
-    inset 0 0 12px #aaa,
-    0 0 8px #111;
+    inset 0 0 12px #999,
+    0 0 0 2px #151515,
+    0 0 8px #000;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:28px;
+  font-size:30px;
   font-weight:bold;
 }
 
 .msg{
   color:#ffd76b;
   font-weight:bold;
-  min-height:27px;
-  margin:6px 0 2px;
-  font-size:18px;
-  text-shadow:0 0 8px #a06000;
+  min-height:28px;
+  margin:7px 0 1px;
+  font-size:19px;
+  text-shadow:0 0 9px #b56b00;
 }
 
 .msg.big{
   color:#fff200;
-  font-size:21px;
-  animation:bigFlash 0.6s infinite alternate;
+  font-size:22px;
+  animation:bigFlash 0.55s infinite alternate;
 }
 
 .info-panel{
+  position:relative;
+  z-index:1;
   display:flex;
   justify-content:space-around;
   background:#020202;
-  border:2px solid #444;
-  border-radius:12px;
+  border:2px solid #454545;
+  border-radius:13px;
   padding:7px;
   margin-bottom:7px;
+  box-shadow:
+    inset 0 0 12px #000,
+    0 0 7px #002e66;
 }
 
 .info-box{
   width:32%;
-  border-right:1px solid #222;
+  border-right:1px solid #252525;
 }
 
 .info-box:last-child{
@@ -165,37 +237,51 @@ h1{
 
 .info-label{
   font-size:10px;
-  color:#ddd;
+  color:#e7e7e7;
 }
 
 .info-value{
-  font-size:28px;
+  font-size:29px;
   font-weight:bold;
-  color:#ff2a2a;
-  font-family:monospace;
-  text-shadow:0 0 10px red;
+  color:#ff2c2c;
+  font-family:"Courier New",monospace;
+  text-shadow:
+    0 0 8px red,
+    0 0 14px #5a0000;
 }
 
 .control-panel{
+  position:relative;
+  z-index:1;
   display:grid;
   grid-template-columns:1.15fr 1fr 1fr;
-  gap:7px;
-  background:#111;
-  border:2px solid #555;
-  border-radius:13px;
-  padding:8px;
-  margin-bottom:7px;
+  gap:8px;
+  background:
+    linear-gradient(145deg,#3d3d3d,#0a0a0a 35%,#151515 65%,#555);
+  border:2px solid #7f858a;
+  border-radius:15px;
+  padding:9px;
+  margin-bottom:8px;
+  box-shadow:
+    inset 0 0 14px #000,
+    0 0 10px #004eaa;
 }
 
 .stop-panel{
+  position:relative;
+  z-index:1;
   display:grid;
   grid-template-columns:1fr 1fr 1fr;
-  gap:7px;
-  background:#101010;
-  border:2px solid #555;
-  border-radius:13px;
-  padding:9px;
-  margin-bottom:7px;
+  gap:8px;
+  background:
+    linear-gradient(145deg,#2c2c2c,#070707,#2a2a2a);
+  border:2px solid #6f767c;
+  border-radius:15px;
+  padding:10px;
+  margin-bottom:8px;
+  box-shadow:
+    inset 0 0 14px #000,
+    0 0 12px #004eaa;
 }
 
 button{
@@ -206,36 +292,54 @@ button{
   border:none;
   border-radius:10px;
   color:white;
+  letter-spacing:.5px;
   box-shadow:
-    inset 0 2px 4px rgba(255,255,255,.5),
-    inset 0 -4px 8px rgba(0,0,0,.5),
-    0 3px 0 #111;
+    inset 0 2px 5px rgba(255,255,255,.65),
+    inset 0 -5px 9px rgba(0,0,0,.65),
+    0 4px 0 #050505,
+    0 0 7px #000;
+}
+
+button:active{
+  transform:translateY(2px);
+  box-shadow:
+    inset 0 2px 5px rgba(255,255,255,.35),
+    inset 0 -3px 7px rgba(0,0,0,.7),
+    0 2px 0 #050505;
 }
 
 .btn-lever{
-  background:linear-gradient(#ff6b5f,#b00000);
+  background:linear-gradient(#ff6f66,#cf1010 45%,#6d0000);
+  text-shadow:0 0 8px #ffb0b0;
 }
 
 .btn-bet{
-  background:linear-gradient(#4cff76,#00751c);
+  background:linear-gradient(#66ff85,#00a82b 45%,#004f13);
+  text-shadow:0 0 8px #b7ffc4;
 }
 
 .stop{
-  background:linear-gradient(#39aaff,#003dba);
-  font-size:17px;
+  background:linear-gradient(#4fc3ff,#006eff 45%,#001f91);
+  font-size:18px;
+  padding:14px 2px;
   box-shadow:
-    inset 0 2px 5px rgba(255,255,255,.6),
-    inset 0 -4px 10px rgba(0,0,0,.6),
-    0 0 12px #0077ff;
+    inset 0 2px 6px rgba(255,255,255,.75),
+    inset 0 -5px 12px rgba(0,0,0,.7),
+    0 4px 0 #030303,
+    0 0 15px #008cff;
+  text-shadow:0 0 10px #bde9ff;
 }
 
 .reset{
-  background:linear-gradient(#999,#444);
+  position:relative;
+  z-index:1;
+  background:linear-gradient(#aaa,#555,#333);
   color:white;
   font-size:12px;
-  padding:7px 18px;
+  padding:7px 20px;
   width:auto;
-  margin-bottom:4px;
+  margin-bottom:5px;
+  border-radius:9px;
 }
 
 button:disabled{
@@ -243,9 +347,12 @@ button:disabled{
 }
 
 .role{
+  position:relative;
+  z-index:1;
   font-size:11px;
-  color:#ddd;
+  color:#e2e2e2;
   line-height:1.35;
+  padding-bottom:2px;
 }
 
 .reel.stopFlash{
@@ -257,12 +364,13 @@ button:disabled{
   top:45%;
   left:50%;
   transform:translate(-50%,-50%);
-  font-size:36px;
+  font-size:38px;
   font-weight:bold;
   color:#fff200;
   text-shadow:0 0 18px orange;
   display:none;
   pointer-events:none;
+  z-index:10;
 }
 
 .payEffect.show{
@@ -274,6 +382,11 @@ button:disabled{
   animation:screenFlash 0.35s 4;
 }
 
+@keyframes ledPulse{
+  from{opacity:.55;filter:brightness(1);}
+  to{opacity:1;filter:brightness(1.8);}
+}
+
 @keyframes stopFlash{
   0%{transform:scale(1.12);}
   100%{transform:scale(1);}
@@ -281,7 +394,7 @@ button:disabled{
 
 @keyframes peka{
   from{transform:scale(1);filter:brightness(1);}
-  to{transform:scale(1.08);filter:brightness(1.7);}
+  to{transform:scale(1.08);filter:brightness(1.75);}
 }
 
 @keyframes bigFlash{
@@ -297,7 +410,7 @@ button:disabled{
 
 @keyframes screenFlash{
   0%{background:white;}
-  100%{background:radial-gradient(circle,#1b1b1b,#020202);}
+  100%{background:radial-gradient(circle at center,#202020 0%,#050505 70%);}
 }
 </style>
 </head>
@@ -306,10 +419,12 @@ button:disabled{
 <div class="wrap">
   <div class="machine">
 
+    <div class="top-led"></div>
+
     <div class="top-panel">
       <div class="logo">🌱 遊創舎</div>
       <h1>遊創舎スロット</h1>
-      <div class="version">Ver.0.4.3 画面内収め・操作横一列版</div>
+      <div class="version">Ver.0.5 YD-001完成版</div>
     </div>
 
     <div class="center-panel">
