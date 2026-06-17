@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>遊創舎スロット Ver.0.5.3 レイアウト改良版</title>
+<title>遊創舎スロット Ver.0.5.4</title>
 <style>
 *{box-sizing:border-box;}
 
@@ -231,14 +231,11 @@ h1{
 }
 
 .play-panel{
-  display:grid;
-  grid-template-columns:76px 1fr;
-  gap:8px;
-  align-items:stretch;
+  display:block;
   background:linear-gradient(145deg,#727982,#151515 30%,#080808 55%,#333941 78%,#9098a0);
   border:2px solid #aab2ba;
   border-radius:17px;
-  padding:9px;
+  padding:8px;
   margin-bottom:8px;
   box-shadow:
     inset 0 0 14px #000,
@@ -246,45 +243,9 @@ h1{
     inset 0 0 0 2px #282d33;
 }
 
-.lever-deco{
-  height:160px;
-  position:relative;
-  border-radius:15px;
-  background:radial-gradient(circle at center,#101820,#050505 75%);
-  border:2px solid #777;
-  box-shadow:inset 0 0 12px #000,0 0 16px #0077ff;
-  pointer-events:none;
-}
-
-.lever-deco:before{
-  content:"";
-  position:absolute;
-  left:35px;
-  bottom:15px;
-  width:10px;
-  height:96px;
-  border-radius:8px;
-  background:linear-gradient(90deg,#333,#fff,#aaa,#222);
-  transform:rotate(-8deg);
-  transform-origin:bottom;
-  box-shadow:0 0 7px #fff;
-}
-
-.lever-deco:after{
-  content:"";
-  position:absolute;
-  left:14px;
-  top:8px;
-  width:50px;
-  height:50px;
-  border-radius:50%;
-  background:radial-gradient(circle at 28% 22%,#fff,#333 35%,#000 72%);
-  box-shadow:0 0 14px #fff,0 0 22px #0077ff;
-}
-
 .operation-unit{
   display:grid;
-  grid-template-rows:1fr 1fr;
+  grid-template-rows:auto auto;
   gap:8px;
 }
 
@@ -335,7 +296,7 @@ button:active{
 
 .btn-lever,
 .btn-bet{
-  height:58px;
+  height:56px;
   border-radius:12px;
   border:3px solid #8f969d;
   box-shadow:
@@ -381,7 +342,7 @@ button:active{
 }
 
 .stop{
-  height:58px;
+  height:56px;
   border-radius:12px;
   font-size:15px;
   padding:8px 2px;
@@ -493,7 +454,7 @@ button:disabled{opacity:0.35;}
     <div class="top-panel">
       <div class="logo">🌱 遊創舎</div>
       <h1>遊創舎スロット</h1>
-      <div class="version">Ver.0.5.3 レイアウト改良版</div>
+      <div class="version">Ver.0.5.4 レバー削除・操作パネル整理版</div>
     </div>
 
     <div class="center-panel">
@@ -526,8 +487,6 @@ button:disabled{opacity:0.35;}
     </div>
 
     <div class="play-panel">
-      <div class="lever-deco"></div>
-
       <div class="operation-unit">
         <div class="control-panel">
           <button id="startBtn" class="btn-lever" onclick="start()" disabled>START<br>レバー</button>
