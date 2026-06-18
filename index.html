@@ -1,1 +1,506 @@
-y
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>試験機 Ver.T1</title>
+<style>
+*{box-sizing:border-box;}
+
+body{
+  margin:0;
+  background:radial-gradient(circle,#2a2200,#020202);
+  color:white;
+  font-family:sans-serif;
+  text-align:center;
+}
+
+.wrap{
+  max-width:390px;
+  margin:auto;
+  padding:4px;
+}
+
+.machine{
+  position:relative;
+  overflow:hidden;
+  background:linear-gradient(135deg,#f7f7f7 0%,#3c3c3c 5%,#050505 15%,#151200 50%,#050505 85%,#3c3c3c 95%,#ffffff 100%);
+  border:6px solid #d8b900;
+  border-radius:26px;
+  padding:9px;
+  box-shadow:0 0 18px #ffe600,inset 0 0 30px #000,inset 0 0 0 3px #25200a;
+}
+
+.machine:before{
+  content:"";
+  position:absolute;
+  inset:8px;
+  border:2px solid #f7f7f7;
+  border-radius:20px;
+  box-shadow:inset 0 0 16px #8a6a00;
+  pointer-events:none;
+}
+
+.top-led{
+  position:relative;
+  z-index:1;
+  height:25px;
+  margin:0 42px 7px;
+  border-radius:0 0 18px 18px;
+  background:linear-gradient(90deg,#1c1600,#b9a000,#ffffff,#b9a000,#1c1600);
+  box-shadow:inset 0 0 12px #fff7b0;
+  clip-path:polygon(12% 0,88% 0,100% 100%,0 100%);
+}
+
+.top-panel,.center-panel,.info-panel,.play-panel,.role,.reset{
+  position:relative;
+  z-index:1;
+}
+
+.top-panel{
+  background:radial-gradient(circle,#1b1700,#030303 75%);
+  border:2px solid #d8d8d8;
+  border-radius:16px;
+  padding:8px 6px;
+  margin-bottom:7px;
+  box-shadow:inset 0 0 18px #000,0 0 0 2px #111;
+}
+
+.logo{
+  font-size:10px;
+  color:#9cff9c;
+  font-weight:bold;
+  opacity:.72;
+}
+
+h1{
+  font-size:34px;
+  margin:2px 0;
+  color:#fff200;
+  letter-spacing:1px;
+  text-shadow:2px 2px 0 #111;
+}
+
+.version{
+  font-size:11px;
+  color:#fff7b0;
+}
+
+.center-panel{
+  background:linear-gradient(#060606,#111,#050505);
+  border:2px solid #d9d9d9;
+  border-radius:16px;
+  padding:9px 6px 6px;
+  margin-bottom:7px;
+  box-shadow:inset 0 0 18px #000,0 0 0 2px #111;
+}
+
+.reel-area{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:7px;
+}
+
+.lamp{
+  width:52px;
+  height:52px;
+  flex:0 0 52px;
+  border-radius:10px;
+  background:radial-gradient(circle,#302200,#120900 75%);
+  border:3px solid #ffe600;
+  color:#ffe56b;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:bold;
+  font-size:13px;
+  box-shadow:inset 0 0 10px #000;
+}
+
+.reels{
+  display:flex;
+  gap:6px;
+}
+
+.reel{
+  width:80px;
+  height:112px;
+  background:linear-gradient(#fff,#e7e7e7 45%,#f7f7f7 55%,#d5d5d5);
+  color:#111;
+  border-radius:12px;
+  border:4px solid #777;
+  box-shadow:inset 0 0 14px #999,0 0 0 2px #151515,0 0 10px #000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:25px;
+  font-weight:bold;
+}
+
+.msg{
+  color:#fff200;
+  font-weight:bold;
+  min-height:28px;
+  margin:7px 0 1px;
+  font-size:20px;
+}
+
+.info-panel{
+  display:flex;
+  justify-content:space-around;
+  background:#020202;
+  border:2px solid #d9d9d9;
+  border-radius:13px;
+  padding:7px;
+  margin-bottom:7px;
+  box-shadow:inset 0 0 12px #000;
+}
+
+.info-box{
+  width:32%;
+  border-right:1px solid #252525;
+}
+
+.info-box:last-child{
+  border-right:none;
+}
+
+.info-label{
+  font-size:10px;
+  color:#fff7b0;
+}
+
+.info-value{
+  font-size:30px;
+  font-weight:bold;
+  color:#ff2c2c;
+  font-family:"Courier New",monospace;
+  text-shadow:0 0 8px red;
+}
+
+.play-panel{
+  display:block;
+  background:linear-gradient(145deg,#8a741e,#151515 30%,#080808 55%,#3f350d 78%,#f0cf42);
+  border:2px solid #e0c84a;
+  border-radius:17px;
+  padding:8px;
+  margin-bottom:8px;
+  box-shadow:inset 0 0 14px #000,inset 0 0 0 2px #2b260f;
+}
+
+.operation-unit{
+  display:grid;
+  grid-template-rows:auto auto;
+  gap:8px;
+}
+
+.control-panel{
+  display:grid;
+  grid-template-columns:1.15fr 1fr 1fr;
+  gap:8px;
+  background:linear-gradient(145deg,#4c3f00,#050505,#2b2300);
+  border:2px solid #ffe600;
+  border-radius:14px;
+  padding:7px;
+  box-shadow:inset 0 0 12px #000,inset 0 0 0 2px #111;
+}
+
+.stop-panel{
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:8px;
+  background:linear-gradient(145deg,#3a3000,#050505,#241d00);
+  border:2px solid #fff200;
+  border-radius:14px;
+  padding:8px 10px;
+  box-shadow:inset 0 0 12px #000,inset 0 0 0 2px #111;
+}
+
+button{
+  width:100%;
+  font-size:15px;
+  font-weight:bold;
+  padding:8px 2px;
+  border:none;
+  color:white;
+  position:relative;
+  overflow:hidden;
+}
+
+button:active{
+  transform:translateY(3px) scale(.98);
+  filter:brightness(.82);
+}
+
+.btn-lever,.btn-bet{
+  height:56px;
+  border-radius:12px;
+  border:3px solid #8f969d;
+  background:linear-gradient(145deg,#fff8c5 0 8%,#766b3a 10%,#1b1b1b 18%,transparent 20%),linear-gradient(#fff479,#ffd000 45%,#9a6700);
+  color:#111;
+  box-shadow:inset 0 2px 5px rgba(255,255,255,.8),inset 0 -7px 12px rgba(0,0,0,.75),0 4px 0 #050505,0 0 0 3px #262a2f;
+}
+
+.stop{
+  width:68px;
+  height:68px;
+  margin:auto;
+  border-radius:50%;
+  font-size:15px;
+  padding:0;
+  border:4px solid #f5f5f5;
+  background:radial-gradient(circle at 35% 25%,#fff 0 5%,#ff4b4b 13%,#e60000 45%,#6b0000 80%);
+  box-shadow:inset 0 4px 8px rgba(255,255,255,.9),inset 0 -8px 14px rgba(0,0,0,.8),0 4px 0 #030303,0 0 0 4px #171a1f,0 0 0 7px #d8d8d8;
+}
+
+.reset{
+  background:linear-gradient(#c9b44a,#665300,#333);
+  color:white;
+  font-size:12px;
+  padding:7px 20px;
+  width:auto;
+  margin-bottom:5px;
+  border-radius:10px;
+}
+
+button:disabled{
+  opacity:.35;
+}
+
+.role{
+  font-size:10px;
+  color:#f3eab0;
+  line-height:1.35;
+}
+
+.reel.stopFlash{
+  animation:stopFlash .25s;
+}
+
+@keyframes stopFlash{
+  0%{transform:scale(1.12)}
+  100%{transform:scale(1)}
+}
+</style>
+</head>
+
+<body>
+<div class="wrap">
+  <div class="machine">
+    <div class="top-led"></div>
+
+    <div class="top-panel">
+      <div class="logo">🌱 遊創舎</div>
+      <h1>試験機</h1>
+      <div class="version">TEST MACHINE Ver.T1 最小構成</div>
+    </div>
+
+    <div class="center-panel">
+      <div class="reel-area">
+        <div id="lamp" class="lamp">TEST</div>
+        <div class="reels">
+          <div id="r1" class="reel"></div>
+          <div id="r2" class="reel"></div>
+          <div id="r3" class="reel"></div>
+        </div>
+      </div>
+      <div id="msg" class="msg">BETしてください</div>
+    </div>
+
+    <div class="info-panel">
+      <div class="info-box">
+        <div class="info-label">CREDIT</div>
+        <div id="credit" class="info-value">50</div>
+      </div>
+      <div class="info-box">
+        <div class="info-label">BET</div>
+        <div id="bet" class="info-value">0</div>
+      </div>
+      <div class="info-box">
+        <div class="info-label">PAYOUT</div>
+        <div id="pay" class="info-value">0</div>
+      </div>
+    </div>
+
+    <div class="play-panel">
+      <div class="operation-unit">
+        <div class="control-panel">
+          <button id="startBtn" class="btn-lever" onclick="start()" disabled>START<br>レバー</button>
+          <button class="btn-bet" onclick="betOne()">BET</button>
+          <button class="btn-bet" onclick="maxBet()">MAX<br>BET</button>
+        </div>
+
+        <div class="stop-panel">
+          <button id="s1" class="stop" onclick="stop(0)" disabled>STOP</button>
+          <button id="s2" class="stop" onclick="stop(1)" disabled>STOP</button>
+          <button id="s3" class="stop" onclick="stop(2)" disabled>STOP</button>
+        </div>
+      </div>
+    </div>
+
+    <button class="reset" onclick="resetGame()">リセット</button>
+
+    <div class="role">
+      777：50枚 / BAR：20枚 / CHERRY：2枚<br>
+      画像なし・確率なし・演出なし
+    </div>
+  </div>
+</div>
+
+<script>
+const symbols = ["7","BAR","CHERRY"];
+
+let credit = 50;
+let bet = 0;
+let pay = 0;
+
+let reels = ["7","BAR","CHERRY"];
+let spinning = [false,false,false];
+let timers = [null,null,null];
+let stopped = 0;
+
+function drawReel(i){
+  document.getElementById("r"+(i+1)).textContent = reels[i];
+}
+
+function drawAllReels(){
+  for(let i=0;i<3;i++){
+    drawReel(i);
+  }
+}
+
+function update(){
+  document.getElementById("credit").textContent = credit;
+  document.getElementById("bet").textContent = bet;
+  document.getElementById("pay").textContent = pay;
+
+  document.getElementById("startBtn").disabled = bet !== 3 || spinning.includes(true);
+
+  for(let i=0;i<3;i++){
+    document.getElementById("s"+(i+1)).disabled = !spinning[i];
+  }
+}
+
+function msg(text){
+  document.getElementById("msg").textContent = text;
+}
+
+function randSymbol(){
+  return symbols[Math.floor(Math.random() * symbols.length)];
+}
+
+function betOne(){
+  if(credit <= 0) return;
+  if(bet >= 3) return;
+  if(spinning.includes(true)) return;
+
+  credit--;
+  bet++;
+  pay = 0;
+
+  msg(bet === 3 ? "STARTできます" : "BET中");
+  update();
+}
+
+function maxBet(){
+  if(spinning.includes(true)) return;
+
+  while(bet < 3 && credit > 0){
+    credit--;
+    bet++;
+  }
+
+  pay = 0;
+  msg(bet === 3 ? "STARTできます" : "クレジット不足");
+  update();
+}
+
+function start(){
+  if(bet !== 3) return;
+  if(spinning.includes(true)) return;
+
+  stopped = 0;
+  pay = 0;
+  msg("リール回転中");
+
+  for(let i=0;i<3;i++){
+    spinning[i] = true;
+
+    timers[i] = setInterval(()=>{
+      reels[i] = randSymbol();
+      drawReel(i);
+    },70);
+  }
+
+  update();
+}
+
+function stop(i){
+  if(!spinning[i]) return;
+
+  clearInterval(timers[i]);
+  spinning[i] = false;
+
+  reels[i] = randSymbol();
+  drawReel(i);
+
+  const reelEl = document.getElementById("r"+(i+1));
+  reelEl.classList.remove("stopFlash");
+  void reelEl.offsetWidth;
+  reelEl.classList.add("stopFlash");
+
+  stopped++;
+
+  if(stopped === 3){
+    judge();
+  }
+
+  update();
+}
+
+function judge(){
+  if(reels[0] === "7" && reels[1] === "7" && reels[2] === "7"){
+    payout(50,"777 50枚");
+  }else if(reels[0] === "BAR" && reels[1] === "BAR" && reels[2] === "BAR"){
+    payout(20,"BAR 20枚");
+  }else if(reels.includes("CHERRY")){
+    payout(2,"CHERRY 2枚");
+  }else{
+    pay = 0;
+    msg("ハズレ");
+  }
+
+  bet = 0;
+  update();
+}
+
+function payout(amount,text){
+  pay = amount;
+  credit += pay;
+  msg(text);
+}
+
+function resetGame(){
+  for(let i=0;i<3;i++){
+    clearInterval(timers[i]);
+  }
+
+  credit = 50;
+  bet = 0;
+  pay = 0;
+
+  reels = ["7","BAR","CHERRY"];
+  spinning = [false,false,false];
+  stopped = 0;
+
+  drawAllReels();
+  msg("BETしてください");
+  update();
+}
+
+drawAllReels();
+update();
+</script>
+</body>
+</html>
