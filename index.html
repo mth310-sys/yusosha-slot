@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>七つの刻印 Ver.0.3</title>
+<title>七つの刻印 Ver.0.4</title>
 <style>
 *{box-sizing:border-box}
 
@@ -38,21 +38,32 @@ body{
   animation:led 1.5s infinite alternate;
 }
 
-.title{
-  font-size:25px;
-  font-weight:bold;
-  margin-top:5px;
-  text-shadow:0 0 12px #c06cff;
+.title-area{
+  position:relative;
+  height:58px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
 }
 
-.sub{
-  font-size:11px;
-  color:#d8b6ff;
-  margin-bottom:4px;
+.title{
+  font-size:30px;
+  font-weight:bold;
+  text-shadow:0 0 12px #c06cff;
+  letter-spacing:2px;
+}
+
+.brand{
+  position:absolute;
+  right:18px;
+  top:25px;
+  font-size:14px;
+  color:#e9d7ff;
+  text-shadow:0 0 8px #c06cff;
 }
 
 .panel{
-  margin:6px 0;
+  margin:5px 0 6px;
   border:2px solid #b66cff;
   border-radius:12px;
   overflow:hidden;
@@ -174,10 +185,6 @@ button{
   background:linear-gradient(#ff5454,#850000);
 }
 
-.reset{
-  margin-left:auto;
-}
-
 .stop{
   width:52px;
   height:52px;
@@ -237,8 +244,10 @@ button:disabled{
 
     <div class="top-led"></div>
 
-    <div class="title">七つの刻印</div>
-    <div class="sub">SEVEN SEALS / 遊創舎</div>
+    <div class="title-area">
+      <div class="title">七つの刻印</div>
+      <div class="brand">遊創舎</div>
+    </div>
 
     <div class="panel">
       <img id="topPanel" src="seven_seals_panel_normal.png">
