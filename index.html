@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>七つの刻印 Ver.0.2</title>
+<title>七つの刻印 Ver.0.3</title>
 <style>
 *{box-sizing:border-box}
+
 body{
   margin:0;
   background:radial-gradient(circle,#210038,#030006 70%);
@@ -13,11 +14,13 @@ body{
   font-family:serif;
   text-align:center;
 }
+
 .wrap{
   max-width:390px;
   margin:auto;
   padding:4px;
 }
+
 .machine{
   overflow:hidden;
   background:linear-gradient(135deg,#060008,#24003a,#07000b);
@@ -26,6 +29,7 @@ body{
   padding:7px;
   box-shadow:0 0 24px #8f3cff,inset 0 0 35px #000;
 }
+
 .top-led{
   height:15px;
   border-radius:18px;
@@ -33,18 +37,21 @@ body{
   box-shadow:0 0 18px #d86cff;
   animation:led 1.5s infinite alternate;
 }
+
 .title{
   font-size:25px;
   font-weight:bold;
-  margin-top:6px;
+  margin-top:5px;
   text-shadow:0 0 12px #c06cff;
 }
+
 .sub{
   font-size:11px;
   color:#d8b6ff;
   margin-bottom:4px;
 }
-.panel,.bottom-panel-wrap{
+
+.panel{
   margin:6px 0;
   border:2px solid #b66cff;
   border-radius:12px;
@@ -52,11 +59,14 @@ body{
   background:#050008;
   box-shadow:0 0 15px #7d35ff;
 }
-.panel img,.bottom-panel{
+
+.panel img{
   width:100%;
-  height:auto;
+  height:104px;
+  object-fit:cover;
   display:block;
 }
+
 .mode{
   display:flex;
   justify-content:space-between;
@@ -68,8 +78,16 @@ body{
   border-radius:10px;
   font-size:16px;
 }
-.mode-name{color:#ff4b4b;font-weight:bold}
-.chance{color:#e7c6ff}
+
+.mode-name{
+  color:#ff4b4b;
+  font-weight:bold;
+}
+
+.chance{
+  color:#e7c6ff;
+}
+
 .reels{
   display:flex;
   justify-content:center;
@@ -79,9 +97,10 @@ body{
   border-radius:12px;
   padding:8px;
 }
+
 .reel{
   width:82px;
-  height:116px;
+  height:108px;
   background:linear-gradient(#f0f0f0,#999,#f0f0f0);
   border:4px solid #111;
   border-radius:9px;
@@ -90,11 +109,13 @@ body{
   justify-content:center;
   overflow:hidden;
 }
+
 .reel img{
   width:68px;
   height:68px;
   object-fit:contain;
 }
+
 .msg{
   font-size:17px;
   min-height:24px;
@@ -102,12 +123,14 @@ body{
   color:#e7c6ff;
   text-shadow:0 0 8px #c06cff;
 }
+
 .info{
   display:grid;
   grid-template-columns:repeat(3,1fr);
   gap:6px;
   margin:6px 0;
 }
+
 .box{
   background:#09000f;
   border:1px solid #7d35ff;
@@ -115,16 +138,26 @@ body{
   padding:5px;
   font-size:12px;
 }
+
 .num{
   color:#ff3bff;
   font-size:18px;
 }
-.buttons{
+
+.buttons-top{
   display:grid;
-  grid-template-columns:repeat(4,1fr);
+  grid-template-columns:1fr 1fr 1fr 1fr;
   gap:7px;
   margin-top:6px;
 }
+
+.buttons-stop{
+  display:flex;
+  justify-content:center;
+  gap:28px;
+  margin:8px 0 6px;
+}
+
 button{
   border:none;
   color:white;
@@ -132,29 +165,65 @@ button{
   cursor:pointer;
   box-shadow:0 0 10px #000;
 }
+
 .start,.bet,.reset{
-  height:54px;
+  height:50px;
   border-radius:18px;
   padding:6px;
   font-size:12px;
   background:linear-gradient(#ff5454,#850000);
 }
+
+.reset{
+  margin-left:auto;
+}
+
 .stop{
-  width:54px;
-  height:54px;
-  margin:auto;
+  width:52px;
+  height:52px;
   border-radius:50%;
   font-size:11px;
   background:radial-gradient(circle,#ff5a5a,#8c0018);
   border:3px solid #ffb6b6;
 }
-button:disabled{opacity:.35}
-.bottom-panel-wrap{margin-top:10px}
-.flash{animation:flash .5s 3}
-.apocalis{animation:apocalisGlow 1s infinite alternate}
 
-@keyframes led{from{filter:brightness(1)}to{filter:brightness(1.8)}}
-@keyframes flash{50%{filter:brightness(2.3)}}
+button:disabled{
+  opacity:.35;
+}
+
+.bottom-panel-wrap{
+  width:92%;
+  margin:8px auto 0;
+  border:2px solid #b66cff;
+  border-radius:12px;
+  overflow:hidden;
+  background:#050008;
+  box-shadow:0 0 15px #7d35ff;
+}
+
+.bottom-panel{
+  width:100%;
+  height:auto;
+  display:block;
+}
+
+.flash{
+  animation:flash .5s 3;
+}
+
+.apocalis{
+  animation:apocalisGlow 1s infinite alternate;
+}
+
+@keyframes led{
+  from{filter:brightness(1)}
+  to{filter:brightness(1.8)}
+}
+
+@keyframes flash{
+  50%{filter:brightness(2.3)}
+}
+
 @keyframes apocalisGlow{
   from{box-shadow:0 0 24px #8f3cff,inset 0 0 35px #000}
   to{box-shadow:0 0 38px #ff7bff,inset 0 0 50px #2a0040}
@@ -194,14 +263,17 @@ button:disabled{opacity:.35}
       <div class="box">PAY<div class="num" id="pay">0</div></div>
     </div>
 
-    <div class="buttons">
+    <div class="buttons-top">
       <button class="start" id="startBtn">START</button>
       <button class="bet" id="betBtn">BET</button>
       <button class="bet" id="maxBetBtn">MAX BET</button>
+      <button class="reset" id="resetBtn">RESET</button>
+    </div>
+
+    <div class="buttons-stop">
       <button class="stop" id="s0">STOP</button>
       <button class="stop" id="s1">STOP</button>
       <button class="stop" id="s2">STOP</button>
-      <button class="reset" id="resetBtn">RESET</button>
     </div>
 
     <div class="bottom-panel-wrap">
@@ -232,7 +304,6 @@ let spinning=[false,false,false];
 let timers=[null,null,null];
 let stopped=0;
 let seals=0;
-let apocalis=false;
 
 const $=id=>document.getElementById(id);
 
@@ -349,9 +420,7 @@ function judge(){
 }
 
 function sealGet(text){
-  if(seals<7){
-    seals++;
-  }
+  if(seals<7) seals++;
 
   $("modeName").textContent="守護者MODE";
   msg(text+" 現在："+seals+"/7");
@@ -363,7 +432,6 @@ function sealGet(text){
 }
 
 function enterApocalis(text){
-  apocalis=true;
   $("topPanel").src="seven_seals_panel_apocalis.png";
   $("modeName").textContent="終焉ノ刻";
   $("machine").classList.add("apocalis");
@@ -407,7 +475,6 @@ $("resetBtn").onclick=()=>{
   bet=0;
   pay=0;
   seals=0;
-  apocalis=false;
   reels=["CHERRY","BELL","REPLAY"];
 
   $("topPanel").src="seven_seals_panel_normal.png";
