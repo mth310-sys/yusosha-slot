@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>七つの刻印 Ver.0.4</title>
+<title>七つの刻印 Ver.0.5</title>
 <style>
 *{box-sizing:border-box}
 
@@ -30,17 +30,50 @@ body{
   box-shadow:0 0 24px #8f3cff,inset 0 0 35px #000;
 }
 
-.top-led{
-  height:15px;
+.safe-body{
+  height:68px;
+  margin-bottom:6px;
   border-radius:18px;
+  background:
+    radial-gradient(circle at 20% 50%,rgba(190,100,255,.35),transparent 28%),
+    radial-gradient(circle at 80% 50%,rgba(190,100,255,.35),transparent 28%),
+    linear-gradient(180deg,#1c0030,#08000d 70%);
+  border:2px solid #7430ff;
+  box-shadow:
+    0 0 20px #9b45ff,
+    inset 0 0 26px #000;
+  position:relative;
+  overflow:hidden;
+}
+
+.safe-body:before{
+  content:"";
+  position:absolute;
+  left:18px;
+  right:18px;
+  top:15px;
+  height:18px;
+  border-radius:20px;
   background:linear-gradient(90deg,#5a00a8,#ff7bff,#5a00a8);
   box-shadow:0 0 18px #d86cff;
   animation:led 1.5s infinite alternate;
 }
 
+.safe-body:after{
+  content:"";
+  position:absolute;
+  left:42px;
+  right:42px;
+  bottom:12px;
+  height:5px;
+  border-radius:8px;
+  background:linear-gradient(90deg,transparent,#b86cff,transparent);
+  box-shadow:0 0 12px #b86cff;
+}
+
 .title-area{
   position:relative;
-  height:58px;
+  height:52px;
   display:flex;
   align-items:center;
   justify-content:center;
@@ -55,7 +88,7 @@ body{
 
 .brand{
   position:absolute;
-  right:18px;
+  right:22px;
   top:25px;
   font-size:14px;
   color:#e9d7ff;
@@ -214,6 +247,18 @@ button:disabled{
   display:block;
 }
 
+.bottom-safe{
+  height:70px;
+  margin-top:6px;
+  border-radius:16px;
+  background:
+    linear-gradient(180deg,#0a0010,#210038,#050008);
+  box-shadow:
+    inset 0 0 25px #000,
+    0 0 18px #7d35ff;
+  border:1px solid #4d1688;
+}
+
 .flash{
   animation:flash .5s 3;
 }
@@ -242,7 +287,7 @@ button:disabled{
 <div class="wrap">
   <div class="machine" id="machine">
 
-    <div class="top-led"></div>
+    <div class="safe-body"></div>
 
     <div class="title-area">
       <div class="title">七つの刻印</div>
@@ -288,6 +333,8 @@ button:disabled{
     <div class="bottom-panel-wrap">
       <img class="bottom-panel" src="24BE7708-F796-4B2F-BDEA-77A632106F3C.PNG">
     </div>
+
+    <div class="bottom-safe"></div>
 
   </div>
 </div>
