@@ -13,11 +13,7 @@ body{
   font-family:serif;
   text-align:center;
 }
-.wrap{
-  max-width:430px;
-  margin:auto;
-  padding:6px;
-}
+.wrap{max-width:430px;margin:auto;padding:6px}
 .machine{
   position:relative;
   overflow:hidden;
@@ -34,7 +30,9 @@ body{
   box-shadow:0 0 18px #c06cff;
   animation:led 1.6s infinite alternate;
 }
-.panel{
+.title{font-size:28px;font-weight:bold;text-shadow:0 0 12px #c06cff}
+.sub{font-size:12px;color:#d8b6ff}
+.panel,.bottom-panel-wrap{
   margin:8px 0;
   border:2px solid #b66cff;
   border-radius:14px;
@@ -42,18 +40,9 @@ body{
   background:#050008;
   box-shadow:0 0 15px #7d35ff;
 }
-.panel img{
+.panel img,.bottom-panel{
   width:100%;
   display:block;
-}
-.title{
-  font-size:28px;
-  font-weight:bold;
-  text-shadow:0 0 12px #c06cff;
-}
-.sub{
-  font-size:12px;
-  color:#d8b6ff;
 }
 .mode{
   display:flex;
@@ -87,11 +76,7 @@ body{
   justify-content:center;
   overflow:hidden;
 }
-.reel img{
-  width:78px;
-  height:78px;
-  object-fit:contain;
-}
+.reel img{width:78px;height:78px;object-fit:contain}
 .info{
   display:grid;
   grid-template-columns:repeat(3,1fr);
@@ -105,10 +90,7 @@ body{
   padding:5px;
   font-size:12px;
 }
-.num{
-  color:#ff3bff;
-  font-size:18px;
-}
+.num{color:#ff3bff;font-size:18px}
 .buttons{
   display:flex;
   justify-content:center;
@@ -134,49 +116,16 @@ button{
   background:radial-gradient(circle,#ff5a5a,#990000);
   border:3px solid #ffb6b6;
 }
-button:disabled{
-  opacity:.35;
-}
-.guardians{
-  display:grid;
-  grid-template-columns:repeat(7,1fr);
-  gap:3px;
-  margin-top:10px;
-}
-.guardian{
-  font-size:10px;
-  padding:4px 2px;
-  border:1px solid #444;
-  border-radius:6px;
-  background:#09000f;
-}
-.got{
-  box-shadow:0 0 12px currentColor;
-  background:#1d002e;
-}
-.active{
-  animation:pulse .7s infinite alternate;
-}
+button:disabled{opacity:.35}
 .msg{
   min-height:28px;
   margin:8px 0;
   color:#e7c6ff;
   text-shadow:0 0 8px #c06cff;
 }
-.flash{
-  animation:flash .5s 3;
-}
-@keyframes led{
-  from{filter:brightness(1)}
-  to{filter:brightness(1.8)}
-}
-@keyframes pulse{
-  from{transform:scale(1)}
-  to{transform:scale(1.08)}
-}
-@keyframes flash{
-  50%{filter:brightness(2.2)}
-}
+.flash{animation:flash .5s 3}
+@keyframes led{from{filter:brightness(1)}to{filter:brightness(1.8)}}
+@keyframes flash{50%{filter:brightness(2.2)}}
 </style>
 </head>
 <body>
@@ -193,7 +142,7 @@ button:disabled{
 
     <div class="mode">
       <div>MODE：<span id="modeName" class="mode-name">通常</span></div>
-      <div class="chance" id="chance">刻印CHANCE</div>
+      <div class="chance">刻印CHANCE</div>
     </div>
 
     <div class="reels">
@@ -220,7 +169,9 @@ button:disabled{
       <button class="reset" id="resetBtn">RESET</button>
     </div>
 
-    <div class="guardians" id="guardians"></div>
+    <div class="bottom-panel-wrap">
+      <img class="bottom-panel" src="A1A9DAA5-AB95-491C-B6BD-A41C5F17C6F5.jpeg">
+    </div>
   </div>
 </div>
 
@@ -233,18 +184,7 @@ const symbols={
   REPLAY:"symbol_replay.png",
   SEAL:"symbol_seal.png"
 };
-
-const symbolKeys=Object.keys(symbols);
-
-const guardians=[
-  {key:"pride",name:"傲慢",color:"#ffd400",limit:5,need:"赤7テンパイ"},
-  {key:"envy",name:"嫉妬",color:"#2dff73",limit:15,need:"チェリー5回"},
-  {key:"wrath",name:"憤怒",color:"#ff2525",limit:20,need:"ベル7回"},
-  {key:"sloth",name:"怠惰",color:"#45a3ff",limit:20,need:"ハズレ6回"},
-  {key:"greed",name:"強欲",color:"#b33cff",limit:20,need:"払出40枚"},
-  {key:"gluttony",name:"暴食",color:"#ff8c22",limit:15,need:"役5回"},
-  {key:"lust",name:"色欲",color:"#ff66cc",limit:10,need:"リプレイ7回"}
-];
+const keys=Object.keys(symbols);
 
 let credit=50,bet=0,pay=0;
 let reels=["CHERRY","BELL","REPLAY"];
@@ -252,73 +192,46 @@ let spinning=[false,false,false];
 let timers=[null,null,null];
 let stopped=0;
 let result=["CHERRY","BELL","REPLAY"];
-let seals=new Set();
-let currentMode=null;
-let modeGame=0;
-let modeCount=0;
+let seals=0;
 let apocalis=false;
 
 const $=id=>document.getElementById(id);
-
-function drawGuardians(){
-  $("guardians").innerHTML="";
-  guardians.forEach(g=>{
-    const d=document.createElement("div");
-    d.className="guardian";
-    d.id="g_"+g.key;
-    d.style.color=g.color;
-    d.innerHTML=`${g.name}<br>${seals.has(g.key)?"刻印":"未獲得"}`;
-    $("guardians").appendChild(d);
-  });
-}
 
 function update(){
   $("credit").textContent=credit;
   $("bet").textContent=bet;
   $("pay").textContent=pay;
   reels.forEach((s,i)=>$("r"+i).src=symbols[s]);
-  $("startBtn").disabled=bet<3 || spinning.some(Boolean);
-  $("betBtn").disabled=credit<=0 || bet>=3 || spinning.some(Boolean);
-  $("maxBetBtn").disabled=credit<=0 || bet>=3 || spinning.some(Boolean);
+  $("startBtn").disabled=bet<3||spinning.some(Boolean);
+  $("betBtn").disabled=credit<=0||bet>=3||spinning.some(Boolean);
+  $("maxBetBtn").disabled=credit<=0||bet>=3||spinning.some(Boolean);
   for(let i=0;i<3;i++) $("s"+i).disabled=!spinning[i];
-  drawGuardians();
-
-  guardians.forEach(g=>{
-    const el=$("g_"+g.key);
-    if(seals.has(g.key)) el.classList.add("got");
-    if(currentMode&&currentMode.key===g.key) el.classList.add("active");
-  });
 }
 
 function msg(t){$("msg").textContent=t}
-
-function randSymbol(){
-  return symbolKeys[Math.floor(Math.random()*symbolKeys.length)];
-}
+function rand(){return keys[Math.floor(Math.random()*keys.length)]}
 
 function chooseResult(){
   const r=Math.random();
-
-  if(r<0.015) return ["BLUE7","BLUE7","BLUE7"];
-  if(r<0.055) return ["RED7","RED7","SEAL"];
-  if(r<0.145) return ["SEAL","SEAL","SEAL"];
-  if(r<0.245) return ["SEAL","SEAL","BELL"];
-  if(r<0.390) return ["BELL","BELL","BELL"];
-  if(r<0.520) return ["CHERRY","CHERRY","CHERRY"];
-  if(r<0.660) return ["REPLAY","REPLAY","REPLAY"];
-  return [randSymbol(),randSymbol(),randSymbol()];
+  if(r<0.015)return["BLUE7","BLUE7","BLUE7"];
+  if(r<0.06)return["RED7","RED7","SEAL"];
+  if(r<0.16)return["SEAL","SEAL","SEAL"];
+  if(r<0.27)return["SEAL","SEAL","BELL"];
+  if(r<0.42)return["BELL","BELL","BELL"];
+  if(r<0.56)return["CHERRY","CHERRY","CHERRY"];
+  if(r<0.70)return["REPLAY","REPLAY","REPLAY"];
+  return[rand(),rand(),rand()];
 }
 
 function start(){
   result=chooseResult();
   stopped=0;
   pay=0;
-  msg("終焉のリール始動…");
-
+  msg("リール始動…");
   for(let i=0;i<3;i++){
     spinning[i]=true;
     timers[i]=setInterval(()=>{
-      reels[i]=randSymbol();
+      reels[i]=rand();
       update();
     },80);
   }
@@ -332,112 +245,52 @@ function stop(i){
   spinning[i]=false;
   stopped++;
   update();
-
-  if(stopped===3) judge();
+  if(stopped===3)judge();
 }
 
 function judge(){
-  let payout=0;
   const [a,b,c]=reels;
+  let payout=0;
 
   if(a==="BLUE7"&&b==="BLUE7"&&c==="BLUE7"){
     payout=100;
-    apocalis=true;
-    $("topPanel").src="seven_seals_panel_apocalis.jpeg";
-    msg("青紫7揃い！終焉ノ刻 直撃！");
-    flash();
-  }
-  else if(a==="RED7"&&b==="RED7"&&c==="SEAL"){
+    enterApocalis("青紫7揃い！終焉ノ刻 直撃！");
+  }else if(a==="RED7"&&b==="RED7"&&c==="SEAL"){
     payout=50;
-    enterRandomMode();
-    msg("守護者BONUS！刻印高確率！");
-    flash();
-  }
-  else if(a==="SEAL"&&b==="SEAL"&&c==="SEAL"){
-    enterRandomMode();
-    msg("刻印3揃い！守護者MODE突入！");
-    flash();
-  }
-  else if(a==="SEAL"&&b==="SEAL"&&c==="BELL"){
-    if(Math.random()<0.5) enterRandomMode();
+    sealGet("守護者BONUS！刻印獲得！");
+  }else if(a==="SEAL"&&b==="SEAL"&&c==="SEAL"){
+    sealGet("刻印3揃い！守護者MODE成功！");
+  }else if(a==="SEAL"&&b==="SEAL"&&c==="BELL"){
     msg("刻印CHANCE！");
-  }
-  else if(a==="BELL"&&b==="BELL"&&c==="BELL"){
-    payout=10;
-    msg("ベル成立 +10");
-  }
-  else if(a==="CHERRY"&&b==="CHERRY"&&c==="CHERRY"){
-    payout=5;
-    msg("チェリー成立");
-  }
-  else if(a==="REPLAY"&&b==="REPLAY"&&c==="REPLAY"){
+  }else if(a==="BELL"&&b==="BELL"&&c==="BELL"){
+    payout=10;msg("ベル成立 +10");
+  }else if(a==="CHERRY"&&b==="CHERRY"&&c==="CHERRY"){
+    payout=5;msg("チェリー成立 +5");
+  }else if(a==="REPLAY"&&b==="REPLAY"&&c==="REPLAY"){
     msg("リプレイ");
-  }
-  else{
+  }else{
     msg("ハズレ");
   }
 
   pay=payout;
   credit+=payout;
-
-  if(currentMode) progressMode(a,b,c,payout);
-  if(seals.size===7 && !apocalis) enterApocalis();
-
   bet=0;
   update();
 }
 
-function enterRandomMode(){
-  const remain=guardians.filter(g=>!seals.has(g.key));
-  if(remain.length===0){
-    enterApocalis();
-    return;
-  }
-  currentMode=remain[Math.floor(Math.random()*remain.length)];
-  modeGame=currentMode.limit;
-  modeCount=0;
-  $("modeName").textContent=currentMode.name+"MODE";
-  msg(currentMode.name+"MODE 突入 / 条件："+currentMode.need);
+function sealGet(text){
+  seals++;
+  flash();
+  msg(text+" 現在："+seals+"/7");
+  $("modeName").textContent="守護者MODE";
+  if(seals>=7)enterApocalis("七刻印完成！終焉神アポカリス降臨！");
 }
 
-function progressMode(a,b,c,payout){
-  modeGame--;
-
-  if(currentMode.key==="pride" && ((a==="RED7"&&b==="RED7")||(b==="RED7"&&c==="RED7"))) modeCount=99;
-  if(currentMode.key==="envy" && a==="CHERRY") modeCount++;
-  if(currentMode.key==="wrath" && a==="BELL") modeCount++;
-  if(currentMode.key==="sloth" && payout===0) modeCount++;
-  if(currentMode.key==="greed") modeCount+=payout;
-  if(currentMode.key==="gluttony" && payout>0) modeCount++;
-  if(currentMode.key==="lust" && a==="REPLAY") modeCount++;
-
-  let success=false;
-  if(currentMode.key==="pride"&&modeCount>=1) success=true;
-  if(currentMode.key==="envy"&&modeCount>=5) success=true;
-  if(currentMode.key==="wrath"&&modeCount>=7) success=true;
-  if(currentMode.key==="sloth"&&modeCount>=6) success=true;
-  if(currentMode.key==="greed"&&modeCount>=40) success=true;
-  if(currentMode.key==="gluttony"&&modeCount>=5) success=true;
-  if(currentMode.key==="lust"&&modeCount>=7) success=true;
-
-  if(success){
-    seals.add(currentMode.key);
-    msg(currentMode.name+"の刻印 獲得！");
-    currentMode=null;
-    $("modeName").textContent="通常";
-    flash();
-  }else if(modeGame<=0){
-    msg(currentMode.name+"MODE 失敗");
-    currentMode=null;
-    $("modeName").textContent="通常";
-  }
-}
-
-function enterApocalis(){
+function enterApocalis(text){
   apocalis=true;
   $("topPanel").src="seven_seals_panel_apocalis.jpeg";
   $("modeName").textContent="終焉ノ刻";
-  msg("七刻印完成！終焉神アポカリス降臨！");
+  msg(text);
   flash();
 }
 
@@ -447,21 +300,18 @@ function flash(){
 }
 
 $("betBtn").onclick=()=>{
-  if(credit>0&&bet<3){credit--;bet++;update();msg("BETしました")}
+  if(credit>0&&bet<3){credit--;bet++;msg("BETしました");update();}
 };
 $("maxBetBtn").onclick=()=>{
   while(credit>0&&bet<3){credit--;bet++}
-  update();msg("MAX BET")
+  msg("MAX BET");update();
 };
 $("startBtn").onclick=start;
 $("s0").onclick=()=>stop(0);
 $("s1").onclick=()=>stop(1);
 $("s2").onclick=()=>stop(2);
 $("resetBtn").onclick=()=>{
-  credit=50;bet=0;pay=0;
-  seals.clear();
-  currentMode=null;
-  apocalis=false;
+  credit=50;bet=0;pay=0;seals=0;apocalis=false;
   reels=["CHERRY","BELL","REPLAY"];
   $("topPanel").src="seven_seals_panel_normal.png";
   $("modeName").textContent="通常";
