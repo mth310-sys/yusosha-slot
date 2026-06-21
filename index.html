@@ -3,304 +3,228 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>七つの刻印 Ver.0.6</title>
+<title>七つの刻印 - SEVEN SEALS</title>
 <style>
-*{box-sizing:border-box}
+*{box-sizing:border-box;}
 
 body{
   margin:0;
-  background:radial-gradient(circle,#210038,#030006 70%);
-  color:#fff;
-  font-family:serif;
+  background:radial-gradient(circle at center,#1c0030,#050008 55%,#000);
+  color:white;
+  font-family:"Hiragino Mincho ProN","Yu Mincho",serif;
   text-align:center;
 }
 
 .wrap{
-  max-width:390px;
+  max-width:430px;
   margin:auto;
-  padding:3px;
+  padding:6px;
 }
 
 .machine{
+  position:relative;
   overflow:hidden;
-  background:linear-gradient(135deg,#060008,#24003a,#07000b);
-  border:5px solid #7d35ff;
-  border-radius:20px;
+  background:linear-gradient(145deg,#130018,#050005 40%,#1b0028 70%,#000);
+  border:5px solid #7b3cff;
+  border-radius:26px;
+  padding:8px;
+  box-shadow:0 0 24px #8b36ff,inset 0 0 35px #000;
+}
+
+.top-title{
   padding:6px;
-  box-shadow:0 0 24px #8f3cff,inset 0 0 35px #000;
-}
-
-.safe-body{
-  height:48px;
-  margin-bottom:4px;
-  border-radius:16px;
-  background:
-    radial-gradient(circle at 20% 50%,rgba(190,100,255,.35),transparent 28%),
-    radial-gradient(circle at 80% 50%,rgba(190,100,255,.35),transparent 28%),
-    linear-gradient(180deg,#1c0030,#08000d 70%);
-  border:2px solid #7430ff;
-  box-shadow:
-    0 0 18px #9b45ff,
-    inset 0 0 24px #000;
-  position:relative;
-  overflow:hidden;
-}
-
-.safe-body:before{
-  content:"";
-  position:absolute;
-  left:18px;
-  right:18px;
-  top:10px;
-  height:15px;
-  border-radius:20px;
-  background:linear-gradient(90deg,#5a00a8,#ff7bff,#5a00a8);
-  box-shadow:0 0 18px #d86cff;
-  animation:led 1.5s infinite alternate;
-}
-
-.safe-body:after{
-  content:"";
-  position:absolute;
-  left:42px;
-  right:42px;
-  bottom:8px;
-  height:5px;
-  border-radius:8px;
-  background:linear-gradient(90deg,transparent,#b86cff,transparent);
-  box-shadow:0 0 12px #b86cff;
-}
-
-.title-area{
-  position:relative;
-  height:44px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-
-.title{
-  font-size:27px;
+  font-size:26px;
   font-weight:bold;
-  text-shadow:0 0 12px #c06cff;
-  letter-spacing:2px;
+  color:#eee2ff;
+  text-shadow:0 0 10px #b56cff,0 0 20px #7d2cff;
 }
 
-.brand{
-  position:absolute;
-  right:20px;
-  top:22px;
-  font-size:13px;
-  color:#e9d7ff;
-  text-shadow:0 0 8px #c06cff;
+.sub{
+  font-size:12px;
+  letter-spacing:4px;
+  color:#d29cff;
 }
 
 .panel{
-  margin:4px 0;
-  border:2px solid #b66cff;
-  border-radius:12px;
-  overflow:hidden;
-  background:#050008;
-  box-shadow:0 0 15px #7d35ff;
-}
-
-.panel img{
   width:100%;
-  height:92px;
-  object-fit:cover;
-  display:block;
+  height:105px;
+  border:2px solid #b886ff;
+  border-radius:14px;
+  background:url("seven_seals_panel_normal.png") center/cover no-repeat;
+  box-shadow:0 0 14px #6c22ff;
+  margin-bottom:8px;
 }
 
-.mode{
+.panel.apocalis{
+  background-image:url("seven_seals_panel_apocalis.jpeg");
+  animation:purpleFlash .7s infinite alternate;
+}
+
+.seals{
   display:flex;
   justify-content:space-between;
-  align-items:center;
-  padding:6px;
-  margin:5px 0;
-  background:linear-gradient(90deg,#120018,#300046,#120018);
-  border:1px solid #7d35ff;
+  gap:4px;
+  margin:6px 0;
+}
+
+.seal{
+  width:12.5%;
+  aspect-ratio:1/1;
+  border-radius:50%;
+  background:#111;
+  border:1px solid #555;
+  box-shadow:inset 0 0 8px #000;
+  opacity:.35;
+}
+
+.seal.on{
+  opacity:1;
+  box-shadow:0 0 10px currentColor, inset 0 0 8px currentColor;
+}
+
+.state{
+  background:#12001e;
+  border:1px solid #7336b8;
   border-radius:10px;
-  font-size:15px;
-}
-
-.mode-name{
-  color:#ff4b4b;
-  font-weight:bold;
-}
-
-.chance{
-  color:#e7c6ff;
+  padding:6px;
+  margin-bottom:6px;
+  color:#e9d9ff;
+  font-size:13px;
 }
 
 .reels{
   display:flex;
   justify-content:center;
-  gap:7px;
-  background:#111;
-  border:3px solid #4b1b80;
-  border-radius:12px;
-  padding:7px;
+  gap:8px;
+  background:#050006;
+  border:3px solid #4a176d;
+  border-radius:16px;
+  padding:10px;
+  box-shadow:inset 0 0 20px #000,0 0 14px #5b18a8;
 }
 
 .reel{
-  width:78px;
-  height:96px;
-  background:linear-gradient(#f0f0f0,#999,#f0f0f0);
-  border:4px solid #111;
-  border-radius:9px;
+  width:92px;
+  height:118px;
+  background:linear-gradient(#fff,#ddd);
+  border:4px solid #2a003d;
+  border-radius:12px;
   display:flex;
   align-items:center;
   justify-content:center;
   overflow:hidden;
+  box-shadow:inset 0 0 12px #000,0 0 10px #8d43ff;
 }
 
 .reel img{
-  width:62px;
-  height:62px;
+  width:82px;
+  height:82px;
   object-fit:contain;
 }
 
 .msg{
-  font-size:16px;
-  min-height:21px;
-  margin:4px 0;
-  color:#e7c6ff;
-  text-shadow:0 0 8px #c06cff;
+  min-height:42px;
+  margin:8px 0;
+  padding:8px;
+  border-radius:12px;
+  background:#0b0013;
+  border:1px solid #6b31a8;
+  color:#f0e0ff;
+  font-weight:bold;
 }
 
 .info{
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:5px;
-  margin:5px 0;
+  gap:6px;
 }
 
 .box{
-  background:#09000f;
-  border:1px solid #7d35ff;
-  border-radius:8px;
-  padding:4px;
-  font-size:11px;
+  background:#13001d;
+  border:1px solid #8746d8;
+  border-radius:10px;
+  padding:6px;
+  font-size:12px;
 }
 
-.num{
-  color:#ff3bff;
-  font-size:17px;
+.box b{
+  display:block;
+  font-size:20px;
+  color:#fff;
 }
 
-.buttons-top{
+.controls{
+  margin-top:8px;
   display:grid;
-  grid-template-columns:1fr 1fr 1fr 1fr;
+  grid-template-columns:1fr 1fr 1fr;
   gap:6px;
-  margin-top:5px;
-}
-
-.buttons-stop{
-  display:flex;
-  justify-content:center;
-  gap:32px;
-  margin:6px 0 5px;
 }
 
 button{
   border:none;
+  border-radius:12px;
+  padding:12px 4px;
   color:white;
   font-weight:bold;
-  cursor:pointer;
-  box-shadow:0 0 10px #000;
-}
-
-.start,.bet,.reset{
-  height:44px;
-  border-radius:16px;
-  padding:5px;
-  font-size:12px;
-  background:linear-gradient(#ff5454,#850000);
-}
-
-.stop{
-  width:46px;
-  height:46px;
-  border-radius:50%;
-  font-size:10px;
-  background:radial-gradient(circle,#ff5a5a,#8c0018);
-  border:3px solid #ffb6b6;
+  background:linear-gradient(#7e37ff,#2c0048);
+  box-shadow:0 4px 0 #130020,0 0 10px #7b2cff;
 }
 
 button:disabled{
   opacity:.35;
+  filter:grayscale(1);
 }
 
-.bottom-panel-wrap{
-  width:88%;
-  margin:6px auto 0;
-  border:2px solid #b66cff;
-  border-radius:12px;
-  overflow:hidden;
-  background:#050008;
-  box-shadow:0 0 15px #7d35ff;
+.stop-area{
+  display:flex;
+  justify-content:center;
+  gap:15px;
+  margin:12px 0;
+}
+
+.stop{
+  width:70px;
+  height:70px;
+  border-radius:50%;
+  background:radial-gradient(circle,#ff3030,#750000);
+  border:4px solid #ffb0b0;
+  box-shadow:0 0 12px #ff3333;
 }
 
 .bottom-panel{
-  width:100%;
-  height:auto;
-  display:block;
+  height:152px;
+  background:url("24BE7708-F796-4B2F-BDEA-77A632106F3C.jpeg") center/cover no-repeat;
+  border:2px solid #7b3cff;
+  border-radius:14px;
+  margin-top:8px;
+  box-shadow:0 0 14px #762cff;
 }
 
-.bottom-safe{
-  height:45px;
-  margin-top:5px;
-  border-radius:16px;
-  background:linear-gradient(180deg,#0a0010,#210038,#050008);
-  box-shadow:
-    inset 0 0 25px #000,
-    0 0 18px #7d35ff;
-  border:1px solid #4d1688;
+.bottom-panel.all{
+  animation:purpleFlash .8s infinite alternate;
 }
 
-.flash{
-  animation:flash .5s 3;
-}
-
-.apocalis{
-  animation:apocalisGlow 1s infinite alternate;
-}
-
-@keyframes led{
-  from{filter:brightness(1)}
-  to{filter:brightness(1.8)}
-}
-
-@keyframes flash{
-  50%{filter:brightness(2.3)}
-}
-
-@keyframes apocalisGlow{
-  from{box-shadow:0 0 24px #8f3cff,inset 0 0 35px #000}
-  to{box-shadow:0 0 38px #ff7bff,inset 0 0 50px #2a0040}
+@keyframes purpleFlash{
+  from{filter:brightness(1);}
+  to{filter:brightness(1.45) saturate(1.4);}
 }
 </style>
 </head>
 
 <body>
 <div class="wrap">
-  <div class="machine" id="machine">
+  <div class="machine">
 
-    <div class="safe-body"></div>
-
-    <div class="title-area">
-      <div class="title">七つの刻印</div>
-      <div class="brand">遊創舎</div>
+    <div class="top-title">
+      七つの刻印
+      <div class="sub">SEVEN SEALS</div>
     </div>
 
-    <div class="panel">
-      <img id="topPanel" src="seven_seals_panel_normal.png">
-    </div>
+    <div id="panel" class="panel"></div>
 
-    <div class="mode">
-      <div>MODE：<span id="modeName" class="mode-name">通常</span></div>
-      <div class="chance">刻印CHANCE</div>
-    </div>
+    <div class="seals" id="sealArea"></div>
+
+    <div class="state" id="state">STATE：通常</div>
 
     <div class="reels">
       <div class="reel"><img id="r0"></div>
@@ -311,234 +235,299 @@ button:disabled{
     <div class="msg" id="msg">BETしてください</div>
 
     <div class="info">
-      <div class="box">CREDIT<div class="num" id="credit">50</div></div>
-      <div class="box">BET<div class="num" id="bet">0</div></div>
-      <div class="box">PAY<div class="num" id="pay">0</div></div>
+      <div class="box">CREDIT<b id="credit">100</b></div>
+      <div class="box">BET<b id="bet">0</b></div>
+      <div class="box">PAY<b id="pay">0</b></div>
     </div>
 
-    <div class="buttons-top">
-      <button class="start" id="startBtn">START</button>
-      <button class="bet" id="betBtn">BET</button>
-      <button class="bet" id="maxBetBtn">MAX BET</button>
-      <button class="reset" id="resetBtn">RESET</button>
+    <div class="controls">
+      <button id="betBtn">BET</button>
+      <button id="startBtn">START</button>
+      <button id="resetBtn">RESET</button>
     </div>
 
-    <div class="buttons-stop">
+    <div class="stop-area">
       <button class="stop" id="s0">STOP</button>
       <button class="stop" id="s1">STOP</button>
       <button class="stop" id="s2">STOP</button>
     </div>
 
-    <div class="bottom-panel-wrap">
-      <img class="bottom-panel" src="24BE7708-F796-4B2F-BDEA-77A632106F3C.PNG">
-    </div>
+    <div id="bottomPanel" class="bottom-panel"></div>
 
-    <div class="bottom-safe"></div>
-      </div>
+  </div>
 </div>
 
 <script>
-const symbols={
-  RED7:"symbol_red7.png",
-  BLUE7:"symbol_bluepurple7.png",
+const symbolFiles={
   BELL:"symbol_bell.png",
+  SEAL:"symbol_seal.png",
   CHERRY:"symbol_cherry.png",
+  BLUE7:"symbol_bluepurple7.png",
   REPLAY:"symbol_replay.png",
-  SEAL:"symbol_seal.png"
+  RED7:"symbol_red7.png"
 };
 
-const keys=Object.keys(symbols);
+const symbols=["BELL","SEAL","CHERRY","BLUE7","REPLAY","RED7"];
 
-let credit=50;
-let bet=0;
-let pay=0;
-let reels=["CHERRY","BELL","REPLAY"];
-let result=["CHERRY","BELL","REPLAY"];
-let spinning=[false,false,false];
+const guardians=[
+  {name:"傲慢",color:"#ffd84a"},
+  {name:"嫉妬",color:"#3cff65"},
+  {name:"憤怒",color:"#ff3030"},
+  {name:"怠惰",color:"#4ab7ff"},
+  {name:"強欲",color:"#b34aff"},
+  {name:"暴食",color:"#ff8a20"},
+  {name:"色欲",color:"#ff5ac8"}
+];
+
+let credit=100, bet=0, pay=0;
+let reels=["CHERRY","REPLAY","BELL"];
+let spinning=false;
+let stopped=[false,false,false];
 let timers=[null,null,null];
-let stopped=0;
-let seals=0;
+let result=["","",""];
+let seals=Array(7).fill(false);
+let mode="通常";
 
 const $=id=>document.getElementById(id);
+
+function initSeals(){
+  $("sealArea").innerHTML="";
+  guardians.forEach((g,i)=>{
+    const d=document.createElement("div");
+    d.className="seal";
+    d.style.color=g.color;
+    d.id="seal"+i;
+    $("sealArea").appendChild(d);
+  });
+}
 
 function update(){
   $("credit").textContent=credit;
   $("bet").textContent=bet;
   $("pay").textContent=pay;
+  $("state").textContent="STATE："+mode;
 
-  reels.forEach((s,i)=>{
-    $("r"+i).src=symbols[s];
+  reels.forEach((s,i)=>$("r"+i).src=symbolFiles[s]);
+
+  guardians.forEach((g,i)=>{
+    $("seal"+i).className="seal"+(seals[i]?" on":"");
   });
 
-  $("startBtn").disabled=bet<3 || spinning.some(Boolean);
-  $("betBtn").disabled=credit<=0 || bet>=3 || spinning.some(Boolean);
-  $("maxBetBtn").disabled=credit<=0 || bet>=3 || spinning.some(Boolean);
+  $("betBtn").disabled=spinning || bet===3 || credit<=0;
+  $("startBtn").disabled=spinning || bet!==3;
+  document.querySelectorAll(".stop").forEach((b,i)=>{
+    b.disabled=!spinning || stopped[i];
+  });
 
-  for(let i=0;i<3;i++){
-    $("s"+i).disabled=!spinning[i];
+  if(seals.every(Boolean)){
+    $("panel").classList.add("apocalis");
+    $("bottomPanel").classList.add("all");
   }
 }
 
-function msg(t){
-  $("msg").textContent=t;
-}
+function msg(t){$("msg").textContent=t;}
 
-function rand(){
-  return keys[Math.floor(Math.random()*keys.length)];
+function randSym(){
+  return symbols[Math.floor(Math.random()*symbols.length)];
 }
 
 function chooseResult(){
   const r=Math.random();
 
-  if(r<0.015) return ["BLUE7","BLUE7","BLUE7"];
-  if(r<0.060) return ["RED7","RED7","SEAL"];
-  if(r<0.160) return ["SEAL","SEAL","SEAL"];
-  if(r<0.270) return ["SEAL","SEAL","BELL"];
-  if(r<0.420) return ["BELL","BELL","BELL"];
-  if(r<0.560) return ["CHERRY","CHERRY","CHERRY"];
-  if(r<0.700) return ["REPLAY","REPLAY","REPLAY"];
+  if(r<0.0005) return ["BLUE7","BLUE7","BLUE7"];
+  if(r<0.025) return ["BLUE7","BLUE7","SEAL"];
+  if(r<0.055) return ["RED7","RED7","SEAL"];
+  if(r<0.09) return ["SEAL","SEAL","SEAL"];
+  if(r<0.13) return ["SEAL","SEAL","BELL"];
+  if(r<0.255) return ["REPLAY","REPLAY","REPLAY"];
+  if(r<0.398) return ["BELL","BELL","BELL"];
+  if(r<0.448) return ["CHERRY","CHERRY","CHERRY"];
 
-  return [rand(),rand(),rand()];
+  return [randSym(),randSym(),randSym()];
+}
+
+function betOne(){
+  if(credit<=0 || bet>=3 || spinning)return;
+  credit--;
+  bet++;
+  pay=0;
+  msg("3BETでSTART");
+  update();
 }
 
 function start(){
-  result=chooseResult();
-  stopped=0;
-  pay=0;
-  msg("リール始動…");
+  if(bet!==3 || spinning)return;
 
-  for(let i=0;i<3;i++){
-    spinning[i]=true;
+  spinning=true;
+  stopped=[false,false,false];
+  result=chooseResult();
+  pay=0;
+  msg("順押しで停止してください");
+
+  reels.forEach((_,i)=>{
     timers[i]=setInterval(()=>{
-      reels[i]=rand();
+      reels[i]=randSym();
       update();
     },80);
+  });
+
+  update();
+}
+
+function stopReel(i){
+  if(!spinning || stopped[i])return;
+
+  clearInterval(timers[i]);
+  reels[i]=result[i];
+  stopped[i]=true;
+
+  if(stopped.every(Boolean)){
+    spinning=false;
+    bet=0;
+    judge();
   }
 
   update();
 }
 
-function stop(i){
-  if(!spinning[i])return;
+function addCredit(n){
+  credit=Math.min(9999,credit+n);
+}
 
-  clearInterval(timers[i]);
-  reels[i]=result[i];
-  spinning[i]=false;
-  stopped++;
+function getUnownedSeal(){
+  const list=seals.map((v,i)=>v?null:i).filter(v=>v!==null);
+  if(!list.length)return null;
+  return list[Math.floor(Math.random()*list.length)];
+}
 
-  update();
+function gainSeal(){
+  const i=getUnownedSeal();
+  if(i===null)return;
 
-  if(stopped===3){
-    judge();
+  seals[i]=true;
+  mode=guardians[i].name+"の刻印獲得";
+
+  if(seals.every(Boolean)){
+    mode="終焉ノ刻";
+    msg("七刻印完成！終焉神アポカリス降臨");
+    $("panel").classList.add("apocalis");
+    $("bottomPanel").classList.add("all");
+  }else{
+    msg(guardians[i].name+"の刻印を獲得");
+  }
+}
+
+function guardianMode(){
+  const i=getUnownedSeal();
+  if(i===null){
+    mode="終焉ノ刻";
+    msg("七刻印完成済み");
+    return;
+  }
+
+  mode=guardians[i].name+"MODE";
+
+  const success=Math.random()<0.30;
+  if(success){
+    seals[i]=true;
+    msg(guardians[i].name+"MODE成功！刻印獲得");
+    if(seals.every(Boolean)){
+      mode="終焉ノ刻";
+      msg("七刻印完成！終焉神アポカリス降臨");
+    }
+  }else{
+    msg(guardians[i].name+"MODE失敗");
+    mode="通常";
   }
 }
 
 function judge(){
-  const [a,b,c]=reels;
-  let payout=0;
+  const a=reels.join(",");
 
-  if(a==="BLUE7"&&b==="BLUE7"&&c==="BLUE7"){
-    payout=100;
-    enterApocalis("青紫7揃い！終焉ノ刻 直撃！");
+  if(a==="BLUE7,BLUE7,BLUE7"){
+    pay=100;
+    addCredit(100);
+    mode="終焉ノ刻";
+    msg("青紫7揃い！終焉ノ刻直撃");
+    $("panel").classList.add("apocalis");
+    $("bottomPanel").classList.add("all");
   }
-  else if(a==="RED7"&&b==="RED7"&&c==="SEAL"){
-    payout=50;
-    sealGet("守護者BONUS！刻印獲得！");
+  else if(a==="BLUE7,BLUE7,SEAL"){
+    pay=80;
+    addCredit(80);
+    mode="神話BONUS";
+    msg("神話BONUS！アポカリスチャレンジ");
+    if(Math.random()<0.35){
+      mode="終焉ノ刻";
+      msg("アポカリスチャレンジ成功！");
+      $("panel").classList.add("apocalis");
+    }
   }
-  else if(a==="SEAL"&&b==="SEAL"&&c==="SEAL"){
-    sealGet("刻印3揃い！守護者MODE成功！");
+  else if(a==="RED7,RED7,SEAL"){
+    pay=50;
+    addCredit(50);
+    mode="守護者BONUS";
+    msg("守護者BONUS 50枚");
   }
-  else if(a==="SEAL"&&b==="SEAL"&&c==="BELL"){
-    msg("刻印CHANCE！");
+  else if(a==="SEAL,SEAL,SEAL"){
+    mode="守護者MODE";
+    msg("刻印揃い！守護者MODE確定");
+    guardianMode();
   }
-  else if(a==="BELL"&&b==="BELL"&&c==="BELL"){
-    payout=10;
-    msg("ベル成立 +10");
+  else if(a==="SEAL,SEAL,BELL"){
+    msg("チャンス目！");
+    if(Math.random()<0.40) guardianMode();
+    else mode="通常";
   }
-  else if(a==="CHERRY"&&b==="CHERRY"&&c==="CHERRY"){
-    payout=5;
-    msg("チェリー成立 +5");
+  else if(a==="BELL,BELL,BELL"){
+    pay=8;
+    addCredit(8);
+    mode="通常";
+    msg("ベル 8枚");
   }
-  else if(a==="REPLAY"&&b==="REPLAY"&&c==="REPLAY"){
+  else if(a==="CHERRY,CHERRY,CHERRY"){
+    pay=2;
+    addCredit(2);
+    mode="刻印高確";
+    msg("チェリー 2枚 / 刻印高確");
+  }
+  else if(a==="REPLAY,REPLAY,REPLAY"){
+    pay=0;
+    mode="通常";
     msg("リプレイ");
   }
   else{
+    pay=0;
+    mode="通常";
     msg("ハズレ");
   }
 
-  pay=payout;
-  credit+=payout;
-  bet=0;
-
   update();
 }
 
-function sealGet(text){
-  if(seals<7) seals++;
-
-  $("modeName").textContent="守護者MODE";
-  msg(text+" 現在："+seals+"/7");
-  flash();
-
-  if(seals>=7){
-    enterApocalis("七刻印完成！終焉神アポカリス降臨！");
-  }
-}
-
-function enterApocalis(text){
-  $("topPanel").src="seven_seals_panel_apocalis.png";
-  $("modeName").textContent="終焉ノ刻";
-  $("machine").classList.add("apocalis");
-  msg(text);
-  flash();
-}
-
-function flash(){
-  $("machine").classList.add("flash");
-  setTimeout(()=>{
-    $("machine").classList.remove("flash");
-  },1600);
-}
-
-$("betBtn").onclick=()=>{
-  if(credit>0 && bet<3){
-    credit--;
-    bet++;
-    msg("BETしました");
-    update();
-  }
-};
-
-$("maxBetBtn").onclick=()=>{
-  while(credit>0 && bet<3){
-    credit--;
-    bet++;
-  }
-  msg("MAX BET");
-  update();
-};
-
-$("startBtn").onclick=start;
-
-$("s0").onclick=()=>stop(0);
-$("s1").onclick=()=>stop(1);
-$("s2").onclick=()=>stop(2);
-
-$("resetBtn").onclick=()=>{
-  credit=50;
+function reset(){
+  credit=100;
   bet=0;
   pay=0;
-  seals=0;
-  reels=["CHERRY","BELL","REPLAY"];
-
-  $("topPanel").src="seven_seals_panel_normal.png";
-  $("modeName").textContent="通常";
-  $("machine").classList.remove("apocalis");
-
+  reels=["CHERRY","REPLAY","BELL"];
+  seals=Array(7).fill(false);
+  mode="通常";
+  spinning=false;
+  timers.forEach(t=>clearInterval(t));
+  $("panel").classList.remove("apocalis");
+  $("bottomPanel").classList.remove("all");
   msg("BETしてください");
   update();
-};
+}
 
+$("betBtn").onclick=betOne;
+$("startBtn").onclick=start;
+$("resetBtn").onclick=reset;
+$("s0").onclick=()=>stopReel(0);
+$("s1").onclick=()=>stopReel(1);
+$("s2").onclick=()=>stopReel(2);
+
+initSeals();
 update();
 </script>
 </body>
