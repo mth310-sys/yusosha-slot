@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>七つの刻印 Ver.0.2.1</title>
+<title>七つの刻印 Ver.0.2.2</title>
 <style>
 *{box-sizing:border-box}
 body{
@@ -24,15 +24,15 @@ body{
   box-shadow:0 0 22px #9b4dff,inset 0 0 30px #000;
 }
 .topLed{
-  height:24px;
+  height:16px;
   border-radius:14px;
   background:linear-gradient(90deg,#3b0066,#c084ff,#3b0066);
   animation:run 1.8s linear infinite;
 }
 @keyframes run{50%{filter:brightness(2)}}
-.logo{font-size:13px;color:#d8b7ff;margin-top:6px}
-h1{margin:2px 0;font-size:26px;color:#ead7ff;text-shadow:0 0 12px #b45cff}
-.version{font-size:11px;color:#caa7ff}
+.logo{font-size:11px;color:#d8b7ff;margin-top:3px}
+h1{margin:0;font-size:20px;color:#ead7ff;text-shadow:0 0 12px #b45cff}
+.version{font-size:10px;color:#caa7ff;margin-bottom:2px}
 
 .panel{
   margin:7px 0;
@@ -44,40 +44,30 @@ h1{margin:2px 0;font-size:26px;color:#ead7ff;text-shadow:0 0 12px #b45cff}
 .upperArt{
   position:relative;
   width:100%;
-}
-.panelImg{
-  width:100%;
+  overflow:hidden;
   border-radius:14px;
-  display:block;
   box-shadow:0 0 14px #8b4dff;
 }
-.apoc{box-shadow:0 0 25px #c084ff;background:rgba(70,0,100,.55)}
-
-.panelLed{
+.upperArt::before,
+.upperArt::after{
+  content:"";
   position:absolute;
-  width:9%;
-  aspect-ratio:1/1;
-  border-radius:50%;
-  border:1px solid rgba(255,255,255,.35);
-  background:rgba(0,0,0,.2);
-  opacity:.12;
-  transform:translate(-50%,-50%);
+  top:0;
+  width:7%;
+  height:100%;
+  z-index:2;
+  background:linear-gradient(90deg,#050008,#180026);
+  box-shadow:0 0 18px #8b4dff inset;
 }
-.panelLed.on{
-  opacity:.95;
-  background:currentColor;
-  box-shadow:0 0 10px currentColor,0 0 22px currentColor,0 0 38px currentColor;
+.upperArt::before{left:0;border-radius:14px 0 0 14px}
+.upperArt::after{right:0;border-radius:0 14px 14px 0}
+.panelImg{
+  width:112%;
+  margin-left:-6%;
+  border-radius:14px;
+  display:block;
 }
-.panelLed.blink{animation:blink .45s infinite alternate}
-@keyframes blink{from{filter:brightness(1);opacity:.6}to{filter:brightness(2.8);opacity:1}}
-
-#led-pride{left:14%;top:23%}
-#led-envy{left:14%;top:50%}
-#led-wrath{left:14%;top:77%}
-#led-sloth{left:84%;top:20%}
-#led-greed{left:79%;top:39%}
-#led-gluttony{left:80%;top:60%}
-#led-lust{left:82%;top:80%}
+.apoc{box-shadow:0 0 25px #c084ff;background:rgba(70,0,100,.55)}
 
 .seals{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:6px}
 .seal{
@@ -93,6 +83,8 @@ h1{margin:2px 0;font-size:26px;color:#ead7ff;text-shadow:0 0 12px #b45cff}
   flex-direction:column;
 }
 .on{color:#fff;box-shadow:0 0 12px currentColor;border-color:currentColor}
+.blink{animation:blink .5s infinite alternate}
+@keyframes blink{from{filter:brightness(1)}to{filter:brightness(2.6)}}
 
 .state{font-weight:bold;color:#fff3a0}
 .reels{display:flex;gap:8px;justify-content:center;margin:10px 0}
@@ -192,18 +184,11 @@ button:disabled{opacity:.35}
   <div class="topLed"></div>
   <div class="logo">🌱 遊創舎</div>
   <h1>七つの刻印</h1>
-  <div class="version">SEVEN SEALS Ver.0.2.1 LED発光版</div>
+  <div class="version">SEVEN SEALS Ver.0.2.2 パネル調整版</div>
 
   <div id="upperPanel" class="panel">
     <div class="upperArt">
       <img id="mainPanelImg" class="panelImg" src="seven_seals_panel_normal.png" alt="七つの刻印 通常パネル">
-      <div id="led-pride" class="panelLed"></div>
-      <div id="led-envy" class="panelLed"></div>
-      <div id="led-wrath" class="panelLed"></div>
-      <div id="led-sloth" class="panelLed"></div>
-      <div id="led-greed" class="panelLed"></div>
-      <div id="led-gluttony" class="panelLed"></div>
-      <div id="led-lust" class="panelLed"></div>
     </div>
     <div class="small">七紋章</div>
     <div id="seals" class="seals"></div>
@@ -333,7 +318,6 @@ function update(){
 
  updatePanelImage();
  updateSeals();
- updatePanelLeds();
  updateLowerGlow();
 
  let sub="";
@@ -377,24 +361,6 @@ function updateSeals(){
   if(state==="守護者MODE"&&currentGuardian&&currentGuardian.id===g.id){
     e.classList.add("blink");e.style.color=g.color;
   }
- });
-}
-
-function updatePanelLeds(){
- guardians.forEach((g,i)=>{
-   const led=$("led-"+g.id);
-   led.className="panelLed";
-   led.style.color=g.color;
-
-   if(state==="終焉ノ刻"){
-     if(i<shuenGamesLeft)led.classList.add("on");
-   }else if(ownedSeals.includes(g.id)){
-     led.classList.add("on");
-   }
-
-   if(state==="守護者MODE"&&currentGuardian&&currentGuardian.id===g.id){
-     led.classList.add("on","blink");
-   }
  });
 }
 
