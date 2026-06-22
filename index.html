@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>七つの刻印 Ver.0.2.0</title>
+<title>七つの刻印 Ver.0.2.1</title>
 <style>
 *{box-sizing:border-box}
 body{
@@ -41,6 +41,10 @@ h1{margin:2px 0;font-size:26px;color:#ead7ff;text-shadow:0 0 12px #b45cff}
   border-radius:16px;
   background:rgba(0,0,0,.45);
 }
+.upperArt{
+  position:relative;
+  width:100%;
+}
 .panelImg{
   width:100%;
   border-radius:14px;
@@ -49,9 +53,35 @@ h1{margin:2px 0;font-size:26px;color:#ead7ff;text-shadow:0 0 12px #b45cff}
 }
 .apoc{box-shadow:0 0 25px #c084ff;background:rgba(70,0,100,.55)}
 
+.panelLed{
+  position:absolute;
+  width:9%;
+  aspect-ratio:1/1;
+  border-radius:50%;
+  border:1px solid rgba(255,255,255,.35);
+  background:rgba(0,0,0,.2);
+  opacity:.12;
+  transform:translate(-50%,-50%);
+}
+.panelLed.on{
+  opacity:.95;
+  background:currentColor;
+  box-shadow:0 0 10px currentColor,0 0 22px currentColor,0 0 38px currentColor;
+}
+.panelLed.blink{animation:blink .45s infinite alternate}
+@keyframes blink{from{filter:brightness(1);opacity:.6}to{filter:brightness(2.8);opacity:1}}
+
+#led-pride{left:14%;top:23%}
+#led-envy{left:14%;top:50%}
+#led-wrath{left:14%;top:77%}
+#led-sloth{left:84%;top:20%}
+#led-greed{left:79%;top:39%}
+#led-gluttony{left:80%;top:60%}
+#led-lust{left:82%;top:80%}
+
 .seals{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:6px}
 .seal{
-  min-height:36px;
+  min-height:34px;
   border-radius:10px;
   border:1px solid #333;
   background:#080808;
@@ -63,8 +93,6 @@ h1{margin:2px 0;font-size:26px;color:#ead7ff;text-shadow:0 0 12px #b45cff}
   flex-direction:column;
 }
 .on{color:#fff;box-shadow:0 0 12px currentColor;border-color:currentColor}
-.blink{animation:blink .5s infinite alternate}
-@keyframes blink{from{filter:brightness(1)}to{filter:brightness(2.6)}}
 
 .state{font-weight:bold;color:#fff3a0}
 .reels{display:flex;gap:8px;justify-content:center;margin:10px 0}
@@ -119,12 +147,39 @@ button:disabled{opacity:.35}
 }
 .reset{background:linear-gradient(#555,#111)}
 .small{font-size:11px;color:#ccc}
+
+.lowerWrap{
+  position:relative;
+  width:100%;
+}
 .lowerPanelImg{
   width:100%;
   border-radius:14px;
   display:block;
   box-shadow:0 0 14px #8b4dff;
 }
+.lowerGlow{
+  position:absolute;
+  top:0;
+  height:100%;
+  width:14.285%;
+  opacity:0;
+  background:currentColor;
+  mix-blend-mode:screen;
+  box-shadow:0 0 20px currentColor,0 0 35px currentColor inset;
+  border-radius:8px;
+  pointer-events:none;
+}
+.lowerGlow.on{opacity:.35}
+.lowerGlow.blink{animation:lowerBlink .5s infinite alternate}
+@keyframes lowerBlink{from{opacity:.18}to{opacity:.58}}
+.lowerGlow.all{
+  width:100%;
+  left:0;
+  opacity:.25;
+  border-radius:14px;
+}
+
 .flash{animation:flash .25s 8}
 @keyframes flash{50%{background:#fff;color:#000}}
 .purpleFlash{animation:pflash .25s 12}
@@ -137,10 +192,19 @@ button:disabled{opacity:.35}
   <div class="topLed"></div>
   <div class="logo">🌱 遊創舎</div>
   <h1>七つの刻印</h1>
-  <div class="version">SEVEN SEALS Ver.0.2.0 修正版</div>
+  <div class="version">SEVEN SEALS Ver.0.2.1 LED発光版</div>
 
   <div id="upperPanel" class="panel">
-    <img id="mainPanelImg" class="panelImg" src="seven_seals_panel_normal.png" alt="七つの刻印 通常パネル">
+    <div class="upperArt">
+      <img id="mainPanelImg" class="panelImg" src="seven_seals_panel_normal.png" alt="七つの刻印 通常パネル">
+      <div id="led-pride" class="panelLed"></div>
+      <div id="led-envy" class="panelLed"></div>
+      <div id="led-wrath" class="panelLed"></div>
+      <div id="led-sloth" class="panelLed"></div>
+      <div id="led-greed" class="panelLed"></div>
+      <div id="led-gluttony" class="panelLed"></div>
+      <div id="led-lust" class="panelLed"></div>
+    </div>
     <div class="small">七紋章</div>
     <div id="seals" class="seals"></div>
   </div>
@@ -179,7 +243,17 @@ button:disabled{opacity:.35}
 
   <div class="panel">
     <div class="small">七守護者 下パネル</div>
-    <img id="lowerPanelImg" class="lowerPanelImg" src="24BE7708-F796-4B2F-BDEA-77A632106F3C.PNG" alt="七守護者 下パネル">
+    <div class="lowerWrap">
+      <img id="lowerPanelImg" class="lowerPanelImg" src="24BE7708-F796-4B2F-BDEA-77A632106F3C.PNG" alt="七守護者 下パネル">
+      <div id="lowerAllGlow" class="lowerGlow all"></div>
+      <div id="low-pride" class="lowerGlow"></div>
+      <div id="low-envy" class="lowerGlow"></div>
+      <div id="low-wrath" class="lowerGlow"></div>
+      <div id="low-sloth" class="lowerGlow"></div>
+      <div id="low-greed" class="lowerGlow"></div>
+      <div id="low-gluttony" class="lowerGlow"></div>
+      <div id="low-lust" class="lowerGlow"></div>
+    </div>
   </div>
 </div>
 </div>
@@ -229,13 +303,15 @@ function symbolHtml(name){
  if(!map[name])return name;
  return `<img src="${map[name]}" alt="${name}" onerror="this.parentNode.textContent='${name}'">`;
 }
-
-function setReel(i,name){
- $("r"+i).innerHTML=symbolHtml(name);
-}
+function setReel(i,name){$("r"+i).innerHTML=symbolHtml(name)}
 
 function build(){
  $("seals").innerHTML=guardians.map(g=>`<div id="seal-${g.id}" class="seal"><span>${g.symbol}</span><span>${g.name}</span></div>`).join("");
+ guardians.forEach((g,i)=>{
+   const low=$("low-"+g.id);
+   low.style.left=(i*14.285)+"%";
+   low.style.color=g.color;
+ });
  setReel(0,"刻印");
  setReel(1,"ベル");
  setReel(2,"リプ");
@@ -257,6 +333,8 @@ function update(){
 
  updatePanelImage();
  updateSeals();
+ updatePanelLeds();
+ updateLowerGlow();
 
  let sub="";
  if(state==="守護者MODE"&&currentGuardian){
@@ -300,6 +378,45 @@ function updateSeals(){
     e.classList.add("blink");e.style.color=g.color;
   }
  });
+}
+
+function updatePanelLeds(){
+ guardians.forEach((g,i)=>{
+   const led=$("led-"+g.id);
+   led.className="panelLed";
+   led.style.color=g.color;
+
+   if(state==="終焉ノ刻"){
+     if(i<shuenGamesLeft)led.classList.add("on");
+   }else if(ownedSeals.includes(g.id)){
+     led.classList.add("on");
+   }
+
+   if(state==="守護者MODE"&&currentGuardian&&currentGuardian.id===g.id){
+     led.classList.add("on","blink");
+   }
+ });
+}
+
+function updateLowerGlow(){
+ $("lowerAllGlow").className="lowerGlow all";
+ $("lowerAllGlow").style.color="#c084ff";
+
+ guardians.forEach(g=>{
+   const low=$("low-"+g.id);
+   low.className="lowerGlow";
+   low.style.color=g.color;
+ });
+
+ if(state==="終焉ノ刻"){
+   $("lowerAllGlow").classList.add("on","blink");
+   guardians.forEach(g=>$("low-"+g.id).classList.add("on"));
+ }
+
+ if(state==="守護者MODE"&&currentGuardian){
+   const low=$("low-"+currentGuardian.id);
+   low.classList.add("on","blink");
+ }
 }
 
 function betOne(){
@@ -570,8 +687,13 @@ function getSeal(){
  currentGuardian=null;
  setState("通常");
 
- if(directQueue.length>0){
-   setTimeout(startDirectQueue,700);
+ if(directModeActive){
+   if(directQueue.length>0){
+     setTimeout(startDirectQueue,700);
+   }else{
+     directModeActive=false;
+     message("直撃後特典 守護者MODE×7連完走");
+   }
    update();
    return;
  }
