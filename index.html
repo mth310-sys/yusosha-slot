@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>七つの刻印 Ver.0.1.1</title>
+<title>七つの刻印 Ver.0.2.0</title>
 <style>
 *{box-sizing:border-box}
 body{
@@ -31,21 +31,27 @@ body{
 }
 @keyframes run{50%{filter:brightness(2)}}
 .logo{font-size:13px;color:#d8b7ff;margin-top:6px}
-h1{margin:2px 0;font-size:28px;color:#ead7ff;text-shadow:0 0 12px #b45cff}
+h1{margin:2px 0;font-size:26px;color:#ead7ff;text-shadow:0 0 12px #b45cff}
 .version{font-size:11px;color:#caa7ff}
 
 .panel{
-  margin:8px 0;
-  padding:8px;
+  margin:7px 0;
+  padding:7px;
   border:2px solid #7a36d6;
   border-radius:16px;
   background:rgba(0,0,0,.45);
 }
-.apoc{box-shadow:0 0 22px #c084ff;background:rgba(70,0,100,.55)}
+.panelImg{
+  width:100%;
+  border-radius:14px;
+  display:block;
+  box-shadow:0 0 14px #8b4dff;
+}
+.apoc{box-shadow:0 0 25px #c084ff;background:rgba(70,0,100,.55)}
 
-.seals,.guardians{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
-.seal,.guardian{
-  min-height:42px;
+.seals{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:6px}
+.seal{
+  min-height:36px;
   border-radius:10px;
   border:1px solid #333;
   background:#080808;
@@ -58,7 +64,7 @@ h1{margin:2px 0;font-size:28px;color:#ead7ff;text-shadow:0 0 12px #b45cff}
 }
 .on{color:#fff;box-shadow:0 0 12px currentColor;border-color:currentColor}
 .blink{animation:blink .5s infinite alternate}
-@keyframes blink{from{filter:brightness(1)}to{filter:brightness(2.5)}}
+@keyframes blink{from{filter:brightness(1)}to{filter:brightness(2.6)}}
 
 .state{font-weight:bold;color:#fff3a0}
 .reels{display:flex;gap:8px;justify-content:center;margin:10px 0}
@@ -71,15 +77,17 @@ h1{margin:2px 0;font-size:28px;color:#ead7ff;text-shadow:0 0 12px #b45cff}
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:22px;
+  font-size:18px;
   font-weight:bold;
   box-shadow:inset 0 0 12px #000,0 0 12px #8f48ff;
+  overflow:hidden;
 }
+.reel img{max-width:86px;max-height:108px;object-fit:contain}
 .spin{animation:spin .12s infinite}
 @keyframes spin{50%{transform:translateY(4px);filter:blur(1px)}}
 
 .msg{
-  min-height:44px;
+  min-height:42px;
   color:#ffeab7;
   font-weight:bold;
   text-shadow:0 0 8px #b45cff;
@@ -111,6 +119,12 @@ button:disabled{opacity:.35}
 }
 .reset{background:linear-gradient(#555,#111)}
 .small{font-size:11px;color:#ccc}
+.lowerPanelImg{
+  width:100%;
+  border-radius:14px;
+  display:block;
+  box-shadow:0 0 14px #8b4dff;
+}
 .flash{animation:flash .25s 8}
 @keyframes flash{50%{background:#fff;color:#000}}
 .purpleFlash{animation:pflash .25s 12}
@@ -123,9 +137,10 @@ button:disabled{opacity:.35}
   <div class="topLed"></div>
   <div class="logo">🌱 遊創舎</div>
   <h1>七つの刻印</h1>
-  <div class="version">SEVEN SEALS Ver.0.1.1 MAX BET対応版</div>
+  <div class="version">SEVEN SEALS Ver.0.2.0 修正版</div>
 
   <div id="upperPanel" class="panel">
+    <img id="mainPanelImg" class="panelImg" src="seven_seals_panel_normal.png" alt="七つの刻印 通常パネル">
     <div class="small">七紋章</div>
     <div id="seals" class="seals"></div>
   </div>
@@ -163,13 +178,24 @@ button:disabled{opacity:.35}
   </div>
 
   <div class="panel">
-    <div class="small">七守護者</div>
-    <div id="guardians" class="guardians"></div>
+    <div class="small">七守護者 下パネル</div>
+    <img id="lowerPanelImg" class="lowerPanelImg" src="24BE7708-F796-4B2F-BDEA-77A632106F3C.PNG" alt="七守護者 下パネル">
   </div>
 </div>
 </div>
 
 <script>
+const IMG={
+ red7:"symbol_red7.png",
+ blue7:"symbol_bluepurple7.png",
+ bell:"symbol_bell.png",
+ cherry:"symbol_cherry.png",
+ replay:"symbol_replay.png",
+ seal:"symbol_seal.png",
+ normalPanel:"seven_seals_panel_normal.png",
+ apocPanel:"seven_seals_panel_apocalis.png"
+};
+
 const guardians=[
  {id:"pride",name:"傲慢",full:"傲慢の王",color:"#ffd84d",limit:5,need:1,label:"赤7テンパイ",symbol:"王冠"},
  {id:"envy",name:"嫉妬",full:"嫉妬の魔女",color:"#58ff72",limit:15,need:5,label:"チェリー",symbol:"魔眼"},
@@ -185,15 +211,34 @@ let ownedSeals=[],currentGuardian=null,modeGamesLeft=0,modeProgress=0;
 let highGamesLeft=0,chanceNext=false,guardianSuccess=false;
 let bonusGamesLeft=0,shuenGamesLeft=0,shuenGame=0,isSpinning=false;
 let stopCount=0,finalReels=["刻印","ベル","リプ"];
-let directBenefit=false,directQueue=[];
+let directBenefit=false,directQueue=[],directModeActive=false;
 
 const $=id=>document.getElementById(id);
 const cap=n=>Math.min(9999,n);
 const rand=()=>Math.random();
 
+function symbolHtml(name){
+ const map={
+  "赤7":IMG.red7,
+  "青紫7":IMG.blue7,
+  "ベル":IMG.bell,
+  "チェリー":IMG.cherry,
+  "リプ":IMG.replay,
+  "刻印":IMG.seal
+ };
+ if(!map[name])return name;
+ return `<img src="${map[name]}" alt="${name}" onerror="this.parentNode.textContent='${name}'">`;
+}
+
+function setReel(i,name){
+ $("r"+i).innerHTML=symbolHtml(name);
+}
+
 function build(){
  $("seals").innerHTML=guardians.map(g=>`<div id="seal-${g.id}" class="seal"><span>${g.symbol}</span><span>${g.name}</span></div>`).join("");
- $("guardians").innerHTML=guardians.map(g=>`<div id="g-${g.id}" class="guardian"><span>${g.symbol}</span><span>${g.full}</span></div>`).join("");
+ setReel(0,"刻印");
+ setReel(1,"ベル");
+ setReel(2,"リプ");
 }
 function message(t){$("msg").textContent=t}
 function setState(s){state=s;$("stateView").textContent=s}
@@ -210,8 +255,8 @@ function update(){
 
  for(let i=0;i<3;i++) $("s"+i).disabled=!isSpinning;
 
+ updatePanelImage();
  updateSeals();
- updateGuardians();
 
  let sub="";
  if(state==="守護者MODE"&&currentGuardian){
@@ -222,10 +267,23 @@ function update(){
    sub=`守護者BONUS 残り${bonusGamesLeft}G`;
  }else if(state==="終焉ノ刻"){
    sub=`終焉ノ刻：残存紋章 ${shuenGamesLeft}`;
+ }else if(directQueue.length>0){
+   sub=`直撃後特典：守護者MODE残り ${directQueue.length}回`;
  }else{
    sub=chanceNext?"次G 守護者MODE抽選":"BETしてください";
  }
  $("modeView").textContent=sub;
+}
+
+function updatePanelImage(){
+ const img=$("mainPanelImg");
+ if(state==="終焉ノ刻"){
+   img.src=IMG.apocPanel;
+   $("upperPanel").classList.add("apoc");
+ }else{
+   img.src=IMG.normalPanel;
+   $("upperPanel").classList.remove("apoc");
+ }
 }
 
 function updateSeals(){
@@ -244,19 +302,6 @@ function updateSeals(){
  });
 }
 
-function updateGuardians(){
- guardians.forEach(g=>{
-  const e=$("g-"+g.id);
-  e.className="guardian";
-  e.style.color="";
-  if(state==="終焉ノ刻"){e.classList.add("on");e.style.color=g.color}
-  if(state==="守護者MODE"&&currentGuardian&&currentGuardian.id===g.id){
-    e.classList.add("on","blink");e.style.color=g.color;
-  }
- });
- $("upperPanel").classList.toggle("apoc",state==="終焉ノ刻");
-}
-
 function betOne(){
  if(isSpinning||bet===3||credit<=0)return;
  credit--;
@@ -267,15 +312,12 @@ function betOne(){
 
 function maxBet(){
  if(isSpinning||bet===3)return;
-
  const need=3-bet;
-
  if(credit<need){
    message("クレジット不足");
    update();
    return;
  }
-
  credit-=need;
  bet=3;
  message("MAX BET");
@@ -302,7 +344,7 @@ function start(){
 
  for(let i=0;i<3;i++){
    $("r"+i).classList.add("spin");
-   $("r"+i).textContent=["赤7","青紫7","ベル","チェリー","リプ","刻印"][Math.floor(rand()*6)];
+   setReel(i,["赤7","青紫7","ベル","チェリー","リプ","刻印"][Math.floor(rand()*6)]);
  }
 
  message("リール回転中");
@@ -311,16 +353,13 @@ function start(){
 
 function stop(i){
  if(!isSpinning)return;
-
  $("r"+i).classList.remove("spin");
- $("r"+i).textContent=finalReels[i];
+ setReel(i,finalReels[i]);
  stopCount++;
-
  if(stopCount===3){
    isSpinning=false;
    resolveResult();
  }
-
  update();
 }
 
@@ -425,7 +464,8 @@ function resolveResult(){
    message("守護者BONUS 50枚獲得");
  }
  else if(currentResult==="SEAL"){
-   tryGuardianMode(0.30 + (highGamesLeft>0?0.05:0));
+   message("刻印揃い！守護者MODE確定");
+   startGuardianMode();
  }
  else if(currentResult==="CHANCE"){
    chanceNext=true;
@@ -468,12 +508,10 @@ function resultName(r){
 
 function tryGuardianMode(rate){
  if(ownedSeals.length>=7)return false;
-
  if(rand()<Math.min(.45,rate)){
    startGuardianMode();
    return true;
  }
-
  message("守護者MODE抽選失敗");
  return false;
 }
@@ -485,7 +523,7 @@ function startGuardianMode(forceGuardian=null){
  currentGuardian=pool[Math.floor(rand()*pool.length)];
  modeGamesLeft=currentGuardian.limit;
  modeProgress=0;
- guardianSuccess=rand()<0.50;
+ guardianSuccess=directModeActive ? true : rand()<0.50;
 
  setState("守護者MODE");
  message(`${currentGuardian.full} MODE開始`);
@@ -518,6 +556,9 @@ function resolveGuardianMode(){
    message(`${currentGuardian.name}MODE失敗`);
    currentGuardian=null;
    setState("通常");
+   if(directQueue.length>0){
+     setTimeout(startDirectQueue,700);
+   }
  }
 
  update();
@@ -528,6 +569,12 @@ function getSeal(){
  message(`${currentGuardian.full}の刻印獲得！`);
  currentGuardian=null;
  setState("通常");
+
+ if(directQueue.length>0){
+   setTimeout(startDirectQueue,700);
+   update();
+   return;
+ }
 
  if(ownedSeals.length>=7){
    setTimeout(()=>apocStart("七刻印完成！終焉神アポカリス降臨"),600);
@@ -558,11 +605,10 @@ function resolveGuardBonus(){
 
 function apocChallenge(){
  const ok=rand()<0.35;
-
  finalReels=ok?["青紫7","青紫7","青紫7"]:["青紫7","青紫7","ベル"];
 
  for(let i=0;i<3;i++){
-   $("r"+i).textContent=finalReels[i];
+   setReel(i,finalReels[i]);
  }
 
  if(ok){
@@ -606,8 +652,9 @@ function resolveShuen(){
 
    if(directBenefit){
      directBenefit=false;
+     directModeActive=true;
      directQueue=[...guardians];
-     setTimeout(()=>startDirectQueue(),700);
+     setTimeout(startDirectQueue,900);
    }
  }else{
    message(`終焉ノ刻 継続 残り${shuenGamesLeft}G`);
@@ -617,12 +664,17 @@ function resolveShuen(){
 }
 
 function startDirectQueue(){
- if(directQueue.length===0)return;
+ if(directQueue.length===0){
+   directModeActive=false;
+   message("直撃後特典 守護者MODE×7連完走");
+   update();
+   return;
+ }
 
  let g=directQueue.shift();
  startGuardianMode(g);
  guardianSuccess=true;
- message(`直撃後特典：${g.name}MODE`);
+ message(`直撃後特典：${g.name}MODE 残り${directQueue.length}回`);
 }
 
 function reset(){
@@ -644,11 +696,14 @@ function reset(){
  isSpinning=false;
  directBenefit=false;
  directQueue=[];
+ directModeActive=false;
 
  ["r0","r1","r2"].forEach((id,i)=>{
    $(id).classList.remove("spin");
-   $(id).textContent=["刻印","ベル","リプ"][i];
  });
+ setReel(0,"刻印");
+ setReel(1,"ベル");
+ setReel(2,"リプ");
 
  setState("通常");
  message("BETしてください");
