@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>七つの刻印 Ver.0.2.2</title>
+<title>七つの刻印 Ver.0.2.3</title>
 <style>
 *{box-sizing:border-box}
 body{
@@ -48,19 +48,38 @@ h1{margin:0;font-size:20px;color:#ead7ff;text-shadow:0 0 12px #b45cff}
   border-radius:14px;
   box-shadow:0 0 14px #8b4dff;
 }
-.upperArt::before,
+.upperArt::before{
+  content:"";
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  height:30%;
+  z-index:3;
+  background:linear-gradient(180deg,#06000c 0%,#180026 70%,rgba(24,0,38,.85) 100%);
+  box-shadow:0 0 18px #8b4dff inset;
+}
 .upperArt::after{
   content:"";
   position:absolute;
   top:0;
+  right:0;
   width:7%;
   height:100%;
-  z-index:2;
+  z-index:4;
+  background:linear-gradient(90deg,#180026,#050008);
+  box-shadow:0 0 18px #8b4dff inset;
+}
+.sideCover{
+  position:absolute;
+  top:0;
+  left:0;
+  width:7%;
+  height:100%;
+  z-index:4;
   background:linear-gradient(90deg,#050008,#180026);
   box-shadow:0 0 18px #8b4dff inset;
 }
-.upperArt::before{left:0;border-radius:14px 0 0 14px}
-.upperArt::after{right:0;border-radius:0 14px 14px 0}
 .panelImg{
   width:112%;
   margin-left:-6%;
@@ -68,23 +87,6 @@ h1{margin:0;font-size:20px;color:#ead7ff;text-shadow:0 0 12px #b45cff}
   display:block;
 }
 .apoc{box-shadow:0 0 25px #c084ff;background:rgba(70,0,100,.55)}
-
-.seals{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-top:6px}
-.seal{
-  min-height:34px;
-  border-radius:10px;
-  border:1px solid #333;
-  background:#080808;
-  color:#555;
-  font-size:10px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  flex-direction:column;
-}
-.on{color:#fff;box-shadow:0 0 12px currentColor;border-color:currentColor}
-.blink{animation:blink .5s infinite alternate}
-@keyframes blink{from{filter:brightness(1)}to{filter:brightness(2.6)}}
 
 .state{font-weight:bold;color:#fff3a0}
 .reels{display:flex;gap:8px;justify-content:center;margin:10px 0}
@@ -140,10 +142,7 @@ button:disabled{opacity:.35}
 .reset{background:linear-gradient(#555,#111)}
 .small{font-size:11px;color:#ccc}
 
-.lowerWrap{
-  position:relative;
-  width:100%;
-}
+.lowerWrap{position:relative;width:100%}
 .lowerPanelImg{
   width:100%;
   border-radius:14px;
@@ -184,14 +183,13 @@ button:disabled{opacity:.35}
   <div class="topLed"></div>
   <div class="logo">🌱 遊創舎</div>
   <h1>七つの刻印</h1>
-  <div class="version">SEVEN SEALS Ver.0.2.2 パネル調整版</div>
+  <div class="version">SEVEN SEALS Ver.0.2.3</div>
 
   <div id="upperPanel" class="panel">
     <div class="upperArt">
+      <span class="sideCover"></span>
       <img id="mainPanelImg" class="panelImg" src="seven_seals_panel_normal.png" alt="七つの刻印 通常パネル">
     </div>
-    <div class="small">七紋章</div>
-    <div id="seals" class="seals"></div>
   </div>
 
   <div class="panel">
@@ -291,7 +289,6 @@ function symbolHtml(name){
 function setReel(i,name){$("r"+i).innerHTML=symbolHtml(name)}
 
 function build(){
- $("seals").innerHTML=guardians.map(g=>`<div id="seal-${g.id}" class="seal"><span>${g.symbol}</span><span>${g.name}</span></div>`).join("");
  guardians.forEach((g,i)=>{
    const low=$("low-"+g.id);
    low.style.left=(i*14.285)+"%";
@@ -317,7 +314,6 @@ function update(){
  for(let i=0;i<3;i++) $("s"+i).disabled=!isSpinning;
 
  updatePanelImage();
- updateSeals();
  updateLowerGlow();
 
  let sub="";
@@ -328,7 +324,7 @@ function update(){
  }else if(state==="守護者BONUS"){
    sub=`守護者BONUS 残り${bonusGamesLeft}G`;
  }else if(state==="終焉ノ刻"){
-   sub=`終焉ノ刻：残存紋章 ${shuenGamesLeft}`;
+   sub=`終焉ノ刻：残り${shuenGamesLeft}G`;
  }else if(directQueue.length>0){
    sub=`直撃後特典：守護者MODE残り ${directQueue.length}回`;
  }else{
@@ -346,22 +342,6 @@ function updatePanelImage(){
    img.src=IMG.normalPanel;
    $("upperPanel").classList.remove("apoc");
  }
-}
-
-function updateSeals(){
- guardians.forEach((g,i)=>{
-  const e=$("seal-"+g.id);
-  e.className="seal";
-  e.style.color="";
-  if(state==="終焉ノ刻"){
-    if(i<shuenGamesLeft){e.classList.add("on");e.style.color=g.color}
-  }else if(ownedSeals.includes(g.id)){
-    e.classList.add("on");e.style.color=g.color;
-  }
-  if(state==="守護者MODE"&&currentGuardian&&currentGuardian.id===g.id){
-    e.classList.add("blink");e.style.color=g.color;
-  }
- });
 }
 
 function updateLowerGlow(){
