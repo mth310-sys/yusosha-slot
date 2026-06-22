@@ -2,548 +2,66 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>七つの刻印 Ver.0.1</title>
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>七つの刻印 Ver.0.1.0</title>
 <style>
 *{box-sizing:border-box}
 body{
   margin:0;
-  background:radial-gradient(circle,#210033,#030005 60%,#000);
-  color:white;
-  font-family:"Yu Mincho","Hiragino Mincho ProN",serif;
+  background:radial-gradient(circle,#2b1245,#050008 70%);
+  color:#fff;
+  font-family:sans-serif;
   text-align:center;
 }
-.wrap{max-width:390px;margin:auto;padding:4px}
+.wrap{max-width:420px;margin:auto;padding:6px}
 .machine{
-  background:linear-gradient(145deg,#1b0028,#050007 45%,#160022);
-  border:4px solid #7d39ff;
-  border-radius:22px;
-  padding:6px;
-  box-shadow:0 0 18px #8b35ff,inset 0 0 25px #000;
-  overflow:hidden;
-}
-.title{
-  font-size:22px;font-weight:bold;color:#eee0ff;
-  text-shadow:0 0 10px #b979ff;
-  line-height:1.1;
-}
-.sub{font-size:10px;letter-spacing:4px;color:#c992ff}
-.topPanel{
-  height:82px;
-  border:2px solid #a86aff;
-  border-radius:12px;
-  margin:5px 0;
-  background:url("seven_seals_panel_normal.png") center/cover no-repeat;
-  box-shadow:0 0 10px #742cff;
-}
-.topPanel.apo{
-  background-image:url("seven_seals_panel_apocalis.jpeg");
-  animation:flash 0.6s infinite alternate;
-}
-.compact{
-  display:grid;
-  grid-template-columns:1.2fr .8fr;
-  gap:5px;
-}
-.seals{
-  display:grid;
-  grid-template-columns:repeat(7,1fr);
-  gap:3px;
-  padding:4px;
-  background:#09000f;
-  border:1px solid #55218a;
-  border-radius:9px;
-}
-.seal{
-  aspect-ratio:1/1;
-  border-radius:50%;
-  background:#111;
-  border:1px solid #555;
-  opacity:.25;
-}
-.seal.on,.seal.active{
-  opacity:1;
-  box-shadow:0 0 10px currentColor,inset 0 0 8px currentColor;
-}
-.state{
-  font-size:11px;
-  padding:5px;
-  border-radius:9px;
-  background:#12001e;
-  border:1px solid #7336b8;
-}
-.reels{
-  display:flex;
-  gap:6px;
-  justify-content:center;
-  padding:8px;
-  margin-top:5px;
-  background:#030004;
-  border:2px solid #4a176d;
-  border-radius:14px;
-}
-.reel{
-  width:82px;height:98px;
-  background:white;
-  border:3px solid #2b003d;
-  border-radius:10px;
-  display:flex;align-items:center;justify-content:center;
-  overflow:hidden;
-}
-.reel img{width:74px;height:74px;object-fit:contain}
-.msg,.modeInfo{
-  margin-top:5px;
-  padding:6px;
-  min-height:34px;
-  border-radius:10px;
-  background:#0b0013;
-  border:1px solid #6b31a8;
-  font-size:12px;
-  font-weight:bold;
-}
-.modeInfo{min-height:40px;color:#ead8ff}
-.info{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:4px;
-  margin-top:5px;
-}
-.box{
-  background:#12001d;
-  border:1px solid #8746d8;
-  border-radius:8px;
-  padding:4px;
-  font-size:10px;
-}
-.box b{display:block;font-size:18px}
-.ctrl{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:4px;
-  margin-top:5px;
-}
-button{
-  border:none;
-  border-radius:10px;
-  padding:10px 2px;
-  color:white;
-  font-weight:bold;
-  background:linear-gradient(#7e37ff,#280043);
-  box-shadow:0 3px 0 #12001e,0 0 8px #7d2cff;
-  font-size:11px;
-}
-button:disabled{opacity:.35;filter:grayscale(1)}
-.stops{
-  display:flex;
-  justify-content:center;
-  gap:14px;
-  margin:8px 0 5px;
-}
-.stop{
-  width:62px;height:62px;
-  border-radius:50%;
-  background:radial-gradient(circle,#ff3838,#760000);
-  border:4px solid #ffb2b2;
-  box-shadow:0 0 10px #f33;
-}
-.bottomPanel{
-  height:96px;
-  background:url("24BE7708-F796-4B2F-BDEA-77A632106F3C.jpeg") center/cover no-repeat;
-  border:2px solid #7b3cff;
-  border-radius:12px;
   position:relative;
   overflow:hidden;
+  border:6px solid #8b4dff;
+  border-radius:26px;
+  padding:10px;
+  background:linear-gradient(135deg,#12001f,#050008,#2a063f,#050008);
+  box-shadow:0 0 22px #9b4dff,inset 0 0 30px #000;
 }
-.bottomPanel::after{
-  content:"";
-  position:absolute;top:0;bottom:0;width:14.285%;
-  left:calc(var(--g,-1) * 14.285%);
-  background:linear-gradient(transparent,rgba(255,255,255,.38),transparent);
-  box-shadow:0 0 25px var(--gc,#fff);
-  opacity:0;
+.topLed{
+  height:24px;
+  border-radius:14px;
+  background:linear-gradient(90deg,#3b0066,#c084ff,#3b0066);
+  animation:run 1.8s linear infinite;
 }
-.bottomPanel.guardian::after{opacity:1;animation:pulse .7s infinite alternate}
-.bottomPanel.all{animation:flash .7s infinite alternate}
-body.modeAura{box-shadow:inset 0 0 80px var(--aura)}
-@keyframes pulse{from{opacity:.35}to{opacity:1}}
-@keyframes flash{from{filter:brightness(1)}to{filter:brightness(1.45) saturate(1.5)}}
-</style>
-</head>
+@keyframes run{50%{filter:brightness(2)}}
+.logo{font-size:13px;color:#d8b7ff;margin-top:6px}
+h1{margin:2px 0;font-size:28px;color:#ead7ff;text-shadow:0 0 12px #b45cff}
+.version{font-size:11px;color:#caa7ff}
 
-<body>
-<div class="wrap">
-<div class="machine">
-
-  <div class="title">七つの刻印<div class="sub">SEVEN SEALS</div></div>
-  <div id="topPanel" class="topPanel"></div>
-
-  <div class="compact">
-    <div id="sealArea" class="seals"></div>
-    <div id="state" class="state">STATE：通常</div>
-  </div>
-
-  <div class="reels">
-    <div class="reel"><img id="r0"></div>
-    <div class="reel"><img id="r1"></div>
-    <div class="reel"><img id="r2"></div>
-  </div>
-
-  <div id="msg" class="msg">BETしてください</div>
-  <div id="modeInfo" class="modeInfo">通常時：刻印揃いで守護者MODE抽選</div>
-
-  <div class="info">
-    <div class="box">CREDIT<b id="credit">100</b></div>
-    <div class="box">BET<b id="bet">0</b></div>
-    <div class="box">PAY<b id="pay">0</b></div>
-  </div>
-
-  <div class="ctrl">
-    <button id="betBtn">BET</button>
-    <button id="maxBetBtn">MAX BET</button>
-    <button id="startBtn">START</button>
-    <button id="resetBtn">RESET</button>
-  </div>
-
-  <div class="stops">
-    <button id="s0" class="stop">STOP</button>
-    <button id="s1" class="stop">STOP</button>
-    <button id="s2" class="stop">STOP</button>
-  </div>
-
-  <div id="bottomPanel" class="bottomPanel"></div>
-
-</div>
-</div>
-
-<script>
-const symbolFiles={
-  BELL:"symbol_bell.png",
-  SEAL:"symbol_seal.png",
-  CHERRY:"symbol_cherry.png",
-  BLUE7:"symbol_bluepurple7.png",
-  REPLAY:"symbol_replay.png",
-  RED7:"symbol_red7.png",
-  MISS:"symbol_seal.png"
-};
-
-const guardians=[
-  {n:"傲慢",c:"#ffd84a",limit:5,goal:1,type:"RED_TENPAI",text:"赤7テンパイ"},
-  {n:"嫉妬",c:"#3cff65",limit:15,goal:5,type:"CHERRY",text:"チェリー"},
-  {n:"憤怒",c:"#ff3030",limit:20,goal:7,type:"BELL",text:"ベル"},
-  {n:"怠惰",c:"#4ab7ff",limit:20,goal:6,type:"MISS",text:"ハズレ"},
-  {n:"強欲",c:"#b34aff",limit:20,goal:40,type:"PAY",text:"払出"},
-  {n:"暴食",c:"#ff8a20",limit:15,goal:5,type:"ROLE",text:"役成立"},
-  {n:"色欲",c:"#ff5ac8",limit:10,goal:7,type:"REPLAY",text:"リプレイ"}
-];
-
-const $=id=>document.getElementById(id);
-
-let credit=100,bet=0,pay=0;
-let reels=["CHERRY","REPLAY","BELL"];
-let result=["","",""];
-let timers=[null,null,null];
-let spinning=false;
-let stopped=[false,false,false];
-
-let state="通常";
-let seals=Array(7).fill(false);
-let activeGuardian=null;
-let modeLeft=0;
-let modeCount=0;
-let endLeft=0;
-let directStock=false;
-
-function init(){
-  $("sealArea").innerHTML="";
-  guardians.forEach((g,i)=>{
-    const d=document.createElement("div");
-    d.id="seal"+i;
-    d.className="seal";
-    d.style.color=g.c;
-    $("sealArea").appendChild(d);
-  });
-  update();
+.panel{
+  margin:8px 0;
+  padding:8px;
+  border:2px solid #7a36d6;
+  border-radius:16px;
+  background:rgba(0,0,0,.45);
 }
+.apoc{box-shadow:0 0 22px #c084ff;background:rgba(70,0,100,.55)}
 
-function update(){
-  $("credit").textContent=credit;
-  $("bet").textContent=bet;
-  $("pay").textContent=pay;
-  $("state").textContent="STATE："+state;
-  reels.forEach((s,i)=>$("r"+i).src=symbolFiles[s]);
-
-  guardians.forEach((g,i)=>{
-    $("seal"+i).className="seal"+(seals[i]?" on":"")+(activeGuardian===i?" active":"");
-  });
-
-  $("betBtn").disabled=spinning||bet>=3||credit<=0;
-  $("maxBetBtn").disabled=spinning||bet>=3||credit<=0;
-  $("startBtn").disabled=spinning||bet!==3;
-  document.querySelectorAll(".stop").forEach((b,i)=>b.disabled=!spinning||stopped[i]);
-
-  $("topPanel").classList.toggle("apo",state==="終焉ノ刻"||state==="アポカリスチャレンジ");
-  $("bottomPanel").classList.toggle("all",state==="終焉ノ刻");
-  $("bottomPanel").classList.toggle("guardian",activeGuardian!==null);
-  $("bottomPanel").style.setProperty("--g",activeGuardian===null?-1:activeGuardian);
-  $("bottomPanel").style.setProperty("--gc",activeGuardian===null?"#fff":guardians[activeGuardian].c);
-
-  document.body.classList.toggle("modeAura",activeGuardian!==null||state==="終焉ノ刻");
-  document.body.style.setProperty("--aura",activeGuardian!==null?guardians[activeGuardian].c:"#8a35ff");
-
-  updateModeInfo();
+.seals,.guardians{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.seal,.guardian{
+  min-height:42px;
+  border-radius:10px;
+  border:1px solid #333;
+  background:#080808;
+  color:#555;
+  font-size:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
 }
+.on{color:#fff;box-shadow:0 0 12px currentColor;border-color:currentColor}
+.blink{animation:blink .5s infinite alternate}
+@keyframes blink{from{filter:brightness(1)}to{filter:brightness(2.5)}}
 
-function updateModeInfo(){
-  if(activeGuardian!==null){
-    const g=guardians[activeGuardian];
-    $("modeInfo").innerHTML=
-      `${g.n}MODE：残り${modeLeft}G<br>${g.text} ${modeCount}/${g.goal}`;
-  }else if(state==="終焉ノ刻"){
-    $("modeInfo").innerHTML=`終焉ノ刻：残り紋章 ${endLeft}/7<br>青紫7成立でSPECIAL BONUS`;
-  }else{
-    $("modeInfo").innerHTML=
-      `通常時：刻印揃いで守護者MODE<br>七刻印完成で終焉ノ刻`;
-  }
-}
-
-function msg(t){$("msg").textContent=t}
-function addCredit(n){credit=Math.min(9999,credit+n)}
-function rand(a){return a[Math.floor(Math.random()*a.length)]}
-function randSym(){return rand(["BELL","SEAL","CHERRY","BLUE7","REPLAY","RED7"])}
-
-function betOne(){
-  if(spinning||bet>=3||credit<=0)return;
-  credit--;bet++;pay=0;
-  msg(bet===3?"STARTできます":"BETしてください");
-  update();
-}
-
-function maxBet(){
-  while(bet<3&&credit>0){credit--;bet++}
-  pay=0;msg("STARTできます");update();
-}
-
-function chooseResult(){
-  if(state==="終焉ノ刻"){
-    const rates=[.10,.10,.10,.15,.15,.20,.50];
-    const turn=7-endLeft;
-    return Math.random()<rates[turn]
-      ?["BLUE7","BLUE7","BLUE7"]
-      :normalLottery();
-  }
-  return normalLottery();
-}
-
-function normalLottery(){
-  const r=Math.random();
-  if(r<0.0005)return["BLUE7","BLUE7","BLUE7"];
-  if(r<0.015)return["BLUE7","BLUE7","SEAL"];
-  if(r<0.04)return["RED7","RED7","SEAL"];
-  if(r<0.075)return["SEAL","SEAL","SEAL"];
-  if(r<0.115)return["SEAL","SEAL","BELL"];
-  if(r<0.24)return["REPLAY","REPLAY","REPLAY"];
-  if(r<0.38)return["BELL","BELL","BELL"];
-  if(r<0.43)return["CHERRY","CHERRY","CHERRY"];
-  if(r<0.53)return["RED7","RED7",randSym()];
-  return[randSym(),randSym(),randSym()];
-}
-
-function start(){
-  if(bet!==3||spinning)return;
-  spinning=true;
-  stopped=[false,false,false];
-  result=chooseResult();
-  msg("順押しで停止してください");
-  for(let i=0;i<3;i++){
-    timers[i]=setInterval(()=>{
-      reels[i]=randSym();
-      update();
-    },70);
-  }
-  update();
-}
-
-function stopReel(i){
-  if(!spinning||stopped[i])return;
-  if(i>0&&!stopped[i-1]){
-    msg("順押しのみです");
-    return;
-  }
-  clearInterval(timers[i]);
-  reels[i]=result[i];
-  stopped[i]=true;
-  if(stopped.every(Boolean)){
-    spinning=false;
-    bet=0;
-    judge();
-  }
-  update();
-}
-
-function roleType(){
-  const a=reels.join(",");
-  if(a==="BELL,BELL,BELL")return"BELL";
-  if(a==="CHERRY,CHERRY,CHERRY")return"CHERRY";
-  if(a==="REPLAY,REPLAY,REPLAY")return"REPLAY";
-  if(a==="SEAL,SEAL,SEAL")return"SEAL";
-  if(a==="SEAL,SEAL,BELL")return"CHANCE";
-  if(reels[0]==="RED7"&&reels[1]==="RED7")return"RED_TENPAI";
-  if(a==="BLUE7,BLUE7,BLUE7")return"BLUE7";
-  if(a==="BLUE7,BLUE7,SEAL")return"MYTH";
-  if(a==="RED7,RED7,SEAL")return"GBONUS";
-  return"MISS";
-}
-
-function judge(){
-  pay=0;
-  const rt=roleType();
-
-  if(state==="終焉ノ刻"){
-    judgeEnd(rt);
-    return;
-  }
-
-  if(activeGuardian!==null){
-    judgeGuardian(rt);
-    return;
-  }
-
-  if(rt==="BLUE7"){
-    pay=100;addCredit(100);
-    directStock=true;
-    enterEnd("青紫7揃い！終焉ノ刻直撃");
-  }else if(rt==="MYTH"){
-    pay=80;addCredit(80);
-    state="神話BONUS";
-    msg("神話BONUS 80枚");
-    apocalisChallenge();
-  }else if(rt==="GBONUS"){
-    pay=50;addCredit(50);
-    state="守護者BONUS";
-    msg("守護者BONUS 50枚");
-  }else if(rt==="SEAL"){
-    msg("刻印揃い！守護者MODE確定");
-    enterGuardian();
-  }else if(rt==="CHANCE"){
-    msg("チャンス目");
-    if(Math.random()<0.40)enterGuardian();
-    else state="通常";
-  }else if(rt==="BELL"){
-    pay=8;addCredit(8);state="通常";msg("ベル 8枚");
-  }else if(rt==="CHERRY"){
-    pay=2;addCredit(2);state="刻印高確";msg("チェリー 2枚 / 刻印高確");
-  }else if(rt==="REPLAY"){
-    state="通常";msg("リプレイ");
-  }else{
-    state="通常";msg("ハズレ");
-  }
-  update();
-}
-
-function enterGuardian(){
-  const list=seals.map((v,i)=>v?null:i).filter(v=>v!==null);
-  if(!list.length){enterEnd("七刻印完成！終焉ノ刻");return}
-  activeGuardian=rand(list);
-  const g=guardians[activeGuardian];
-  modeLeft=g.limit;
-  modeCount=0;
-  state=g.n+"MODE";
-  msg(g.n+"MODE開始");
-  update();
-}
-
-function judgeGuardian(rt){
-  const g=guardians[activeGuardian];
-  modeLeft--;
-
-  let gainedPay=0;
-  if(rt==="BELL"){pay=8;gainedPay=8;addCredit(8)}
-  else if(rt==="CHERRY"){pay=2;gainedPay=2;addCredit(2)}
-  else pay=0;
-
-  if(g.type==="RED_TENPAI"&&rt==="RED_TENPAI")modeCount++;
-  if(g.type==="CHERRY"&&rt==="CHERRY")modeCount++;
-  if(g.type==="BELL"&&rt==="BELL")modeCount++;
-  if(g.type==="MISS"&&rt==="MISS")modeCount++;
-  if(g.type==="PAY")modeCount+=gainedPay;
-  if(g.type==="ROLE"&&rt!=="MISS")modeCount++;
-  if(g.type==="REPLAY"&&rt==="REPLAY")modeCount++;
-
-  if(modeCount>=g.goal){
-    seals[activeGuardian]=true;
-    msg(g.n+"MODE成功！刻印獲得");
-    activeGuardian=null;
-    if(seals.every(Boolean))enterEnd("七刻印完成！アポカリス降臨");
-    else state="通常";
-  }else if(modeLeft<=0){
-    msg(g.n+"MODE失敗");
-    activeGuardian=null;
-    state="通常";
-  }else{
-    msg(g.n+"MODE進行中");
-  }
-  update();
-}
-
-function apocalisChallenge(){
-  state="アポカリスチャレンジ";
-  msg("アポカリスチャレンジ");
-  setTimeout(()=>{
-    if(Math.random()<0.35)enterEnd("チャレンジ成功！終焉ノ刻");
-    else{state="通常";msg("チャレンジ失敗");update();}
-  },500);
-}
-
-function enterEnd(text){
-  activeGuardian=null;
-  state="終焉ノ刻";
-  endLeft=7;
-  msg(text);
-  update();
-}
-
-function judgeEnd(rt){
-  endLeft--;
-
-  if(rt==="BLUE7"){
-    pay=100;addCredit(100);
-    endLeft=7;
-    msg("SPECIAL BONUS 100枚！終焉ノ刻再セット");
-  }else if(endLeft<=0){
-    msg("終焉ノ刻終了");
-    state="通常";
-    seals=Array(7).fill(false);
-    if(directStock){
-      directStock=false;
-      msg("直撃特典：守護者MODEへ");
-      enterGuardian();
-    }
-  }else{
-    msg("終焉ノ刻 継続");
-  }
-  update();
-}
-
-function reset(){
-  timers.forEach(t=>clearInterval(t));
-  credit=100;bet=0;pay=0;
-  reels=["CHERRY","REPLAY","BELL"];
-  spinning=false;stopped=[false,false,false];
-  state="通常";seals=Array(7).fill(false);
-  activeGuardian=null;modeLeft=0;modeCount=0;endLeft=0;directStock=false;
-  msg("BETしてください");
-  update();
-}
-
-$("betBtn").onclick=betOne;
-$("maxBetBtn").onclick=maxBet;
-$("startBtn").onclick=start;
-$("resetBtn").onclick=reset;
-$("s0").onclick=()=>stopReel(0);
-$("s1").onclick=()=>stopReel(1);
-$("s2").onclick=()=>stopReel(2);
-
-init();
-</script>
-</body>
-</html>
+.state{font-weight:bold;color:#fff3a0}
+.reels{display:flex;gap:8px;justify-content:center;margin:10px 0}
+.reel{
+  width:92px;height:116px;
+  border:4px
