@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>七つの刻印 Ver.0.4.0 画像筐体版</title>
+<title>七つの刻印 Ver.0.4.1 画像筐体版</title>
 <style>
 *{box-sizing:border-box}
 
 body{
   margin:0;
-  background:radial-gradient(circle,#2b1245,#020005 72%);
+  background:#050008;
   color:white;
   font-family:sans-serif;
   text-align:center;
@@ -18,7 +18,7 @@ body{
 .wrap{
   max-width:430px;
   margin:auto;
-  padding:6px;
+  padding:4px;
 }
 
 .machine{
@@ -46,44 +46,17 @@ body{
   z-index:2;
 }
 
-.lcd{
-  position:absolute;
-  left:12%;
-  top:8%;
-  width:76%;
-  height:26%;
-  border-radius:10px;
-  overflow:hidden;
-}
-
-.lcd img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.modeBar{
-  position:absolute;
-  left:12%;
-  top:34.8%;
-  width:76%;
-}
-
-.modeBar img{
-  width:100%;
-  display:block;
-}
-
+/* リールだけ重ねる */
 .reels{
   position:absolute;
-  left:18%;
-  top:42.5%;
-  width:64%;
-  height:14.5%;
+  left:25.5%;
+  top:45.5%;
+  width:49%;
+  height:13.2%;
   display:grid;
   grid-template-columns:repeat(3,1fr);
-  gap:3%;
-  padding:2%;
+  gap:3.5%;
+  padding:0;
 }
 
 .reel{
@@ -91,12 +64,15 @@ body{
   border:3px solid #d7c6ff;
   border-radius:10px;
   color:#22002f;
-  font-size:16px;
+  font-size:15px;
   font-weight:bold;
   display:flex;
   align-items:center;
   justify-content:center;
-  box-shadow:inset 0 0 12px #000,0 0 8px #8b4dff;
+  box-shadow:
+    inset 0 0 12px #000,
+    0 0 8px #8b4dff;
+  overflow:hidden;
 }
 
 .spin{
@@ -107,111 +83,142 @@ body{
   50%{transform:translateY(4px);filter:blur(1px)}
 }
 
-.status{
+/* 数字だけ重ねる */
+.creditNum{
   position:absolute;
-  left:15%;
-  top:59%;
-  width:70%;
-  font-size:12px;
-  color:#ffeab7;
-  text-shadow:0 0 8px #b45cff;
-  font-weight:bold;
+  left:35%;
+  top:62.8%;
+  width:12%;
+  font-family:monospace;
+  font-size:14px;
+  color:#ff2424;
+  text-shadow:0 0 6px #ff0000;
 }
 
-.info{
+.betNum{
   position:absolute;
-  left:15%;
-  top:63.5%;
-  width:70%;
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  gap:4px;
-}
-
-.info div{
-  background:rgba(0,0,0,.75);
-  border:1px solid #8b4dff;
-  border-radius:8px;
-  padding:3px;
-  font-size:10px;
-}
-
-.info b{
-  display:block;
-  font-size:16px;
+  left:49%;
+  top:62.8%;
+  width:8%;
+  font-family:monospace;
+  font-size:14px;
   color:#7dff9b;
-  text-shadow:0 0 8px #4dff78;
+  text-shadow:0 0 6px #4dff78;
 }
 
-.controls{
+.payNum{
   position:absolute;
-  left:13%;
-  top:69%;
-  width:74%;
-  display:flex;
-  justify-content:center;
-  gap:4px;
+  left:60.5%;
+  top:62.8%;
+  width:12%;
+  font-family:monospace;
+  font-size:14px;
+  color:#ff2424;
+  text-shadow:0 0 6px #ff0000;
 }
 
-button{
-  border:none;
-  border-radius:10px;
-  padding:8px 9px;
+/* 状態表示 */
+.stateText{
+  position:absolute;
+  left:33%;
+  top:60.4%;
+  width:34%;
+  font-size:11px;
+  color:#ffeab7;
   font-weight:bold;
-  color:white;
-  background:linear-gradient(#c8a8ff,#6d22c9,#260045);
-  box-shadow:0 3px 0 #100018,0 0 8px #8b4dff;
+  text-shadow:0 0 6px #b45cff;
+  pointer-events:none;
+}
+
+/* メッセージ */
+.msg{
+  position:absolute;
+  left:18%;
+  top:73.2%;
+  width:64%;
+  min-height:20px;
+  color:#fff3a0;
+  font-size:13px;
+  font-weight:bold;
+  text-shadow:0 0 8px #b45cff;
+  pointer-events:none;
+}
+
+/* 透明操作ボタン */
+button{
+  position:absolute;
+  border:none;
+  background:rgba(255,255,255,.01);
+  color:transparent;
+  padding:0;
+  z-index:4;
+  -webkit-tap-highlight-color:transparent;
+}
+
+button:active{
+  background:rgba(255,255,255,.18);
+  box-shadow:0 0 12px #fff;
+}
+
+/* 筐体画像上の実ボタン位置に合わせる */
+#startBtn{
+  left:13.3%;
+  top:62.2%;
+  width:14%;
+  height:4.4%;
+  border-radius:50%;
+}
+
+#maxBetBtn{
+  left:27%;
+  top:62.2%;
+  width:13%;
+  height:4.4%;
+  border-radius:50%;
+}
+
+#resetBtn{
+  left:77%;
+  top:62.2%;
+  width:15%;
+  height:4.4%;
+  border-radius:50%;
+}
+
+#betBtn{
+  left:42.5%;
+  top:62.2%;
+  width:7%;
+  height:4.4%;
+  border-radius:8px;
+}
+
+#s0{
+  left:31%;
+  top:68.2%;
+  width:11%;
+  height:5.6%;
+  border-radius:50%;
+}
+
+#s1{
+  left:45%;
+  top:68.2%;
+  width:11%;
+  height:5.6%;
+  border-radius:50%;
+}
+
+#s2{
+  left:59%;
+  top:68.2%;
+  width:11%;
+  height:5.6%;
+  border-radius:50%;
 }
 
 button:disabled{
-  opacity:.35;
-}
-
-.reset{
-  background:linear-gradient(#777,#111);
-}
-
-.stopArea{
-  position:absolute;
-  left:20%;
-  top:75%;
-  width:60%;
-  display:flex;
-  justify-content:space-around;
-}
-
-.stop{
-  width:58px;
-  height:58px;
-  border-radius:50%;
-  background:radial-gradient(circle at 35% 25%,#ffc0c0,#ff3030 38%,#a00000 68%,#3a0000);
-  box-shadow:0 0 14px rgba(255,0,0,.65),0 5px 0 #240000;
-  font-size:11px;
-}
-
-.lower{
-  position:absolute;
-  left:10%;
-  top:82%;
-  width:80%;
-}
-
-.lower img{
-  width:100%;
-  display:block;
-  border-radius:8px;
-}
-
-.msg{
-  position:absolute;
-  left:10%;
-  top:79.2%;
-  width:80%;
-  min-height:20px;
-  color:#fff3a0;
-  font-size:12px;
-  font-weight:bold;
-  text-shadow:0 0 8px #b45cff;
+  pointer-events:none;
 }
 </style>
 </head>
@@ -222,48 +229,28 @@ button:disabled{
     <img class="base" src="machine_base_full.png" alt="七つの刻印 筐体">
 
     <div class="layer">
-      <div class="lcd">
-        <img src="main_lcd_area.png" alt="液晶">
-      </div>
-
-      <div class="modeBar">
-        <img src="mode_777_bell_bar.png" alt="モードバー">
-      </div>
-
       <div class="reels">
         <div id="r0" class="reel">刻印</div>
         <div id="r1" class="reel">ベル</div>
         <div id="r2" class="reel">リプ</div>
       </div>
 
-      <div class="status">
-        STATE：<span id="stateView">通常</span>
-      </div>
+      <div class="stateText">STATE：<span id="stateView">通常</span></div>
 
-      <div class="info">
-        <div>CREDIT<b id="creditView">100</b></div>
-        <div>BET<b id="betView">0</b></div>
-        <div>PAY<b id="payView">0</b></div>
-      </div>
-
-      <div class="controls">
-        <button id="betBtn">BET</button>
-        <button id="maxBetBtn">MAX</button>
-        <button id="startBtn">START</button>
-        <button id="resetBtn" class="reset">RESET</button>
-      </div>
-
-      <div class="stopArea">
-        <button id="s0" class="stop">STOP</button>
-        <button id="s1" class="stop">STOP</button>
-        <button id="s2" class="stop">STOP</button>
-      </div>
+      <div id="creditView" class="creditNum">100</div>
+      <div id="betView" class="betNum">0</div>
+      <div id="payView" class="payNum">0</div>
 
       <div id="msg" class="msg">BETしてください</div>
 
-      <div class="lower">
-        <img src="sins_lower_panel.png" alt="Seven Deadly Sins 下パネル">
-      </div>
+      <button id="startBtn">START</button>
+      <button id="maxBetBtn">MAX</button>
+      <button id="betBtn">BET</button>
+      <button id="resetBtn">RESET</button>
+
+      <button id="s0">STOP</button>
+      <button id="s1">STOP</button>
+      <button id="s2">STOP</button>
     </div>
   </div>
 </div>
@@ -356,20 +343,22 @@ function stop(i){
     spinning=false;
     bet=0;
 
-    if(result.join("")==="刻印刻印刻印"){
+    const joined=result.join("");
+
+    if(joined==="刻印刻印刻印"){
       pay=0;
       $("stateView").textContent="守護者MODE";
       message("刻印揃い！守護者MODE確定");
-    }else if(result.join("")==="青紫7青紫7青紫7"){
+    }else if(joined==="青紫7青紫7青紫7"){
       pay=100;
       credit+=pay;
       $("stateView").textContent="終焉ノ刻";
       message("青紫7揃い！終焉ノ刻");
-    }else if(result.join("")==="ベルベルベル"){
+    }else if(joined==="ベルベルベル"){
       pay=8;
       credit+=pay;
       message("ベル 8枚");
-    }else if(result.join("")==="リプリプリプ"){
+    }else if(joined==="リプリプリプ"){
       pay=0;
       message("リプレイ");
     }else{
