@@ -3,202 +3,411 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>七つの刻印 Ver.0.4.0</title>
+<title>七つの刻印 Ver.0.4.0 画像筐体版</title>
 <style>
 *{box-sizing:border-box}
+
 body{
   margin:0;
   background:radial-gradient(circle,#2b1245,#020005 72%);
-  color:#fff;
+  color:white;
   font-family:sans-serif;
   text-align:center;
 }
-.wrap{max-width:440px;margin:auto;padding:6px}
+
+.wrap{
+  max-width:430px;
+  margin:auto;
+  padding:6px;
+}
+
 .machine{
   position:relative;
+  width:100%;
+  aspect-ratio:525/990;
+  margin:auto;
   overflow:hidden;
-  border:10px solid #050505;
-  border-radius:34px;
-  padding:8px 12px 12px;
-  background:
-    linear-gradient(90deg,rgba(255,255,255,.65),rgba(0,0,0,.25),rgba(145,65,255,.3),rgba(0,0,0,.3),rgba(255,255,255,.65)),
-    linear-gradient(135deg,#eee,#15131a 18%,#2b1640,#08060d,#35195c,#fff);
-  box-shadow:0 0 42px #9b4dff,inset 0 0 58px #000,inset 0 0 0 7px rgba(255,255,255,.12);
+  filter:drop-shadow(0 0 24px #9b4dff);
 }
-.machine>*{position:relative;z-index:2}
-.sideMetal{
-  position:absolute;top:38px;width:32px;height:78%;z-index:1;border-radius:18px;
-  background:linear-gradient(90deg,#050505,#444,#fff,#7d39ff,#1b0030);
-  box-shadow:inset 0 0 22px #fff,inset 0 0 22px #000,0 0 22px #b45cff;
-}
-.sideMetal.left{left:4px}.sideMetal.right{right:4px;transform:scaleX(-1)}
 
-.topUnit{
-  height:42px;border-radius:18px;margin-bottom:5px;
-  background:linear-gradient(135deg,#08000d,#2d0048,#050008);
-  box-shadow:inset 0 0 18px #000,0 0 18px #b45cff;
-  display:flex;align-items:center;justify-content:center;
+.base{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:contain;
+  z-index:1;
+  pointer-events:none;
 }
-.topUnit b{font-size:22px;color:#ead7ff;text-shadow:0 0 10px #fff,0 0 18px #9b4dff}
 
-.panel{
-  margin:5px 0;padding:5px;border:2px solid #c6a8ff;border-radius:16px;
-  background:linear-gradient(180deg,rgba(255,255,255,.18),rgba(80,0,120,.82) 12%,rgba(10,0,20,.9) 72%,rgba(180,130,255,.2));
-  box-shadow:inset 0 0 16px #000,0 0 12px rgba(180,92,255,.7);
+.layer{
+  position:absolute;
+  inset:0;
+  z-index:2;
 }
-.upperArt{overflow:hidden;border-radius:14px;border:2px solid rgba(255,255,255,.18);box-shadow:0 0 18px #8b4dff,inset 0 0 24px #000}
-.panelImg{width:100%;display:block;border-radius:12px}
+
+.lcd{
+  position:absolute;
+  left:12%;
+  top:8%;
+  width:76%;
+  height:26%;
+  border-radius:10px;
+  overflow:hidden;
+}
+
+.lcd img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
 
 .modeBar{
-  display:grid;grid-template-columns:1.1fr 1fr 1.1fr;gap:4px;align-items:center;
-  padding:6px;border-radius:14px;background:#050008;border:2px solid #7d39ff;
-  box-shadow:inset 0 0 14px #000,0 0 12px #8b4dff;
+  position:absolute;
+  left:12%;
+  top:34.8%;
+  width:76%;
 }
-.modeBox,.chargeBox{font-size:11px;color:#ffeab7;text-shadow:0 0 8px #b45cff}
-.modeBox b{color:#ff4040;font-size:14px}
-.center777{display:flex;justify-content:center;gap:4px}
-.center777 img{width:42px;height:30px;object-fit:contain;filter:drop-shadow(0 0 6px #b45cff)}
 
-.statePanel{font-size:13px}
-.state{font-weight:bold;color:#fff3a0}
-.small{font-size:11px;color:#ccc}
-
-.playArea{display:grid;grid-template-columns:42px 1fr 34px;gap:5px;align-items:stretch;margin-top:5px}
-.sideTitle,.indicators{
-  border-radius:12px;background:#08000d;border:2px solid #7d39ff;
-  box-shadow:inset 0 0 12px #000,0 0 10px #8b4dff;
+.modeBar img{
+  width:100%;
+  display:block;
 }
-.sideTitle{
-  display:flex;align-items:center;justify-content:center;
-  writing-mode:vertical-rl;font-weight:bold;color:#ead7ff;text-shadow:0 0 8px #b45cff;
-}
-.indicators{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
-.indicators span{width:12px;height:12px;border-radius:50%;background:currentColor;box-shadow:0 0 8px currentColor}
 
 .reels{
-  display:flex;gap:7px;justify-content:center;padding:8px;border-radius:16px;
-  background:linear-gradient(180deg,#ddd,#120020 15%,#050008 84%,#9d70ff);
-  box-shadow:inset 0 0 20px #000,0 0 14px #8f48ff;
+  position:absolute;
+  left:18%;
+  top:42.5%;
+  width:64%;
+  height:14.5%;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:3%;
+  padding:2%;
 }
+
 .reel{
-  width:82px;height:106px;border:4px solid #d7c6ff;border-radius:14px;
   background:linear-gradient(#fff,#ddd);
-  display:flex;align-items:center;justify-content:center;overflow:hidden;
-  box-shadow:inset 0 0 18px #000,0 0 12px #8f48ff;
+  border:3px solid #d7c6ff;
+  border-radius:10px;
+  color:#22002f;
+  font-size:16px;
+  font-weight:bold;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  box-shadow:inset 0 0 12px #000,0 0 8px #8b4dff;
 }
-.reel img{max-width:76px;max-height:98px;object-fit:contain}
 
-.msg{min-height:32px;color:#ffeab7;font-weight:bold;text-shadow:0 0 8px #b45cff}
-
-.infoDeck{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:4px;align-items:center}
-.infoDeck div{
-  background:#030006;border:2px solid #8b4dff;border-radius:10px;padding:3px;min-height:42px;
-  box-shadow:inset 0 0 12px #000,0 0 8px rgba(160,80,255,.5);font-size:10px;
+.spin{
+  animation:spin .12s infinite;
 }
-.infoDeck b{font-family:monospace;font-size:16px;color:#7dff9b;text-shadow:0 0 8px #4dff78}
+
+@keyframes spin{
+  50%{transform:translateY(4px);filter:blur(1px)}
+}
+
+.status{
+  position:absolute;
+  left:15%;
+  top:59%;
+  width:70%;
+  font-size:12px;
+  color:#ffeab7;
+  text-shadow:0 0 8px #b45cff;
+  font-weight:bold;
+}
+
+.info{
+  position:absolute;
+  left:15%;
+  top:63.5%;
+  width:70%;
+  display:grid;
+  grid-template-columns:1fr 1fr 1fr;
+  gap:4px;
+}
+
+.info div{
+  background:rgba(0,0,0,.75);
+  border:1px solid #8b4dff;
+  border-radius:8px;
+  padding:3px;
+  font-size:10px;
+}
+
+.info b{
+  display:block;
+  font-size:16px;
+  color:#7dff9b;
+  text-shadow:0 0 8px #4dff78;
+}
+
+.controls{
+  position:absolute;
+  left:13%;
+  top:69%;
+  width:74%;
+  display:flex;
+  justify-content:center;
+  gap:4px;
+}
 
 button{
-  border:none;border-radius:13px;padding:9px;margin:3px;font-weight:bold;color:white;
-  background:linear-gradient(#c8a8ff,#6d22c9 45%,#260045);
-  box-shadow:0 4px 0 #100018,0 0 9px #8b4dff,inset 0 2px 5px rgba(255,255,255,.45);
+  border:none;
+  border-radius:10px;
+  padding:8px 9px;
+  font-weight:bold;
+  color:white;
+  background:linear-gradient(#c8a8ff,#6d22c9,#260045);
+  box-shadow:0 3px 0 #100018,0 0 8px #8b4dff;
 }
-.reset{background:linear-gradient(#777,#111)}
+
+button:disabled{
+  opacity:.35;
+}
+
+.reset{
+  background:linear-gradient(#777,#111);
+}
 
 .stopArea{
-  padding:7px 4px;border-radius:22px;
-  background:linear-gradient(180deg,rgba(255,255,255,.12),rgba(0,0,0,.65));
-  box-shadow:inset 0 0 14px #000;
-}
-.stop{
-  width:64px;height:64px;border-radius:50%;border:3px solid #3b0000;
-  background:radial-gradient(circle at 35% 25%,#ffc0c0,#ff3030 38%,#a00000 68%,#3a0000);
-  box-shadow:0 0 16px rgba(255,0,0,.55),0 6px 0 #240000,inset 0 5px 10px rgba(255,255,255,.35);
+  position:absolute;
+  left:20%;
+  top:75%;
+  width:60%;
+  display:flex;
+  justify-content:space-around;
 }
 
-.lowerWrap{position:relative;width:100%;padding:3px;border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.25),rgba(0,0,0,.5))}
-.lowerPanelImg{width:100%;border-radius:12px;display:block;border:2px solid rgba(255,255,255,.18);box-shadow:0 0 14px #8b4dff}
-.bottomUnit{height:28px;margin-top:6px;border-radius:0 0 22px 22px;background:linear-gradient(180deg,#333,#080808 55%,#000);box-shadow:inset 0 0 12px #000,0 0 14px #8b4dff}
+.stop{
+  width:58px;
+  height:58px;
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 25%,#ffc0c0,#ff3030 38%,#a00000 68%,#3a0000);
+  box-shadow:0 0 14px rgba(255,0,0,.65),0 5px 0 #240000;
+  font-size:11px;
+}
+
+.lower{
+  position:absolute;
+  left:10%;
+  top:82%;
+  width:80%;
+}
+
+.lower img{
+  width:100%;
+  display:block;
+  border-radius:8px;
+}
+
+.msg{
+  position:absolute;
+  left:10%;
+  top:79.2%;
+  width:80%;
+  min-height:20px;
+  color:#fff3a0;
+  font-size:12px;
+  font-weight:bold;
+  text-shadow:0 0 8px #b45cff;
+}
 </style>
 </head>
 
 <body>
 <div class="wrap">
-<div class="machine">
-  <div class="sideMetal left"></div>
-  <div class="sideMetal right"></div>
+  <div class="machine">
+    <img class="base" src="machine_base_full.png" alt="七つの刻印 筐体">
 
-  <div class="topUnit"><b>七つの刻印</b></div>
+    <div class="layer">
+      <div class="lcd">
+        <img src="main_lcd_area.png" alt="液晶">
+      </div>
 
-  <div class="panel">
-    <div class="upperArt">
-      <img class="panelImg" src="seven_seals_panel_normal.png">
+      <div class="modeBar">
+        <img src="mode_777_bell_bar.png" alt="モードバー">
+      </div>
+
+      <div class="reels">
+        <div id="r0" class="reel">刻印</div>
+        <div id="r1" class="reel">ベル</div>
+        <div id="r2" class="reel">リプ</div>
+      </div>
+
+      <div class="status">
+        STATE：<span id="stateView">通常</span>
+      </div>
+
+      <div class="info">
+        <div>CREDIT<b id="creditView">100</b></div>
+        <div>BET<b id="betView">0</b></div>
+        <div>PAY<b id="payView">0</b></div>
+      </div>
+
+      <div class="controls">
+        <button id="betBtn">BET</button>
+        <button id="maxBetBtn">MAX</button>
+        <button id="startBtn">START</button>
+        <button id="resetBtn" class="reset">RESET</button>
+      </div>
+
+      <div class="stopArea">
+        <button id="s0" class="stop">STOP</button>
+        <button id="s1" class="stop">STOP</button>
+        <button id="s2" class="stop">STOP</button>
+      </div>
+
+      <div id="msg" class="msg">BETしてください</div>
+
+      <div class="lower">
+        <img src="sins_lower_panel.png" alt="Seven Deadly Sins 下パネル">
+      </div>
     </div>
   </div>
-
-  <div class="modeBar">
-    <div class="modeBox">MODE<br><b>通常</b></div>
-    <div class="center777">
-      <img src="symbol_bluepurple7.png">
-      <img src="symbol_bluepurple7.png">
-      <img src="symbol_bluepurple7.png">
-    </div>
-    <div class="chargeBox">ベル 00/4</div>
-  </div>
-
-  <div class="panel statePanel">
-    STATE：<span class="state">通常</span>
-    <div class="small">BETしてください</div>
-  </div>
-
-  <div class="playArea">
-    <div class="sideTitle">終焉ノ刻</div>
-
-    <div class="reels">
-      <div class="reel"><img src="symbol_seal.png"></div>
-      <div class="reel"><img src="symbol_bell.png"></div>
-      <div class="reel"><img src="symbol_replay.png"></div>
-    </div>
-
-    <div class="indicators">
-      <span style="color:#ffd84d"></span>
-      <span style="color:#58ff72"></span>
-      <span style="color:#ff4040"></span>
-      <span style="color:#4da6ff"></span>
-      <span style="color:#c084ff"></span>
-      <span style="color:#ff9d2e"></span>
-      <span style="color:#ff8bd8"></span>
-    </div>
-  </div>
-
-  <div class="msg">BETしてください</div>
-
-  <div class="infoDeck">
-    <div>CREDIT<br><b>100</b></div>
-    <div>BET<br><b>0</b></div>
-    <div>PAY<br><b>0</b></div>
-    <button class="reset">RESET</button>
-  </div>
-
-  <div class="panel">
-    <button>BET</button>
-    <button>MAX BET</button>
-    <button>START</button>
-  </div>
-
-  <div class="stopArea">
-    <button class="stop">STOP</button>
-    <button class="stop">STOP</button>
-    <button class="stop">STOP</button>
-  </div>
-
-  <div class="panel">
-    <div class="lowerWrap">
-      <img class="lowerPanelImg" src="24BE7708-F796-4B2F-BDEA-77A632106F3C.PNG">
-    </div>
-  </div>
-
-  <div class="bottomUnit"></div>
 </div>
-</div>
+
+<script>
+let credit=100;
+let bet=0;
+let pay=0;
+let spinning=false;
+let stopped=0;
+let result=["刻印","ベル","リプ"];
+
+const $=id=>document.getElementById(id);
+
+function update(){
+  $("creditView").textContent=credit;
+  $("betView").textContent=bet;
+  $("payView").textContent=pay;
+
+  $("betBtn").disabled=spinning||bet>=3||credit<=0;
+  $("maxBetBtn").disabled=spinning||bet>=3||credit<(3-bet);
+  $("startBtn").disabled=spinning||bet!==3;
+
+  for(let i=0;i<3;i++){
+    $("s"+i).disabled=!spinning;
+  }
+}
+
+function message(t){
+  $("msg").textContent=t;
+}
+
+function betOne(){
+  if(spinning||bet>=3||credit<=0)return;
+  credit--;
+  bet++;
+  message(bet===3?"STARTできます":"3BETしてください");
+  update();
+}
+
+function maxBet(){
+  if(spinning||bet>=3)return;
+  const need=3-bet;
+  if(credit<need){
+    message("クレジット不足");
+    return;
+  }
+  credit-=need;
+  bet=3;
+  message("MAX BET");
+  update();
+}
+
+function start(){
+  if(spinning||bet!==3)return;
+
+  spinning=true;
+  stopped=0;
+  pay=0;
+
+  const patterns=[
+    ["刻印","刻印","刻印"],
+    ["青紫7","青紫7","青紫7"],
+    ["ベル","ベル","ベル"],
+    ["チェリー","刻印","ベル"],
+    ["リプ","リプ","リプ"],
+    ["ベル","赤7","リプ"]
+  ];
+
+  result=patterns[Math.floor(Math.random()*patterns.length)];
+
+  for(let i=0;i<3;i++){
+    $("r"+i).classList.add("spin");
+    $("r"+i).textContent=["赤7","青紫7","ベル","リプ","刻印"][Math.floor(Math.random()*5)];
+  }
+
+  message("リール回転中");
+  update();
+}
+
+function stop(i){
+  if(!spinning)return;
+
+  $("r"+i).classList.remove("spin");
+  $("r"+i).textContent=result[i];
+
+  stopped++;
+
+  if(stopped===3){
+    spinning=false;
+    bet=0;
+
+    if(result.join("")==="刻印刻印刻印"){
+      pay=0;
+      $("stateView").textContent="守護者MODE";
+      message("刻印揃い！守護者MODE確定");
+    }else if(result.join("")==="青紫7青紫7青紫7"){
+      pay=100;
+      credit+=pay;
+      $("stateView").textContent="終焉ノ刻";
+      message("青紫7揃い！終焉ノ刻");
+    }else if(result.join("")==="ベルベルベル"){
+      pay=8;
+      credit+=pay;
+      message("ベル 8枚");
+    }else if(result.join("")==="リプリプリプ"){
+      pay=0;
+      message("リプレイ");
+    }else{
+      pay=0;
+      message("ハズレ");
+    }
+  }
+
+  update();
+}
+
+function reset(){
+  credit=100;
+  bet=0;
+  pay=0;
+  spinning=false;
+  stopped=0;
+  result=["刻印","ベル","リプ"];
+  $("stateView").textContent="通常";
+
+  for(let i=0;i<3;i++){
+    $("r"+i).classList.remove("spin");
+    $("r"+i).textContent=result[i];
+  }
+
+  message("BETしてください");
+  update();
+}
+
+$("betBtn").onclick=betOne;
+$("maxBetBtn").onclick=maxBet;
+$("startBtn").onclick=start;
+$("resetBtn").onclick=reset;
+$("s0").onclick=()=>stop(0);
+$("s1").onclick=()=>stop(1);
+$("s2").onclick=()=>stop(2);
+
+update();
+</script>
 </body>
 </html>
