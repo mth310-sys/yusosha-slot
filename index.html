@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>七つの刻印 Ver.0.3.1</title>
+<title>七つの刻印 Ver.0.3.2</title>
 <style>
 *{box-sizing:border-box}
 
@@ -15,89 +15,90 @@ body{
   text-align:center;
 }
 
-.wrap{
-  max-width:430px;
-  margin:auto;
-  padding:6px;
-}
+.wrap{max-width:440px;margin:auto;padding:6px}
 
 .machine{
   position:relative;
   overflow:hidden;
-  border:8px solid #090909;
-  border-radius:32px;
-  padding:12px;
+  border:9px solid #050505;
+  border-radius:34px;
+  padding:14px;
   background:
-    linear-gradient(90deg,rgba(190,190,210,.25),transparent 7%,transparent 93%,rgba(230,230,255,.25)),
-    linear-gradient(135deg,#59575e 0%,#08050b 8%,#1d002d 35%,#050008 65%,#2b123f 92%,#c8c8d0 100%);
+    linear-gradient(90deg,rgba(255,255,255,.28),transparent 8%,transparent 92%,rgba(255,255,255,.28)),
+    linear-gradient(135deg,#777 0%,#08050b 8%,#1d002d 35%,#050008 65%,#2b123f 92%,#ddd 100%);
   box-shadow:
-    0 0 30px #9b4dff,
-    inset 0 0 38px #000,
-    inset 0 0 0 3px #7a36d6;
+    0 0 34px #9b4dff,
+    inset 0 0 42px #000,
+    inset 0 0 0 3px #7a36d6,
+    inset 0 0 0 7px rgba(255,255,255,.08);
 }
 
-.machine:before,
-.machine:after{
-  content:"";
+.machine > *{position:relative;z-index:2}
+
+.sideMetal{
   position:absolute;
-  top:70px;
-  width:18px;
-  height:72%;
-  border-radius:16px;
-  background:
-    linear-gradient(90deg,#111,#bfa7ff,#4b008f,#111);
-  box-shadow:
-    0 0 18px #b45cff,
-    inset 0 0 10px #fff;
-  z-index:0;
-}
-
-.machine:before{left:4px}
-.machine:after{right:4px}
-
-.machine > *{
-  position:relative;
+  top:58px;
+  width:30px;
+  height:74%;
   z-index:1;
+  border-radius:18px;
+  background:
+    linear-gradient(90deg,#050505,#555,#eee,#551092,#090909);
+  box-shadow:
+    inset 0 0 12px #fff,
+    inset 0 0 24px #000,
+    0 0 18px #a45cff;
 }
+
+.sideMetal.left{left:4px}
+.sideMetal.right{right:4px;transform:scaleX(-1)}
+
+.speaker{
+  position:absolute;
+  top:130px;
+  width:22px;
+  height:44%;
+  z-index:1;
+  border-radius:14px;
+  background:
+    repeating-linear-gradient(
+      135deg,
+      #050505 0px,
+      #050505 4px,
+      #222 4px,
+      #222 7px
+    );
+  border:2px solid #555;
+  box-shadow:inset 0 0 12px #000,0 0 10px #8b4dff;
+  opacity:.9;
+}
+.speaker.left{left:10px}
+.speaker.right{right:10px}
 
 .topLed{
-  height:16px;
+  height:17px;
   border-radius:14px;
   background:linear-gradient(90deg,#24003d,#e1c6ff,#24003d);
   animation:run 1.6s linear infinite;
-  box-shadow:0 0 12px #c084ff;
+  box-shadow:0 0 14px #c084ff,inset 0 0 8px #fff;
 }
+@keyframes run{50%{filter:brightness(2.4)}}
 
-@keyframes run{50%{filter:brightness(2.3)}}
-
-.logo{
-  font-size:11px;
-  color:#d8b7ff;
-  margin-top:3px;
-}
-
-h1{
-  margin:0;
-  font-size:20px;
-  color:#ead7ff;
-  text-shadow:0 0 12px #b45cff;
-}
-
-.version{
-  font-size:10px;
-  color:#caa7ff;
-  margin-bottom:2px;
-}
+.logo{font-size:11px;color:#d8b7ff;margin-top:3px}
+h1{margin:0;font-size:20px;color:#ead7ff;text-shadow:0 0 12px #b45cff}
+.version{font-size:10px;color:#caa7ff;margin-bottom:2px}
 
 .panel{
   margin:6px 0;
   padding:6px;
   border:2px solid #9d70ff;
   border-radius:16px;
-  background:linear-gradient(180deg,rgba(35,0,60,.78),rgba(0,0,0,.76));
+  background:
+    linear-gradient(180deg,rgba(60,0,90,.8),rgba(0,0,0,.82));
   box-shadow:
-    inset 0 0 12px #000,
-    0 0 9px rgba(180,92,255,.6);
+    inset 0 0 14px #000,
+    0 0 10px rgba(180,92,255,.65),
+    inset 0 1px 4px rgba(255,255,255,.18);
 }
 
 .upperArt{
@@ -105,15 +106,14 @@ h1{
   width:100%;
   overflow:hidden;
   border-radius:14px;
-  box-shadow:
-    0 0 16px #8b4dff,
-    inset 0 0 20px #000;
+  border:2px solid rgba(255,255,255,.18);
+  box-shadow:0 0 18px #8b4dff,inset 0 0 24px #000;
 }
 
 .panelImg{
   width:100%;
   margin-left:0;
-  border-radius:14px;
+  border-radius:12px;
   display:block;
 }
 
@@ -122,30 +122,28 @@ h1{
   background:rgba(70,0,100,.55);
 }
 
-.state{
-  font-weight:bold;
-  color:#fff3a0;
-}
+.state{font-weight:bold;color:#fff3a0}
 
 .reels{
   display:flex;
   gap:8px;
   justify-content:center;
   margin:9px 0;
-  padding:8px;
-  border-radius:18px;
+  padding:10px 8px;
+  border-radius:20px;
   background:
-    linear-gradient(180deg,#d7c6ff,#120020 16%,#050008 84%,#9d70ff);
+    linear-gradient(180deg,#eee,#9d70ff 5%,#120020 18%,#050008 82%,#9d70ff 95%,#eee);
   box-shadow:
-    inset 0 0 18px #000,
-    0 0 12px #8f48ff;
+    inset 0 0 22px #000,
+    0 0 16px #8f48ff,
+    inset 0 1px 8px rgba(255,255,255,.35);
 }
 
 .reel{
   width:92px;
   height:116px;
-  border:4px solid #d7c6ff;
-  border-radius:14px;
+  border:5px solid #d7c6ff;
+  border-radius:16px;
   background:linear-gradient(#fff,#ddd);
   color:#21002f;
   display:flex;
@@ -154,22 +152,16 @@ h1{
   font-size:18px;
   font-weight:bold;
   box-shadow:
-    inset 0 0 15px #000,
-    0 0 10px #8f48ff;
+    inset 0 0 18px #000,
+    inset 0 0 40px rgba(0,0,0,.28),
+    0 0 14px #8f48ff,
+    0 5px 0 #1b0028;
   overflow:hidden;
 }
 
-.reel img{
-  max-width:86px;
-  max-height:108px;
-  object-fit:contain;
-}
-
+.reel img{max-width:86px;max-height:108px;object-fit:contain}
 .spin{animation:spin .12s infinite}
-
-@keyframes spin{
-  50%{transform:translateY(4px);filter:blur(1px)}
-}
+@keyframes spin{50%{transform:translateY(4px);filter:blur(1px)}}
 
 .msg{
   min-height:36px;
@@ -187,14 +179,14 @@ h1{
 }
 
 .info div{
-  background:#050008;
-  border:1px solid #8b4dff;
-  border-radius:8px;
+  background:#030006;
+  border:2px solid #8b4dff;
+  border-radius:10px;
   padding:3px;
   min-height:46px;
   box-shadow:
-    inset 0 0 8px #000,
-    0 0 5px #7a36d6;
+    inset 0 0 12px #000,
+    0 0 8px rgba(160,80,255,.5);
 }
 
 .info b{
@@ -202,91 +194,107 @@ h1{
   font-size:17px;
   line-height:1;
   color:#7dff9b;
-  text-shadow:0 0 8px #4dff78;
+  text-shadow:0 0 8px #4dff78,0 0 14px #4dff78;
 }
 
 button{
   border:none;
-  border-radius:12px;
+  border-radius:13px;
   padding:10px;
   margin:3px;
   font-weight:bold;
   color:white;
-  background:linear-gradient(#b084ff,#3b0066 55%,#180026);
+  background:linear-gradient(#c8a8ff,#6d22c9 45%,#260045 100%);
   box-shadow:
     0 4px 0 #100018,
-    0 0 8px #8b4dff,
-    inset 0 1px 4px rgba(255,255,255,.45);
+    0 0 9px #8b4dff,
+    inset 0 2px 5px rgba(255,255,255,.45),
+    inset 0 -5px 10px rgba(0,0,0,.45);
 }
 
 button:disabled{opacity:.35}
 
+.stopArea{
+  padding:8px 4px;
+  border-radius:22px;
+  background:
+    linear-gradient(180deg,rgba(255,255,255,.12),rgba(0,0,0,.65));
+  box-shadow:inset 0 0 14px #000;
+}
+
 .stop{
-  width:70px;
-  height:70px;
+  width:76px;
+  height:76px;
   border-radius:50%;
-  background:radial-gradient(circle at 35% 25%,#ffb0b0,#ff3030 45%,#650000);
+  border:3px solid #3b0000;
+  background:
+    radial-gradient(circle at 35% 25%,#ffc0c0,#ff3030 38%,#a00000 68%,#3a0000);
   box-shadow:
-    0 0 12px #ff5555,
-    0 6px 0 #320000,
-    inset 0 -8px 10px rgba(0,0,0,.35);
+    0 0 16px rgba(255,0,0,.55),
+    0 7px 0 #240000,
+    inset 0 5px 10px rgba(255,255,255,.35),
+    inset 0 -10px 14px rgba(0,0,0,.55);
 }
 
-.reset{
-  background:linear-gradient(#777,#111);
-}
-
-.small{
-  font-size:11px;
-  color:#ccc;
-}
+.reset{background:linear-gradient(#888,#111)}
+.small{font-size:11px;color:#ccc}
 
 .lowerWrap{
   position:relative;
   width:100%;
+  padding:3px;
+  border-radius:16px;
+  background:linear-gradient(180deg,rgba(255,255,255,.25),rgba(0,0,0,.5));
+  box-shadow:inset 0 0 10px #000;
 }
 
 .lowerPanelImg{
   width:100%;
-  border-radius:14px;
+  border-radius:12px;
   display:block;
-  box-shadow:0 0 14px #8b4dff;
+  border:2px solid rgba(255,255,255,.18);
+  box-shadow:
+    0 0 14px #8b4dff,
+    inset 0 0 12px rgba(255,255,255,.2);
 }
 
 .lowerGlow{
   position:absolute;
-  top:0;
-  height:100%;
+  top:3px;
+  height:calc(100% - 6px);
   width:14.285%;
   opacity:0;
   background:currentColor;
   mix-blend-mode:screen;
   box-shadow:
-    0 0 22px currentColor,
-    0 0 42px currentColor,
-    inset 0 0 35px currentColor;
+    0 0 24px currentColor,
+    0 0 48px currentColor,
+    inset 0 0 38px currentColor;
   border-radius:8px;
   pointer-events:none;
 }
 
-.lowerGlow.on{
-  opacity:.45;
-}
-
-.lowerGlow.blink{
-  animation:lowerBlink .5s infinite alternate;
-}
-
-@keyframes lowerBlink{
-  from{opacity:.35}
-  to{opacity:.85}
-}
+.lowerGlow.on{opacity:.45}
+.lowerGlow.blink{animation:lowerBlink .5s infinite alternate}
+@keyframes lowerBlink{from{opacity:.35}to{opacity:.85}}
 
 .lowerGlow.all{
   width:100%;
   left:0;
   opacity:.25;
   border-radius:14px;
+}
+
+.bottomUnit{
+  height:34px;
+  margin-top:8px;
+  border-radius:0 0 22px 22px;
+  background:
+    linear-gradient(180deg,#333,#080808 55%,#000),
+    repeating-linear-gradient(90deg,#111 0,#111 8px,#2d003f 8px,#2d003f 12px);
+  box-shadow:
+    inset 0 0 12px #000,
+    0 0 14px #8b4dff;
 }
 
 .flash{animation:flash .25s 8}
@@ -301,10 +309,15 @@ button:disabled{opacity:.35}
 <div class="wrap">
 <div id="machine" class="machine">
 
+  <div class="sideMetal left"></div>
+  <div class="sideMetal right"></div>
+  <div class="speaker left"></div>
+  <div class="speaker right"></div>
+
   <div class="topLed"></div>
   <div class="logo">🌱 遊創舎</div>
   <h1>七つの刻印</h1>
-  <div class="version">SEVEN SEALS Ver.0.3.1 実機筐体風</div>
+  <div class="version">SEVEN SEALS Ver.0.3.2 実機筐体強化</div>
 
   <div id="upperPanel" class="panel">
     <div class="upperArt">
@@ -338,7 +351,7 @@ button:disabled{opacity:.35}
     <button id="resetBtn" class="reset">RESET</button>
   </div>
 
-  <div>
+  <div class="stopArea">
     <button id="s0" class="stop">STOP</button>
     <button id="s1" class="stop">STOP</button>
     <button id="s2" class="stop">STOP</button>
@@ -359,19 +372,21 @@ button:disabled{opacity:.35}
     </div>
   </div>
 
+  <div class="bottomUnit"></div>
+
 </div>
 </div>
 
 <script>
 const IMG={
-  red7:"symbol_red7.png",
-  blue7:"symbol_bluepurple7.png",
-  bell:"symbol_bell.png",
-  cherry:"symbol_cherry.png",
-  replay:"symbol_replay.png",
-  seal:"symbol_seal.png",
-  normalPanel:"seven_seals_panel_normal.png",
-  apocPanel:"seven_seals_panel_apocalis.png"
+ red7:"symbol_red7.png",
+ blue7:"symbol_bluepurple7.png",
+ bell:"symbol_bell.png",
+ cherry:"symbol_cherry.png",
+ replay:"symbol_replay.png",
+ seal:"symbol_seal.png",
+ normalPanel:"seven_seals_panel_normal.png",
+ apocPanel:"seven_seals_panel_apocalis.png"
 };
 
 const guardians=[
@@ -408,9 +423,7 @@ function symbolHtml(name){
  return `<img src="${map[name]}" alt="${name}" onerror="this.parentNode.textContent='${name}'">`;
 }
 
-function setReel(i,name){
- $("r"+i).innerHTML=symbolHtml(name);
-}
+function setReel(i,name){$("r"+i).innerHTML=symbolHtml(name)}
 
 function build(){
  guardians.forEach((g,i)=>{
@@ -477,10 +490,7 @@ function updateLowerGlow(){
    const low=$("low-"+g.id);
    low.className="lowerGlow";
    low.style.color=g.color;
-
-   if(ownedSeals.includes(g.id)){
-     low.classList.add("on");
-   }
+   if(ownedSeals.includes(g.id))low.classList.add("on");
  });
 
  if(state==="守護者MODE"&&currentGuardian){
