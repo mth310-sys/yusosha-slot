@@ -3,9 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>七つの刻印 Ver.0.4.0</title>
+<title>七つの刻印 Ver.0.4.1</title>
 <style>
 *{box-sizing:border-box}
+
 body{
   margin:0;
   background:#020005;
@@ -13,93 +14,80 @@ body{
   font-family:sans-serif;
   text-align:center;
 }
+
 .wrap{
-  width:100%;
   max-width:420px;
   margin:auto;
   padding:4px;
 }
+
 .machine{
   position:relative;
   width:100%;
   aspect-ratio:538/983;
-  margin:auto;
   background:url("machine_base_full.png") center/contain no-repeat;
   overflow:hidden;
 }
 
-/* リール */
+/* リールだけ重ねる */
 .reelArea{
   position:absolute;
-  left:29.5%;
-  top:42.8%;
-  width:39%;
-  height:15%;
+  left:27%;
+  top:41.8%;
+  width:46%;
+  height:17%;
   display:flex;
-  gap:4%;
-  justify-content:center;
+  justify-content:space-between;
   align-items:center;
+  pointer-events:none;
 }
+
 .reel{
-  width:30%;
-  height:82%;
-  border-radius:8px;
-  background:linear-gradient(#fff,#ddd);
-  color:#24002f;
+  width:31%;
+  height:88%;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-weight:bold;
-  font-size:18px;
-  box-shadow:inset 0 0 14px #000,0 0 10px #b45cff;
   overflow:hidden;
+  background:transparent;
 }
+
 .reel img{
-  max-width:95%;
-  max-height:95%;
+  width:92%;
+  height:92%;
   object-fit:contain;
+  filter:drop-shadow(0 0 5px rgba(180,92,255,.8));
 }
+
 .spin{
-  animation:spin .1s infinite;
+  animation:spin .08s infinite;
 }
+
 @keyframes spin{
-  50%{transform:translateY(5px);filter:blur(1px)}
+  50%{
+    transform:translateY(6px);
+    filter:blur(1px);
+  }
 }
 
-/* 表示系 */
-.credit,.bet,.pay{
+/* 数字だけ重ねる */
+.credit,.pay{
   position:absolute;
-  top:62.5%;
+  top:58.6%;
   font-family:monospace;
-  font-size:18px;
-  color:#ff3030;
-  text-shadow:0 0 8px #f00;
+  font-size:12px;
+  color:#ff2727;
+  text-shadow:0 0 6px red;
+  pointer-events:none;
 }
-.credit{left:36.8%}
-.bet{left:50%;transform:translateX(-50%);color:#76ff8f;text-shadow:0 0 8px #4dff78}
-.pay{right:38%}
 
-.stateText{
-  position:absolute;
-  top:61%;
-  left:50%;
-  transform:translateX(-50%);
-  font-weight:bold;
-  color:#fff3a0;
-  font-size:13px;
-  text-shadow:0 0 8px #b45cff;
-  white-space:nowrap;
-}
-.msg{
-  position:absolute;
-  top:73.5%;
-  left:50%;
-  width:70%;
-  transform:translateX(-50%);
-  color:#fff3a0;
-  font-weight:bold;
-  font-size:18px;
-  text-shadow:0 0 8px #b45cff;
+.credit{left:39.7%}
+.pay{left:54.6%}
+
+.betHidden,
+.msgHidden,
+.stateHidden{
+  display:none;
 }
 
 /* 透明ボタン */
@@ -109,47 +97,89 @@ body{
   background:transparent;
   color:transparent;
   padding:0;
+  z-index:5;
 }
+
 .hit:active{
-  background:rgba(255,255,255,.12);
+  background:rgba(255,255,255,.15);
   border-radius:50%;
 }
-#startBtn{left:12%;top:58.9%;width:12%;height:4.5%}
-#maxBetBtn{left:25%;top:58.9%;width:12%;height:4.5%}
-#resetBtn{right:11%;top:58.9%;width:13%;height:4.5%}
-#s0{left:31%;top:65.2%;width:10%;height:5.8%}
-#s1{left:45%;top:65.2%;width:10%;height:5.8%}
-#s2{left:59%;top:65.2%;width:10%;height:5.8%}
+
+/* 画像上のボタン位置 */
+#startBtn{
+  left:12.5%;
+  top:57.7%;
+  width:13%;
+  height:4%;
+}
+
+#maxBetBtn{
+  left:26%;
+  top:57.7%;
+  width:12%;
+  height:4%;
+}
+
+#resetBtn{
+  right:11%;
+  top:57.7%;
+  width:14%;
+  height:4%;
+}
+
+#s0{
+  left:31%;
+  top:63.5%;
+  width:10%;
+  height:5.8%;
+}
+
+#s1{
+  left:45.2%;
+  top:63.5%;
+  width:10%;
+  height:5.8%;
+}
+
+#s2{
+  left:59.5%;
+  top:63.5%;
+  width:10%;
+  height:5.8%;
+}
+
+button:disabled{
+  pointer-events:none;
+}
 </style>
 </head>
 
 <body>
 <div class="wrap">
-  <div class="machine">
+<div class="machine">
 
-    <div class="reelArea">
-      <div id="r0" class="reel">刻印</div>
-      <div id="r1" class="reel">ベル</div>
-      <div id="r2" class="reel">リプ</div>
-    </div>
-
-    <div id="stateView" class="stateText">STATE：通常</div>
-
-    <div id="creditView" class="credit">100</div>
-    <div id="betView" class="bet">0</div>
-    <div id="payView" class="pay">0</div>
-
-    <div id="msg" class="msg">BETしてください</div>
-
-    <button id="startBtn" class="hit">START</button>
-    <button id="maxBetBtn" class="hit">MAX BET</button>
-    <button id="resetBtn" class="hit">RESET</button>
-
-    <button id="s0" class="hit">STOP</button>
-    <button id="s1" class="hit">STOP</button>
-    <button id="s2" class="hit">STOP</button>
-
+  <div class="reelArea">
+    <div id="r0" class="reel"></div>
+    <div id="r1" class="reel"></div>
+    <div id="r2" class="reel"></div>
   </div>
+
+  <div id="creditView" class="credit">100</div>
+  <div id="payView" class="pay">0</div>
+
+  <div id="betView" class="betHidden">0</div>
+  <div id="msg" class="msgHidden">BETしてください</div>
+  <div id="stateView" class="stateHidden">通常</div>
+
+  <button id="startBtn" class="hit">START</button>
+  <button id="maxBetBtn" class="hit">MAX BET</button>
+  <button id="resetBtn" class="hit">RESET</button>
+
+  <button id="s0" class="hit">STOP</button>
+  <button id="s1" class="hit">STOP</button>
+  <button id="s2" class="hit">STOP</button>
+
+</div>
 </div>
 
 <script>
@@ -162,16 +192,17 @@ const IMG={
   seal:"symbol_seal.png"
 };
 
+const symbols=["赤7","青紫7","ベル","チェリー","リプ","刻印"];
+
 let credit=100;
 let bet=0;
 let pay=0;
 let spinning=false;
 let stopCount=0;
-let finalReels=["刻印","ベル","リプ"];
 let timers=[null,null,null];
+let finalReels=["刻印","ベル","リプ"];
 
 const $=id=>document.getElementById(id);
-const symbols=["赤7","青紫7","ベル","チェリー","リプ","刻印"];
 
 function symbolHtml(name){
   const map={
@@ -182,9 +213,8 @@ function symbolHtml(name){
     "リプ":IMG.replay,
     "刻印":IMG.seal
   };
-  return map[name]
-    ? `<img src="${map[name]}" onerror="this.parentNode.textContent='${name}'">`
-    : name;
+
+  return `<img src="${map[name]}" alt="${name}" onerror="this.style.display='none'">`;
 }
 
 function setReel(i,name){
@@ -193,25 +223,28 @@ function setReel(i,name){
 
 function update(){
   $("creditView").textContent=credit;
-  $("betView").textContent=bet;
   $("payView").textContent=pay;
+  $("betView").textContent=bet;
 
   $("startBtn").disabled=spinning || bet!==3;
-  $("maxBetBtn").disabled=spinning || credit<3 || bet===3;
-  $("s0").disabled=!spinning;
-  $("s1").disabled=!spinning;
-  $("s2").disabled=!spinning;
+  $("maxBetBtn").disabled=spinning || bet===3 || credit<3;
+
+  for(let i=0;i<3;i++){
+    $("s"+i).disabled=!spinning;
+  }
 }
 
 function maxBet(){
   if(spinning || bet===3 || credit<3)return;
+
   credit-=3;
   bet=3;
-  $("msg").textContent="STARTできます";
+  pay=0;
+
   update();
 }
 
-function chooseResult(){
+function drawResult(){
   const r=Math.random();
 
   if(r<0.015)return ["青紫7","青紫7","青紫7"];
@@ -230,16 +263,16 @@ function start(){
   spinning=true;
   stopCount=0;
   pay=0;
-  finalReels=chooseResult();
+  finalReels=drawResult();
 
   for(let i=0;i<3;i++){
     $("r"+i).classList.add("spin");
     timers[i]=setInterval(()=>{
-      setReel(i,symbols[Math.floor(Math.random()*symbols.length)]);
-    },80);
+      const s=symbols[Math.floor(Math.random()*symbols.length)];
+      setReel(i,s);
+    },70);
   }
 
-  $("msg").textContent="リール回転中";
   update();
 }
 
@@ -268,19 +301,24 @@ function resolve(){
   if(result==="青紫7青紫7青紫7"){
     pay=100;
     credit+=pay;
-    $("stateView").textContent="STATE：終焉ノ刻";
-    $("msg").textContent="青紫7揃い！";
+    $("stateView").textContent="終焉ノ刻";
+    $("msg").textContent="青紫7揃い";
   }
   else if(result==="赤7赤7赤7"){
     pay=50;
     credit+=pay;
-    $("stateView").textContent="STATE：BONUS";
+    $("stateView").textContent="BONUS";
     $("msg").textContent="赤7 BONUS";
   }
   else if(result==="ベルベルベル"){
     pay=8;
     credit+=pay;
-    $("msg").textContent="ベル 8枚";
+    $("msg").textContent="ベル";
+  }
+  else if(result==="チェリー刻印ベル"){
+    pay=2;
+    credit+=pay;
+    $("msg").textContent="チェリー";
   }
   else if(result==="リプリプリプ"){
     pay=0;
@@ -288,8 +326,8 @@ function resolve(){
   }
   else if(result==="刻印刻印刻印"){
     pay=0;
-    $("stateView").textContent="STATE：守護者MODE";
-    $("msg").textContent="刻印揃い！";
+    $("stateView").textContent="守護者MODE";
+    $("msg").textContent="刻印揃い";
   }
   else{
     pay=0;
@@ -307,15 +345,18 @@ function reset(){
   stopCount=0;
 
   timers.forEach(t=>clearInterval(t));
+
   for(let i=0;i<3;i++){
     $("r"+i).classList.remove("spin");
   }
+
+  finalReels=["刻印","ベル","リプ"];
 
   setReel(0,"刻印");
   setReel(1,"ベル");
   setReel(2,"リプ");
 
-  $("stateView").textContent="STATE：通常";
+  $("stateView").textContent="通常";
   $("msg").textContent="BETしてください";
 
   update();
@@ -324,6 +365,7 @@ function reset(){
 $("maxBetBtn").onclick=maxBet;
 $("startBtn").onclick=start;
 $("resetBtn").onclick=reset;
+
 $("s0").onclick=()=>stop(0);
 $("s1").onclick=()=>stop(1);
 $("s2").onclick=()=>stop(2);
