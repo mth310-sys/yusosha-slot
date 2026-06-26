@@ -3,272 +3,179 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>異世界転生サクセス モック Ver.0.1</title>
+<title>異世界転生サクセス Mock</title>
 <style>
-*{box-sizing:border-box;}
-body{
-  margin:0;
-  background:#1b1b22;
-  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
-  color:#2b2418;
-}
-.app{
-  max-width:390px;
-  min-height:100vh;
-  margin:auto;
-  background:#f4ead7;
-  padding:8px;
-}
-.screen{display:none;}
-.screen.active{display:block;}
-
-.title-screen{
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  gap:22px;
-  text-align:center;
-}
-.logo{
-  font-size:30px;
-  font-weight:900;
-  color:#3a2a16;
-  margin-bottom:20px;
-}
-.menu-btn,button{
-  width:210px;
-  padding:12px;
-  border:none;
-  border-radius:12px;
-  background:#2d3b55;
-  color:#fff4c4;
-  font-weight:800;
-  font-size:16px;
-}
-
-.panel{
-  background:#fff8e8;
-  border:2px solid #b8955a;
-  border-radius:12px;
-  padding:8px;
-  margin-bottom:8px;
-}
-.header{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  background:#2d3b55;
-  color:#fff4c4;
-  font-weight:800;
-  font-size:13px;
-}
-.hero{
-  display:grid;
-  grid-template-columns:82px 1fr;
-  gap:8px;
-}
-.chara{
-  height:88px;
-  border:2px solid #8b6f3d;
-  border-radius:10px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  text-align:center;
-  font-size:13px;
-  font-weight:800;
-  background:#efe0bd;
-}
-.info{
-  font-size:13px;
-  line-height:1.55;
-}
-.section-title{
-  font-size:13px;
-  font-weight:900;
-  margin-bottom:5px;
-  color:#5b431d;
-  border-bottom:1px solid #c8a86a;
-}
-.list-row{
-  display:grid;
-  grid-template-columns:42px 1fr 50px 1fr;
-  gap:4px;
-  font-size:12px;
-  padding:3px 0;
-}
-.ability-row{
-  display:grid;
-  grid-template-columns:42px 1fr 42px 1fr 42px 1fr;
-  gap:4px;
-  font-size:12px;
-  padding:3px 0;
-}
-.equip{
-  font-size:12px;
-  line-height:1.45;
-}
-.actions{
-  display:grid;
-  grid-template-columns:1fr 1fr 1fr;
-  gap:6px;
-}
-.actions button{
-  width:auto;
-  font-size:13px;
-  padding:9px 4px;
-}
-.log{
-  height:150px;
-  overflow-y:auto;
-  background:#2b2418;
-  color:#fff5d8;
-  border-radius:8px;
-  padding:7px;
-  font-size:11px;
-  line-height:1.55;
-}
-.bottom{
-  position:sticky;
-  bottom:0;
-  display:grid;
-  grid-template-columns:repeat(5,1fr);
-  gap:4px;
-  background:#f4ead7;
-  padding-top:4px;
-}
-.bottom button{
-  width:auto;
-  font-size:11px;
-  padding:8px 2px;
-}
-.goddess{
-  min-height:100vh;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  gap:12px;
-}
-.dialog{
-  background:#fff8e8;
-  border:2px solid #b8955a;
-  border-radius:14px;
-  padding:16px;
-  line-height:1.7;
-}
-.choice{
-  width:100%;
-}
+*{box-sizing:border-box}
+body{margin:0;background:#1b1b22;font-family:sans-serif;color:#2b2418}
+.app{width:390px;max-width:100vw;height:100dvh;margin:auto;background:#f4ead7;padding:8px;overflow:hidden}
+.screen{display:none;height:100%}
+.screen.active{display:flex;flex-direction:column}
+.panel{background:#fff8e8;border:2px solid #b8955a;border-radius:10px;padding:7px;margin-bottom:6px}
+.header{display:flex;justify-content:space-between;background:#2d3b55;color:#fff4c4;font-weight:bold;font-size:13px}
+.titleScreen{justify-content:center;align-items:center;text-align:center;gap:22px}
+.logo{font-size:30px;font-weight:900}
+button{border:0;border-radius:10px;background:#2d3b55;color:#fff4c4;font-weight:bold;padding:9px}
+.bigBtn{width:210px;font-size:16px}
+.hero{display:grid;grid-template-columns:78px 1fr;gap:8px}
+.chara{height:74px;border:2px solid #8b6f3d;border-radius:8px;display:flex;align-items:center;justify-content:center;text-align:center;background:#efe0bd;font-size:12px;font-weight:bold}
+.info{font-size:12px;line-height:1.45}
+.section{font-size:12px;font-weight:bold;border-bottom:1px solid #c8a86a;margin-bottom:4px}
+.rows{font-size:12px;line-height:1.45}
+.row{display:grid;grid-template-columns:48px 1fr 54px 1fr}
+.ability{display:grid;grid-template-columns:42px 1fr 42px 1fr 42px 1fr;font-size:12px;line-height:1.45}
+.actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px}
+.log{flex:1;background:#2b2418;color:#fff5d8;border-radius:8px;padding:7px;font-size:11px;line-height:1.45;overflow:hidden}
+.bottom{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-top:4px}
+.bottom button{font-size:11px;padding:7px 0}
+.center{justify-content:center;gap:12px}
+.dialog{line-height:1.7}
+.list button{width:100%;margin-bottom:6px;text-align:left}
+.detail{height:78px;border:1px dashed #b8955a;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:12px;color:#7c6840}
 </style>
 </head>
 <body>
 <div class="app">
 
-  <section id="title" class="screen active title-screen">
-    <div class="logo">異世界転生サクセス</div>
-    <button class="menu-btn" onclick="show('goddess')">にゅーすたーと</button>
-    <button class="menu-btn">ろーど</button>
-  </section>
+<section id="title" class="screen active titleScreen">
+  <div class="logo">異世界転生<br>サクセス</div>
+  <button class="bigBtn" onclick="show('goddess')">にゅーすたーと</button>
+  <button class="bigBtn">ろーど</button>
+</section>
 
-  <section id="goddess" class="screen goddess">
-    <div class="dialog">
-      ようこそ、魂の旅人よ。<br>
-      あなたが歩む人生を決めるため、いくつか質問をさせてください。
-    </div>
-    <button class="choice" onclick="show('question')">診断をはじめる</button>
-  </section>
+<section id="goddess" class="screen center">
+  <div class="panel dialog">
+    ようこそ、魂の旅人よ。<br>
+    あなたが歩む人生を決めるため、いくつか質問をさせてください。
+  </div>
+  <button onclick="show('question')">診断をはじめる</button>
+</section>
 
-  <section id="question" class="screen goddess">
-    <div class="dialog">
-      あなたは何を大切にしますか？
-    </div>
-    <button class="choice" onclick="show('blessing')">力</button>
-    <button class="choice" onclick="show('blessing')">知識</button>
-    <button class="choice" onclick="show('blessing')">お金</button>
-    <button class="choice" onclick="show('blessing')">仲間</button>
-  </section>
+<section id="question" class="screen center">
+  <div class="panel">
+    <b>Q1 / 5</b><br><br>
+    あなたは何を大切にしますか？
+  </div>
+  <button onclick="show('result')">力</button>
+  <button onclick="show('result')">知識</button>
+  <button onclick="show('result')">お金</button>
+  <button onclick="show('result')">仲間</button>
+</section>
 
-  <section id="blessing" class="screen goddess">
-    <div class="dialog">
-      診断が終わりました。<br><br>
-      あなたの転生先は……<br>
-      <strong>村人</strong> です。<br><br>
-      女神の祝福：なし<br>
-      ※祝福は今後追加予定です。
-    </div>
-    <button class="choice" onclick="show('game')">転生する</button>
-  </section>
+<section id="result" class="screen center">
+  <div class="panel dialog">
+    診断が終わりました。<br><br>
+    転生先：村人<br>
+    職業：村人<br>
+    女神の祝福：なし
+  </div>
+  <button onclick="show('main')">転生する</button>
+</section>
 
-  <section id="game" class="screen">
-    <div class="panel header">
-      <div>異世界転生サクセス</div>
-      <div>1年目 1月</div>
-    </div>
+<section id="main" class="screen">
+  <div class="panel header"><span>異世界転生サクセス</span><span>1年目 1月</span></div>
 
-    <div class="panel hero">
-      <div class="chara">3頭身<br>ミニキャラ</div>
-      <div class="info">
-        名前：主人公<br>
-        転生先：村人<br>
-        職業：村人<br>
-        年齢：10歳<br>
-        年月：1年目 1月
-      </div>
+  <div class="panel hero">
+    <div class="chara">3頭身<br>ミニキャラ</div>
+    <div class="info">
+      名前：主人公<br>
+      転生先：村人<br>
+      職業：村人<br>
+      年齢：10歳<br>
+      祝福：なし
     </div>
+  </div>
 
-    <div class="panel">
-      <div class="section-title">基本ステータス</div>
-      <div class="list-row"><b>健康</b><span>良好</span><b>所持金</b><span>50G</span></div>
-      <div class="list-row"><b>疲労</b><span>0</span><b>名声</b><span>0</span></div>
-      <div class="list-row"><b>状態</b><span>なし</span><b>予約</b><span>－</span></div>
+  <div class="panel">
+    <div class="section">基本ステータス</div>
+    <div class="rows">
+      <div class="row"><b>健康</b><span>良好</span><b>所持金</b><span>50G</span></div>
+      <div class="row"><b>疲労</b><span>0</span><b>名声</b><span>0</span></div>
+      <div class="row"><b>状態</b><span>なし</span><b>予約</b><span>－</span></div>
     </div>
+  </div>
 
-    <div class="panel">
-      <div class="section-title">能力値</div>
-      <div class="ability-row"><b>筋力</b><span>12</span><b>知力</b><span>10</span><b>魅力</b><span>8</span></div>
-      <div class="ability-row"><b>魔力</b><span>6</span><b>器用</b><span>11</span><b>運</b><span>9</span></div>
-    </div>
+  <div class="panel">
+    <div class="section">能力値</div>
+    <div class="ability"><b>筋力</b><span>12</span><b>魔力</b><span>6</span><b>知力</b><span>10</span></div>
+    <div class="ability"><b>器用</b><span>11</span><b>魅力</b><span>8</span><b>運</b><span>9</span></div>
+  </div>
 
-    <div class="panel equip">
-      <div class="section-title">装備</div>
-      武器：木の剣　・筋力+2 / 冒険成功率+1%<br>
-      頭防具：なし　・効果なし<br>
-      胴防具：布の服　・健康+1<br>
-      装飾①：なし　・効果なし<br>
-      装飾②：なし　・効果なし
+  <div class="panel">
+    <div class="section">行動</div>
+    <div class="actions">
+      <button onclick="addLog('訓練をした')">訓練</button>
+      <button onclick="addLog('学習をした')">学習</button>
+      <button onclick="addLog('冒険に出た')">冒険</button>
+      <button onclick="addLog('仕事をした')">仕事</button>
+      <button onclick="addLog('休息した')">休息</button>
+      <button onclick="addLog('特殊行動を確認した')">特殊</button>
     </div>
+  </div>
 
-    <div class="panel">
-      <div class="section-title">行動</div>
-      <div class="actions">
-        <button onclick="addLog('訓練設定を開いた')">訓練</button>
-        <button onclick="addLog('学習設定を開いた')">学習</button>
-        <button onclick="addLog('冒険設定を開いた')">冒険</button>
-        <button onclick="addLog('仕事設定を開いた')">仕事</button>
-        <button onclick="addLog('休息設定を開いた')">休息</button>
-        <button onclick="addLog('特殊設定を開いた')">特殊</button>
-      </div>
-    </div>
+  <div class="section">今月の出来事</div>
+  <div id="log" class="log">
+    ・異世界での人生が始まった<br>
+    ・転生先は村人だった<br>
+  </div>
 
-    <div class="panel">
-      <div class="section-title">ログ</div>
-      <div id="log" class="log">
-        ▶ 1年目 1月<br>
-        ・異世界での人生が始まった<br>
-        ・転生先は村人だった<br>
-      </div>
-    </div>
+  <nav class="bottom">
+    <button onclick="show('main')">メイン</button>
+    <button onclick="show('record')">記録</button>
+    <button onclick="show('items')">所持品</button>
+    <button onclick="show('book')">図鑑</button>
+    <button onclick="show('setting')">設定</button>
+  </nav>
+</section>
 
-    <div class="bottom">
-      <button>メイン</button>
-      <button>記録</button>
-      <button>所持品</button>
-      <button>図鑑</button>
-      <button>設定</button>
-    </div>
-  </section>
+<section id="items" class="screen">
+  <div class="panel header"><span>所持品</span><span>1年目 1月</span></div>
+  <div class="panel rows">
+    <div class="section">装備</div>
+    武器　　木の剣<br>
+    頭防具　なし<br>
+    胴防具　布の服<br>
+    装飾①　なし<br>
+    装飾②　なし
+  </div>
+  <div class="panel">
+    <div class="section">詳細</div>
+    <div class="detail">鑑定取得で解放</div>
+  </div>
+  <div class="panel rows">
+    <div class="section">アイテム</div>
+    薬草 ×3<br>
+    パン ×2<br>
+    石ころ ×5
+  </div>
+  <nav class="bottom"><button onclick="show('main')">メイン</button><button onclick="show('record')">記録</button><button onclick="show('items')">所持品</button><button onclick="show('book')">図鑑</button><button onclick="show('setting')">設定</button></nav>
+</section>
+
+<section id="record" class="screen">
+  <div class="panel header"><span>記録</span><span>人生履歴</span></div>
+  <div class="panel rows">
+    <div class="section">1年目 1月</div>
+    ・転生した<br>
+    ・村人として人生が始まった
+  </div>
+  <nav class="bottom"><button onclick="show('main')">メイン</button><button onclick="show('record')">記録</button><button onclick="show('items')">所持品</button><button onclick="show('book')">図鑑</button><button onclick="show('setting')">設定</button></nav>
+</section>
+
+<section id="book" class="screen">
+  <div class="panel header"><span>図鑑</span><span>収集</span></div>
+  <div class="panel rows">職業 / アイテム / 人物 / 祝福 / 実績</div>
+  <nav class="bottom"><button onclick="show('main')">メイン</button><button onclick="show('record')">記録</button><button onclick="show('items')">所持品</button><button onclick="show('book')">図鑑</button><button onclick="show('setting')">設定</button></nav>
+</section>
+
+<section id="setting" class="screen">
+  <div class="panel header"><span>設定</span><span></span></div>
+  <div class="list">
+    <button>セーブ</button>
+    <button>ロード</button>
+    <button>オプション</button>
+    <button onclick="show('title')">タイトルへ戻る</button>
+  </div>
+  <nav class="bottom"><button onclick="show('main')">メイン</button><button onclick="show('record')">記録</button><button onclick="show('items')">所持品</button><button onclick="show('book')">図鑑</button><button onclick="show('setting')">設定</button></nav>
+</section>
 
 </div>
 
@@ -277,13 +184,9 @@ function show(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
-
-function addLog(text){
-  const log=document.getElementById('log');
-  log.innerHTML += `・${text}<br>`;
-  log.scrollTop = log.scrollHeight;
+function addLog(t){
+  document.getElementById('log').innerHTML += '・' + t + '<br>';
 }
 </script>
-
 </body>
 </html>
