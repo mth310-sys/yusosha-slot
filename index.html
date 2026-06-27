@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>異世界転生サクセス Mock Ver.0.2.1</title>
+<title>異世界転生サクセス Mock Ver.0.2.2</title>
 <style>
 *{box-sizing:border-box}
 html,body{
@@ -249,15 +249,11 @@ function finishDiagnosis(){
     出身地：${player.area}<br>
     生家：${player.home}<br>
     職業：${player.job}<br>
-    女神の祝福：${player.blessing}<br><br>
+    女神の祝福：なし<br><br>
 
     <b>能力値</b><br>
     筋力：${player.abilities.筋力}　魔力：${player.abilities.魔力}　知力：${player.abilities.知力}<br>
-    器用：${player.abilities.器用}　魅力：${player.abilities.魅力}　運：${player.abilities.運}<br><br>
-
-    <b>潜在能力</b><br>
-    筋力：${player.potentials.筋力}　魔力：${player.potentials.魔力}　知力：${player.potentials.知力}<br>
-    器用：${player.potentials.器用}　魅力：${player.potentials.魅力}　運：${player.potentials.運}
+    器用：${player.abilities.器用}　魅力：${player.abilities.魅力}　運：${player.abilities.運}
   `;
 
   show('result');
