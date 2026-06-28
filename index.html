@@ -3,13 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>異世界転生サクセス Mock Ver.0.2.3</title>
+<title>異世界転生サクセス Mock Ver.0.2.4</title>
 <style>
 *{box-sizing:border-box}
-html,body{
-  margin:0;width:100%;height:100%;overflow:hidden;background:#111;
-  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;color:#2b2418;
-}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#111;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;color:#2b2418}
 .app{width:100vw;height:100dvh;max-width:430px;margin:auto;background:#f4ead7;padding:8px;overflow:hidden}
 .screen{display:none;height:100%;overflow:hidden}
 .screen.active{display:flex;flex-direction:column}
@@ -42,6 +39,9 @@ button{border:0;border-radius:9px;background:#2d3b55;color:#fff4c4;font-weight:9
 .item-detail{height:70px;border:1px dashed #b8955a;border-radius:8px;display:flex;align-items:center;justify-content:center;color:#7c6840;font-size:22px;letter-spacing:6px;font-weight:900}
 .items-panel{height:154px;font-size:15px;line-height:1.7}
 .setting button{width:100%;height:44px;margin-bottom:8px;text-align:left;padding-left:16px;font-size:15px}
+.job-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.job-buttons button{height:44px;font-size:15px}
+.note{font-size:13px;line-height:1.6;color:#5b4a2c}
 </style>
 </head>
 
@@ -76,6 +76,21 @@ button{border:0;border-radius:9px;background:#2d3b55;color:#fff4c4;font-weight:9
 <section id="result" class="screen center">
   <div id="resultText" class="panel result-box"></div>
   <button class="choice" onclick="startLife()">転生する</button>
+</section>
+
+<section id="jobselect" class="screen center">
+  <div class="panel dialog">
+    <b>15歳になりました。</b><br>
+    初級職が解放されました。<br><br>
+    村人ルートの職業を選択してください。
+    <div class="note">※村人だけは村人継続を選べます。</div>
+  </div>
+  <div class="panel job-buttons">
+    <button onclick="chooseJob('村人')">村人</button>
+    <button onclick="chooseJob('農家')">農家</button>
+    <button onclick="chooseJob('木こり')">木こり</button>
+    <button onclick="chooseJob('猟師')">猟師</button>
+  </div>
 </section>
 
 <section id="main" class="screen">
@@ -232,6 +247,9 @@ function generatePlayer(){
     area:origin.area,
     home:origin.home,
     job:origin.job,
+    originJob:origin.job,
+    jobRank:'幼少期',
+    jobSelected15:false,
     age:10,
     year:1,
     month:1,
@@ -342,23 +360,57 @@ function doAction(type){
   records.push(`・${text}<br>`);
   records.push(`・${result}<br>`);
 
-  nextMonth();
+  const needsJobSelect = nextMonth();
   updateAll();
+
+  if(needsJobSelect){
+    show('jobselect');
+  }
 }
 
 function nextMonth(){
+  let needsJobSelect = false;
+
   player.month++;
 
   if(player.month > 12){
     player.month = 1;
     player.year++;
     player.age++;
+
     addLog(`${player.age}歳になった`);
     records.push(`・${player.age}歳になった<br>`);
+
+    if(player.age === 15 && !player.jobSelected15){
+      addLog('初級職が解放された');
+      records.push(`・初級職が解放された<br>`);
+
+      if(player.originJob === '村人'){
+        needsJobSelect = true;
+      }else{
+        addLog('このルートの初級職は未実装');
+        records.push(`・このルートの初級職は未実装<br>`);
+      }
+    }
   }
 
   addLog(`${dateText()}になった`);
   records.push(`・${dateText()}になった<br>`);
+
+  return needsJobSelect;
+}
+
+function chooseJob(jobName){
+  player.job = jobName;
+  player.jobRank = '初級職';
+  player.jobSelected15 = true;
+
+  addLog(`${jobName}になった`);
+  records.push(`<br><b>15歳 初級職選択</b><br>`);
+  records.push(`・${jobName}になった<br>`);
+
+  updateAll();
+  show('main');
 }
 
 function updateAll(){
@@ -376,8 +428,8 @@ function updateMain(){
     出身地：${player.area}<br>
     生家：${player.home}<br>
     職業：${player.job}<br>
-    年齢：${player.age}歳<br>
-    祝福：${player.blessing}
+    職位：${player.jobRank}<br>
+    年齢：${player.age}歳
   `;
 
   document.getElementById('profileRight').innerHTML = `
@@ -385,7 +437,7 @@ function updateMain(){
     状態：${player.status}<br>
     所持金：${player.money}G<br>
     名声：${player.fame}<br>
-    ？？？<br>
+    祝福：${player.blessing}<br>
     ？？？
   `;
 
