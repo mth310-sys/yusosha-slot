@@ -42,7 +42,7 @@ button:disabled{opacity:.45;background:#777;color:#ddd}
 .items-panel{height:154px;font-size:15px;line-height:1.7}
 .setting button{width:100%;height:44px;margin-bottom:8px;text-align:left;padding-left:16px;font-size:15px}
 .job-buttons,.adventure-buttons,.select-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.job-buttons button,.adventure-buttons button,.select-buttons button{min-height:48px;font-size:14px;line-height:1.3;padding:4px}
+.job-buttons button,.adventure-buttons button,.select-buttons button{height:48px;font-size:13px;line-height:1.25;padding:4px}
 .note{font-size:13px;line-height:1.6;color:#5b4a2c}
 .game-title{font-size:30px;font-weight:900;text-align:center;margin-bottom:12px}
 .game-result{font-size:15px;line-height:1.8;padding:16px}
@@ -98,8 +98,8 @@ button:disabled{opacity:.45;background:#777;color:#ddd}
 
 <section id="trainingselect" class="screen center">
   <div class="panel dialog">
-    <b>訓練を選択</b><br><br>
-    条件と費用を満たす訓練だけ選べます。
+    <b>訓練を選択</b><br>
+    条件・費用を満たす訓練だけ選択できます。
   </div>
   <div id="trainingButtons" class="panel select-buttons"></div>
   <button class="choice" onclick="show('main')">戻る</button>
@@ -107,8 +107,8 @@ button:disabled{opacity:.45;background:#777;color:#ddd}
 
 <section id="studyselect" class="screen center">
   <div class="panel dialog">
-    <b>学習を選択</b><br><br>
-    条件と費用を満たす学習だけ選べます。
+    <b>学習を選択</b><br>
+    条件・費用を満たす学習だけ選択できます。
   </div>
   <div id="studyButtons" class="panel select-buttons"></div>
   <button class="choice" onclick="show('main')">戻る</button>
@@ -116,7 +116,7 @@ button:disabled{opacity:.45;background:#777;color:#ddd}
 
 <section id="workselect" class="screen center">
   <div class="panel dialog">
-    <b>仕事を選択</b><br><br>
+    <b>仕事を選択</b><br>
     20歳から危険な仕事も出現します。
   </div>
   <div id="workButtons" class="panel select-buttons"></div>
@@ -264,48 +264,13 @@ const adventurePlaces = {
   deep:{name:'はじまりの森 奥地', ranks:['C','B'], hpCost:22, money:[35,90], fame:[2,5]},
   dungeon:{name:'はじまりの森 ダンジョン', ranks:['A','S','SS','SSS'], hpCost:35, money:[80,220], fame:[5,12]}
 };
-
-const trainingOptions = [
-  {key:'tr_g', place:'自宅', name:'筋トレ', rank:'G', cost:0, hpCost:5, age:0, fame:0},
-  {key:'tr_f', place:'自宅', name:'素振り', rank:'F', cost:0, hpCost:7, age:0, fame:0},
-  {key:'tr_e', place:'冒険者ギルド裏手', name:'基礎講座', rank:'E', cost:10, hpCost:10, age:10, fame:0},
-  {key:'tr_d', place:'冒険者ギルド裏手', name:'初心者講習', rank:'D', cost:20, hpCost:12, age:10, fame:0},
-  {key:'tr_c', place:'冒険者ギルド訓練場', name:'教官の熱血指導', rank:'C', cost:50, hpCost:18, age:15, fame:20},
-  {key:'tr_b', place:'冒険者ギルド訓練場', name:'教官と模擬戦', rank:'B', cost:100, hpCost:24, age:15, fame:20},
-  {key:'tr_a', place:'冒険者ギルド地下訓練所', name:'ギルマス指導', rank:'A', cost:300, hpCost:32, age:18, fame:100},
-  {key:'tr_s', place:'冒険者ギルド地下訓練所', name:'ギルマス模擬戦', rank:'S', cost:500, hpCost:40, age:18, fame:100}
-];
-const studyOptions = [
-  {key:'st_g', place:'自宅', name:'読書', rank:'G', cost:0, hpCost:2, age:0, fame:0},
-  {key:'st_f', place:'自宅', name:'暗記', rank:'F', cost:0, hpCost:3, age:0, fame:0},
-  {key:'st_e', place:'村の寺子屋', name:'基礎学習', rank:'E', cost:10, hpCost:5, age:10, fame:0},
-  {key:'st_d', place:'町の学校', name:'講義', rank:'D', cost:20, hpCost:7, age:10, fame:0},
-  {key:'st_c', place:'学院', name:'専門講義', rank:'C', cost:50, hpCost:10, age:15, fame:10},
-  {key:'st_b', place:'学院', name:'研究課題', rank:'B', cost:100, hpCost:12, age:15, fame:20},
-  {key:'st_a', place:'王立学院', name:'上級研究', rank:'A', cost:300, hpCost:15, age:18, fame:50},
-  {key:'st_s', place:'王立学院', name:'禁書研究', rank:'S', cost:500, hpCost:20, age:18, fame:100}
-];
-
-const workOptions = [
-  {key:'wk_g', place:'はじまりの村 広場', name:'村の手伝い', rank:'G', income:[5,15], age:0, fame:0},
-  {key:'wk_f', place:'はじまりの村 農家', name:'畑の手伝い', rank:'F', income:[10,25], age:0, fame:0},
-  {key:'wk_e', place:'はじまりの村 各職業', name:'農家の仕事', rank:'E', income:[20,40], age:10, fame:0},
-  {key:'wk_d', place:'はじまりの村 各職業', name:'木こりの仕事', rank:'D', income:[30,60], age:10, fame:0},
-  {key:'wk_c', place:'はじまりの村 各職業', name:'猟師の仕事', rank:'C', income:[50,90], age:12, fame:5},
-  {key:'wk_b', place:'はじまりの村 各職業', name:'武器屋見習い', rank:'B', income:[80,130], age:15, fame:10},
-  {key:'wk_a', place:'とある場所', name:'怪しい荷運び', rank:'A', income:[150,250], age:16, fame:-5},
-  {key:'wk_s', place:'とある場所', name:'危険な取引', rank:'S', income:[250,400], age:18, fame:-10},
-  {key:'wk_ss', place:'とある場所', name:'闇組織の依頼', rank:'SS', income:[500,900], age:20, fame:-30},
-  {key:'wk_sss', place:'とある場所', name:'消えてほしい人', rank:'SSS', income:[1000,3000], age:20, fame:-100}
-];
-
 let player = null;
 const logs = [];
 const records = [];
 let deathReason = '';
 
 function show(id){
-  document.querySelectorAll('.screen').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById(id).classList.add('active');
 }
 
@@ -321,233 +286,295 @@ function dateText(){
   return `${player.year}年目 ${player.month}月`;
 }
 
-function generatePlayer(){
-  const origin = pick(origins);
+function clampHp(){
+  player.hp = Math.max(-100, Math.min(player.hpMax, player.hp));
+}
 
+function healthState(){
+  if(player.status === '死亡') return '死亡';
+  if(player.hp >= 80) return '健康';
+  if(player.hp >= 50) return '普通';
+  if(player.hp >= 30) return '疲れ気味';
+  if(player.hp >= 0) return '疲労困憊';
+  if(player.hp >= -29) return '軽傷';
+  if(player.hp >= -59) return '重傷';
+  return '瀕死';
+}
+
+function healthPenalty(){
+  if(player.hp >= 80) return -1;
+  if(player.hp >= 50) return 0;
+  if(player.hp >= 30) return 1;
+  if(player.hp >= 0) return 2;
+  if(player.hp >= -29) return 3;
+  if(player.hp >= -59) return 4;
+  return 5;
+}
+
+function survivalRank(){
+  let score =
+    player.abilities.筋力 +
+    player.abilities.器用 +
+    player.abilities.運;
+
+  if(player.hp >= 80) score += 50;
+  else if(player.hp >= 50) score += 0;
+  else if(player.hp >= 30) score -= 30;
+  else if(player.hp >= 0) score -= 80;
+  else if(player.hp >= -29) score -= 140;
+  else if(player.hp >= -59) score -= 220;
+  else score -= 350;
+
+  if(player.status === '怪我') score -= 60;
+  if(player.status === '重傷') score -= 150;
+  if(player.status === '死亡') score = -9999;
+
+  if(score < 100) return 'G';
+  if(score < 180) return 'F';
+  if(score < 280) return 'E';
+  if(score < 400) return 'D';
+  if(score < 550) return 'C';
+  if(score < 750) return 'B';
+  if(score < 1000) return 'A';
+  if(score < 1300) return 'S';
+  if(score < 1700) return 'SS';
+  return 'SSS';
+}
+
+function rankIndex(rank){
+  return rankOrder.indexOf(rank);
+}
+
+function hiddenAdventureRank(placeKey){
+  if(placeKey !== 'dungeon'){
+    return pick(adventurePlaces[placeKey].ranks);
+  }
+
+  const r=Math.random();
+
+  if(r<0.65) return 'A';
+  if(r<0.95) return 'S';
+  if(r<0.99) return 'SS';
+  return 'SSS';
+}
+
+function generatePlayer(){
+
+  const origin = pick(origins);
   const abilities = {};
-  abilityNames.forEach(a=>{
-    abilities[a]=randInt(1,99);
+
+  abilityNames.forEach(name=>{
+    abilities[name]=randInt(1,99);
   });
 
-  return{
+  Object.keys(origin.bonus).forEach(name=>{
+    abilities[name]=Math.min(
+      999,
+      abilities[name]+origin.bonus[name]
+    );
+  });
+
+  const potentials = {};
+
+  abilityNames.forEach(name=>{
+    potentials[name]=pick(potentialRanks);
+  });
+
+  return {
     name:'主人公',
     area:origin.area,
     home:origin.home,
     job:origin.job,
     originJob:origin.job,
+
     jobRank:'幼少期',
+
+    jobSelected15:false,
+
+    jobEvent:null,
+    jobEventTurn:0,
+
     age:10,
     year:1,
     month:1,
+
+    blessing:'なし',
+
     hp:100,
     hpMax:100,
-    money:randInt(origin.money[0],origin.money[1]),
-    fame:0,
+
     status:'なし',
-    abilities
+
+    money:randInt(
+      origin.money[0],
+      origin.money[1]
+    ),
+
+    fame:0,
+
+    abilities,
+    potentials
   };
 }
 
 function finishDiagnosis(){
+
   player = generatePlayer();
 
-  document.getElementById('resultText').innerHTML=`
+  document.getElementById(
+    'resultText'
+  ).innerHTML = `
+  診断が終わりました。<br><br>
+
   出身地：${player.area}<br>
   生家：${player.home}<br>
-  職業：${player.job}
+  職業：${player.job}<br>
+  女神の祝福：なし<br><br>
+
+  <b>能力値</b><br>
+
+  筋力：${player.abilities.筋力}
+  魔力：${player.abilities.魔力}
+  知力：${player.abilities.知力}<br>
+
+  器用：${player.abilities.器用}
+  魅力：${player.abilities.魅力}
+  運：${player.abilities.運}
   `;
 
   show('result');
 }
 
 function startLife(){
+
   logs.length=0;
   records.length=0;
 
+  deathReason='';
+
   addLog('異世界での人生が始まった');
+  addLog(`${player.area}の${player.home}に転生した`);
+  addLog(`初期職業は${player.job}だった`);
+
+  records.push(`<b>${dateText()}</b><hr>`);
+  records.push(`・転生した<br>`);
+  records.push(`・${player.area}の${player.home}で人生が始まった<br>`);
+  records.push(`・初期職業は${player.job}だった<br>`);
+
   updateAll();
+
   show('main');
 }
-
-function openTrainingSelect(){
-
-  let text='訓練を選択\n\n';
-
-  trainingOptions.forEach((v,i)=>{
-    text+=`${i+1}：${v.name} (${v.rank})\n`;
-  });
-
-  const num=parseInt(prompt(text));
-
-  if(!num || !trainingOptions[num-1]) return;
-
-  doTraining(trainingOptions[num-1]);
-}
-
-function openStudySelect(){
-
-  let text='学習を選択\n\n';
-
-  studyOptions.forEach((v,i)=>{
-    text+=`${i+1}：${v.name} (${v.rank})\n`;
-  });
-
-  const num=parseInt(prompt(text));
-
-  if(!num || !studyOptions[num-1]) return;
-
-  doStudy(studyOptions[num-1]);
-}
-
-function openWorkSelect(){
-
-  let text='仕事場所を選択\n\n';
-
-  workOptions.forEach((v,i)=>{
-    text+=`${i+1}：${v.place}\n${v.name}\n${v.rank}\n\n`;
-  });
-
-  const num=parseInt(prompt(text));
-
-  if(!num || !workOptions[num-1]) return;
-
-  doWork(workOptions[num-1]);
-}
-
-function doTraining(data){
-
-  if(player.age < data.age){
-    alert(`${data.age}歳以上必要`);
-    return;
-  }
-
-  if(player.fame < data.fame){
-    alert(`名声${data.fame}必要`);
-    return;
-  }
-
-  if(player.money < data.cost){
-    alert('お金不足');
-    return;
-  }
-
-  player.money -= data.cost;
-  player.hp -= data.hpCost;
-
-  const up = randInt(1,5) + rankOrder.indexOf(data.rank);
-
-  player.abilities.筋力 += up;
-
-  addLog(`${data.name}を行った`);
-  addLog(`筋力+${up}`);
-
-  nextMonth();
-  updateAll();
-}
-function doStudy(data){
-
-  if(player.age < data.age){
-    alert(`${data.age}歳以上必要`);
-    return;
-  }
-
-  if(player.fame < data.fame){
-    alert(`名声${data.fame}必要`);
-    return;
-  }
-
-  if(player.money < data.cost){
-    alert('お金不足');
-    return;
-  }
-
-  player.money -= data.cost;
-  player.hp -= data.hpCost;
-
-  const up = randInt(1,5) + rankOrder.indexOf(data.rank);
-
-  player.abilities.知力 += up;
-
-  addLog(`${data.name}を行った`);
-  addLog(`知力+${up}`);
-
-  nextMonth();
-  updateAll();
-}
-
-function doWork(data){
-
-  if(player.age < data.age){
-    alert(`${data.age}歳以上必要`);
-    return;
-  }
-
-  const income = randInt(data.income[0],data.income[1]);
-
-  player.money += income;
-  player.fame += data.fame;
-  player.hp -= 8;
-
-  addLog(`${data.name}を行った`);
-  addLog(`${income}G獲得`);
-
-  if(data.fame < 0){
-    addLog(`名声${data.fame}`);
-  }
-
-  if(data.rank==='SSS' && Math.random()<0.15){
-    deathReason='お尋ね者として処刑';
-    player.status='死亡';
-    showGameOver();
-    return;
-  }
-
-  nextMonth();
-  updateAll();
-}
-
 function doAction(type){
+
+  if(!player || player.status==='死亡') return;
+
+  const beforeDate=dateText();
+
+  let text='';
+  let result='';
+
+  if(type==='training'){
+
+    let up=randInt(1,3);
+
+    if(player.job==='木こり'){
+      up+=1;
+      result+='木こりの経験で筋力が伸びやすい。';
+    }
+
+    player.abilities.筋力+=up;
+    player.hp-=10;
+
+    text='訓練を行った';
+    result+=`筋力が${up}上昇した。体力が10減少した`;
+  }
+
+  if(type==='study'){
+
+    const up=randInt(1,3);
+
+    player.abilities.知力+=up;
+    player.hp-=5;
+
+    text='学習を行った';
+    result=`知力が${up}上昇した。体力が5減少した`;
+  }
+
+  if(type==='work'){
+
+    const base=randInt(20,50);
+    const income=calcWorkIncome(base);
+
+    player.money+=income;
+    player.hp-=8;
+
+    text='仕事をした';
+    result=`${income}G稼いだ`;
+
+    if(income!==base){
+      result+=`（基本${base}Gに職業補正）`;
+    }
+
+    if(player.jobEvent==='大熊出現'){
+
+      if(Math.random()<0.3){
+
+        player.status='怪我';
+        player.hp-=25;
+
+        result+=`。大熊との遭遇で怪我をした。体力が25減少した`;
+
+      }else{
+
+        result+=`。大熊の危険をうまく避けた`;
+      }
+    }
+
+    result+=`。体力が8減少した`;
+  }
 
   if(type==='rest'){
 
     const heal=randInt(15,30);
 
-    player.hp=Math.min(player.hpMax,player.hp+heal);
+    player.hp+=heal;
 
-    addLog('休息した');
-    addLog(`体力+${heal}`);
+    text='休息した';
+    result=`体力が${heal}回復した`;
 
-    nextMonth();
-    updateAll();
+    if(
+      (player.status==='怪我' ||
+       player.status==='重傷') &&
+       Math.random()<0.5
+    ){
+      player.status='なし';
+      result+=`。怪我が治った`;
+    }
   }
 
   if(type==='special'){
-    addLog('特殊行動');
-    addLog('未実装');
+
+    player.fame+=1;
+
+    text='特殊行動を確認した';
+    result='まだ特別な行動は少ない。名声が1上昇した';
   }
-}
 
-function doAdventure(placeKey){
+  clampHp();
 
-  const place=adventurePlaces[placeKey];
+  addLog(`${beforeDate}：${text}`);
+  addLog(result);
 
-  player.hp-=place.hpCost;
+  records.push(`<br><b>${beforeDate}</b><br>`);
+  records.push(`・${text}<br>`);
+  records.push(`・${result}<br>`);
 
-  const money=randInt(place.money[0],place.money[1]);
+  if(checkHpDeath('体力が尽きた')){
 
-  player.money+=money;
-  player.fame+=randInt(place.fame[0],place.fame[1]);
-
-  addLog(`${place.name}を探索`);
-  addLog(`${money}G獲得`);
-
-  if(player.hp<=0){
-
-    deathReason=`${place.name}で力尽きた`;
-
-    player.status='死亡';
-
+    updateAll();
     showGameOver();
+
     return;
   }
 
@@ -555,7 +582,282 @@ function doAdventure(placeKey){
 
   updateAll();
 
-  show('main');
+  if(checkJobSelect()){
+    show('jobselect');
+  }
+}
+
+function doAdventure(placeKey){
+
+  if(!player || player.status==='死亡') return;
+
+  const place = adventurePlaces[placeKey];
+
+  const beforeDate = dateText();
+
+  const advRank = hiddenAdventureRank(placeKey);
+  const myRank = survivalRank();
+
+  const diff =
+    rankIndex(advRank) -
+    rankIndex(myRank);
+
+  const hpRisk = healthPenalty();
+
+  const totalRisk =
+    diff + hpRisk;
+
+  let deathRate = 0;
+  let heavyRate = 0;
+  let injuryRate = 0;
+
+  if(totalRisk<=0){
+    deathRate=0;
+    heavyRate=0.02;
+    injuryRate=0.08;
+  }
+  else if(totalRisk===1){
+    deathRate=0.02;
+    heavyRate=0.08;
+    injuryRate=0.18;
+  }
+  else if(totalRisk===2){
+    deathRate=0.08;
+    heavyRate=0.18;
+    injuryRate=0.30;
+  }
+  else if(totalRisk===3){
+    deathRate=0.20;
+    heavyRate=0.28;
+    injuryRate=0.35;
+  }
+  else if(totalRisk===4){
+    deathRate=0.40;
+    heavyRate=0.35;
+    injuryRate=0.20;
+  }
+  else if(totalRisk===5){
+    deathRate=0.65;
+    heavyRate=0.25;
+    injuryRate=0.08;
+  }
+  else{
+    deathRate=0.90;
+    heavyRate=0.08;
+    injuryRate=0.02;
+  }
+
+  const roll=Math.random();
+
+  let text=`${place.name}へ向かった`;
+  let result='';
+
+  player.hp-=place.hpCost;
+
+  if(roll<deathRate){
+
+    player.status='死亡';
+    player.hp=-100;
+
+    deathReason=`${place.name}で死亡`;
+
+    result='危険を見誤り、帰らぬ人となった';
+  }
+  else if(
+    roll <
+    deathRate+heavyRate
+  ){
+
+    player.status='重傷';
+
+    player.hp-=randInt(30,60);
+
+    result='命からがら帰還した。重傷を負った';
+  }
+  else if(
+    roll <
+    deathRate+heavyRate+injuryRate
+  ){
+
+    player.status='怪我';
+
+    player.hp-=randInt(10,30);
+
+    result='なんとか帰還したが、怪我を負った';
+  }
+  else{
+
+    const moneyUp=
+      randInt(
+        place.money[0],
+        place.money[1]
+      );
+
+    const fameUp=
+      randInt(
+        place.fame[0],
+        place.fame[1]
+      );
+
+    player.money+=moneyUp;
+    player.fame+=fameUp;
+
+    result=
+      `探索に成功した。${moneyUp}Gを得た。名声が${fameUp}上昇した`;
+
+    if(player.job==='猟師'){
+
+      player.abilities.器用+=1;
+      player.abilities.運+=1;
+
+      result+=
+      `。猟師の経験で器用と運が1上昇した`;
+    }
+  }
+
+  result+=`。体力が${place.hpCost}減少した`;
+
+  clampHp();
+
+  addLog(`${beforeDate}：${text}`);
+  addLog(result);
+
+  records.push(`<br><b>${beforeDate}</b><br>`);
+  records.push(`・${text}<br>`);
+  records.push(`・${result}<br>`);
+
+  if(
+    player.status==='死亡' ||
+    checkHpDeath(`${place.name}で力尽きた`)
+  ){
+
+    updateAll();
+
+    showGameOver();
+
+    return;
+  }
+
+  nextMonth();
+
+  updateAll();
+
+  if(checkJobSelect()){
+    show('jobselect');
+  }else{
+    show('main');
+  }
+}
+function checkHpDeath(reason){
+
+  if(player.hp<=-100){
+
+    player.hp=-100;
+    player.status='死亡';
+
+    deathReason=reason;
+
+    addLog('命が尽きた');
+
+    records.push(`・命が尽きた<br>`);
+
+    return true;
+  }
+
+  return false;
+}
+
+function showGameOver(){
+
+  const title=lifeTitle();
+
+  document.getElementById(
+    'gameOverText'
+  ).innerHTML=`
+
+  あなたの人生は終わりました。<br><br>
+
+  享年：${player.age}歳<br>
+  死因：${deathReason||'不明'}<br>
+  最終職業：${player.job}<br>
+  最終体力：${player.hp}/${player.hpMax}<br>
+  所持金：${player.money}G<br>
+  名声：${player.fame}<br><br>
+
+  人生評価：${title}
+  `;
+
+  updateAll();
+
+  show('gameover');
+}
+
+function lifeTitle(){
+
+  if(player.age<=12)
+    return '早すぎた魂';
+
+  if(player.fame>=50)
+    return '名を残した冒険者';
+
+  if(player.money>=2000)
+    return '財を抱えた魂';
+
+  if(
+    deathReason &&
+    deathReason.includes('ダンジョン')
+  )
+    return '無謀な挑戦者';
+
+  if(player.status==='死亡')
+    return '異世界に散った魂';
+
+  return '名もなき人生';
+}
+
+function resetToTitle(){
+
+  player=null;
+
+  logs.length=0;
+  records.length=0;
+
+  deathReason='';
+
+  show('title');
+}
+
+function calcWorkIncome(base){
+
+  let rate=1;
+
+  if(player.job==='農家')
+    rate+=0.2;
+
+  if(player.job==='木こり')
+    rate+=0.1;
+
+  if(player.jobEvent==='豊作')
+    rate+=0.5;
+
+  if(player.jobEvent==='不作')
+    rate-=0.5;
+
+  if(player.jobEvent==='ナイストントン')
+    rate+=0.3;
+
+  if(player.jobEvent==='イケイケトントン')
+    rate+=0.6;
+
+  if(player.jobEvent==='兎大量発生')
+    rate+=0.4;
+
+  if(player.jobEvent==='大熊出現')
+    rate+=0.8;
+
+  rate=Math.max(0.1,rate);
+
+  return Math.floor(base*rate);
 }
 
 function nextMonth(){
@@ -569,60 +871,173 @@ function nextMonth(){
     player.age++;
 
     addLog(`${player.age}歳になった`);
+
+    records.push(
+      `・${player.age}歳になった<br>`
+    );
+  }
+
+  updateJobEventTurn();
+  rollJobEvent();
+
+  addLog(`${dateText()}になった`);
+
+  records.push(
+    `・${dateText()}になった<br>`
+  );
+}
+
+function updateJobEventTurn(){
+
+  if(!player.jobEvent) return;
+
+  player.jobEventTurn--;
+
+  if(player.jobEventTurn<=0){
+
+    addLog(
+      `${player.jobEvent}が終了した`
+    );
+
+    records.push(
+      `・${player.jobEvent}が終了した<br>`
+    );
+
+    player.jobEvent=null;
+    player.jobEventTurn=0;
   }
 }
 
-function showGameOver(){
+function rollJobEvent(){
 
-  document.getElementById('gameOverText').innerHTML=`
-  享年 ${player.age}歳<br><br>
-  死因：${deathReason}
-  `;
+  if(player.jobEvent) return;
 
-  show('gameover');
-}
+  if(player.job==='農家'){
 
-function resetToTitle(){
+    if(Math.random()<0.18){
 
-  player=null;
-
-  logs.length=0;
-  records.length=0;
-
-  show('title');
-}
-
-function addLog(text){
-
-  logs.push(text);
-
-  while(logs.length>5){
-    logs.shift();
+      if(Math.random()<0.6)
+        startJobEvent('豊作',5);
+      else
+        startJobEvent('不作',10);
+    }
   }
 
+  if(player.job==='木こり'){
+
+    if(Math.random()<0.18){
+
+      if(Math.random()<0.6)
+        startJobEvent('ナイストントン',3);
+      else
+        startJobEvent('イケイケトントン',5);
+    }
+  }
+
+  if(player.job==='猟師'){
+
+    if(Math.random()<0.18){
+
+      if(Math.random()<0.65)
+        startJobEvent('兎大量発生',6);
+      else
+        startJobEvent('大熊出現',5);
+    }
+  }
+}
+
+function startJobEvent(name,turn){
+
+  player.jobEvent=name;
+  player.jobEventTurn=turn;
+
+  addLog(`${name}が発生した`);
+
+  records.push(`・${name}が発生した<br>`);
+}
+
+function checkJobSelect(){
+
+  if(!player) return false;
+
+  if(
+    player.age>=15 &&
+    !player.jobSelected15
+  ){
+
+    addLog('初級職が解放された');
+
+    records.push(
+      `・初級職が解放された<br>`
+    );
+
+    if(
+      player.job==='村人' ||
+      player.originJob==='村人'
+    ){
+      updateAll();
+      return true;
+    }
+
+    player.jobSelected15=true;
+  }
+
+  return false;
+}
+
+function chooseJob(jobName){
+
+  player.job=jobName;
+
+  player.jobRank='初級職';
+
+  player.jobSelected15=true;
+
+  player.jobEvent=null;
+  player.jobEventTurn=0;
+
+  addLog(`${jobName}になった`);
+
+  records.push(
+    `<br><b>15歳 初級職選択</b><br>`
+  );
+
+  records.push(
+    `・${jobName}になった<br>`
+  );
+
+  updateAll();
+
+  show('main');
+}
+
+function updateAll(){
+
+  if(!player) return;
+
+  updateMain();
   updateLog();
-}
-
-function updateLog(){
-
-  document.getElementById('log').innerHTML=
-  logs.map(v=>'・'+v).join('<br>');
-}
-
-function updateRecord(){
-
-  document.getElementById('recordText').innerHTML=
-  records.join('<br>');
+  updateRecord();
 }
 
 function updateMain(){
 
-  if(!player) return;
+  document.getElementById(
+    'dateLabel'
+  ).textContent=dateText();
 
-  document.getElementById('dateLabel').textContent=dateText();
-  document.getElementById('itemDateLabel').textContent=dateText();
+  document.getElementById(
+    'itemDateLabel'
+  ).textContent=dateText();
 
-  document.getElementById('profileLeft').innerHTML=`
+  const eventText =
+    player.jobEvent
+    ? `${player.jobEvent} 残り${player.jobEventTurn}`
+    : 'なし';
+
+  document.getElementById(
+    'profileLeft'
+  ).innerHTML=`
   名前：${player.name}<br>
   出身地：${player.area}<br>
   生家：${player.home}<br>
@@ -631,15 +1046,20 @@ function updateMain(){
   年齢：${player.age}歳
   `;
 
-  document.getElementById('profileRight').innerHTML=`
+  document.getElementById(
+    'profileRight'
+  ).innerHTML=`
   体力：${player.hp}/${player.hpMax}<br>
-  体調：${player.hp>=50?'健康':'疲労'}<br>
+  体調：${healthState()}<br>
   状態：${player.status}<br>
   所持金：${player.money}G<br>
-  名声：${player.fame}
+  名声：${player.fame}<br>
+  職業イベント：${eventText}
   `;
 
-  document.getElementById('abilityGrid').innerHTML=`
+  document.getElementById(
+    'abilityGrid'
+  ).innerHTML=`
   <div>筋力 ${player.abilities.筋力}</div>
   <div>魔力 ${player.abilities.魔力}</div>
   <div>知力 ${player.abilities.知力}</div>
@@ -649,11 +1069,29 @@ function updateMain(){
   `;
 }
 
-function updateAll(){
+function updateLog(){
 
-  updateMain();
-  updateLog();
-  updateRecord();
+  document.getElementById(
+    'log'
+  ).innerHTML=
+  logs.map(v=>'・'+v).join('<br>');
+}
+
+function addLog(text){
+
+  logs.push(text);
+
+  while(logs.length>5){
+    logs.shift();
+  }
+}
+
+function updateRecord(){
+
+  document.getElementById(
+    'recordText'
+  ).innerHTML=
+  records.join('');
 }
 </script>
 </body>
