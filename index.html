@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>異世界転生サクセス Mock Ver.0.2.6</title>
+<title>異世界転生サクセス Mock Ver.0.2.6.1</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#111;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;color:#2b2418}
@@ -28,6 +28,7 @@ button{border:0;border-radius:9px;background:#2d3b55;color:#fff4c4;font-weight:9
 .actions-panel{height:106px}
 .actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
 .actions button{height:32px;font-size:14px}
+.actions button:disabled{opacity:.45}
 .log-title{font-weight:900;font-size:14px;border-bottom:1px solid #b8955a;margin:0 0 5px}
 .log{flex:1;min-height:116px;background:#241e12;color:#fff5d8;border-radius:9px;padding:8px 12px;font-size:13px;line-height:1.55;overflow:hidden}
 .bottom{height:46px;display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:6px}
@@ -42,6 +43,8 @@ button{border:0;border-radius:9px;background:#2d3b55;color:#fff4c4;font-weight:9
 .job-buttons,.adventure-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .job-buttons button,.adventure-buttons button{height:48px;font-size:14px;line-height:1.3}
 .note{font-size:13px;line-height:1.6;color:#5b4a2c}
+.game-title{font-size:30px;font-weight:900;text-align:center;margin-bottom:12px}
+.game-result{font-size:15px;line-height:1.8;padding:16px}
 </style>
 </head>
 
@@ -107,6 +110,15 @@ button{border:0;border-radius:9px;background:#2d3b55;color:#fff4c4;font-weight:9
   <button class="choice" onclick="show('main')">戻る</button>
 </section>
 
+<section id="gameover" class="screen center">
+  <div class="panel game-result">
+    <div class="game-title">GAME OVER</div>
+    <div id="gameOverText"></div>
+  </div>
+  <button class="choice" onclick="show('record')">記録を見る</button>
+  <button class="choice" onclick="resetToTitle()">タイトルへ戻る</button>
+</section>
+
 <section id="main" class="screen">
   <div class="panel header">
     <span>異世界転生サクセス</span>
@@ -127,12 +139,12 @@ button{border:0;border-radius:9px;background:#2d3b55;color:#fff4c4;font-weight:9
   <div class="panel actions-panel">
     <div class="block-title">行動</div>
     <div class="actions">
-      <button onclick="doAction('training')">訓練</button>
-      <button onclick="doAction('study')">学習</button>
-      <button onclick="show('adventureselect')">冒険</button>
-      <button onclick="doAction('work')">仕事</button>
-      <button onclick="doAction('rest')">休息</button>
-      <button onclick="doAction('special')">特殊</button>
+      <button id="btnTraining" onclick="doAction('training')">訓練</button>
+      <button id="btnStudy" onclick="doAction('study')">学習</button>
+      <button id="btnAdventure" onclick="show('adventureselect')">冒険</button>
+      <button id="btnWork" onclick="doAction('work')">仕事</button>
+      <button id="btnRest" onclick="doAction('rest')">休息</button>
+      <button id="btnSpecial" onclick="doAction('special')">特殊</button>
     </div>
   </div>
 
@@ -195,7 +207,7 @@ button{border:0;border-radius:9px;background:#2d3b55;color:#fff4c4;font-weight:9
     <button>セーブ</button>
     <button>ロード</button>
     <button>オプション</button>
-    <button onclick="show('title')">タイトルへ戻る</button>
+    <button onclick="resetToTitle()">タイトルへ戻る</button>
   </div>
   <nav class="bottom">
     <button onclick="show('main')">メイン</button><button onclick="show('record')">記録</button><button onclick="show('items')">所持品</button><button onclick="show('book')">図鑑</button><button onclick="show('setting')">設定</button>
@@ -229,6 +241,7 @@ const adventurePlaces = {
 let player = null;
 const logs = [];
 const records = [];
+let deathReason = '';
 
 function show(id){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
@@ -247,7 +260,12 @@ function dateText(){
   return `${player.year}年目 ${player.month}月`;
 }
 
+function clampHp(){
+  player.hp = Math.max(-100, Math.min(player.hpMax, player.hp));
+}
+
 function healthState(){
+  if(player.status === '死亡') return '死亡';
   if(player.hp >= 80) return '健康';
   if(player.hp >= 50) return '普通';
   if(player.hp >= 30) return '疲れ気味';
@@ -300,7 +318,6 @@ function rankIndex(rank){
 
 function hiddenAdventureRank(placeKey){
   if(placeKey !== 'dungeon') return pick(adventurePlaces[placeKey].ranks);
-
   const r = Math.random();
   if(r < 0.65) return 'A';
   if(r < 0.95) return 'S';
@@ -364,6 +381,7 @@ function finishDiagnosis(){
 function startLife(){
   logs.length=0;
   records.length=0;
+  deathReason='';
 
   addLog('異世界での人生が始まった');
   addLog(`${player.area}の${player.home}に転生した`);
@@ -430,7 +448,7 @@ function doAction(type){
 
   if(type==='rest'){
     const heal=randInt(15,30);
-    player.hp=Math.min(player.hpMax,player.hp+heal);
+    player.hp+=heal;
     text='休息した';
     result=`体力が${heal}回復した`;
 
@@ -446,12 +464,20 @@ function doAction(type){
     result='まだ特別な行動は少ない。名声が1上昇した';
   }
 
+  clampHp();
+
   addLog(`${beforeDate}：${text}`);
   addLog(result);
 
   records.push(`<br><b>${beforeDate}</b><br>`);
   records.push(`・${text}<br>`);
   records.push(`・${result}<br>`);
+
+  if(checkHpDeath('体力が尽きた')){
+    updateAll();
+    showGameOver();
+    return;
+  }
 
   nextMonth();
   updateAll();
@@ -491,7 +517,8 @@ function doAdventure(placeKey){
 
   if(roll < deathRate){
     player.status='死亡';
-    player.hp-=80;
+    player.hp = -100;
+    deathReason = `${place.name}で死亡`;
     result=`危険を見誤り、帰らぬ人となった`;
   }else if(roll < deathRate + heavyRate){
     player.status='重傷';
@@ -516,6 +543,7 @@ function doAdventure(placeKey){
   }
 
   result+=`。体力が${place.hpCost}減少した`;
+  clampHp();
 
   addLog(`${beforeDate}：${text}`);
   addLog(result);
@@ -524,22 +552,65 @@ function doAdventure(placeKey){
   records.push(`・${text}<br>`);
   records.push(`・${result}<br>`);
 
-  if(player.status!=='死亡'){
-    nextMonth();
-  }
-
-  updateAll();
-
-  if(player.status==='死亡'){
-    show('main');
+  if(player.status === '死亡' || checkHpDeath(`${place.name}で力尽きた`)){
+    updateAll();
+    showGameOver();
     return;
   }
+
+  nextMonth();
+  updateAll();
 
   if(checkJobSelect()){
     show('jobselect');
   }else{
     show('main');
   }
+}
+
+function checkHpDeath(reason){
+  if(player.hp <= -100){
+    player.hp = -100;
+    player.status = '死亡';
+    deathReason = reason;
+    addLog('命が尽きた');
+    records.push(`・命が尽きた<br>`);
+    return true;
+  }
+  return false;
+}
+
+function showGameOver(){
+  const title = lifeTitle();
+  document.getElementById('gameOverText').innerHTML = `
+    あなたの人生は終わりました。<br><br>
+    享年：${player.age}歳<br>
+    死因：${deathReason || '不明'}<br>
+    最終職業：${player.job}<br>
+    最終体力：${player.hp} / ${player.hpMax}<br>
+    所持金：${player.money}G<br>
+    名声：${player.fame}<br><br>
+    人生評価：${title}
+  `;
+  updateAll();
+  show('gameover');
+}
+
+function lifeTitle(){
+  if(player.age <= 12) return '早すぎた魂';
+  if(player.fame >= 50) return '名を残した冒険者';
+  if(player.money >= 2000) return '財を抱えた魂';
+  if(deathReason.includes('ダンジョン')) return '無謀な挑戦者';
+  if(player.status === '死亡') return '異世界に散った魂';
+  return '名もなき人生';
+}
+
+function resetToTitle(){
+  player=null;
+  logs.length=0;
+  records.length=0;
+  deathReason='';
+  show('title');
 }
 
 function calcWorkIncome(base){
@@ -668,6 +739,7 @@ function chooseJob(jobName){
 }
 
 function updateAll(){
+  if(!player) return;
   updateMain();
   updateLog();
   updateRecord();
@@ -678,6 +750,12 @@ function updateMain(){
   document.getElementById('itemDateLabel').textContent=dateText();
 
   const eventText = player.jobEvent ? `${player.jobEvent} 残り${player.jobEventTurn}` : 'なし';
+  const dead = player.status === '死亡';
+
+  ['btnTraining','btnStudy','btnAdventure','btnWork','btnRest','btnSpecial'].forEach(id=>{
+    const btn=document.getElementById(id);
+    if(btn) btn.disabled = dead;
+  });
 
   document.getElementById('profileLeft').innerHTML=`
     名前：${player.name}<br>
