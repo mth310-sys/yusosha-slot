@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>異世界転生サクセス Mock Ver.0.2.4.1</title>
+<title>異世界転生サクセス Mock Ver.0.2.5</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#111;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;color:#2b2418}
@@ -244,6 +244,8 @@ function generatePlayer(){
     originJob:origin.job,
     jobRank:'幼少期',
     jobSelected15:false,
+    jobEvent:null,
+    jobEventTurn:0,
     age:10,
     year:1,
     month:1,
@@ -300,11 +302,17 @@ function doAction(type){
   let result='';
 
   if(type==='training'){
-    const up=randInt(1,3);
+    let up=randInt(1,3);
+
+    if(player.job==='木こり'){
+      up+=1;
+      result+='木こりの経験で筋力が伸びやすい。';
+    }
+
     player.abilities.筋力+=up;
     player.hp=Math.max(0,player.hp-10);
     text='訓練を行った';
-    result=`筋力が${up}上昇した。体力が10減少した`;
+    result+=`筋力が${up}上昇した。体力が10減少した`;
   }
 
   if(type==='study'){
@@ -323,14 +331,37 @@ function doAction(type){
     player.hp=Math.max(0,player.hp-15);
     text='冒険に出た';
     result=`名声が${fameUp}上昇した。${moneyUp}G手に入れた。体力が15減少した`;
+
+    if(player.job==='猟師'){
+      player.abilities.器用+=1;
+      player.abilities.運+=1;
+      result+=`。猟師の経験で器用と運が1上昇した`;
+    }
   }
 
   if(type==='work'){
-    const moneyUp=randInt(20,50);
-    player.money+=moneyUp;
+    const base=randInt(20,50);
+    const income=calcWorkIncome(base);
+    player.money+=income;
     player.hp=Math.max(0,player.hp-8);
     text='仕事をした';
-    result=`${moneyUp}G稼いだ。体力が8減少した`;
+    result=`${income}G稼いだ`;
+
+    if(income!==base){
+      result+=`（基本${base}Gに職業補正）`;
+    }
+
+    if(player.jobEvent==='大熊出現'){
+      if(Math.random()<0.3){
+        player.status='怪我';
+        player.hp=Math.max(0,player.hp-25);
+        result+=`。大熊との遭遇で怪我をした。体力が25減少した`;
+      }else{
+        result+=`。大熊の危険をうまく避けた`;
+      }
+    }
+
+    result+=`。体力が8減少した`;
   }
 
   if(type==='rest'){
@@ -338,6 +369,11 @@ function doAction(type){
     player.hp=Math.min(player.hpMax,player.hp+heal);
     text='休息した';
     result=`体力が${heal}回復した`;
+
+    if(player.status==='怪我' && Math.random()<0.5){
+      player.status='なし';
+      result+=`。怪我が治った`;
+    }
   }
 
   if(type==='special'){
@@ -361,6 +397,23 @@ function doAction(type){
   }
 }
 
+function calcWorkIncome(base){
+  let rate=1;
+
+  if(player.job==='農家') rate+=0.2;
+  if(player.job==='木こり') rate+=0.1;
+
+  if(player.jobEvent==='豊作') rate+=0.5;
+  if(player.jobEvent==='不作') rate-=0.5;
+  if(player.jobEvent==='ナイストントン') rate+=0.3;
+  if(player.jobEvent==='イケイケトントン') rate+=0.6;
+  if(player.jobEvent==='兎大量発生') rate+=0.4;
+  if(player.jobEvent==='大熊出現') rate+=0.8;
+
+  rate=Math.max(0.1,rate);
+  return Math.floor(base*rate);
+}
+
 function nextMonth(){
   player.month++;
 
@@ -373,8 +426,73 @@ function nextMonth(){
     records.push(`・${player.age}歳になった<br>`);
   }
 
+  updateJobEventTurn();
+  rollJobEvent();
+
   addLog(`${dateText()}になった`);
   records.push(`・${dateText()}になった<br>`);
+}
+
+function updateJobEventTurn(){
+  if(player.jobEvent){
+    player.jobEventTurn--;
+
+    if(player.jobEventTurn<=0){
+      addLog(`${player.jobEvent}が終了した`);
+      records.push(`・${player.jobEvent}が終了した<br>`);
+      player.jobEvent=null;
+      player.jobEventTurn=0;
+    }
+  }
+}
+
+function rollJobEvent(){
+  if(player.jobEvent) return;
+
+  if(player.job==='農家'){
+    if(Math.random()<0.18){
+      if(Math.random()<0.6){
+        startJobEvent('豊作',5);
+      }else{
+        startJobEvent('不作',10);
+      }
+    }
+  }
+
+  if(player.job==='木こり'){
+    if(Math.random()<0.18){
+      if(Math.random()<0.6){
+        startJobEvent('ナイストントン',3);
+      }else{
+        startJobEvent('イケイケトントン',5);
+      }
+    }
+  }
+
+  if(player.job==='猟師'){
+    if(Math.random()<0.18){
+      if(Math.random()<0.65){
+        startJobEvent('兎大量発生',6);
+      }else{
+        startJobEvent('大熊出現',5);
+      }
+    }
+  }
+}
+
+function startJobEvent(name,turn){
+  player.jobEvent=name;
+  player.jobEventTurn=turn;
+
+  addLog(`${name}が発生した`);
+  records.push(`・${name}が発生した<br>`);
+
+  if(name==='豊作') addLog('5ターン仕事収入が上がる');
+  if(name==='不作') addLog('10ターン仕事収入が下がる');
+  if(name==='ナイストントン') addLog('3ターン仕事収入が上がる');
+  if(name==='イケイケトントン') addLog('5ターン仕事収入が大きく上がる');
+  if(name==='兎大量発生') addLog('6ターン仕事収入が上がる');
+  if(name==='大熊出現') addLog('5ターン仕事収入が大きく上がるが怪我リスクも上がる');
 }
 
 function checkJobSelect(){
@@ -402,6 +520,8 @@ function chooseJob(jobName){
   player.job=jobName;
   player.jobRank='初級職';
   player.jobSelected15=true;
+  player.jobEvent=null;
+  player.jobEventTurn=0;
 
   addLog(`${jobName}になった`);
   records.push(`<br><b>15歳 初級職選択</b><br>`);
@@ -421,6 +541,8 @@ function updateMain(){
   document.getElementById('dateLabel').textContent=dateText();
   document.getElementById('itemDateLabel').textContent=dateText();
 
+  const eventText = player.jobEvent ? `${player.jobEvent} 残り${player.jobEventTurn}` : 'なし';
+
   document.getElementById('profileLeft').innerHTML=`
     名前：${player.name}<br>
     出身地：${player.area}<br>
@@ -435,8 +557,8 @@ function updateMain(){
     状態：${player.status}<br>
     所持金：${player.money}G<br>
     名声：${player.fame}<br>
-    祝福：${player.blessing}<br>
-    ？？？
+    職業イベント：${eventText}<br>
+    祝福：${player.blessing}
   `;
 
   document.getElementById('abilityGrid').innerHTML=`
