@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>異世界転生サクセス Mock Ver.0.2.7</title>
+<title>異世界転生サクセス Mock Ver.0.2.7.1</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#111;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;color:#2b2418}
@@ -289,16 +289,16 @@ const studyCommands = [
 ];
 
 const workCommands = [
-  {key:'wk_g', place:'はじまりの村 広場', name:'村の手伝い', rank:'G', age:0, fameNeed:0, hpCost:4, money:[5,20], fame:[0,1], risk:'none'},
-  {key:'wk_f', place:'はじまりの村 農家', name:'畑の手伝い', rank:'F', age:10, fameNeed:0, hpCost:6, money:[15,40], fame:[0,1], risk:'none'},
-  {key:'wk_e', place:'はじまりの村 各職業の仕事', name:'農家', rank:'E', age:15, fameNeed:0, hpCost:10, money:[30,80], fame:[0,2], risk:'none'},
-  {key:'wk_d', place:'はじまりの村 各職業の仕事', name:'木こり', rank:'D', age:15, fameNeed:0, hpCost:14, money:[50,120], fame:[0,2], risk:'none'},
-  {key:'wk_c', place:'はじまりの村 各職業の仕事', name:'猟師', rank:'C', age:15, fameNeed:5, hpCost:18, money:[80,200], fame:[1,3], risk:'injury'},
-  {key:'wk_b', place:'はじまりの村 各職業の仕事', name:'武器屋見習い', rank:'B', age:15, fameNeed:10, hpCost:20, money:[150,400], fame:[1,5], risk:'none'},
-  {key:'wk_a', place:'とある場所', name:'怪しい荷運び', rank:'A', age:20, fameNeed:-9999, hpCost:25, money:[500,1500], fame:[-10,-5], risk:'darkA'},
-  {key:'wk_s', place:'とある場所', name:'危険な取引', rank:'S', age:20, fameNeed:-9999, hpCost:30, money:[2000,5000], fame:[-20,-20], risk:'darkS'},
-  {key:'wk_ss', place:'とある場所', name:'闇組織の依頼', rank:'SS', age:20, fameNeed:-9999, hpCost:40, money:[5000,10000], fame:[-50,-50], risk:'darkSS'},
-  {key:'wk_sss', place:'とある場所', name:'消えてほしい人', rank:'SSS', age:20, fameNeed:-9999, hpCost:50, money:[10000,30000], fame:[-100,-100], risk:'darkSSS'}
+  {key:'wk_g', place:'はじまりの村 広場', name:'村の手伝い', rank:'G', cost:0, age:0, fameNeed:0, hpCost:4, money:[5,20], fame:[0,1], risk:'none'},
+  {key:'wk_f', place:'はじまりの村 農家', name:'畑の手伝い', rank:'F', cost:0, age:10, fameNeed:0, hpCost:6, money:[15,40], fame:[0,1], risk:'none'},
+  {key:'wk_e', place:'はじまりの村 各職業の仕事', name:'農家', rank:'E', cost:0, age:15, fameNeed:0, hpCost:10, money:[30,80], fame:[0,2], risk:'none'},
+  {key:'wk_d', place:'はじまりの村 各職業の仕事', name:'木こり', rank:'D', cost:0, age:15, fameNeed:0, hpCost:14, money:[50,120], fame:[0,2], risk:'none'},
+  {key:'wk_c', place:'はじまりの村 各職業の仕事', name:'猟師', rank:'C', cost:0, age:15, fameNeed:5, hpCost:18, money:[80,200], fame:[1,3], risk:'injury'},
+  {key:'wk_b', place:'はじまりの村 各職業の仕事', name:'武器屋見習い', rank:'B', cost:0, age:15, fameNeed:10, hpCost:20, money:[150,400], fame:[1,5], risk:'none'},
+  {key:'wk_a', place:'とある場所', name:'怪しい荷運び', rank:'A', cost:0, age:20, fameNeed:-9999, hpCost:25, money:[500,1500], fame:[-10,-5], risk:'darkA'},
+  {key:'wk_s', place:'とある場所', name:'危険な取引', rank:'S', cost:0, age:20, fameNeed:-9999, hpCost:30, money:[2000,5000], fame:[-20,-20], risk:'darkS'},
+  {key:'wk_ss', place:'とある場所', name:'闇組織の依頼', rank:'SS', cost:0, age:20, fameNeed:-9999, hpCost:40, money:[5000,10000], fame:[-50,-50], risk:'darkSS'},
+  {key:'wk_sss', place:'とある場所', name:'消えてほしい人', rank:'SSS', cost:0, age:20, fameNeed:-9999, hpCost:50, money:[10000,30000], fame:[-100,-100], risk:'darkSSS'}
 ];
 
 let player = null;
@@ -396,17 +396,19 @@ function canUseCommand(cmd){
 }
 
 function commandButtonLabel(cmd){
-  const cost = cmd.cost ? `${cmd.cost}G` : '無料';
-  const need = [];
-  if(cmd.age > 0) need.push(`${cmd.age}歳〜`);
-  if(cmd.fameNeed > 0) need.push(`名声${cmd.fameNeed}〜`);
-  return `${cmd.place}<br>${cmd.name}（${cmd.rank}）<br>${cost}${need.length ? ' / '+need.join(' / ') : ''}`;
+  return `${cmd.place}<br>${cmd.name}<br>費用 ${cmd.cost || 0}G`;
+}
+
+function hiddenCommandLabel(){
+  return `？？？<br>？？？<br>費用 ？？？`;
 }
 
 function buildCommandButtons(id, list, fnName){
   document.getElementById(id).innerHTML = list.map(cmd=>{
-    const disabled = canUseCommand(cmd) ? '' : 'disabled';
-    return `<button ${disabled} onclick="${fnName}('${cmd.key}')">${commandButtonLabel(cmd)}</button>`;
+    if(!canUseCommand(cmd)){
+      return `<button disabled>${hiddenCommandLabel()}</button>`;
+    }
+    return `<button onclick="${fnName}('${cmd.key}')">${commandButtonLabel(cmd)}</button>`;
   }).join('');
 }
 
