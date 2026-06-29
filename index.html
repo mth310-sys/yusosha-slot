@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>異世界転生サクセス Mock Ver.0.2.7.1</title>
+<title>異世界転生サクセス Mock Ver.0.3.0</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#111;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;color:#2b2418}
@@ -29,7 +29,6 @@ button:disabled{opacity:.45;background:#999;color:#eee}
 .actions-panel{height:106px}
 .actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
 .actions button{height:32px;font-size:14px}
-.actions button:disabled{opacity:.45}
 .log-title{font-weight:900;font-size:14px;border-bottom:1px solid #b8955a;margin:0 0 5px}
 .log{flex:1;min-height:116px;background:#241e12;color:#fff5d8;border-radius:9px;padding:8px 12px;font-size:13px;line-height:1.55;overflow:hidden}
 .bottom{height:46px;display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:6px}
@@ -96,29 +95,26 @@ button:disabled{opacity:.45;background:#999;color:#eee}
   </div>
 </section>
 
+<section id="mayoroffer" class="screen center">
+  <div id="mayorOfferText" class="panel dialog"></div>
+  <button class="choice" onclick="acceptMayor()">村長になる</button>
+  <button class="choice" onclick="declineMayor()">今の仕事を続ける</button>
+</section>
+
 <section id="trainingselect" class="screen center">
-  <div class="panel dialog">
-    <b>訓練を選択</b><br><br>
-    施設と内容を選んでください。
-  </div>
+  <div class="panel dialog"><b>訓練を選択</b><br><br>施設と内容を選んでください。</div>
   <div id="trainingButtons" class="panel command-buttons"></div>
   <button class="choice" onclick="show('main')">戻る</button>
 </section>
 
 <section id="studyselect" class="screen center">
-  <div class="panel dialog">
-    <b>学習を選択</b><br><br>
-    施設と内容を選んでください。
-  </div>
+  <div class="panel dialog"><b>学習を選択</b><br><br>施設と内容を選んでください。</div>
   <div id="studyButtons" class="panel command-buttons"></div>
   <button class="choice" onclick="show('main')">戻る</button>
 </section>
 
 <section id="workselect" class="screen center">
-  <div class="panel dialog">
-    <b>仕事を選択</b><br><br>
-    条件を満たす仕事だけ選択できます。
-  </div>
+  <div class="panel dialog"><b>仕事を選択</b><br><br>条件を満たす仕事だけ選択できます。</div>
   <div id="workButtons" class="panel command-buttons"></div>
   <button class="choice" onclick="show('main')">戻る</button>
 </section>
@@ -245,6 +241,7 @@ button:disabled{opacity:.45;background:#999;color:#eee}
 </div>
 
 <script>
+const MAX_ABILITY = 999;
 const abilityNames = ['筋力','魔力','知力','器用','魅力','運'];
 const potentialRanks = ['G','F','E','D','C','B','A','S','SS','SSS'];
 const rankOrder = ['G','F','E','D','C','B','A','S','SS','SSS'];
@@ -267,38 +264,71 @@ const adventurePlaces = {
 };
 
 const trainingCommands = [
-  {key:'tr_g', place:'自宅', name:'筋トレ', rank:'G', cost:0, age:0, fameNeed:0, hpCost:5, ability:'筋力', up:[1,2]},
-  {key:'tr_f', place:'自宅', name:'素振り', rank:'F', cost:0, age:0, fameNeed:0, hpCost:7, ability:'筋力', up:[1,3]},
-  {key:'tr_e', place:'はじまりの村 冒険者ギルド裏手', name:'基礎講座', rank:'E', cost:10, age:10, fameNeed:0, hpCost:10, ability:'筋力', up:[2,4]},
-  {key:'tr_d', place:'はじまりの村 冒険者ギルド裏手', name:'初心者講習', rank:'D', cost:20, age:10, fameNeed:0, hpCost:12, ability:'筋力', up:[3,5]},
-  {key:'tr_c', place:'はじまりの村 冒険者ギルド訓練場', name:'教官の熱血指導', rank:'C', cost:50, age:15, fameNeed:20, hpCost:18, ability:'筋力', up:[4,7]},
-  {key:'tr_b', place:'はじまりの村 冒険者ギルド訓練場', name:'教官と模擬戦', rank:'B', cost:100, age:15, fameNeed:20, hpCost:24, ability:'筋力', up:[6,9]},
-  {key:'tr_a', place:'はじまりの村 冒険者ギルド地下訓練所', name:'ギルマス指導', rank:'A', cost:300, age:18, fameNeed:100, hpCost:32, ability:'筋力', up:[8,12]},
-  {key:'tr_s', place:'はじまりの村 冒険者ギルド地下訓練所', name:'ギルマス模擬戦', rank:'S', cost:500, age:18, fameNeed:100, hpCost:40, ability:'筋力', up:[10,16]}
+  {key:'tr_g', place:'自宅', name:'筋トレ', cost:0, age:0, fameNeed:0, hpCost:5, ability:'筋力', up:[1,2]},
+  {key:'tr_f', place:'自宅', name:'素振り', cost:0, age:0, fameNeed:0, hpCost:7, ability:'筋力', up:[1,3]},
+  {key:'tr_e', place:'はじまりの村 冒険者ギルド裏手', name:'基礎講座', cost:10, age:10, fameNeed:0, hpCost:10, ability:'筋力', up:[2,4]},
+  {key:'tr_d', place:'はじまりの村 冒険者ギルド裏手', name:'初心者講習', cost:20, age:10, fameNeed:0, hpCost:12, ability:'筋力', up:[3,5]},
+  {key:'tr_c', place:'はじまりの村 冒険者ギルド訓練場', name:'教官の熱血指導', cost:50, age:15, fameNeed:20, hpCost:18, ability:'筋力', up:[4,7]},
+  {key:'tr_b', place:'はじまりの村 冒険者ギルド訓練場', name:'教官と模擬戦', cost:100, age:15, fameNeed:20, hpCost:24, ability:'筋力', up:[6,9]},
+  {key:'tr_a', place:'はじまりの村 冒険者ギルド地下訓練所', name:'ギルマス指導', cost:300, age:18, fameNeed:100, hpCost:32, ability:'筋力', up:[8,12]},
+  {key:'tr_s', place:'はじまりの村 冒険者ギルド地下訓練所', name:'ギルマス模擬戦', cost:500, age:18, fameNeed:100, hpCost:40, ability:'筋力', up:[10,16]}
 ];
 
 const studyCommands = [
-  {key:'st_g', place:'自宅', name:'妄想', rank:'G', cost:0, age:0, fameNeed:0, hpCost:2, ability:'知力', up:[1,2]},
-  {key:'st_f', place:'自宅', name:'瞑想', rank:'F', cost:0, age:0, fameNeed:0, hpCost:0, ability:'知力', up:[1,3]},
-  {key:'st_e', place:'はじまりの村 広場', name:'人間観察', rank:'E', cost:0, age:10, fameNeed:0, hpCost:4, ability:'知力', up:[2,4]},
-  {key:'st_d', place:'はじまりの村 広場', name:'井戸端会議', rank:'D', cost:0, age:10, fameNeed:0, hpCost:5, ability:'知力', up:[3,5]},
-  {key:'st_c', place:'はじまりの村 冒険者ギルド', name:'冒険譚講義', rank:'C', cost:50, age:15, fameNeed:20, hpCost:8, ability:'知力', up:[4,7]},
-  {key:'st_b', place:'はじまりの村 冒険者ギルド', name:'魔物研究会', rank:'B', cost:1000, age:15, fameNeed:20, hpCost:12, ability:'知力', up:[6,9]},
-  {key:'st_a', place:'はじまりの村 底辺貴族邸', name:'家庭教師指導', rank:'A', cost:3000, age:18, fameNeed:200, hpCost:15, ability:'知力', up:[8,12]},
-  {key:'st_s', place:'はじまりの村 底辺貴族邸', name:'貴族学問会', rank:'S', cost:5000, age:18, fameNeed:200, hpCost:20, ability:'知力', up:[10,16]}
+  {key:'st_g', place:'自宅', name:'妄想', cost:0, age:0, fameNeed:0, hpCost:2, ability:'知力', up:[1,2]},
+  {key:'st_f', place:'自宅', name:'瞑想', cost:0, age:0, fameNeed:0, hpCost:0, ability:'知力', up:[1,3]},
+  {key:'st_e', place:'はじまりの村 広場', name:'人間観察', cost:0, age:10, fameNeed:0, hpCost:4, ability:'知力', up:[2,4]},
+  {key:'st_d', place:'はじまりの村 広場', name:'井戸端会議', cost:0, age:10, fameNeed:0, hpCost:5, ability:'知力', up:[3,5]},
+  {key:'st_c', place:'はじまりの村 冒険者ギルド', name:'冒険譚講義', cost:50, age:15, fameNeed:20, hpCost:8, ability:'知力', up:[4,7]},
+  {key:'st_b', place:'はじまりの村 冒険者ギルド', name:'魔物研究会', cost:1000, age:15, fameNeed:20, hpCost:12, ability:'知力', up:[6,9]},
+  {key:'st_a', place:'はじまりの村 底辺貴族邸', name:'家庭教師指導', cost:3000, age:18, fameNeed:200, hpCost:15, ability:'知力', up:[8,12]},
+  {key:'st_s', place:'はじまりの村 底辺貴族邸', name:'貴族学問会', cost:5000, age:18, fameNeed:200, hpCost:20, ability:'知力', up:[10,16]}
 ];
 
 const workCommands = [
-  {key:'wk_g', place:'はじまりの村 広場', name:'村の手伝い', rank:'G', cost:0, age:0, fameNeed:0, hpCost:4, money:[5,20], fame:[0,1], risk:'none'},
-  {key:'wk_f', place:'はじまりの村 農家', name:'畑の手伝い', rank:'F', cost:0, age:10, fameNeed:0, hpCost:6, money:[15,40], fame:[0,1], risk:'none'},
-  {key:'wk_e', place:'はじまりの村 各職業の仕事', name:'農家', rank:'E', cost:0, age:15, fameNeed:0, hpCost:10, money:[30,80], fame:[0,2], risk:'none'},
-  {key:'wk_d', place:'はじまりの村 各職業の仕事', name:'木こり', rank:'D', cost:0, age:15, fameNeed:0, hpCost:14, money:[50,120], fame:[0,2], risk:'none'},
-  {key:'wk_c', place:'はじまりの村 各職業の仕事', name:'猟師', rank:'C', cost:0, age:15, fameNeed:5, hpCost:18, money:[80,200], fame:[1,3], risk:'injury'},
-  {key:'wk_b', place:'はじまりの村 各職業の仕事', name:'武器屋見習い', rank:'B', cost:0, age:15, fameNeed:10, hpCost:20, money:[150,400], fame:[1,5], risk:'none'},
-  {key:'wk_a', place:'とある場所', name:'怪しい荷運び', rank:'A', cost:0, age:20, fameNeed:-9999, hpCost:25, money:[500,1500], fame:[-10,-5], risk:'darkA'},
-  {key:'wk_s', place:'とある場所', name:'危険な取引', rank:'S', cost:0, age:20, fameNeed:-9999, hpCost:30, money:[2000,5000], fame:[-20,-20], risk:'darkS'},
-  {key:'wk_ss', place:'とある場所', name:'闇組織の依頼', rank:'SS', cost:0, age:20, fameNeed:-9999, hpCost:40, money:[5000,10000], fame:[-50,-50], risk:'darkSS'},
-  {key:'wk_sss', place:'とある場所', name:'消えてほしい人', rank:'SSS', cost:0, age:20, fameNeed:-9999, hpCost:50, money:[10000,30000], fame:[-100,-100], risk:'darkSSS'}
+  {key:'wk_g', place:'はじまりの村 広場', name:'村の手伝い', cost:0, age:0, fameNeed:0, hpCost:4, money:[5,20], fame:[0,1], risk:'none'},
+  {key:'wk_f', place:'はじまりの村 農家', name:'畑の手伝い', cost:0, age:10, fameNeed:0, hpCost:6, money:[15,40], fame:[0,1], risk:'none'},
+  {key:'wk_e', place:'はじまりの村 各職業の仕事', name:'農家', cost:0, age:15, fameNeed:0, hpCost:10, money:[30,80], fame:[0,2], risk:'none'},
+  {key:'wk_d', place:'はじまりの村 各職業の仕事', name:'木こり', cost:0, age:15, fameNeed:0, hpCost:14, money:[50,120], fame:[0,2], risk:'none'},
+  {key:'wk_c', place:'はじまりの村 各職業の仕事', name:'猟師', cost:0, age:15, fameNeed:5, hpCost:18, money:[80,200], fame:[1,3], risk:'injury'},
+  {key:'wk_b', place:'はじまりの村 各職業の仕事', name:'武器屋見習い', cost:0, age:15, fameNeed:10, hpCost:20, money:[150,400], fame:[1,5], risk:'none'},
+  {key:'wk_a', place:'とある場所', name:'怪しい荷運び', cost:0, age:20, fameNeed:-9999, hpCost:25, money:[500,1500], fame:[-10,-5], risk:'darkA'},
+  {key:'wk_s', place:'とある場所', name:'危険な取引', cost:0, age:20, fameNeed:-9999, hpCost:30, money:[2000,5000], fame:[-20,-20], risk:'darkS'},
+  {key:'wk_ss', place:'とある場所', name:'闇組織の依頼', cost:0, age:20, fameNeed:-9999, hpCost:40, money:[5000,10000], fame:[-50,-50], risk:'darkSS'},
+  {key:'wk_sss', place:'とある場所', name:'消えてほしい人', cost:0, age:20, fameNeed:-9999, hpCost:50, money:[10000,30000], fame:[-100,-100], risk:'darkSSS'}
+];
+
+const dailyEvents = [
+  {text:'今日は平和だった'},
+  {text:'犬と目が合ったまま終わった'},
+  {text:'魔王っぽい人を見かけた。たぶん違った'},
+  {text:'鳥のフンが頭に落ちてきた', fame:-1, ability:'運', up:1},
+  {text:'石につまずいて転んだ', hp:-3},
+  {text:'隣人から野菜をもらった', hp:2},
+  {text:'村に行商人がきた', ability:'知力', up:1},
+  {text:'四つ葉のクローバーを見つけた', ability:'運', up:1},
+  {text:'落ちていた硬貨を拾った', ability:'運', up:1},
+  {text:'虹を見かけた', ability:'運', up:1},
+  {text:'子供に手を振られた', ability:'魅力', up:1},
+  {text:'犬になつかれた', ability:'魅力', up:1},
+  {text:'村人から感じが良いと言われた', ability:'魅力', up:1},
+  {text:'落としたリンゴを反射的にキャッチした', ability:'器用', up:1},
+  {text:'ほつれた服を直した', ability:'器用', up:1},
+  {text:'石投げが妙に上手くいった', ability:'器用', up:1},
+  {text:'不思議な風を感じた', ability:'魔力', up:1},
+  {text:'夢の中で光を見た', ability:'魔力', up:1},
+  {text:'森の精霊らしきものを見かけた', ability:'魔力', up:1},
+  {text:'道端で転んだ子供を助けた', fame:1},
+  {text:'村の掃除を手伝った', fame:1},
+  {text:'落とし物を持ち主に届けた', fame:1}
+];
+
+const rareEvents = [
+  {text:'旅の老人と出会った', randomAbility:['筋力','知力','運'], up:3},
+  {text:'村長に顔を覚えられた', fame:3},
+  {text:'井戸から謎の光が見えた'},
+  {text:'誰かに見られている気がした'},
+  {text:'不思議な夢を見た', dream:true}
 ];
 
 let player = null;
@@ -317,6 +347,10 @@ function randInt(min,max){
 
 function pick(arr){
   return arr[Math.floor(Math.random()*arr.length)];
+}
+
+function addAbility(name,value){
+  player.abilities[name]=Math.max(0,Math.min(MAX_ABILITY,player.abilities[name]+value));
 }
 
 function dateText(){
@@ -437,7 +471,7 @@ function generatePlayer(){
   abilityNames.forEach(name=>abilities[name]=randInt(1,99));
 
   Object.keys(origin.bonus).forEach(name=>{
-    abilities[name]=Math.min(999,abilities[name]+origin.bonus[name]);
+    abilities[name]=Math.min(MAX_ABILITY,abilities[name]+origin.bonus[name]);
   });
 
   const potentials = {};
@@ -451,6 +485,12 @@ function generatePlayer(){
     originJob:origin.job,
     jobRank:'幼少期',
     jobSelected15:false,
+    jobSelected20:false,
+    jobSelected30:false,
+    mayorOffer:false,
+    mayorDeclined:false,
+    townFounded:false,
+    medalReceived:false,
     jobEvent:null,
     jobEventTurn:0,
     age:10,
@@ -527,11 +567,9 @@ function finishCommand(beforeDate,text,result){
   nextMonth();
   updateAll();
 
-  if(checkJobSelect()){
-    show('jobselect');
-  }else{
-    show('main');
-  }
+  if(checkJobProgress()) return;
+
+  show('main');
 }
 
 function doTrainingCommand(key){
@@ -543,12 +581,12 @@ function doTrainingCommand(key){
 
   player.money-=cmd.cost;
   player.hp-=cmd.hpCost;
-  player.abilities[cmd.ability]+=up;
+  addAbility(cmd.ability,up);
 
   let result=`${cmd.place}で${cmd.name}を行った。${cmd.ability}が${up}上昇した。体力が${cmd.hpCost}減少した`;
   if(cmd.cost>0) result+=`。${cmd.cost}G支払った`;
   if(player.job==='木こり' && cmd.ability==='筋力'){
-    player.abilities.筋力+=1;
+    addAbility('筋力',1);
     result+=`。木こりの経験で筋力がさらに1上昇した`;
   }
 
@@ -564,7 +602,7 @@ function doStudyCommand(key){
 
   player.money-=cmd.cost;
   player.hp-=cmd.hpCost;
-  player.abilities[cmd.ability]+=up;
+  addAbility(cmd.ability,up);
 
   let result=`${cmd.place}で${cmd.name}を行った。${cmd.ability}が${up}上昇した。体力が${cmd.hpCost}減少した`;
   if(cmd.cost>0) result+=`。${cmd.cost}G支払った`;
@@ -622,20 +660,9 @@ function doWorkCommand(key){
 function doAction(type){
   if(!player || player.status==='死亡') return;
 
-  if(type==='training'){
-    openTrainingSelect();
-    return;
-  }
-
-  if(type==='study'){
-    openStudySelect();
-    return;
-  }
-
-  if(type==='work'){
-    openWorkSelect();
-    return;
-  }
+  if(type==='training'){ openTrainingSelect(); return; }
+  if(type==='study'){ openStudySelect(); return; }
+  if(type==='work'){ openWorkSelect(); return; }
 
   const beforeDate=dateText();
   let text='';
@@ -712,9 +739,9 @@ function doAdventure(placeKey){
     player.fame+=fameUp;
     result=`探索に成功した。${moneyUp}Gを得た。名声が${fameUp}上昇した`;
 
-    if(player.job==='猟師'){
-      player.abilities.器用+=1;
-      player.abilities.運+=1;
+    if(player.job==='猟師' || player.job==='ベテラン猟師'){
+      addAbility('器用',1);
+      addAbility('運',1);
       result+=`。猟師の経験で器用と運が1上昇した`;
     }
   }
@@ -738,11 +765,9 @@ function doAdventure(placeKey){
   nextMonth();
   updateAll();
 
-  if(checkJobSelect()){
-    show('jobselect');
-  }else{
-    show('main');
-  }
+  if(checkJobProgress()) return;
+
+  show('main');
 }
 
 function checkHpDeath(reason){
@@ -792,7 +817,16 @@ function showGameOver(){
 }
 
 function lifeTitle(){
+  if(deathReason.includes('寿命')) return '天寿を全うした魂';
   if(deathReason.includes('捕縛')) return 'お尋ね者';
+  if(player.townFounded && player.medalReceived) return '伝説の町長';
+  if(player.townFounded) return '町の創設者';
+  if(player.job==='村長') return '村を支えた長';
+  if(player.job==='ベテラン猟師') return '生涯猟師';
+  if(player.job==='製材職人') return '生涯木こり';
+  if(player.job==='大農園主') return '生涯農家';
+  if(player.fame >= 100) return '村の人気者';
+  if(player.money >= 10000) return '大富豪';
   if(player.age <= 12) return '早すぎた魂';
   if(player.fame >= 50) return '名を残した冒険者';
   if(player.money >= 2000) return '財を抱えた魂';
@@ -814,6 +848,10 @@ function calcWorkIncome(base){
 
   if(player.job==='農家') rate+=0.2;
   if(player.job==='木こり') rate+=0.1;
+  if(player.job==='大農園主') rate+=0.35;
+  if(player.job==='製材職人') rate+=0.25;
+  if(player.job==='ベテラン猟師') rate+=0.25;
+  if(player.job==='村長') rate+=0.15;
 
   if(player.jobEvent==='豊作') rate+=0.5;
   if(player.jobEvent==='不作') rate-=0.5;
@@ -821,6 +859,16 @@ function calcWorkIncome(base){
   if(player.jobEvent==='イケイケトントン') rate+=0.6;
   if(player.jobEvent==='兎大量発生') rate+=0.4;
   if(player.jobEvent==='大熊出現') rate+=0.8;
+  if(player.jobEvent==='王都への出荷依頼') rate+=1.0;
+  if(player.jobEvent==='謎の豊作') rate+=0.3;
+  if(player.jobEvent==='害虫大量発生') rate-=0.3;
+  if(player.jobEvent==='珍しい木を発見') rate+=0.5;
+  if(player.jobEvent==='斧が折れた') rate-=0.3;
+  if(player.jobEvent==='大物の足跡発見') rate+=0.5;
+  if(player.jobEvent==='獲物不足') rate-=0.4;
+  if(player.jobEvent==='毛皮商人来訪') rate+=0.6;
+  if(player.jobEvent==='景気が良い') rate+=0.2;
+  if(player.jobEvent==='景気が悪い') rate-=0.2;
 
   rate=Math.max(0.1,rate);
   return Math.floor(base*rate);
@@ -836,13 +884,59 @@ function nextMonth(){
 
     addLog(`${player.age}歳になった`);
     records.push(`・${player.age}歳になった<br>`);
+
+    checkAging();
+    checkLifeSpan();
   }
+
+  if(player.status==='死亡') return;
 
   updateJobEventTurn();
   rollJobEvent();
+  rollDailyEvent();
+  rollRareEvent();
+  rollMayorEvent();
 
   addLog(`${dateText()}になった`);
   records.push(`・${dateText()}になった<br>`);
+}
+
+function checkAging(){
+  if(player.age>=60){
+    const hpDown=randInt(1,2);
+    player.hpMax=Math.max(30,player.hpMax-hpDown);
+    if(player.hp>player.hpMax) player.hp=player.hpMax;
+    if(Math.random()<0.6){
+      const down=randInt(1,3);
+      addAbility('筋力',-down);
+      addLog(`老化により筋力が${down}低下した`);
+      records.push(`・老化により筋力が${down}低下した<br>`);
+    }
+  }
+}
+
+function checkLifeSpan(){
+  if(player.age>=80){
+    player.status='死亡';
+    player.hp=-100;
+    deathReason='寿命を全うした';
+    addLog('寿命を全うした');
+    records.push(`・寿命を全うした<br>`);
+    showGameOver();
+    return;
+  }
+
+  if(player.age>=70){
+    const rate=Math.min(0.2,(player.age-69)*0.01);
+    if(Math.random()<rate){
+      player.status='死亡';
+      player.hp=-100;
+      deathReason='老衰';
+      addLog('老衰により人生を終えた');
+      records.push(`・老衰により人生を終えた<br>`);
+      showGameOver();
+    }
+  }
 }
 
 function updateJobEventTurn(){
@@ -861,44 +955,178 @@ function updateJobEventTurn(){
 function rollJobEvent(){
   if(player.jobEvent) return;
 
-  if(player.job==='農家'){
-    if(Math.random()<0.18){
-      if(Math.random()<0.6) startJobEvent('豊作',5);
-      else startJobEvent('不作',10);
+  const rateBonus = isMiddleJob(player.job) ? 1.5 : 1;
+
+  if(player.job==='農家' || player.job==='大農園主'){
+    if(Math.random()<0.16*rateBonus){
+      const r=Math.random();
+      if(r<0.32) startJobEvent('豊作',5);
+      else if(r<0.55) startJobEvent('不作',10);
+      else if(r<0.68) startJobEvent('王都への出荷依頼',1);
+      else if(r<0.78) startJobEvent('謎の豊作',3);
+      else if(r<0.90) startJobEvent('害虫大量発生',4);
+      else startJobEvent('王都への出荷成功',1);
     }
   }
 
-  if(player.job==='木こり'){
-    if(Math.random()<0.18){
-      if(Math.random()<0.6) startJobEvent('ナイストントン',3);
-      else startJobEvent('イケイケトントン',5);
+  if(player.job==='木こり' || player.job==='製材職人'){
+    if(Math.random()<0.16*rateBonus){
+      const r=Math.random();
+      if(r<0.34) startJobEvent('ナイストントン',3);
+      else if(r<0.56) startJobEvent('イケイケトントン',5);
+      else if(r<0.70) startJobEvent('珍しい木を発見',3);
+      else if(r<0.84) startJobEvent('斧が折れた',2);
+      else if(r<0.94) startJobEvent('森林組合から表彰',3);
+      else startJobEvent('王都の工務店と契約',1);
     }
   }
 
-  if(player.job==='猟師'){
-    if(Math.random()<0.18){
-      if(Math.random()<0.65) startJobEvent('兎大量発生',6);
-      else startJobEvent('大熊出現',5);
+  if(player.job==='猟師' || player.job==='ベテラン猟師'){
+    if(Math.random()<0.16*rateBonus){
+      const r=Math.random();
+      if(r<0.34) startJobEvent('兎大量発生',6);
+      else if(r<0.52) startJobEvent('大熊出現',5);
+      else if(r<0.66) startJobEvent('大物の足跡発見',3);
+      else if(r<0.80) startJobEvent('獲物不足',4);
+      else if(r<0.93) startJobEvent('毛皮商人来訪',3);
+      else startJobEvent('王都の貴族から依頼',1);
     }
   }
+
+  if(Math.random()<0.01) startJobEvent('景気が良い',6);
+  else if(Math.random()<0.01) startJobEvent('景気が悪い',6);
+  else if(Math.random()<0.01) startJobEvent('祭り開催',3);
+}
+
+function isMiddleJob(job){
+  return job==='大農園主' || job==='製材職人' || job==='ベテラン猟師';
 }
 
 function startJobEvent(name,turn){
   player.jobEvent=name;
   player.jobEventTurn=turn;
 
-  addLog(`${name}が発生した`);
-  records.push(`・${name}が発生した<br>`);
+  let extra='';
 
-  if(name==='豊作') addLog('5ターン仕事収入が上がる');
-  if(name==='不作') addLog('10ターン仕事収入が下がる');
-  if(name==='ナイストントン') addLog('3ターン仕事収入が上がる');
-  if(name==='イケイケトントン') addLog('5ターン仕事収入が大きく上がる');
-  if(name==='兎大量発生') addLog('6ターン仕事収入が上がる');
-  if(name==='大熊出現') addLog('5ターン仕事収入が大きく上がるが怪我リスクも上がる');
+  if(name==='王都への出荷成功'){ player.fame+=10; player.money+=500; extra='名声が10上昇し、500Gを得た'; }
+  if(name==='森林組合から表彰'){ player.fame+=2; extra='名声が2上昇した'; }
+  if(name==='王都の工務店と契約'){ player.fame+=10; player.money+=500; extra='名声が10上昇し、500Gを得た'; }
+  if(name==='王都の貴族から依頼'){ player.fame+=10; player.money+=500; extra='名声が10上昇し、500Gを得た'; }
+  if(name==='祭り開催'){ player.fame+=1; extra='しばらく名声を得やすくなる'; }
+
+  addLog(`${name}が発生した`);
+  if(extra) addLog(extra);
+
+  records.push(`・${name}が発生した<br>`);
+  if(extra) records.push(`・${extra}<br>`);
 }
 
-function checkJobSelect(){
+function rollDailyEvent(){
+  if(Math.random()>0.22) return;
+  const ev=pick(dailyEvents);
+  applyEvent(ev,'日常イベント');
+}
+
+function rollRareEvent(){
+  if(Math.random()>0.025) return;
+  const ev=pick(rareEvents);
+  applyEvent(ev,'レアイベント');
+}
+
+function applyEvent(ev,label){
+  let result=`${label}：${ev.text}`;
+
+  if(ev.hp){
+    player.hp+=ev.hp;
+    if(ev.hp>0) result+=`。体力が${ev.hp}回復した`;
+    if(ev.hp<0) result+=`。体力が${Math.abs(ev.hp)}減少した`;
+  }
+
+  if(ev.fame){
+    player.fame+=ev.fame;
+    if(ev.fame>0) result+=`。名声が${ev.fame}上昇した`;
+    if(ev.fame<0) result+=`。名声が${Math.abs(ev.fame)}低下した`;
+  }
+
+  if(ev.ability){
+    addAbility(ev.ability,ev.up);
+    result+=`。${ev.ability}が${ev.up}上昇した`;
+  }
+
+  if(ev.randomAbility){
+    const ab=pick(ev.randomAbility);
+    addAbility(ab,ev.up);
+    result+=`。${ab}が${ev.up}上昇した`;
+  }
+
+  if(ev.dream){
+    if(Math.random()<0.05){
+      addAbility('運',5);
+      result+=`。何かを思い出した気がする。運が5上昇した`;
+    }else{
+      addAbility('運',1);
+      result+=`。運が1上昇した`;
+    }
+  }
+
+  clampHp();
+  addLog(result);
+  records.push(`・${result}<br>`);
+}
+
+function rollMayorEvent(){
+  if(player.job!=='村長') return;
+
+  if(!player.townFounded && player.age>=50 && player.fame>=300 && player.money>=10000 && Math.random()<0.03){
+    player.townFounded=true;
+    player.fame+=100;
+    addAbility('魅力',10);
+    addLog('村が町へ昇格した');
+    records.push(`・村が町へ昇格した。名声が100上昇し、魅力が10上昇した<br>`);
+    return;
+  }
+
+  if(player.townFounded && !player.medalReceived && player.fame>=500 && Math.random()<0.02){
+    player.medalReceived=true;
+    player.fame+=200;
+    addLog('王都から勲章を授与された');
+    records.push(`・王都から勲章を授与された。名声が200上昇した<br>`);
+    return;
+  }
+
+  if(Math.random()>0.08) return;
+
+  const events=[
+    {text:'村祭りを開催した', fame:10},
+    {text:'新しい井戸を完成させた', fame:10},
+    {text:'行商人の誘致に成功した', money:300, fame:5},
+    {text:'隣村との交流会を開いた', fame:8},
+    {text:'王都から視察団が訪れた', fame:15},
+    {text:'村の税収が増えた', money:500},
+    {text:'村人に慕われた', fame:10, ability:'魅力', up:2},
+    {text:'村人から不満が噴出した', fame:-10},
+    {text:'魔物襲撃への対応に成功した', fame:20}
+  ];
+
+  const ev=pick(events);
+  let result=`村長イベント：${ev.text}`;
+
+  if(ev.money){ player.money+=ev.money; result+=`。${ev.money}Gを得た`; }
+  if(ev.fame){
+    player.fame+=ev.fame;
+    if(ev.fame>0) result+=`。名声が${ev.fame}上昇した`;
+    if(ev.fame<0) result+=`。名声が${Math.abs(ev.fame)}低下した`;
+  }
+  if(ev.ability){
+    addAbility(ev.ability,ev.up);
+    result+=`。${ev.ability}が${ev.up}上昇した`;
+  }
+
+  addLog(result);
+  records.push(`・${result}<br>`);
+}
+
+function checkJobProgress(){
   if(!player) return false;
 
   if(player.age>=15 && !player.jobSelected15){
@@ -907,6 +1135,7 @@ function checkJobSelect(){
 
     if(player.job==='村人' || player.originJob==='村人'){
       updateAll();
+      show('jobselect');
       return true;
     }
 
@@ -916,7 +1145,88 @@ function checkJobSelect(){
     updateAll();
   }
 
+  if(player.age>=20 && !player.jobSelected20){
+    player.jobSelected20=true;
+
+    if(player.job==='農家') promoteJob('大農園主','中級職');
+    else if(player.job==='木こり') promoteJob('製材職人','中級職');
+    else if(player.job==='猟師') promoteJob('ベテラン猟師','中級職');
+    else{
+      addLog('中級職の条件を満たしていない');
+      records.push(`・中級職の条件を満たしていない<br>`);
+    }
+  }
+
+  if(player.age>=30 && !player.jobSelected30){
+    player.jobSelected30=true;
+    if(checkMayorCondition()){
+      showMayorOffer();
+      return true;
+    }else{
+      addLog('上級職への昇格条件を満たせなかった');
+      records.push(`・上級職への昇格条件を満たせなかった<br>`);
+    }
+  }
+
   return false;
+}
+
+function promoteJob(name,rank){
+  player.job=name;
+  player.jobRank=rank;
+  player.jobEvent=null;
+  player.jobEventTurn=0;
+
+  addLog(`${name}になった`);
+  records.push(`<br><b>${player.age}歳 ${rank}昇格</b><br>`);
+  records.push(`・${name}になった<br>`);
+}
+
+function checkMayorCondition(){
+  if(player.fame<100) return false;
+  if(player.fame<=-30) return false;
+
+  if(player.job==='大農園主' && player.money>=3000) return true;
+  if(player.job==='製材職人' && player.abilities.筋力>=200) return true;
+  if(player.job==='ベテラン猟師' && player.abilities.器用>=200) return true;
+
+  return false;
+}
+
+function showMayorOffer(){
+  player.mayorOffer=true;
+  document.getElementById('mayorOfferText').innerHTML=`
+    <b>村長就任の打診</b><br><br>
+    長年の功績が認められ、村人たちから村長就任を打診された。<br><br>
+    村長になりますか？
+  `;
+  show('mayoroffer');
+}
+
+function acceptMayor(){
+  player.job='村長';
+  player.jobRank='上級職';
+  player.mayorOffer=false;
+  player.jobEvent=null;
+  player.jobEventTurn=0;
+
+  addLog('村長に就任した');
+  records.push(`<br><b>30歳 上級職昇格</b><br>`);
+  records.push(`・村人たちの推薦により村長へ就任した<br>`);
+
+  updateAll();
+  show('main');
+}
+
+function declineMayor(){
+  player.mayorOffer=false;
+  player.mayorDeclined=true;
+
+  addLog('村長就任を断り、今の仕事を続けることにした');
+  records.push(`・村長就任を断り、今の仕事を続けることにした<br>`);
+
+  updateAll();
+  show('main');
 }
 
 function chooseJob(jobName){
