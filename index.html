@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>モンスターブリーダーサクセス Mock Ver.0.2</title>
+<title>モンスターブリーダーサクセス Mock Ver.0.3</title>
 <style>
 *{box-sizing:border-box}
 html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#111;font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;color:#2b2418}
@@ -17,26 +17,28 @@ button:disabled{opacity:.45;background:#999;color:#eee}
 .title-screen{justify-content:center;align-items:center;gap:22px;text-align:center}
 .logo{font-size:30px;font-weight:900;line-height:1.3}
 .big-btn{width:220px;height:44px;font-size:16px}
-.center{justify-content:center;gap:12px}
-.dialog{font-size:17px;line-height:1.7;padding:18px}
+.center{justify-content:center;gap:10px}
+.dialog{font-size:15px;line-height:1.55;padding:12px}
 .choice{height:42px;font-size:16px}
 .profile{height:104px;display:grid;grid-template-columns:1fr 1fr;gap:8px;font-size:12px;line-height:1.45}
 .block-title{font-size:13px;font-weight:900;border-bottom:1px solid #c8a86a;margin-bottom:4px}
-.monster-panel{height:118px;display:grid;grid-template-columns:88px 1fr;gap:8px;font-size:12px;line-height:1.45}
-.chara{height:92px;border:2px solid #8b6f3d;border-radius:9px;background:#efe0bd;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:900;font-size:34px;line-height:1.2}
-.ability-grid{display:grid;grid-template-columns:1fr 1fr 1fr;row-gap:4px}
+.monster-panel{height:124px;display:grid;grid-template-columns:88px 1fr;gap:8px;font-size:12px;line-height:1.42}
+.chara{height:98px;border:2px solid #8b6f3d;border-radius:9px;background:#efe0bd;display:flex;align-items:center;justify-content:center;text-align:center;font-weight:900;font-size:34px;line-height:1.2}
+.ability-grid{display:grid;grid-template-columns:1fr 1fr 1fr;row-gap:3px}
 .actions-panel{height:106px}
 .actions{display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px}
 .actions button{height:32px;font-size:14px}
 .log-title{font-weight:900;font-size:14px;border-bottom:1px solid #b8955a;margin:0 0 5px}
-.log{flex:1;min-height:116px;background:#241e12;color:#fff5d8;border-radius:9px;padding:8px 12px;font-size:13px;line-height:1.55;overflow:hidden}
+.log{flex:1;min-height:110px;background:#241e12;color:#fff5d8;border-radius:9px;padding:8px 12px;font-size:13px;line-height:1.55;overflow:hidden}
 .bottom{height:46px;display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-top:6px}
 .bottom button{font-size:13px}
-.simple{flex:1;font-size:15px;line-height:1.65;overflow:hidden}
+.simple{flex:1;font-size:14px;line-height:1.55;overflow:hidden}
 .command-buttons,.monster-buttons{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.command-buttons button,.monster-buttons button{height:54px;font-size:13px;line-height:1.25;padding:4px}
-.box-list{font-size:13px;line-height:1.55;overflow:hidden}
+.command-buttons button,.monster-buttons button{height:58px;font-size:12px;line-height:1.25;padding:4px}
+.box-list{font-size:13px;line-height:1.5;overflow:hidden}
 .note{font-size:13px;line-height:1.6;color:#5b4a2c}
+.status-card{font-size:13px;line-height:1.5;padding:10px}
+.status-line{font-weight:900;font-size:15px}
 </style>
 </head>
 
@@ -102,28 +104,19 @@ button:disabled{opacity:.45;background:#999;color:#eee}
 </section>
 
 <section id="train" class="screen center">
-  <div class="panel dialog">
-    <b>育成メニュー</b><br><br>
-    育成内容を選んでください。
-  </div>
+  <div id="trainStatus" class="panel status-card"></div>
   <div id="trainButtons" class="panel command-buttons"></div>
   <button class="choice" onclick="show('main')">戻る</button>
 </section>
 
 <section id="explore" class="screen center">
-  <div class="panel dialog">
-    <b>探索先</b><br><br>
-    探索すると素材やお金を見つけます。低確率で新しいモンスターも出ます。
-  </div>
+  <div id="exploreStatus" class="panel status-card"></div>
   <div id="exploreButtons" class="panel command-buttons"></div>
   <button class="choice" onclick="show('main')">戻る</button>
 </section>
 
 <section id="tournament" class="screen center">
-  <div class="panel dialog">
-    <b>大会</b><br><br>
-    能力値で勝敗を判定します。
-  </div>
+  <div id="tournamentStatus" class="panel status-card"></div>
   <div id="tournamentButtons" class="panel command-buttons"></div>
   <button class="choice" onclick="show('main')">戻る</button>
 </section>
@@ -163,7 +156,7 @@ button:disabled{opacity:.45;background:#999;color:#eee}
   <div class="panel header"><span>設定</span><span></span></div>
   <div class="panel simple">
     <button class="choice" onclick="newGame()">最初から</button><br><br>
-    <div class="note">※Mock Ver.0.2ではセーブ機能は未実装です。BOXはゲーム起動中のみ保持されます。</div>
+    <div class="note">※Mock Ver.0.3ではセーブ機能は未実装です。BOXはゲーム起動中のみ保持されます。</div>
   </div>
   <nav class="bottom">
     <button onclick="show('main')">メイン</button><button onclick="show('record')">記録</button><button onclick="show('box')">BOX</button><button onclick="show('book')">図鑑</button><button onclick="show('setting')">設定</button>
@@ -208,10 +201,10 @@ const explorePlaces=[
 ];
 
 const tournaments=[
-  {key:'village',name:'村大会',need:0,prize:100,power:180},
-  {key:'town',name:'町大会',need:200,prize:300,power:350},
-  {key:'kingdom',name:'王国大会',need:450,prize:900,power:650},
-  {key:'legend',name:'伝説杯',need:750,prize:3000,power:950}
+  {key:'village',name:'村大会',need:0,prize:100,power:180,star:'★',lv:4},
+  {key:'town',name:'町大会',need:200,prize:300,power:350,star:'★★',lv:8},
+  {key:'kingdom',name:'王国大会',need:450,prize:900,power:650,star:'★★★',lv:14},
+  {key:'legend',name:'伝説杯',need:750,prize:3000,power:950,star:'★★★★★',lv:20}
 ];
 
 function show(id){
@@ -289,8 +282,22 @@ function currentPower(mon=game.current){
   );
 }
 
+function getLevel(mon=game.current){
+  return Math.floor(currentPower(mon)/50)+1;
+}
+
 function addAbility(mon,name,value){
   mon.abilities[name]=Math.max(1,Math.min(MAX,mon.abilities[name]+value));
+}
+
+function currentStatusHtml(){
+  const m=game.current;
+  return `
+    <div class="status-line">${m.icon} ${m.name}</div>
+    Lv${getLevel(m)} / 戦力${currentPower(m)}<br>
+    種族：${m.species}　性別：${m.sex}　世代：${m.gen}<br>
+    体力：${m.hp}/${m.hpMax}　状態：${m.mood}
+  `;
 }
 
 function nextMonth(){
@@ -301,8 +308,7 @@ function nextMonth(){
   }
   game.current.age++;
   if(game.current.age>48){
-    game.current.mood='老体';
-    addLog(`${game.current.name}は少し年を取った`);
+    game.current.mood='成熟';
   }
   addLog(`${dateText()}になった`);
   records.push(`・${dateText()}になった<br>`);
@@ -320,6 +326,7 @@ function finishTurn(text,result){
 }
 
 function openTrain(){
+  document.getElementById('trainStatus').innerHTML=`<b>育成中</b><br>${currentStatusHtml()}`;
   document.getElementById('trainButtons').innerHTML=trainCommands.map(c=>
     `<button onclick="doTrain('${c.key}')">${c.name}<br>${c.ability==='random'?'ランダム':c.ability}上昇<br>体力-${c.hp}</button>`
   ).join('');
@@ -351,9 +358,10 @@ function restMonster(){
 }
 
 function openExplore(){
+  document.getElementById('exploreStatus').innerHTML=`<b>探索</b><br>${currentStatusHtml()}<br>探索先を選択してください。`;
   document.getElementById('exploreButtons').innerHTML=explorePlaces.map(p=>{
     const disabled=currentPower()<p.need?'disabled':'';
-    const label=disabled?'？？？<br>必要戦力 ？？？':`${p.name}<br>報酬 ${p.reward[0]}〜${p.reward[1]}G`;
+    const label=disabled?'？？？<br>必要戦力 ？？？':`${p.name}<br>報酬 ${p.reward[0]}〜${p.reward[1]}G<br>危険度 ${'★'.repeat(Math.max(1,Math.ceil(p.risk/6)))}`;
     return `<button ${disabled} onclick="doExplore('${p.key}')">${label}</button>`;
   }).join('');
   show('explore');
@@ -382,9 +390,10 @@ function doExplore(key){
 }
 
 function openTournament(){
+  document.getElementById('tournamentStatus').innerHTML=`<b>大会</b><br>${currentStatusHtml()}<br>出場する大会を選択してください。`;
   document.getElementById('tournamentButtons').innerHTML=tournaments.map(t=>{
     const disabled=currentPower()<t.need?'disabled':'';
-    const label=disabled?'？？？<br>必要戦力 ？？？':`${t.name}<br>賞金 ${t.prize}G<br>目安戦力 ${t.power}`;
+    const label=disabled?'？？？<br>必要戦力 ？？？':`${t.name}<br>難易度 ${t.star}<br>推奨Lv${t.lv} / 賞金${t.prize}G`;
     return `<button ${disabled} onclick="doTournament('${t.key}')">${label}</button>`;
   }).join('');
   show('tournament');
@@ -400,10 +409,7 @@ function doTournament(key){
     game.breeder.reputation+=Math.floor(t.prize/100);
     m.wins++;
     result=`優勝した。賞金${t.prize}Gを得た`;
-    if(game.breeder.reputation>=20) game.breeder.rank='中堅';
-    if(game.breeder.reputation>=60) game.breeder.rank='有名';
-    if(game.breeder.reputation>=120) game.breeder.rank='名門';
-    game.breeder.farmLv=1+Math.floor(game.breeder.reputation/30);
+    updateBreederRank();
   }else{
     result=`敗退した。あと少し力が足りなかった`;
   }
@@ -411,17 +417,31 @@ function doTournament(key){
   finishTurn(`${m.name}が${t.name}に出場した`,result);
 }
 
+function updateBreederRank(){
+  if(game.breeder.reputation>=120) game.breeder.rank='名門';
+  else if(game.breeder.reputation>=60) game.breeder.rank='有名';
+  else if(game.breeder.reputation>=20) game.breeder.rank='中堅';
+  else game.breeder.rank='見習い';
+
+  game.breeder.farmLv=1+Math.floor(game.breeder.reputation/30);
+}
+
 function openMonster(){
   const m=game.current;
   document.getElementById('monsterText').innerHTML=`
-    <b>育成中</b><br>
-    ${m.icon} ${m.name} / ${m.species} / ${m.sex}<br>
-    世代：${m.gen}　年齢：${m.age}ヶ月　勝利：${m.wins}<br><br>
+    <b>育成中モンスター</b><br>
+    <span style="font-size:24px">${m.icon}</span> ${m.name}<br>
+    種族：${m.species}　タイプ：${m.type}　性別：${m.sex}<br>
+    Lv：${getLevel(m)}　総合戦力：${currentPower(m)}<br>
+    世代：${m.gen}　年齢：${m.age}ヶ月　勝利：${m.wins}<br>
+    体力：${m.hp}/${m.hpMax}　状態：${m.mood}<br><br>
+    HP：${m.abilities.HP}　力：${m.abilities.力}　魔力：${m.abilities.魔力}<br>
+    素早さ：${m.abilities.素早さ}　賢さ：${m.abilities.賢さ}　運：${m.abilities.運}<br><br>
     <b>BOXから取り出す</b><br>
     BOXのモンスターを選ぶと、現在の育成中モンスターと入れ替えます。
   `;
   document.getElementById('monsterButtons').innerHTML=game.box.map((mon,i)=>
-    `<button onclick="swapMonster(${i})">${mon.icon} ${mon.name}<br>${mon.species} / 世代${mon.gen}</button>`
+    `<button onclick="swapMonster(${i})">${mon.icon} ${mon.name}<br>Lv${getLevel(mon)} / 戦力${currentPower(mon)}</button>`
   ).join('') || `<button disabled>BOXが空です</button>`;
   show('monster');
 }
@@ -441,10 +461,11 @@ function openBreed(){
     <b>配合</b><br>
     育成中モンスターとBOXのモンスターを配合します。<br>
     親2体はBOXへ戻らず、新しい子が育成中になります。<br><br>
-    親①：${game.current.icon} ${game.current.name}
+    親①：${game.current.icon} ${game.current.name}<br>
+    Lv${getLevel(game.current)} / 戦力${currentPower(game.current)}
   `;
   document.getElementById('breedButtons').innerHTML=game.box.map((mon,i)=>
-    `<button onclick="breedWith(${i})">${mon.icon} ${mon.name}<br>${mon.species} / ${mon.sex}</button>`
+    `<button onclick="breedWith(${i})">${mon.icon} ${mon.name}<br>${mon.species} / Lv${getLevel(mon)}</button>`
   ).join('') || `<button disabled>相手がいません</button>`;
   show('breed');
 }
@@ -513,8 +534,8 @@ function updateMain(){
 
   document.getElementById('monsterInfo').innerHTML=`
     名前：${m.name}　種族：${m.species}<br>
-    性別：${m.sex}　世代：${m.gen}　年齢：${m.age}ヶ月<br>
-    状態：${m.mood}　体力：${m.hp}/${m.hpMax}　勝利：${m.wins}
+    Lv${getLevel(m)}　戦力：${currentPower(m)}　勝利：${m.wins}<br>
+    状態：${m.mood}　体力：${m.hp}/${m.hpMax}
   `;
 
   document.getElementById('abilityGrid').innerHTML=`
@@ -540,6 +561,7 @@ function updateBox(){
   document.getElementById('boxCount').textContent=`${game.box.length}体`;
   document.getElementById('boxText').innerHTML=game.box.map((m,i)=>
     `${i+1}. ${m.icon} ${m.name} / ${m.species} / 世代${m.gen}<br>
+    Lv:${getLevel(m)} 戦力:${currentPower(m)} 勝利:${m.wins}<br>
     HP:${m.abilities.HP} 力:${m.abilities.力} 魔:${m.abilities.魔力} 速:${m.abilities.素早さ} 賢:${m.abilities.賢さ} 運:${m.abilities.運}<br>`
   ).join('<hr>') || 'BOXは空です';
 }
