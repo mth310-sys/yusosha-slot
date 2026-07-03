@@ -3,306 +3,256 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>無人島サバイバル 横持ちMock</title>
+<title>無人島サバイバル Mock</title>
 <style>
 *{box-sizing:border-box}
 html,body{
   margin:0;width:100%;height:100%;
-  background:#000;color:#111;
-  font-family:"Hiragino Mincho ProN","Yu Mincho",serif;
+  background:#05080b;color:#fff;
+  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
   overflow:hidden;
 }
 .app{
-  width:100vw;height:100dvh;
-  background:#2f2f32;
-  position:relative;
+  width:100vw;height:100dvh;max-width:430px;margin:auto;
+  background:#071016;
+  padding:5px;
   overflow:hidden;
 }
-
-/* 背景キャラ風 */
-.bg-boy{
-  position:absolute;right:0;top:0;width:34%;height:100%;
-  background:linear-gradient(90deg,transparent,rgba(0,0,0,.55)),
-             radial-gradient(circle at 65% 45%,rgba(255,255,255,.12),transparent 35%);
-  opacity:.55;
-}
-
-/* 上部 */
-.top{
-  position:absolute;left:0;top:0;width:100%;height:42px;
-  background:rgba(0,0,0,.62);
-  color:white;
+.header{
+  height:43px;border:2px solid #333;
   display:flex;align-items:center;justify-content:space-between;
-  padding:0 18px;
-  font-family:sans-serif;
+  padding:0 10px;font-weight:900;font-size:17px;
 }
-.title{font-size:22px;font-weight:900}
-.day{font-size:18px;display:flex;gap:18px;align-items:center}
-.sun{font-size:24px;color:#ffb000}
-
-/* 左ボタン */
-.menu{
-  position:absolute;left:22px;top:62px;width:140px;
-  display:flex;flex-direction:column;gap:12px;
-}
-.menu button,.battle button{
-  height:44px;
-  background:linear-gradient(#eee4d4,#bfb3a3);
-  border:2px solid #222;
-  box-shadow:inset 0 0 0 1px #fff8;
-  font-size:20px;font-weight:900;
-  font-family:inherit;
-}
-
-/* 中央 */
+.header span:last-child{font-size:14px}
 .main{
-  position:absolute;left:180px;top:54px;width:55%;height:55%;
+  height:calc(100% - 48px);
+  display:grid;
+  grid-template-columns:38% 62%;
+  grid-template-rows:43% 30% 27%;
+  gap:5px;
+  padding-top:5px;
 }
-.loc-label{
-  position:absolute;left:0;top:0;
-  background:rgba(0,0,0,.75);
-  color:#fff;
-  padding:7px 18px;
-  font-size:20px;
-  z-index:2;
-}
-.scene{
-  width:100%;height:78%;
-  border:1px solid #111;
-  background:
-    linear-gradient(#73cfff 0 42%,#1678b9 42% 57%,#e8d09a 57% 100%);
-  position:relative;
+.panel{
+  border:2px solid #333;
+  background:#071016;
   overflow:hidden;
 }
-.scene:before{
-  content:"";
-  position:absolute;left:-5%;bottom:12%;width:60%;height:45%;
-  background:#2e8b3c;
-  clip-path:polygon(0 100%,15% 40%,35% 65%,55% 35%,75% 70%,100% 45%,100% 100%);
+.left{
+  grid-row:1/4;
+  display:flex;
+  flex-direction:column;
 }
-.scene:after{
-  content:"";
-  position:absolute;right:12%;top:42%;width:120px;height:70px;
-  background:#555;
-  clip-path:polygon(0 100%,45% 0,100% 100%);
-  opacity:.9;
-}
-.wave{
-  position:absolute;right:0;bottom:26%;width:65%;height:28%;
-  border-top:5px solid rgba(255,255,255,.8);
-  border-radius:50% 0 0 0;
-}
-.note{
-  height:22%;
-  background:#f8f8f2;
-  border-left:10px dotted #333;
-  padding:10px 22px;
-  font-size:15px;
-  line-height:1.55;
-}
-
-/* 右情報 */
-.side{
-  position:absolute;right:20px;top:58px;width:170px;height:55%;
-  color:white;
-  font-family:sans-serif;
-  padding:8px 10px;
-  background:rgba(0,0,0,.28);
-}
-.side .big{font-size:28px}
-.side .place{font-size:26px;font-weight:900;margin-top:10px}
-.boy{
-  position:absolute;right:0;bottom:0;width:130px;height:190px;
-  background:linear-gradient(#111,#222);
-  border:1px solid #444;
-  opacity:.85;
-}
-.boy:before{
-  content:"";
-  position:absolute;left:35px;top:14px;width:62px;height:62px;
-  background:#f1c6a8;border-radius:50%;
-}
-.boy:after{
-  content:"";
-  position:absolute;left:25px;top:0;width:82px;height:42px;
-  background:#050505;border-radius:45% 45% 20% 20%;
-}
-
-/* 下情報 */
-.bottom{
-  position:absolute;left:180px;right:20px;bottom:16px;height:120px;
-  background:rgba(60,60,60,.72);
-  color:white;
+.profile{
+  height:110px;
   display:grid;
-  grid-template-columns:1.2fr 1fr 1fr 74px;
-  gap:16px;
-  padding:12px 14px;
-  font-family:sans-serif;
+  grid-template-columns:80px 1fr;
+  gap:8px;
+  padding:8px;
+  border-bottom:2px solid #333;
 }
-.block-title{color:#fff;font-weight:900;margin-bottom:5px}
-.status div,.equip div,.build div{
-  display:flex;align-items:center;gap:8px;
-  font-size:14px;line-height:1.45;
+.face{
+  background:#111;
+  border:1px solid #333;
+  display:flex;align-items:center;justify-content:center;
+  font-size:42px;
+}
+.profile-text{
+  font-size:15px;
+  line-height:1.7;
+  font-weight:700;
+}
+.status,.equip,.build,.log{
+  padding:8px 10px;
+  border-bottom:2px solid #333;
+}
+.status-row,.item-row{
+  display:grid;
+  grid-template-columns:1fr auto;
+  align-items:center;
+  font-size:15px;
+  line-height:1.75;
+}
+.status-row span:first-child,.item-row span:first-child{
+  white-space:nowrap;
 }
 .bar{
-  width:80px;height:9px;background:#333;margin-left:auto;
+  height:6px;background:#1b2630;margin:0 0 5px 0;
 }
-.bar span{display:block;height:100%;background:#d8792a}
-.save{
-  align-self:end;justify-self:end;
-  width:62px;height:82px;background:#f5b6cf;
-  display:flex;align-items:center;justify-content:center;
-  font-weight:900;color:#222;border:1px solid #6a4a58;
+.bar div{height:100%}
+.hp{background:#27ae60}
+.hunger{background:#f39c12}
+.water{background:#3498db}
+.mind{background:#8e44ad}
+.section-title{
+  font-size:15px;
+  font-weight:900;
+  margin-bottom:4px;
 }
-
-/* 戦闘 */
-.battle{
-  position:absolute;left:22px;bottom:16px;width:140px;height:120px;
-  border:1px solid #ddd;background:rgba(0,0,0,.35);
-  padding:10px;display:flex;flex-direction:column;gap:10px;
+.equip .section-title{color:#3498db}
+.build .section-title{color:#2ecc71}
+.log{
+  flex:1;
+  border-bottom:0;
+  font-size:14px;
+  line-height:1.7;
 }
-.battle-title{color:white;text-align:center;font-size:16px}
-
-/* ノートポップアップ */
-.popup{
-  position:absolute;left:42%;top:15%;width:42%;height:52%;
-  background:#f8f8f2;border:2px solid #d8d2c4;
-  box-shadow:0 6px 20px #0008;
-  display:none;
-  padding:12px 20px 12px 28px;
-  border-left:12px dotted #333;
+.log .section-title{color:#ffd447}
+.log .green{color:#36c34a}
+.log .blue{color:#198cff}
+.scene{
+  grid-column:2;
+  grid-row:1;
+  position:relative;
 }
-.popup.active{display:block}
-.close{
-  position:absolute;right:8px;top:8px;width:28px;height:28px;
-  border:1px solid #999;background:#eee;font-size:20px;
+.location{
+  position:absolute;left:0;top:0;
+  background:rgba(0,0,0,.7);
+  padding:5px 10px;
+  font-size:17px;font-weight:900;
+  z-index:2;
 }
-.popup h2{text-align:center;margin:0 0 8px;font-size:18px}
-.list-row{
-  display:grid;grid-template-columns:1fr 50px;
-  border-bottom:1px solid #ddd;
-  padding:6px 4px;font-size:14px;
+.beach{
+  width:100%;height:100%;
+  background:
+    linear-gradient(#6cc7ff 0 35%,#0b75bb 35% 47%,#e7c38b 47% 100%);
+  position:relative;
+  overflow:hidden;
+}
+.beach:before{
+  content:"";
+  position:absolute;left:-10%;bottom:20%;width:58%;height:60%;
+  background:#2e7d32;
+  clip-path:polygon(0 100%,12% 30%,25% 60%,42% 25%,58% 70%,80% 40%,100% 100%);
+}
+.beach:after{
+  content:"";
+  position:absolute;right:16%;top:39%;width:70px;height:46px;
+  background:#555;
+  clip-path:polygon(0 100%,45% 0,100% 100%);
+}
+.wave{
+  position:absolute;right:0;bottom:33%;width:70%;height:20%;
+  border-top:4px solid rgba(255,255,255,.75);
+  border-radius:50% 0 0 0;
+}
+.actions{
+  grid-column:2;
+  grid-row:2;
+  padding:8px;
+}
+.action-title{
+  color:#ffd447;text-align:center;font-weight:900;
+  margin-bottom:7px;font-size:16px;
+}
+.buttons{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:8px;
+}
+button{
+  border:2px solid #333;
+  background:#0b1218;
+  color:#fff;
+  font-weight:900;
+  font-size:15px;
+  height:62px;
+}
+button .icon{display:block;font-size:22px;margin-bottom:3px}
+.message{
+  grid-column:2;
+  grid-row:3;
+  padding:10px;
+  font-size:14px;
+  line-height:1.7;
 }
 </style>
 </head>
 
 <body>
 <div class="app">
-  <div class="bg-boy"></div>
 
-  <div class="top">
-    <div class="title">無人島サバイバル</div>
-    <div class="day"><span>Day 3</span><span>朝</span><span>晴れ</span><span class="sun">☀</span></div>
+  <div class="header">
+    <div>無人島サバイバル</div>
+    <span>Day 3　朝　晴れ ☀</span>
   </div>
 
-  <div class="menu">
-    <button onclick="log('海岸を探索した')">探索</button>
-    <button onclick="openPopup('food')">飲食</button>
-    <button onclick="openPopup('craft')">工作</button>
-    <button onclick="log('少し休んだ')">休息</button>
-    <button onclick="log('移動先を選ぶ')">移動</button>
-    <button onclick="openPopup('items')">持ち物</button>
-    <button onclick="openPopup('record')">記録</button>
-  </div>
+  <div class="main">
 
-  <main class="main">
-    <div class="loc-label">現在地：海岸①</div>
-    <div class="scene"><div class="wave"></div></div>
-    <div id="message" class="note">
+    <section class="panel left">
+      <div class="profile">
+        <div class="face">👦🏻</div>
+        <div class="profile-text">
+          黒髪男子DK<br>
+          16歳<br>
+          高校1年生
+        </div>
+      </div>
+
+      <div class="status">
+        <div class="status-row"><span>体力</span><span>70/100</span></div>
+        <div class="bar"><div class="hp" style="width:70%"></div></div>
+        <div class="status-row"><span>空腹</span><span>65/100</span></div>
+        <div class="bar"><div class="hunger" style="width:65%"></div></div>
+        <div class="status-row"><span>水分</span><span>50/100</span></div>
+        <div class="bar"><div class="water" style="width:50%"></div></div>
+        <div class="status-row"><span>精神</span><span>80/100</span></div>
+        <div class="bar"><div class="mind" style="width:80%"></div></div>
+      </div>
+
+      <div class="equip">
+        <div class="section-title">装備品</div>
+        <div class="item-row"><span>石ナイフ</span><span>18/20</span></div>
+        <div class="item-row"><span>火打石</span><span>12/15</span></div>
+        <div class="item-row"><span>石の斧</span><span>22/25</span></div>
+      </div>
+
+      <div class="build">
+        <div class="section-title">設置物</div>
+        <div class="item-row"><span>焚き火</span><span>4/5</span></div>
+        <div class="item-row"><span>草のベッド</span><span>3/5</span></div>
+        <div class="item-row"><span>木の小屋</span><span>28/30</span></div>
+        <div class="item-row"><span>いかだ</span><span>12/20</span></div>
+        <div class="item-row"><span>貯水器</span><span>4/5</span></div>
+      </div>
+
+      <div class="log">
+        <div class="section-title">ログ</div>
+        ・<span class="green">木の枝</span>を拾った<br>
+        ・<span class="blue">石ナイフ</span>を作れそうだ
+      </div>
+    </section>
+
+    <section class="panel scene">
+      <div class="location">現在地：海岸①</div>
+      <div class="beach">
+        <div class="wave"></div>
+      </div>
+    </section>
+
+    <section class="panel actions">
+      <div class="action-title">行動メニュー</div>
+      <div class="buttons">
+        <button onclick="msg('移動先を選ぼう。')"><span class="icon">🚶</span>移動</button>
+        <button onclick="msg('海岸を探索した。')"><span class="icon">🔍</span>探索</button>
+        <button onclick="msg('工作できるものを確認した。')"><span class="icon">🔨</span>工作</button>
+        <button onclick="msg('少し休んだ。')"><span class="icon">🛏</span>休息</button>
+        <button onclick="msg('持ち物を確認した。')"><span class="icon">🎒</span>持ち物</button>
+        <button onclick="msg('記録を確認した。')"><span class="icon">📔</span>記録</button>
+      </div>
+    </section>
+
+    <section id="message" class="panel message">
       海岸だ。<br>
       流木や石ころが落ちている。<br>
       波の音が聞こえる。
-    </div>
-  </main>
+    </section>
 
-  <aside class="side">
-    <div>Day 3</div>
-    <div class="big">12:00</div>
-    <div>晴れ</div>
-    <hr>
-    <div>現在地</div>
-    <div class="place">海岸①</div>
-    <div class="boy"></div>
-  </aside>
-
-  <section class="battle">
-    <div class="battle-title">〜戦闘〜</div>
-    <button onclick="log('戦った')">戦う</button>
-    <button onclick="log('逃げた')">逃げる</button>
-  </section>
-
-  <section class="bottom">
-    <div class="status">
-      <div class="block-title">ステータス</div>
-      <div>体力 70/100 <div class="bar"><span style="width:70%"></span></div></div>
-      <div>空腹 65/100 <div class="bar"><span style="width:65%"></span></div></div>
-      <div>水分 50/100 <div class="bar"><span style="width:50%"></span></div></div>
-      <div>精神 80/100 <div class="bar"><span style="width:80%"></span></div></div>
-    </div>
-    <div class="equip">
-      <div class="block-title">【装備品】</div>
-      <div>石ナイフ　18/20</div>
-      <div>火打石　　12/15</div>
-      <div>石の斧　　22/25</div>
-    </div>
-    <div class="build">
-      <div class="block-title">【設置物】</div>
-      <div>焚き火　　　4/5</div>
-      <div>草のベッド　3/5</div>
-      <div>木の小屋　 28/30</div>
-    </div>
-    <div class="save">セーブ</div>
-  </section>
-
-  <div id="items" class="popup">
-    <button class="close" onclick="closePopup()">×</button>
-    <h2>〜持ち物一覧〜</h2>
-    <div class="list-row"><span>■ 木の枝</span><span>×8</span></div>
-    <div class="list-row"><span>■ 石ころ</span><span>×12</span></div>
-    <div class="list-row"><span>■ 草</span><span>×15</span></div>
-    <div class="list-row"><span>■ ぶどう</span><span>×3</span></div>
-    <div class="list-row"><span>■ りんご</span><span>×2</span></div>
-  </div>
-
-  <div id="food" class="popup">
-    <button class="close" onclick="closePopup()">×</button>
-    <h2>〜食べるもの・飲むものリスト〜</h2>
-    <div class="list-row"><span>■ ぶどう<br>消費期限：3日</span><span>食べる</span></div>
-    <div class="list-row"><span>■ りんご<br>消費期限：5日</span><span>食べる</span></div>
-    <div class="list-row"><span>■ 湧き水<br>水の量：350</span><span>飲む</span></div>
-  </div>
-
-  <div id="craft" class="popup">
-    <button class="close" onclick="closePopup()">×</button>
-    <h2>〜工作〜</h2>
-    <div class="list-row"><span>■ 木の棒</span><span></span></div>
-    <div class="list-row"><span>■ 石ナイフ</span><span></span></div>
-    <div class="list-row"><span>■ 石の斧</span><span></span></div>
-    <div class="list-row"><span>■ 草のベッド</span><span></span></div>
-    <div class="list-row"><span>■ 焚き火</span><span></span></div>
-    <div class="list-row"><span>■ 木の小屋</span><span></span></div>
-    <div class="list-row"><span>■ いかだ</span><span></span></div>
-  </div>
-
-  <div id="record" class="popup">
-    <button class="close" onclick="closePopup()">×</button>
-    <h2>〜生存記録〜</h2>
-    <div class="list-row"><span>生存日数</span><span>3日</span></div>
-    <div class="list-row"><span>現在地</span><span>海岸①</span></div>
-    <div class="list-row"><span>状態</span><span>健康</span></div>
   </div>
 </div>
 
 <script>
-function openPopup(id){
-  document.querySelectorAll('.popup').forEach(p=>p.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-function closePopup(){
-  document.querySelectorAll('.popup').forEach(p=>p.classList.remove('active'));
-}
-function log(text){
-  document.getElementById('message').innerHTML=text+'<br>どうしよう。';
+function msg(text){
+  document.getElementById('message').innerHTML = text + '<br>どうしよう。';
 }
 </script>
 </body>
