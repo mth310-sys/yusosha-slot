@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>リールバトルRPG Ver.RB-0.4</title>
+<title>リールバトルRPG Ver.RB-0.4.1</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#111;color:#fff;font-family:sans-serif;text-align:center}
@@ -17,13 +17,63 @@ button{width:100%;padding:14px;border:0;border-radius:12px;font-size:20px;font-w
 .main{background:#ffd54a;color:#0784ff}
 .lock{background:#555;color:#aaa}
 .sub{background:#333;color:#fff}
-.reels{display:flex;gap:10px;justify-content:center;margin:18px 0}
-.reelWrap{display:flex;flex-direction:column;align-items:center}
-.reel{width:70px;height:82px;background:#fff;color:#111;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:bold}
-.reelLabel{margin-top:8px;font-size:14px;color:#bbb;font-weight:bold}
-.judgeBar{display:flex;justify-content:space-between;margin:4px 28px 0;font-size:22px;font-weight:bold;color:#ddd}
-.log{min-height:90px;text-align:left;white-space:pre-line;line-height:1.55;font-size:18px}
-.small{font-size:14px;color:#aaa}
+
+.reelArea{
+  height:150px;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-start;
+}
+.topHint{
+  height:28px;
+  margin-bottom:8px;
+}
+.judgeBar{
+  display:flex;
+  justify-content:space-between;
+  margin:0 28px;
+  font-size:22px;
+  font-weight:bold;
+  color:#ddd;
+}
+.reels{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  margin:0;
+}
+.reelWrap{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+}
+.reel{
+  width:70px;
+  height:82px;
+  background:#fff;
+  color:#111;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:44px;
+  font-weight:bold;
+}
+.reelLabel{
+  height:22px;
+  margin-top:8px;
+  font-size:14px;
+  color:#bbb;
+  font-weight:bold;
+}
+.log{
+  height:120px;
+  text-align:left;
+  white-space:pre-line;
+  line-height:1.55;
+  font-size:18px;
+  overflow:hidden;
+}
 </style>
 </head>
 <body>
@@ -204,32 +254,39 @@ function renderBattle(){
 
   <div class="panel">
     <h2>${title}</h2>
-    ${renderTopHint()}
     ${renderReels()}
     <div class="log">${logText}</div>
     <button class="main" onclick="nextAction()">${btn}</button>
   </div>`;
 }
 
-function renderTopHint(){
-  if(battleStep==="turnSpin")return `<div class="judgeBar"><span>偶数</span><span>奇数</span></div>`;
-  return "";
-}
-
 function renderReels(){
   let labels=["","",""];
+  let topHint="";
 
-  if(battleStep==="attackSpin") labels=["技","ﾀﾞﾒｰｼﾞ","倍率"];
-  if(battleStep==="rewardSpin") labels=["報酬","倍率","倍率"];
+  if(battleStep==="turnSpin"){
+    topHint=`<div class="judgeBar"><span>偶数</span><span>奇数</span></div>`;
+  }
+
+  if(battleStep==="attackSpin"){
+    labels=["技","ﾀﾞﾒｰｼﾞ","倍率"];
+  }
+
+  if(battleStep==="rewardSpin"){
+    labels=["報酬","倍率","倍率"];
+  }
 
   return `
-  <div class="reels">
-    ${lastRoll.map((n,i)=>`
-      <div class="reelWrap">
-        <div class="reel">${n}</div>
-        ${labels[i]?`<div class="reelLabel">${labels[i]}</div>`:""}
-      </div>
-    `).join("")}
+  <div class="reelArea">
+    <div class="topHint">${topHint}</div>
+    <div class="reels">
+      ${lastRoll.map((n,i)=>`
+        <div class="reelWrap">
+          <div class="reel">${n}</div>
+          <div class="reelLabel">${labels[i] || ""}</div>
+        </div>
+      `).join("")}
+    </div>
   </div>`;
 }
 
