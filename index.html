@@ -2,258 +2,302 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
-<title>無人島サバイバル Mock</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>リールバトルRPG Ver.RB-0.1</title>
 <style>
 *{box-sizing:border-box}
-html,body{
-  margin:0;width:100%;height:100%;
-  background:#05080b;color:#fff;
-  font-family:-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
-  overflow:hidden;
+body{
+  margin:0;
+  background:#111;
+  color:#fff;
+  font-family:sans-serif;
+  text-align:center;
 }
-.app{
-  width:100vw;height:100dvh;max-width:430px;margin:auto;
-  background:#071016;
-  padding:5px;
-  overflow:hidden;
-}
-.header{
-  height:43px;border:2px solid #333;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 10px;font-weight:900;font-size:17px;
-}
-.header span:last-child{font-size:14px}
-.main{
-  height:calc(100% - 48px);
-  display:grid;
-  grid-template-columns:38% 62%;
-  grid-template-rows:43% 30% 27%;
-  gap:5px;
-  padding-top:5px;
+.wrap{
+  max-width:390px;
+  margin:auto;
+  padding:12px;
 }
 .panel{
-  border:2px solid #333;
-  background:#071016;
-  overflow:hidden;
+  background:#1e1e1e;
+  border:1px solid #444;
+  border-radius:12px;
+  padding:12px;
+  margin-bottom:10px;
 }
-.left{
-  grid-row:1/4;
+h1{font-size:22px;margin:8px 0}
+.status{
   display:flex;
-  flex-direction:column;
-}
-.profile{
-  height:110px;
-  display:grid;
-  grid-template-columns:80px 1fr;
+  justify-content:space-between;
   gap:8px;
-  padding:8px;
-  border-bottom:2px solid #333;
 }
-.face{
-  background:#111;
-  border:1px solid #333;
-  display:flex;align-items:center;justify-content:center;
-  font-size:42px;
-}
-.profile-text{
-  font-size:15px;
-  line-height:1.7;
-  font-weight:700;
-}
-.status,.equip,.build,.log{
-  padding:8px 10px;
-  border-bottom:2px solid #333;
-}
-.status-row,.item-row{
-  display:grid;
-  grid-template-columns:1fr auto;
-  align-items:center;
-  font-size:15px;
-  line-height:1.75;
-}
-.status-row span:first-child,.item-row span:first-child{
-  white-space:nowrap;
-}
-.bar{
-  height:6px;background:#1b2630;margin:0 0 5px 0;
-}
-.bar div{height:100%}
-.hp{background:#27ae60}
-.hunger{background:#f39c12}
-.water{background:#3498db}
-.mind{background:#8e44ad}
-.section-title{
-  font-size:15px;
-  font-weight:900;
-  margin-bottom:4px;
-}
-.equip .section-title{color:#3498db}
-.build .section-title{color:#2ecc71}
-.log{
+.box{
   flex:1;
-  border-bottom:0;
-  font-size:14px;
-  line-height:1.7;
-}
-.log .section-title{color:#ffd447}
-.log .green{color:#36c34a}
-.log .blue{color:#198cff}
-.scene{
-  grid-column:2;
-  grid-row:1;
-  position:relative;
-}
-.location{
-  position:absolute;left:0;top:0;
-  background:rgba(0,0,0,.7);
-  padding:5px 10px;
-  font-size:17px;font-weight:900;
-  z-index:2;
-}
-.beach{
-  width:100%;height:100%;
-  background:
-    linear-gradient(#6cc7ff 0 35%,#0b75bb 35% 47%,#e7c38b 47% 100%);
-  position:relative;
-  overflow:hidden;
-}
-.beach:before{
-  content:"";
-  position:absolute;left:-10%;bottom:20%;width:58%;height:60%;
-  background:#2e7d32;
-  clip-path:polygon(0 100%,12% 30%,25% 60%,42% 25%,58% 70%,80% 40%,100% 100%);
-}
-.beach:after{
-  content:"";
-  position:absolute;right:16%;top:39%;width:70px;height:46px;
-  background:#555;
-  clip-path:polygon(0 100%,45% 0,100% 100%);
-}
-.wave{
-  position:absolute;right:0;bottom:33%;width:70%;height:20%;
-  border-top:4px solid rgba(255,255,255,.75);
-  border-radius:50% 0 0 0;
-}
-.actions{
-  grid-column:2;
-  grid-row:2;
+  background:#2b2b2b;
+  border-radius:10px;
   padding:8px;
 }
-.action-title{
-  color:#ffd447;text-align:center;font-weight:900;
-  margin-bottom:7px;font-size:16px;
+.reels{
+  display:flex;
+  gap:10px;
+  justify-content:center;
+  margin:16px 0;
 }
-.buttons{
-  display:grid;
-  grid-template-columns:repeat(3,1fr);
-  gap:8px;
+.reel{
+  width:70px;
+  height:80px;
+  background:#fff;
+  color:#111;
+  border-radius:10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:42px;
+  font-weight:bold;
 }
 button{
-  border:2px solid #333;
-  background:#0b1218;
-  color:#fff;
-  font-weight:900;
-  font-size:15px;
-  height:62px;
+  width:100%;
+  padding:14px;
+  border:0;
+  border-radius:12px;
+  font-size:18px;
+  font-weight:bold;
+  margin-top:8px;
 }
-button .icon{display:block;font-size:22px;margin-bottom:3px}
-.message{
-  grid-column:2;
-  grid-row:3;
-  padding:10px;
-  font-size:14px;
-  line-height:1.7;
+.main{background:#ffd54a}
+.sub{background:#ddd}
+.log{
+  min-height:90px;
+  text-align:left;
+  white-space:pre-line;
+  line-height:1.5;
 }
 </style>
 </head>
-
 <body>
-<div class="app">
-
-  <div class="header">
-    <div>無人島サバイバル</div>
-    <span>Day 3　朝　晴れ ☀</span>
-  </div>
-
-  <div class="main">
-
-    <section class="panel left">
-      <div class="profile">
-        <div class="face">👦🏻</div>
-        <div class="profile-text">
-          黒髪男子DK<br>
-          16歳<br>
-          高校1年生
-        </div>
-      </div>
-
-      <div class="status">
-        <div class="status-row"><span>体力</span><span>70/100</span></div>
-        <div class="bar"><div class="hp" style="width:70%"></div></div>
-        <div class="status-row"><span>空腹</span><span>65/100</span></div>
-        <div class="bar"><div class="hunger" style="width:65%"></div></div>
-        <div class="status-row"><span>水分</span><span>50/100</span></div>
-        <div class="bar"><div class="water" style="width:50%"></div></div>
-        <div class="status-row"><span>精神</span><span>80/100</span></div>
-        <div class="bar"><div class="mind" style="width:80%"></div></div>
-      </div>
-
-      <div class="equip">
-        <div class="section-title">装備品</div>
-        <div class="item-row"><span>石ナイフ</span><span>18/20</span></div>
-        <div class="item-row"><span>火打石</span><span>12/15</span></div>
-        <div class="item-row"><span>石の斧</span><span>22/25</span></div>
-      </div>
-
-      <div class="build">
-        <div class="section-title">設置物</div>
-        <div class="item-row"><span>焚き火</span><span>4/5</span></div>
-        <div class="item-row"><span>草のベッド</span><span>3/5</span></div>
-        <div class="item-row"><span>木の小屋</span><span>28/30</span></div>
-        <div class="item-row"><span>いかだ</span><span>12/20</span></div>
-        <div class="item-row"><span>貯水器</span><span>4/5</span></div>
-      </div>
-
-      <div class="log">
-        <div class="section-title">ログ</div>
-        ・<span class="green">木の枝</span>を拾った<br>
-        ・<span class="blue">石ナイフ</span>を作れそうだ
-      </div>
-    </section>
-
-    <section class="panel scene">
-      <div class="location">現在地：海岸①</div>
-      <div class="beach">
-        <div class="wave"></div>
-      </div>
-    </section>
-
-    <section class="panel actions">
-      <div class="action-title">行動メニュー</div>
-      <div class="buttons">
-        <button onclick="msg('移動先を選ぼう。')"><span class="icon">🚶</span>移動</button>
-        <button onclick="msg('海岸を探索した。')"><span class="icon">🔍</span>探索</button>
-        <button onclick="msg('工作できるものを確認した。')"><span class="icon">🔨</span>工作</button>
-        <button onclick="msg('少し休んだ。')"><span class="icon">🛏</span>休息</button>
-        <button onclick="msg('持ち物を確認した。')"><span class="icon">🎒</span>持ち物</button>
-        <button onclick="msg('記録を確認した。')"><span class="icon">📔</span>記録</button>
-      </div>
-    </section>
-
-    <section id="message" class="panel message">
-      海岸だ。<br>
-      流木や石ころが落ちている。<br>
-      波の音が聞こえる。
-    </section>
-
-  </div>
+<div class="wrap">
+  <h1>リールバトルRPG</h1>
+  <div class="panel" id="scene"></div>
 </div>
 
 <script>
-function msg(text){
-  document.getElementById('message').innerHTML = text + '<br>どうしよう。';
+const nums = [1,2,3,4,5,6,7];
+
+const characters = [
+  {
+    id:"hero",
+    name:"主人公",
+    level:1,
+    hp:120,
+    maxHp:120,
+    exp:0,
+    nextExp:100,
+    skills:["斬撃","強打","二連撃","火炎斬り","雷撃","必殺技","奥義"]
+  }
+];
+
+const enemies = [
+  {
+    id:"slime",
+    name:"スライム",
+    hp:100,
+    maxHp:100,
+    baseExp:10,
+    skills:["体当たり","跳ねる","粘液","ぶつかる","強打","突進","怒り"]
+  }
+];
+
+const stages = [
+  {
+    id:"grass",
+    name:"草原",
+    enemyId:"slime"
+  }
+];
+
+let party = [structuredClone(characters[0])];
+let enemy = null;
+let phase = "party";
+let battleStep = "turn";
+let turnOwner = null;
+let lastRoll = [1,1,1];
+let logText = "";
+
+function roll(){
+  return [
+    nums[Math.floor(Math.random()*nums.length)],
+    nums[Math.floor(Math.random()*nums.length)],
+    nums[Math.floor(Math.random()*nums.length)]
+  ];
 }
+
+function damageRoll(actor){
+  const r = roll();
+  lastRoll = r;
+
+  const skill = actor.skills[r[0]-1];
+  const baseDamage = r[1] * 10;
+  const multipliers = [1,2,3,4,5,7,10];
+  const mult = multipliers[r[2]-1];
+  const damage = baseDamage * mult;
+
+  return {r, skill, baseDamage, mult, damage};
+}
+
+function expRoll(baseExp){
+  const r = roll();
+  lastRoll = r;
+
+  const m1 = r[0] % 2 === 0 ? 2 : 1;
+  const m2 = r[1] % 2 === 0 ? 4 : 3;
+  const m3 = r[2] % 2 === 0 ? 6 : 5;
+
+  return {
+    r,
+    total: baseExp * m1 * m2 * m3,
+    text:`${baseExp} × ${m1} × ${m2} × ${m3}`
+  };
+}
+
+function render(){
+  const p = party[0];
+
+  if(phase === "party"){
+    scene.innerHTML = `
+      <div class="panel">
+        <h2>仲間選択</h2>
+        <p>現在は主人公のみ</p>
+        <div class="box">${p.name} Lv${p.level}<br>HP ${p.hp}/${p.maxHp}<br>EXP ${p.exp}/${p.nextExp}</div>
+        <button class="main" onclick="goStage()">ステージ選択へ</button>
+      </div>
+    `;
+  }
+
+  if(phase === "stage"){
+    scene.innerHTML = `
+      <div class="panel">
+        <h2>ステージ選択</h2>
+        <button class="main" onclick="startBattle()">草原へ進む</button>
+      </div>
+    `;
+  }
+
+  if(phase === "battle"){
+    scene.innerHTML = `
+      <div class="status">
+        <div class="box">${p.name}<br>HP ${p.hp}/${p.maxHp}</div>
+        <div class="box">${enemy.name}<br>HP ${enemy.hp}/${enemy.maxHp}</div>
+      </div>
+
+      <div class="panel">
+        <h2>${battleStep === "turn" ? "ターン判定" : "攻撃パート"}</h2>
+        <div class="reels">
+          <div class="reel">${lastRoll[0]}</div>
+          <div class="reel">${lastRoll[1]}</div>
+          <div class="reel">${lastRoll[2]}</div>
+        </div>
+        <div class="log">${logText}</div>
+        <button class="main" onclick="spinBattle()">SPIN</button>
+      </div>
+    `;
+  }
+
+  if(phase === "exp"){
+    scene.innerHTML = `
+      <div class="panel">
+        <h2>経験値パート</h2>
+        <div class="reels">
+          <div class="reel">${lastRoll[0]}</div>
+          <div class="reel">${lastRoll[1]}</div>
+          <div class="reel">${lastRoll[2]}</div>
+        </div>
+        <div class="log">${logText}</div>
+        <button class="main" onclick="backParty()">仲間選択へ</button>
+      </div>
+    `;
+  }
+}
+
+function goStage(){
+  phase = "stage";
+  render();
+}
+
+function startBattle(){
+  enemy = structuredClone(enemies[0]);
+  phase = "battle";
+  battleStep = "turn";
+  logText = "戦闘開始！\nまずはターン判定。";
+  lastRoll = [1,1,1];
+  render();
+}
+
+function spinBattle(){
+  const p = party[0];
+
+  if(battleStep === "turn"){
+    lastRoll = roll();
+    const sum = lastRoll[0] + lastRoll[1] + lastRoll[2];
+    turnOwner = sum % 2 === 0 ? "player" : "enemy";
+    logText = `合計 ${sum}\n${turnOwner === "player" ? "プレイヤーターン！" : "敵ターン！"}\n次は攻撃パート。`;
+    battleStep = "attack";
+    render();
+    return;
+  }
+
+  if(battleStep === "attack"){
+    const actor = turnOwner === "player" ? p : enemy;
+    const result = damageRoll(actor);
+
+    if(turnOwner === "player"){
+      enemy.hp -= result.damage;
+      if(enemy.hp < 0) enemy.hp = 0;
+      logText = `${p.name}の${result.skill}！\n${result.baseDamage} × ${result.mult}\n${result.damage}ダメージ！`;
+
+      if(enemy.hp <= 0){
+        phase = "exp";
+        const exp = expRoll(enemy.baseExp);
+        p.exp += exp.total;
+        logText += `\n\n${enemy.name}を倒した！\n経験値計算：${exp.text}\n${exp.total}EXP獲得！`;
+
+        if(p.exp >= p.nextExp){
+          p.level++;
+          p.exp -= p.nextExp;
+          p.nextExp += 100;
+          p.maxHp += 20;
+          p.hp = p.maxHp;
+          logText += `\n\nレベルアップ！ Lv${p.level}`;
+        }
+
+        render();
+        return;
+      }
+    }else{
+      p.hp -= result.damage;
+      if(p.hp < 0) p.hp = 0;
+      logText = `${enemy.name}の${result.skill}！\n${result.baseDamage} × ${result.mult}\n${result.damage}ダメージ！`;
+
+      if(p.hp <= 0){
+        logText += `\n\n敗北…仲間選択へ戻ります。`;
+        setTimeout(() => {
+          p.hp = p.maxHp;
+          phase = "party";
+          render();
+        }, 1200);
+      }
+    }
+
+    battleStep = "turn";
+    render();
+  }
+}
+
+function backParty(){
+  phase = "party";
+  render();
+}
+
+render();
 </script>
 </body>
 </html>
