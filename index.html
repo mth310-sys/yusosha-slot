@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>リールバトルRPG Ver.RB-0.4.1</title>
+<title>リールバトルRPG Ver.RB-0.4.2</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#111;color:#fff;font-family:sans-serif;text-align:center}
@@ -18,60 +18,23 @@ button{width:100%;padding:14px;border:0;border-radius:12px;font-size:20px;font-w
 .lock{background:#555;color:#aaa}
 .sub{background:#333;color:#fff}
 
-.reelArea{
-  height:150px;
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-start;
-}
-.topHint{
-  height:28px;
-  margin-bottom:8px;
-}
-.judgeBar{
-  display:flex;
-  justify-content:space-between;
-  margin:0 28px;
-  font-size:22px;
-  font-weight:bold;
-  color:#ddd;
-}
-.reels{
-  display:flex;
-  gap:10px;
-  justify-content:center;
-  margin:0;
-}
-.reelWrap{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-}
+.reelArea{height:150px;display:flex;flex-direction:column;justify-content:flex-start}
+.topHint{height:28px;margin-bottom:8px}
+.judgeBar{display:flex;justify-content:space-between;margin:0 28px;font-size:22px;font-weight:bold;color:#ddd}
+.reels{display:flex;gap:10px;justify-content:center;margin:0}
+.reelWrap{display:flex;flex-direction:column;align-items:center}
 .reel{
-  width:70px;
-  height:82px;
-  background:#fff;
-  color:#111;
-  border-radius:10px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:44px;
-  font-weight:bold;
+  width:70px;height:82px;background:#fff;color:#111;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:44px;font-weight:bold
 }
-.reelLabel{
-  height:22px;
-  margin-top:8px;
-  font-size:14px;
-  color:#bbb;
-  font-weight:bold;
-}
+.reelLabel{height:22px;margin-top:8px;font-size:14px;color:#bbb;font-weight:bold}
 .log{
   height:120px;
   text-align:left;
   white-space:pre-line;
-  line-height:1.55;
-  font-size:18px;
+  font-size:15px;
+  line-height:1.4;
   overflow:hidden;
 }
 </style>
@@ -300,7 +263,7 @@ function getAttackResultButton(){
 function calcAttack(actor){
   const r=roll();
   const skill=actor.skills[r[0]-1];
-  const baseDamage=r[1]*10;
+  const baseDamage=r[1]*(actor.level*5 || 5);
   const mult=[1,2,3,4,5,7,10][r[2]-1];
   const damage=baseDamage*mult;
   return {r,skill,baseDamage,mult,damage};
