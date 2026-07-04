@@ -3,49 +3,63 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>リールバトルRPG Ver.RB-0.3</title>
+<title>リールバトルRPG Ver.RB-0.4</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#111;color:#fff;font-family:sans-serif;text-align:center}
 .wrap{max-width:390px;margin:auto;padding:12px}
-.panel{background:#1e1e1e;border:1px solid #444;border-radius:12px;padding:12px;margin-bottom:10px}
-h1{font-size:24px;margin:16px 0}
-h2{font-size:26px;margin:16px 0}
-.status{display:flex;gap:8px}
-.box{flex:1;background:#2b2b2b;border-radius:10px;padding:10px;font-size:18px}
+h1{font-size:26px;margin:18px 0}
+h2{font-size:28px;margin:14px 0}
+.panel{background:#1e1e1e;border:1px solid #444;border-radius:14px;padding:14px;margin-bottom:10px}
+.status{display:flex;gap:8px;margin-bottom:8px}
+.box{flex:1;background:#2b2b2b;border-radius:12px;padding:10px;font-size:18px}
+button{width:100%;padding:14px;border:0;border-radius:12px;font-size:20px;font-weight:bold;margin-top:10px}
+.main{background:#ffd54a;color:#0784ff}
+.lock{background:#555;color:#aaa}
+.sub{background:#333;color:#fff}
 .reels{display:flex;gap:10px;justify-content:center;margin:18px 0}
 .reelWrap{display:flex;flex-direction:column;align-items:center}
 .reel{width:70px;height:82px;background:#fff;color:#111;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:44px;font-weight:bold}
 .reelLabel{margin-top:8px;font-size:14px;color:#bbb;font-weight:bold}
-.hint{font-size:20px;font-weight:bold;margin:8px 0 12px;color:#ddd}
-button{width:100%;padding:14px;border:0;border-radius:12px;font-size:20px;font-weight:bold;margin-top:12px}
-.main{background:#ffd54a;color:#0784ff}
+.judgeBar{display:flex;justify-content:space-between;margin:4px 28px 0;font-size:22px;font-weight:bold;color:#ddd}
 .log{min-height:90px;text-align:left;white-space:pre-line;line-height:1.55;font-size:18px}
+.small{font-size:14px;color:#aaa}
 </style>
 </head>
 <body>
 <div class="wrap">
-<h1>リールバトルRPG</h1>
-<div id="scene"></div>
+  <h1>リールバトルRPG</h1>
+  <div id="scene"></div>
 </div>
 
 <script>
 const nums=[1,2,3,4,5,6,7];
 
-const characters=[{
-  name:"主人公",level:1,hp:120,maxHp:120,exp:0,nextExp:100,gold:0,
-  skills:["斬撃","強打","二連撃","火炎斬り","雷撃","必殺技","奥義"]
-}];
+const DATA={
+  characters:[
+    {
+      id:"hero",name:"主人公",level:1,hp:120,maxHp:120,exp:0,nextExp:100,gold:0,
+      skills:["斬撃","強打","二連撃","火炎斬り","雷撃","必殺技","奥義"]
+    }
+  ],
+  enemies:[
+    {
+      id:"slime",name:"スライム",hp:100,maxHp:100,baseExp:10,baseGold:20,
+      skills:["体当たり","跳ねる","粘液","ぶつかる","強打","突進","怒り"]
+    }
+  ],
+  stages:[
+    {id:"grass",name:"草原",needLv:1,enemyId:"slime"},
+    {id:"cave",name:"洞窟",needLv:3,enemyId:"slime"},
+    {id:"ruins",name:"遺跡",needLv:5,enemyId:"slime"}
+  ]
+};
 
-const enemies=[{
-  name:"スライム",hp:100,maxHp:100,baseExp:10,baseGold:20,
-  skills:["体当たり","跳ねる","粘液","ぶつかる","強打","突進","怒り"]
-}];
-
-let party=[copy(characters[0])];
-let enemy=null;
-let phase="party";
+let game=null;
+let phase="title";
 let battleStep="turnSpin";
+let enemy=null;
+let selectedStage=null;
 let turnOwner=null;
 let lastRoll=[1,1,1];
 let logText="";
@@ -53,6 +67,178 @@ let lastReward=null;
 
 function copy(o){return JSON.parse(JSON.stringify(o))}
 function roll(){return [1,2,3].map(()=>nums[Math.floor(Math.random()*nums.length)])}
+function hero(){return game.party[0]}
+function hasSave(){return localStorage.getItem("reelBattleRPGSave")!==null}
+function save(){localStorage.setItem("reelBattleRPGSave",JSON.stringify(game))}
+function load(){game=JSON.parse(localStorage.getItem("reelBattleRPGSave"))}
+
+function newGame(){
+  game={
+    party:[copy(DATA.characters[0])],
+    unlocked:{shop:false,recruit:false,extra1:false,extra2:false,extra3:false}
+  };
+  save();
+  phase="action";
+  render();
+}
+
+function updateUnlocks(){
+  const p=hero();
+  game.unlocked.shop=p.gold>0;
+  game.unlocked.recruit=p.level>=2;
+}
+
+function render(){
+  if(phase==="title") return renderTitle();
+  if(phase==="action") return renderAction();
+  if(phase==="explore") return renderExplore();
+  if(phase==="battle") return renderBattle();
+}
+
+function renderTitle(){
+  scene.innerHTML=`
+  <div class="panel">
+    <h2>タイトル</h2>
+    <button class="main" onclick="newGame()">はじめから</button>
+    <button class="${hasSave()?'main':'lock'}" onclick="continueGame()" ${hasSave()?'':'disabled'}>つづきから</button>
+  </div>`;
+}
+
+function continueGame(){
+  load();
+  updateUnlocks();
+  phase="action";
+  render();
+}
+
+function renderAction(){
+  updateUnlocks();
+  save();
+  const p=hero();
+
+  scene.innerHTML=`
+  <div class="panel">
+    <div class="box">
+      ${p.name} Lv${p.level}<br>
+      HP ${p.hp}/${p.maxHp}<br>
+      EXP ${p.exp}/${p.nextExp}<br>
+      GOLD ${p.gold}
+    </div>
+  </div>
+
+  <div class="panel">
+    <h2>行動選択</h2>
+    <button class="main" onclick="goExplore()">探索</button>
+    <button class="${game.unlocked.shop?'main':'lock'}" ${game.unlocked.shop?'onclick="dummy(\'買い物\')"':'disabled'}>買い物</button>
+    <button class="${game.unlocked.recruit?'main':'lock'}" ${game.unlocked.recruit?'onclick="dummy(\'仲間を集める\')"':'disabled'}>仲間を集める</button>
+    <button class="lock" disabled>？？？</button>
+    <button class="lock" disabled>？？？</button>
+    <button class="lock" disabled>？？？</button>
+  </div>`;
+}
+
+function dummy(name){
+  alert(name+"は後で追加");
+}
+
+function goExplore(){
+  phase="explore";
+  render();
+}
+
+function renderExplore(){
+  const p=hero();
+
+  scene.innerHTML=`
+  <div class="panel">
+    <h2>探索</h2>
+    ${DATA.stages.map(s=>{
+      const ok=p.level>=s.needLv;
+      return `<button class="${ok?'main':'lock'}" ${ok?`onclick="startStage('${s.id}')"`:'disabled'}>
+        ${s.name} ${ok?'':`Lv${s.needLv}で解放`}
+      </button>`;
+    }).join("")}
+    <button class="sub" onclick="phase='action';render()">戻る</button>
+  </div>`;
+}
+
+function startStage(id){
+  selectedStage=DATA.stages.find(s=>s.id===id);
+  enemy=copy(DATA.enemies.find(e=>e.id===selectedStage.enemyId));
+  phase="battle";
+  battleStep="encounter";
+  lastRoll=[1,1,1];
+  logText=`${enemy.name}に遭遇！`;
+  render();
+}
+
+function renderBattle(){
+  const p=hero();
+
+  const title={
+    encounter:"敵に遭遇",
+    turnSpin:"ターン判定",
+    turnResult:"ターン判定結果",
+    attackSpin:"攻撃パート",
+    attackResult:"攻撃パート結果",
+    rewardSpin:"報酬チャンス",
+    rewardResult:"報酬チャンス結果"
+  }[battleStep];
+
+  const btn={
+    encounter:"ターン判定へ",
+    turnSpin:"SPIN",
+    turnResult:"攻撃パートへ",
+    attackSpin:"SPIN",
+    attackResult:getAttackResultButton(),
+    rewardSpin:"SPIN",
+    rewardResult:"行動選択へ"
+  }[battleStep];
+
+  scene.innerHTML=`
+  ${battleStep!=="rewardSpin"&&battleStep!=="rewardResult"?`
+  <div class="status">
+    <div class="box">${p.name}<br>HP ${p.hp}/${p.maxHp}</div>
+    <div class="box">${enemy.name}<br>HP ${enemy.hp}/${enemy.maxHp}</div>
+  </div>`:""}
+
+  <div class="panel">
+    <h2>${title}</h2>
+    ${renderTopHint()}
+    ${renderReels()}
+    <div class="log">${logText}</div>
+    <button class="main" onclick="nextAction()">${btn}</button>
+  </div>`;
+}
+
+function renderTopHint(){
+  if(battleStep==="turnSpin")return `<div class="judgeBar"><span>偶数</span><span>奇数</span></div>`;
+  return "";
+}
+
+function renderReels(){
+  let labels=["","",""];
+
+  if(battleStep==="attackSpin") labels=["技","ﾀﾞﾒｰｼﾞ","倍率"];
+  if(battleStep==="rewardSpin") labels=["報酬","倍率","倍率"];
+
+  return `
+  <div class="reels">
+    ${lastRoll.map((n,i)=>`
+      <div class="reelWrap">
+        <div class="reel">${n}</div>
+        ${labels[i]?`<div class="reelLabel">${labels[i]}</div>`:""}
+      </div>
+    `).join("")}
+  </div>`;
+}
+
+function getAttackResultButton(){
+  const p=hero();
+  if(enemy.hp<=0)return "報酬チャンスへ";
+  if(p.hp<=0)return "行動選択へ";
+  return "次のターン判定へ";
+}
 
 function calcAttack(actor){
   const r=roll();
@@ -73,118 +259,16 @@ function calcReward(enemy){
   return {r,type,m1,m2,base,total};
 }
 
-function render(){
-  const p=party[0];
-
-  if(phase==="party"){
-    scene.innerHTML=`
-    <div class="panel">
-      <h2>仲間選択</h2>
-      <p>現在は主人公のみ</p>
-      <div class="box">
-        ${p.name} Lv${p.level}<br>
-        HP ${p.hp}/${p.maxHp}<br>
-        EXP ${p.exp}/${p.nextExp}<br>
-        GOLD ${p.gold}
-      </div>
-      <button class="main" onclick="goStage()">ステージ選択へ</button>
-    </div>`;
-    return;
-  }
-
-  if(phase==="stage"){
-    scene.innerHTML=`
-    <div class="panel">
-      <h2>ステージ選択</h2>
-      <button class="main" onclick="startBattle()">草原へ進む</button>
-    </div>`;
-    return;
-  }
-
-  const title={
-    turnSpin:"ターン判定",
-    turnResult:"ターン判定結果",
-    attackSpin:"攻撃パート",
-    attackResult:"攻撃パート結果",
-    rewardSpin:"報酬チャンス",
-    rewardResult:"報酬チャンス結果"
-  }[battleStep];
-
-  const btn={
-    turnSpin:"SPIN",
-    turnResult:"攻撃パートへ",
-    attackSpin:"SPIN",
-    attackResult:getAttackResultButton(),
-    rewardSpin:"SPIN",
-    rewardResult:"仲間選択へ"
-  }[battleStep];
-
-  scene.innerHTML=`
-  ${battleStep!=="rewardSpin"&&battleStep!=="rewardResult"?`
-  <div class="status">
-    <div class="box">${p.name}<br>HP ${p.hp}/${p.maxHp}</div>
-    <div class="box">${enemy.name}<br>HP ${enemy.hp}/${enemy.maxHp}</div>
-  </div>`:""}
-
-  <div class="panel">
-    <h2>${title}</h2>
-    ${getHint()}
-    ${renderReels()}
-    <div class="log">${logText}</div>
-    <button class="main" onclick="nextAction()">${btn}</button>
-  </div>`;
-}
-
-function getHint(){
-  if(battleStep==="turnSpin") return `<div class="hint">偶数 ← ターン判定 → 奇数</div>`;
-  if(battleStep==="rewardSpin") return `<div class="hint">奇数 EXP　偶数 GOLD</div>`;
-  return "";
-}
-
-function renderReels(){
-  let labels=["","",""];
-
-  if(battleStep==="attackSpin"){
-    labels=["技","ﾀﾞﾒｰｼﾞ","倍率"];
-  }
-
-  if(battleStep==="rewardSpin"){
-    labels=["報酬","×1/×2","×3/×4"];
-  }
-
-  return `
-  <div class="reels">
-    ${lastRoll.map((n,i)=>`
-    <div class="reelWrap">
-      <div class="reel">${n}</div>
-      ${labels[i]?`<div class="reelLabel">${labels[i]}</div>`:""}
-    </div>`).join("")}
-  </div>`;
-}
-
-function getAttackResultButton(){
-  const p=party[0];
-  if(enemy.hp<=0)return"報酬チャンスへ";
-  if(p.hp<=0)return"仲間選択へ";
-  return"次のターン判定へ";
-}
-
-function goStage(){
-  phase="stage";
-  render();
-}
-
-function startBattle(){
-  enemy=copy(enemies[0]);
-  phase="battle";
-  battleStep="turnSpin";
-  lastRoll=[1,1,1];
-  logText="";
-  render();
-}
-
 function nextAction(){
-  const p=party[0];
+  const p=hero();
+
+  if(battleStep==="encounter"){
+    battleStep="turnSpin";
+    lastRoll=[1,1,1];
+    logText="";
+    render();
+    return;
+  }
 
   if(battleStep==="turnSpin"){
     lastRoll=roll();
@@ -237,7 +321,8 @@ function nextAction(){
 
     if(p.hp<=0){
       p.hp=p.maxHp;
-      phase="party";
+      phase="action";
+      save();
       render();
       return;
     }
@@ -257,7 +342,7 @@ function nextAction(){
       p.exp+=lastReward.total;
       logText=`EXP獲得！\n${lastReward.base} × ${lastReward.m1} × ${lastReward.m2}\n${lastReward.total}EXP`;
 
-      if(p.exp>=p.nextExp){
+      while(p.exp>=p.nextExp){
         p.exp-=p.nextExp;
         p.level++;
         p.nextExp+=100;
@@ -270,13 +355,15 @@ function nextAction(){
       logText=`GOLD獲得！\n${lastReward.base} × ${lastReward.m1} × ${lastReward.m2}\n${lastReward.total}GOLD`;
     }
 
+    updateUnlocks();
+    save();
     battleStep="rewardResult";
     render();
     return;
   }
 
   if(battleStep==="rewardResult"){
-    phase="party";
+    phase="action";
     render();
     return;
   }
