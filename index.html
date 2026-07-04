@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>リールバトルRPG Ver.RB-0.1</title>
+<title>リールバトルRPG Ver.RB-0.2</title>
 <style>
 *{box-sizing:border-box}
 body{
@@ -25,7 +25,8 @@ body{
   padding:12px;
   margin-bottom:10px;
 }
-h1{font-size:22px;margin:8px 0}
+h1{font-size:24px;margin:16px 0}
+h2{font-size:26px;margin:16px 0}
 .status{
   display:flex;
   justify-content:space-between;
@@ -35,24 +36,25 @@ h1{font-size:22px;margin:8px 0}
   flex:1;
   background:#2b2b2b;
   border-radius:10px;
-  padding:8px;
+  padding:10px;
+  font-size:18px;
 }
 .reels{
   display:flex;
   gap:10px;
   justify-content:center;
-  margin:16px 0;
+  margin:18px 0;
 }
 .reel{
   width:70px;
-  height:80px;
+  height:82px;
   background:#fff;
   color:#111;
   border-radius:10px;
   display:flex;
   align-items:center;
   justify-content:center;
-  font-size:42px;
+  font-size:44px;
   font-weight:bold;
 }
 button{
@@ -60,24 +62,27 @@ button{
   padding:14px;
   border:0;
   border-radius:12px;
-  font-size:18px;
+  font-size:20px;
   font-weight:bold;
-  margin-top:8px;
+  margin-top:12px;
 }
-.main{background:#ffd54a}
-.sub{background:#ddd}
+.main{
+  background:#ffd54a;
+  color:#0784ff;
+}
 .log{
-  min-height:90px;
+  min-height:110px;
   text-align:left;
   white-space:pre-line;
-  line-height:1.5;
+  line-height:1.55;
+  font-size:18px;
 }
 </style>
 </head>
 <body>
 <div class="wrap">
   <h1>リールバトルRPG</h1>
-  <div class="panel" id="scene"></div>
+  <div id="scene"></div>
 </div>
 
 <script>
@@ -107,21 +112,36 @@ const enemies = [
   }
 ];
 
-const stages = [
-  {
-    id:"grass",
-    name:"草原",
-    enemyId:"slime"
-  }
-];
-
-let party = [structuredClone(characters[0])];
+let party = [copy(characters[0])];
 let enemy = null;
+
 let phase = "party";
-let battleStep = "turn";
+
+/*
+phase:
+party
+stage
+battle
+
+battleStep:
+turnSpin
+turnResult
+attackSpin
+attackResult
+expSpin
+expResult
+*/
+
+let battleStep = "turnSpin";
 let turnOwner = null;
 let lastRoll = [1,1,1];
 let logText = "";
+let lastAttack = null;
+let lastExp = null;
+
+function copy(obj){
+  return JSON.parse(JSON.stringify(obj));
+}
 
 function roll(){
   return [
@@ -131,10 +151,8 @@ function roll(){
   ];
 }
 
-function damageRoll(actor){
+function calcAttack(actor){
   const r = roll();
-  lastRoll = r;
-
   const skill = actor.skills[r[0]-1];
   const baseDamage = r[1] * 10;
   const multipliers = [1,2,3,4,5,7,10];
@@ -144,19 +162,14 @@ function damageRoll(actor){
   return {r, skill, baseDamage, mult, damage};
 }
 
-function expRoll(baseExp){
+function calcExp(baseExp){
   const r = roll();
-  lastRoll = r;
-
   const m1 = r[0] % 2 === 0 ? 2 : 1;
   const m2 = r[1] % 2 === 0 ? 4 : 3;
   const m3 = r[2] % 2 === 0 ? 6 : 5;
+  const total = baseExp * m1 * m2 * m3;
 
-  return {
-    r,
-    total: baseExp * m1 * m2 * m3,
-    text:`${baseExp} × ${m1} × ${m2} × ${m3}`
-  };
+  return {r, m1, m2, m3, total};
 }
 
 function render(){
@@ -167,10 +180,15 @@ function render(){
       <div class="panel">
         <h2>仲間選択</h2>
         <p>現在は主人公のみ</p>
-        <div class="box">${p.name} Lv${p.level}<br>HP ${p.hp}/${p.maxHp}<br>EXP ${p.exp}/${p.nextExp}</div>
+        <div class="box">
+          ${p.name} Lv${p.level}<br>
+          HP ${p.hp}/${p.maxHp}<br>
+          EXP ${p.exp}/${p.nextExp}
+        </div>
         <button class="main" onclick="goStage()">ステージ選択へ</button>
       </div>
     `;
+    return;
   }
 
   if(phase === "stage"){
@@ -180,42 +198,56 @@ function render(){
         <button class="main" onclick="startBattle()">草原へ進む</button>
       </div>
     `;
+    return;
   }
 
   if(phase === "battle"){
+    const titleMap = {
+      turnSpin:"ターン判定",
+      turnResult:"ターン判定結果",
+      attackSpin:"攻撃パート",
+      attackResult:"攻撃パート結果",
+      expSpin:"経験値パート",
+      expResult:"経験値パート結果"
+    };
+
+    const buttonMap = {
+      turnSpin:"SPIN",
+      turnResult:"攻撃パートへ",
+      attackSpin:"SPIN",
+      attackResult:getAttackResultButton(),
+      expSpin:"SPIN",
+      expResult:"仲間選択へ"
+    };
+
     scene.innerHTML = `
+      ${battleStep !== "expSpin" && battleStep !== "expResult" ? `
       <div class="status">
         <div class="box">${p.name}<br>HP ${p.hp}/${p.maxHp}</div>
         <div class="box">${enemy.name}<br>HP ${enemy.hp}/${enemy.maxHp}</div>
       </div>
+      ` : ""}
 
       <div class="panel">
-        <h2>${battleStep === "turn" ? "ターン判定" : "攻撃パート"}</h2>
+        <h2>${titleMap[battleStep]}</h2>
         <div class="reels">
           <div class="reel">${lastRoll[0]}</div>
           <div class="reel">${lastRoll[1]}</div>
           <div class="reel">${lastRoll[2]}</div>
         </div>
         <div class="log">${logText}</div>
-        <button class="main" onclick="spinBattle()">SPIN</button>
+        <button class="main" onclick="nextAction()">${buttonMap[battleStep]}</button>
       </div>
     `;
   }
+}
 
-  if(phase === "exp"){
-    scene.innerHTML = `
-      <div class="panel">
-        <h2>経験値パート</h2>
-        <div class="reels">
-          <div class="reel">${lastRoll[0]}</div>
-          <div class="reel">${lastRoll[1]}</div>
-          <div class="reel">${lastRoll[2]}</div>
-        </div>
-        <div class="log">${logText}</div>
-        <button class="main" onclick="backParty()">仲間選択へ</button>
-      </div>
-    `;
-  }
+function getAttackResultButton(){
+  const p = party[0];
+
+  if(enemy.hp <= 0) return "経験値パートへ";
+  if(p.hp <= 0) return "仲間選択へ";
+  return "次のターン判定へ";
 }
 
 function goStage(){
@@ -224,77 +256,133 @@ function goStage(){
 }
 
 function startBattle(){
-  enemy = structuredClone(enemies[0]);
+  enemy = copy(enemies[0]);
   phase = "battle";
-  battleStep = "turn";
-  logText = "戦闘開始！\nまずはターン判定。";
+  battleStep = "turnSpin";
+  turnOwner = null;
   lastRoll = [1,1,1];
+  logText = "SPINでターンを判定します。\n合計が偶数ならプレイヤー、奇数なら敵。";
   render();
 }
 
-function spinBattle(){
+function nextAction(){
   const p = party[0];
 
-  if(battleStep === "turn"){
+  if(battleStep === "turnSpin"){
     lastRoll = roll();
     const sum = lastRoll[0] + lastRoll[1] + lastRoll[2];
     turnOwner = sum % 2 === 0 ? "player" : "enemy";
-    logText = `合計 ${sum}\n${turnOwner === "player" ? "プレイヤーターン！" : "敵ターン！"}\n次は攻撃パート。`;
-    battleStep = "attack";
+
+    logText =
+      `合計 ${sum}\n` +
+      `${turnOwner === "player" ? "偶数：プレイヤーターン！" : "奇数：敵ターン！"}`;
+
+    battleStep = "turnResult";
     render();
     return;
   }
 
-  if(battleStep === "attack"){
+  if(battleStep === "turnResult"){
+    battleStep = "attackSpin";
+    lastRoll = [1,1,1];
+    logText = "SPINで攻撃内容を決定します。\n第1リール：技\n第2リール：基本ダメージ\n第3リール：倍率";
+    render();
+    return;
+  }
+
+  if(battleStep === "attackSpin"){
     const actor = turnOwner === "player" ? p : enemy;
-    const result = damageRoll(actor);
+    lastAttack = calcAttack(actor);
+    lastRoll = lastAttack.r;
 
     if(turnOwner === "player"){
-      enemy.hp -= result.damage;
+      enemy.hp -= lastAttack.damage;
       if(enemy.hp < 0) enemy.hp = 0;
-      logText = `${p.name}の${result.skill}！\n${result.baseDamage} × ${result.mult}\n${result.damage}ダメージ！`;
+
+      logText =
+        `${p.name}の${lastAttack.skill}！\n` +
+        `${lastAttack.baseDamage} × ${lastAttack.mult}\n` +
+        `${lastAttack.damage}ダメージ！`;
 
       if(enemy.hp <= 0){
-        phase = "exp";
-        const exp = expRoll(enemy.baseExp);
-        p.exp += exp.total;
-        logText += `\n\n${enemy.name}を倒した！\n経験値計算：${exp.text}\n${exp.total}EXP獲得！`;
-
-        if(p.exp >= p.nextExp){
-          p.level++;
-          p.exp -= p.nextExp;
-          p.nextExp += 100;
-          p.maxHp += 20;
-          p.hp = p.maxHp;
-          logText += `\n\nレベルアップ！ Lv${p.level}`;
-        }
-
-        render();
-        return;
+        logText += `\n\n${enemy.name}を倒した！`;
       }
+
     }else{
-      p.hp -= result.damage;
+      p.hp -= lastAttack.damage;
       if(p.hp < 0) p.hp = 0;
-      logText = `${enemy.name}の${result.skill}！\n${result.baseDamage} × ${result.mult}\n${result.damage}ダメージ！`;
+
+      logText =
+        `${enemy.name}の${lastAttack.skill}！\n` +
+        `${lastAttack.baseDamage} × ${lastAttack.mult}\n` +
+        `${lastAttack.damage}ダメージ！`;
 
       if(p.hp <= 0){
-        logText += `\n\n敗北…仲間選択へ戻ります。`;
-        setTimeout(() => {
-          p.hp = p.maxHp;
-          phase = "party";
-          render();
-        }, 1200);
+        logText += `\n\n敗北…`;
       }
     }
 
-    battleStep = "turn";
+    battleStep = "attackResult";
     render();
+    return;
   }
-}
 
-function backParty(){
-  phase = "party";
-  render();
+  if(battleStep === "attackResult"){
+    if(enemy.hp <= 0){
+      battleStep = "expSpin";
+      lastRoll = [1,1,1];
+      logText =
+        "SPINで経験値倍率を決定します。\n" +
+        "第1リール：奇数×1 / 偶数×2\n" +
+        "第2リール：奇数×3 / 偶数×4\n" +
+        "第3リール：奇数×5 / 偶数×6";
+      render();
+      return;
+    }
+
+    if(p.hp <= 0){
+      p.hp = p.maxHp;
+      phase = "party";
+      render();
+      return;
+    }
+
+    battleStep = "turnSpin";
+    lastRoll = [1,1,1];
+    logText = "次のターン判定です。\nSPINしてください。";
+    render();
+    return;
+  }
+
+  if(battleStep === "expSpin"){
+    lastExp = calcExp(enemy.baseExp);
+    lastRoll = lastExp.r;
+
+    p.exp += lastExp.total;
+
+    logText =
+      `経験値計算：${enemy.baseExp} × ${lastExp.m1} × ${lastExp.m2} × ${lastExp.m3}\n` +
+      `${lastExp.total}EXP獲得！`;
+
+    if(p.exp >= p.nextExp){
+      p.exp -= p.nextExp;
+      p.level++;
+      p.nextExp += 100;
+      p.maxHp += 20;
+      p.hp = p.maxHp;
+      logText += `\n\nレベルアップ！ Lv${p.level}`;
+    }
+
+    battleStep = "expResult";
+    render();
+    return;
+  }
+
+  if(battleStep === "expResult"){
+    phase = "party";
+    render();
+    return;
+  }
 }
 
 render();
