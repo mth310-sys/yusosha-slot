@@ -3,11 +3,71 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>リールバトルRPG Ver.RB-0.4.2</title>
+<title>リールバトルRPG Ver.RB-0.4.3</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#111;color:#fff;font-family:sans-serif;text-align:center}
 .wrap{max-width:390px;margin:auto;padding:12px}
+
+/* タイトル画面 */
+.titleScreen{
+  min-height:100vh;
+  margin:-12px;
+  padding:18px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  background:
+    linear-gradient(to bottom,rgba(0,30,90,.15),rgba(0,0,0,.65)),
+    radial-gradient(circle at top,#3aa7ff,#123b6d 30%,#163d20 62%,#120c05 100%);
+  border:4px solid #b8860b;
+  box-shadow:inset 0 0 0 2px #2b1a05,inset 0 0 30px #000;
+}
+.titleLogo{
+  margin-top:20px;
+  margin-bottom:70px;
+}
+.titleMain{
+  font-size:42px;
+  font-weight:900;
+  color:#f6c85f;
+  text-shadow:3px 3px 0 #2b1600,0 0 12px #000;
+  letter-spacing:-2px;
+}
+.titleSub{
+  font-size:44px;
+  font-weight:900;
+  color:#2f8cff;
+  text-shadow:3px 3px 0 #071427,0 0 10px #000;
+}
+.titleMark{
+  font-size:70px;
+  margin-bottom:8px;
+  text-shadow:0 0 16px #000;
+}
+.titlePath{
+  flex:1;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  gap:18px;
+}
+.titleBtn{
+  width:88%;
+  margin:0 auto;
+  padding:18px;
+  border-radius:12px;
+  border:3px solid #d6a534;
+  font-size:28px;
+  font-weight:900;
+  color:white;
+  text-shadow:2px 2px 0 #000;
+  box-shadow:0 5px 0 #2b1600, inset 0 0 12px rgba(255,255,255,.25);
+}
+.startBtn{background:linear-gradient(#138cff,#003f9e)}
+.continueBtn{background:linear-gradient(#29a838,#075c12)}
+.continueBtn:disabled{background:#333;color:#777;border-color:#555}
+
 h1{font-size:26px;margin:18px 0}
 h2{font-size:28px;margin:14px 0}
 .panel{background:#1e1e1e;border:1px solid #444;border-radius:14px;padding:14px;margin-bottom:10px}
@@ -18,54 +78,17 @@ button{width:100%;padding:14px;border:0;border-radius:12px;font-size:20px;font-w
 .lock{background:#555;color:#aaa}
 .sub{background:#333;color:#fff}
 
-.reelArea{
-  height:150px;
-  display:flex;
-  flex-direction:column;
-  justify-content:flex-start;
-}
-.topHint{
-  height:28px;
-  margin-bottom:8px;
-}
-.judgeBar{
-  display:flex;
-  justify-content:space-between;
-  margin:0 28px;
-  font-size:22px;
-  font-weight:bold;
-  color:#ddd;
-}
-.reels{
-  display:flex;
-  gap:10px;
-  justify-content:center;
-  margin:0;
-}
-.reelWrap{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-}
+.reelArea{height:150px;display:flex;flex-direction:column;justify-content:flex-start}
+.topHint{height:28px;margin-bottom:8px}
+.judgeBar{display:flex;justify-content:space-between;margin:0 28px;font-size:22px;font-weight:bold;color:#ddd}
+.reels{display:flex;gap:10px;justify-content:center;margin:0}
+.reelWrap{display:flex;flex-direction:column;align-items:center}
 .reel{
-  width:70px;
-  height:82px;
-  background:#fff;
-  color:#111;
-  border-radius:10px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:44px;
-  font-weight:bold;
+  width:70px;height:82px;background:#fff;color:#111;border-radius:10px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:44px;font-weight:bold;
 }
-.reelLabel{
-  height:22px;
-  margin-top:8px;
-  font-size:14px;
-  color:#bbb;
-  font-weight:bold;
-}
+.reelLabel{height:22px;margin-top:8px;font-size:14px;color:#bbb;font-weight:bold}
 .log{
   height:120px;
   text-align:left;
@@ -78,7 +101,6 @@ button{width:100%;padding:14px;border:0;border-radius:12px;font-size:20px;font-w
 </head>
 <body>
 <div class="wrap">
-  <h1>リールバトルRPG</h1>
   <div id="scene"></div>
 </div>
 
@@ -147,10 +169,17 @@ function render(){
 
 function renderTitle(){
   scene.innerHTML=`
-  <div class="panel">
-    <h2>タイトル</h2>
-    <button class="main" onclick="newGame()">はじめから</button>
-    <button class="${hasSave()?'main':'lock'}" onclick="continueGame()" ${hasSave()?'':'disabled'}>つづきから</button>
+  <div class="titleScreen">
+    <div class="titleLogo">
+      <div class="titleMark">⚔️</div>
+      <div>
+        <span class="titleMain">リールバトル</span><span class="titleSub">RPG</span>
+      </div>
+    </div>
+    <div class="titlePath">
+      <button class="titleBtn startBtn" onclick="newGame()">はじめから</button>
+      <button class="titleBtn continueBtn" onclick="continueGame()" ${hasSave()?'':'disabled'}>つづきから</button>
+    </div>
   </div>`;
 }
 
@@ -167,6 +196,7 @@ function renderAction(){
   const p=hero();
 
   scene.innerHTML=`
+  <h1>リールバトルRPG</h1>
   <div class="panel">
     <div class="box">
       ${p.name} Lv${p.level}<br>
@@ -200,6 +230,7 @@ function renderExplore(){
   const p=hero();
 
   scene.innerHTML=`
+  <h1>リールバトルRPG</h1>
   <div class="panel">
     <h2>探索</h2>
     ${DATA.stages.map(s=>{
@@ -246,6 +277,7 @@ function renderBattle(){
   }[battleStep];
 
   scene.innerHTML=`
+  <h1>リールバトルRPG</h1>
   ${battleStep!=="rewardSpin"&&battleStep!=="rewardResult"?`
   <div class="status">
     <div class="box">${p.name}<br>HP ${p.hp}/${p.maxHp}</div>
