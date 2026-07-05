@@ -3,70 +3,48 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>リールバトルRPG Ver.RB-0.4.3</title>
+<title>リールバトルRPG Ver.RB-0.4.4</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#111;color:#fff;font-family:sans-serif;text-align:center}
 .wrap{max-width:390px;margin:auto;padding:12px}
 
-/* タイトル画面 */
+/* タイトル画面：背景画像使用 */
 .titleScreen{
-  min-height:100vh;
-  margin:-12px;
-  padding:18px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  background:
-    linear-gradient(to bottom,rgba(0,30,90,.15),rgba(0,0,0,.65)),
-    radial-gradient(circle at top,#3aa7ff,#123b6d 30%,#163d20 62%,#120c05 100%);
-  border:4px solid #b8860b;
-  box-shadow:inset 0 0 0 2px #2b1a05,inset 0 0 30px #000;
+  position:fixed;
+  inset:0;
+  background:url("title_bg.png") center center/cover no-repeat;
 }
-.titleLogo{
-  margin-top:20px;
-  margin-bottom:70px;
-}
-.titleMain{
-  font-size:42px;
-  font-weight:900;
-  color:#f6c85f;
-  text-shadow:3px 3px 0 #2b1600,0 0 12px #000;
-  letter-spacing:-2px;
-}
-.titleSub{
-  font-size:44px;
-  font-weight:900;
-  color:#2f8cff;
-  text-shadow:3px 3px 0 #071427,0 0 10px #000;
-}
-.titleMark{
-  font-size:70px;
-  margin-bottom:8px;
-  text-shadow:0 0 16px #000;
-}
-.titlePath{
-  flex:1;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  gap:18px;
-}
+
 .titleBtn{
-  width:88%;
-  margin:0 auto;
-  padding:18px;
+  position:absolute;
+  left:21%;
+  width:58%;
+  height:8%;
   border-radius:12px;
   border:3px solid #d6a534;
   font-size:28px;
   font-weight:900;
   color:white;
   text-shadow:2px 2px 0 #000;
-  box-shadow:0 5px 0 #2b1600, inset 0 0 12px rgba(255,255,255,.25);
+  box-shadow:0 5px 0 #2b1600, inset 0 0 12px rgba(255,255,255,.35);
 }
-.startBtn{background:linear-gradient(#138cff,#003f9e)}
-.continueBtn{background:linear-gradient(#29a838,#075c12)}
-.continueBtn:disabled{background:#333;color:#777;border-color:#555}
+
+.titleBtn.start{
+  top:52%;
+  background:linear-gradient(#138cff,#003f9e);
+}
+
+.titleBtn.continue{
+  top:63%;
+  background:linear-gradient(#29a838,#075c12);
+}
+
+.titleBtn:disabled{
+  background:#333;
+  color:#777;
+  border-color:#555;
+}
 
 h1{font-size:26px;margin:18px 0}
 h2{font-size:28px;margin:14px 0}
@@ -170,16 +148,8 @@ function render(){
 function renderTitle(){
   scene.innerHTML=`
   <div class="titleScreen">
-    <div class="titleLogo">
-      <div class="titleMark">⚔️</div>
-      <div>
-        <span class="titleMain">リールバトル</span><span class="titleSub">RPG</span>
-      </div>
-    </div>
-    <div class="titlePath">
-      <button class="titleBtn startBtn" onclick="newGame()">はじめから</button>
-      <button class="titleBtn continueBtn" onclick="continueGame()" ${hasSave()?'':'disabled'}>つづきから</button>
-    </div>
+    <button class="titleBtn start" onclick="newGame()">はじめから</button>
+    <button class="titleBtn continue" onclick="continueGame()" ${hasSave()?'':'disabled'}>つづきから</button>
   </div>`;
 }
 
