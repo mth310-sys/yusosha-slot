@@ -9,6 +9,7 @@
 body{margin:0;background:#111;color:#fff;font-family:sans-serif;text-align:center}
 .wrap{max-width:390px;margin:auto;padding:12px}
 
+/* タイトル画面 */
 .titleScreen{
   position:fixed;
   inset:0;
@@ -31,6 +32,7 @@ body{margin:0;background:#111;color:#fff;font-family:sans-serif;text-align:cente
 .titleBtn.continue{top:63%;background:linear-gradient(#29a838,#075c12)}
 .titleBtn:disabled{background:#333;color:#777;border-color:#555}
 
+/* 行動選択画面 */
 .actionScreen{
   position:fixed;
   inset:0;
@@ -72,32 +74,37 @@ body{margin:0;background:#111;color:#fff;font-family:sans-serif;text-align:cente
 .actionBtn.mainAct{background:linear-gradient(#168cff,#003b91)}
 .actionBtn.lockAct{background:linear-gradient(#3a3a3a,#171717);color:#aaa;border-color:#555}
 
+/* 探索選択画面 */
 .exploreScreen{
   position:fixed;
   inset:0;
   background:url("explore_bg.png") center center/cover no-repeat;
 }
+
 .questBoard{
   position:absolute;
-  top:38%;
+  top:41%;
   left:11%;
   width:78%;
 }
+
 .questBtn{
   width:100%;
-  margin-bottom:20px;
-  padding:10px 8px;
+  margin-bottom:30px;
+  padding:6px 8px;
   border:none;
   border-radius:8px;
   background:rgba(255,255,255,0);
   color:#2b1600;
-  font-size:26px;
+  font-size:27px;
   font-weight:900;
   text-shadow:1px 1px 0 rgba(255,255,255,.25);
 }
+
 .questBtn.locked{
   color:#777;
 }
+
 .questNav{
   position:absolute;
   bottom:4%;
@@ -106,6 +113,7 @@ body{margin:0;background:#111;color:#fff;font-family:sans-serif;text-align:cente
   display:flex;
   gap:8px;
 }
+
 .navBtn{
   flex:1;
   padding:12px 4px;
@@ -117,6 +125,7 @@ body{margin:0;background:#111;color:#fff;font-family:sans-serif;text-align:cente
   font-weight:900;
   text-shadow:1px 1px 0 #000;
 }
+
 .navBtn:disabled{
   opacity:.45;
 }
@@ -275,7 +284,10 @@ function goExplore(){
 function renderExplore(){
   const p=hero();
   const maxPage=Math.ceil(DATA.stages.length/stagesPerPage)-1;
-  const pageStages=DATA.stages.slice(explorePage*stagesPerPage,explorePage*stagesPerPage+stagesPerPage);
+  const pageStages=DATA.stages.slice(
+    explorePage*stagesPerPage,
+    explorePage*stagesPerPage+stagesPerPage
+  );
 
   scene.innerHTML=`
   <div class="exploreScreen">
