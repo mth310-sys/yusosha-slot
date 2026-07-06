@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>リールバトルRPG Ver.RB-0.4.9</title>
+<title>リールバトルRPG Ver.RB-0.5.0</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#111;color:#fff;font-family:sans-serif;text-align:center}
@@ -99,10 +99,10 @@ button{width:100%;padding:14px;border:0;border-radius:12px;font-size:20px;font-w
 .battleField{
   position:relative;
   width:100%;
-  height:230px;
+  height:250px;
   overflow:hidden;
   border-radius:14px;
-  margin-bottom:10px;
+  margin-bottom:12px;
   background:#000;
   border:2px solid #5c4424;
   box-shadow:inset 0 0 18px rgba(0,0,0,.65);
@@ -118,20 +118,10 @@ button{width:100%;padding:14px;border:0;border-radius:12px;font-size:20px;font-w
   position:absolute;
   width:38%;
   left:50%;
-  top:54%;
+  top:56%;
   transform:translate(-50%,-50%);
   filter:drop-shadow(0 10px 10px rgba(0,0,0,.55));
   pointer-events:none;
-}
-.battleCaption{
-  position:absolute;
-  left:0;
-  right:0;
-  bottom:0;
-  padding:5px;
-  background:rgba(0,0,0,.55);
-  font-size:14px;
-  font-weight:bold;
 }
 
 h1{font-size:26px;margin:18px 0}
@@ -317,16 +307,6 @@ function startStage(id){
 function renderBattle(){
   const p=hero();
 
-  const title={
-    encounter:"敵に遭遇",
-    turnSpin:"ターン判定",
-    turnResult:"ターン判定結果",
-    attackSpin:"攻撃パート",
-    attackResult:"攻撃パート結果",
-    rewardSpin:"報酬チャンス",
-    rewardResult:"報酬チャンス結果"
-  }[battleStep];
-
   const btn={
     encounter:"ターン判定へ",
     turnSpin:"SPIN",
@@ -338,7 +318,6 @@ function renderBattle(){
   }[battleStep];
 
   scene.innerHTML=`
-  <h1>リールバトルRPG</h1>
   ${battleStep!=="rewardSpin"&&battleStep!=="rewardResult"?`
   <div class="status">
     <div class="box">${p.name}<br>HP ${p.hp}/${p.maxHp}</div>
@@ -346,13 +325,10 @@ function renderBattle(){
   </div>`:""}
 
   <div class="panel">
-    <h2>${title}</h2>
-
     ${battleStep!=="rewardSpin"&&battleStep!=="rewardResult"?`
     <div class="battleField">
       <img src="${enemy.bg}" class="battleBg">
       <img src="${enemy.sprite}" class="enemySprite">
-      <div class="battleCaption">${selectedStage.name} / ${enemy.name}</div>
     </div>`:""}
 
     ${renderReels()}
