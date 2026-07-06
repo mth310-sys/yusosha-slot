@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>リールバトルRPG Ver.RB-0.4.8</title>
+<title>リールバトルRPG Ver.RB-0.4.9</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#111;color:#fff;font-family:sans-serif;text-align:center}
@@ -51,14 +51,12 @@ button{width:100%;padding:14px;border:0;border-radius:12px;font-size:20px;font-w
   inset:0;
   background:url("explore_bg.png") center center/cover no-repeat;
 }
-
 .exploreScreen .questBoard{
   position:absolute;
   top:44%;
   left:11%;
   width:78%;
 }
-
 .exploreScreen .questBtn{
   width:100%;
   margin-top:0;
@@ -74,9 +72,7 @@ button{width:100%;padding:14px;border:0;border-radius:12px;font-size:20px;font-w
   line-height:1.2;
   text-shadow:1px 1px 0 rgba(255,255,255,.25);
 }
-
 .exploreScreen .questBtn.locked{color:#777}
-
 .exploreScreen .questNav{
   position:absolute;
   bottom:4%;
@@ -85,7 +81,6 @@ button{width:100%;padding:14px;border:0;border-radius:12px;font-size:20px;font-w
   display:flex;
   gap:8px;
 }
-
 .exploreScreen .navBtn{
   width:auto;
   flex:1;
@@ -99,8 +94,45 @@ button{width:100%;padding:14px;border:0;border-radius:12px;font-size:20px;font-w
   font-weight:900;
   text-shadow:1px 1px 0 #000;
 }
-
 .exploreScreen .navBtn:disabled{opacity:.45}
+
+.battleField{
+  position:relative;
+  width:100%;
+  height:230px;
+  overflow:hidden;
+  border-radius:14px;
+  margin-bottom:10px;
+  background:#000;
+  border:2px solid #5c4424;
+  box-shadow:inset 0 0 18px rgba(0,0,0,.65);
+}
+.battleBg{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+.enemySprite{
+  position:absolute;
+  width:38%;
+  left:50%;
+  top:54%;
+  transform:translate(-50%,-50%);
+  filter:drop-shadow(0 10px 10px rgba(0,0,0,.55));
+  pointer-events:none;
+}
+.battleCaption{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:0;
+  padding:5px;
+  background:rgba(0,0,0,.55);
+  font-size:14px;
+  font-weight:bold;
+}
 
 h1{font-size:26px;margin:18px 0}
 h2{font-size:28px;margin:14px 0}
@@ -140,12 +172,13 @@ const DATA={
   }],
   enemies:[{
     id:"slime",name:"スライム",level:1,hp:100,maxHp:100,baseExp:10,baseGold:20,
+    sprite:"monster_slime.png",
     skills:["体当たり","跳ねる","粘液","ぶつかる","強打","突進","怒り"]
   }],
   stages:[
-    {id:"grass",name:"草原",needLv:1,enemyId:"slime"},
-    {id:"cave",name:"洞窟",needLv:3,enemyId:"slime"},
-    {id:"ruins",name:"遺跡",needLv:5,enemyId:"slime"}
+    {id:"grass",name:"草原",needLv:1,enemyId:"slime",bg:"battle_grass_bg.png"},
+    {id:"cave",name:"洞窟",needLv:3,enemyId:"slime",bg:"battle_cave_bg.png"},
+    {id:"ruins",name:"遺跡",needLv:5,enemyId:"slime",bg:"battle_ruins_bg.png"}
   ]
 };
 
@@ -273,6 +306,7 @@ function nextExplorePage(){
 function startStage(id){
   selectedStage=DATA.stages.find(s=>s.id===id);
   enemy=copy(DATA.enemies.find(e=>e.id===selectedStage.enemyId));
+  enemy.bg=selectedStage.bg;
   phase="battle";
   battleStep="encounter";
   lastRoll=[1,1,1];
@@ -313,6 +347,14 @@ function renderBattle(){
 
   <div class="panel">
     <h2>${title}</h2>
+
+    ${battleStep!=="rewardSpin"&&battleStep!=="rewardResult"?`
+    <div class="battleField">
+      <img src="${enemy.bg}" class="battleBg">
+      <img src="${enemy.sprite}" class="enemySprite">
+      <div class="battleCaption">${selectedStage.name} / ${enemy.name}</div>
+    </div>`:""}
+
     ${renderReels()}
     <div class="log">${logText}</div>
     <button class="main" onclick="nextAction()">${btn}</button>
