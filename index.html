@@ -3,28 +3,19 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>リールバトルRPG Ver.RB-0.4.7</title>
+<title>リールバトルRPG Ver.RB-0.4.8</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#111;color:#fff;font-family:sans-serif;text-align:center}
 .wrap{max-width:390px;margin:auto;padding:12px}
 
-/* タイトル画面 */
-.titleScreen{
-  position:fixed;
-  inset:0;
-  background:url("title_bg.png") center center/cover no-repeat;
-}
+button{width:100%;padding:14px;border:0;border-radius:12px;font-size:20px;font-weight:bold;margin-top:10px}
+
+.titleScreen{position:fixed;inset:0;background:url("title_bg.png") center center/cover no-repeat}
 .titleBtn{
-  position:absolute;
-  left:21%;
-  width:58%;
-  height:8%;
-  border-radius:12px;
-  border:3px solid #d6a534;
-  font-size:28px;
-  font-weight:900;
-  color:white;
+  position:absolute;left:21%;width:58%;height:8%;
+  border-radius:12px;border:3px solid #d6a534;
+  font-size:28px;font-weight:900;color:white;
   text-shadow:2px 2px 0 #000;
   box-shadow:0 5px 0 #2b1600,inset 0 0 12px rgba(255,255,255,.35);
 }
@@ -32,80 +23,61 @@ body{margin:0;background:#111;color:#fff;font-family:sans-serif;text-align:cente
 .titleBtn.continue{top:63%;background:linear-gradient(#29a838,#075c12)}
 .titleBtn:disabled{background:#333;color:#777;border-color:#555}
 
-/* 行動選択画面 */
 .actionScreen{
-  position:fixed;
-  inset:0;
+  position:fixed;inset:0;
   background:url("action_bg_town.png") center top/cover no-repeat;
   padding:12px;
 }
 .heroCard{
-  position:absolute;
-  top:24%;
-  left:5%;
-  width:48%;
+  position:absolute;top:24%;left:5%;width:48%;
   background:rgba(0,0,0,.72);
-  border:2px solid #b8860b;
-  border-radius:14px;
-  padding:12px;
-  text-align:left;
-  font-size:16px;
-  line-height:1.55;
+  border:2px solid #b8860b;border-radius:14px;
+  padding:12px;text-align:left;font-size:16px;line-height:1.55;
   box-shadow:0 0 12px #000;
 }
-.actionMenu{
-  position:absolute;
-  top:45%;
-  left:5%;
-  width:90%;
-}
+.actionMenu{position:absolute;top:45%;left:5%;width:90%}
 .actionBtn{
-  width:100%;
-  padding:14px;
-  margin-top:10px;
-  border-radius:12px;
-  border:2px solid #b8860b;
-  font-size:22px;
-  font-weight:900;
-  color:white;
+  width:100%;padding:14px;margin-top:10px;
+  border-radius:12px;border:2px solid #b8860b;
+  font-size:22px;font-weight:900;color:white;
   text-shadow:2px 2px 0 #000;
   box-shadow:0 4px 0 #2b1600,inset 0 0 10px rgba(255,255,255,.25);
 }
 .actionBtn.mainAct{background:linear-gradient(#168cff,#003b91)}
 .actionBtn.lockAct{background:linear-gradient(#3a3a3a,#171717);color:#aaa;border-color:#555}
 
-/* 探索選択画面 */
 .exploreScreen{
   position:fixed;
   inset:0;
   background:url("explore_bg.png") center center/cover no-repeat;
 }
 
-.questBoard{
+.exploreScreen .questBoard{
   position:absolute;
-  top:41%;
+  top:44%;
   left:11%;
   width:78%;
 }
 
-.questBtn{
+.exploreScreen .questBtn{
   width:100%;
-  margin-bottom:30px;
-  padding:6px 8px;
+  margin-top:0;
+  margin-bottom:28px;
+  padding:4px 8px;
   border:none;
   border-radius:8px;
-  background:rgba(255,255,255,0);
+  background:transparent;
+  box-shadow:none;
   color:#2b1600;
-  font-size:27px;
+  font-size:28px;
   font-weight:900;
+  line-height:1.2;
   text-shadow:1px 1px 0 rgba(255,255,255,.25);
 }
 
-.questBtn.locked{
-  color:#777;
-}
+.exploreScreen .questBtn.locked{color:#777}
 
-.questNav{
+.exploreScreen .questNav{
   position:absolute;
   bottom:4%;
   left:5%;
@@ -114,8 +86,10 @@ body{margin:0;background:#111;color:#fff;font-family:sans-serif;text-align:cente
   gap:8px;
 }
 
-.navBtn{
+.exploreScreen .navBtn{
+  width:auto;
   flex:1;
+  margin-top:0;
   padding:12px 4px;
   border-radius:10px;
   border:2px solid #8d6b2f;
@@ -126,16 +100,13 @@ body{margin:0;background:#111;color:#fff;font-family:sans-serif;text-align:cente
   text-shadow:1px 1px 0 #000;
 }
 
-.navBtn:disabled{
-  opacity:.45;
-}
+.exploreScreen .navBtn:disabled{opacity:.45}
 
 h1{font-size:26px;margin:18px 0}
 h2{font-size:28px;margin:14px 0}
 .panel{background:#1e1e1e;border:1px solid #444;border-radius:14px;padding:14px;margin-bottom:10px}
 .status{display:flex;gap:8px;margin-bottom:8px}
 .box{flex:1;background:#2b2b2b;border-radius:12px;padding:10px;font-size:18px}
-button{width:100%;padding:14px;border:0;border-radius:12px;font-size:20px;font-weight:bold;margin-top:10px}
 .main{background:#ffd54a;color:#0784ff}
 .lock{background:#555;color:#aaa}
 .sub{background:#333;color:#fff}
@@ -151,14 +122,7 @@ button{width:100%;padding:14px;border:0;border-radius:12px;font-size:20px;font-w
   font-size:44px;font-weight:bold;
 }
 .reelLabel{height:22px;margin-top:8px;font-size:14px;color:#bbb;font-weight:bold}
-.log{
-  height:120px;
-  text-align:left;
-  white-space:pre-line;
-  line-height:1.4;
-  font-size:15px;
-  overflow:hidden;
-}
+.log{height:120px;text-align:left;white-space:pre-line;line-height:1.4;font-size:15px;overflow:hidden}
 </style>
 </head>
 <body>
@@ -170,18 +134,14 @@ button{width:100%;padding:14px;border:0;border-radius:12px;font-size:20px;font-w
 const nums=[1,2,3,4,5,6,7];
 
 const DATA={
-  characters:[
-    {
-      id:"hero",name:"主人公",level:1,hp:120,maxHp:120,exp:0,nextExp:100,gold:0,
-      skills:["斬撃","強打","二連撃","火炎斬り","雷撃","必殺技","奥義"]
-    }
-  ],
-  enemies:[
-    {
-      id:"slime",name:"スライム",level:1,hp:100,maxHp:100,baseExp:10,baseGold:20,
-      skills:["体当たり","跳ねる","粘液","ぶつかる","強打","突進","怒り"]
-    }
-  ],
+  characters:[{
+    id:"hero",name:"主人公",level:1,hp:120,maxHp:120,exp:0,nextExp:100,gold:0,
+    skills:["斬撃","強打","二連撃","火炎斬り","雷撃","必殺技","奥義"]
+  }],
+  enemies:[{
+    id:"slime",name:"スライム",level:1,hp:100,maxHp:100,baseExp:10,baseGold:20,
+    skills:["体当たり","跳ねる","粘液","ぶつかる","強打","突進","怒り"]
+  }],
   stages:[
     {id:"grass",name:"草原",needLv:1,enemyId:"slime"},
     {id:"cave",name:"洞窟",needLv:3,enemyId:"slime"},
@@ -209,10 +169,7 @@ function save(){localStorage.setItem("reelBattleRPGSave",JSON.stringify(game))}
 function load(){game=JSON.parse(localStorage.getItem("reelBattleRPGSave"))}
 
 function newGame(){
-  game={
-    party:[copy(DATA.characters[0])],
-    unlocked:{shop:false,recruit:false,extra1:false,extra2:false,extra3:false}
-  };
+  game={party:[copy(DATA.characters[0])],unlocked:{shop:false,recruit:false,extra1:false,extra2:false,extra3:false}};
   save();
   phase="action";
   render();
@@ -225,10 +182,10 @@ function updateUnlocks(){
 }
 
 function render(){
-  if(phase==="title") return renderTitle();
-  if(phase==="action") return renderAction();
-  if(phase==="explore") return renderExplore();
-  if(phase==="battle") return renderBattle();
+  if(phase==="title")return renderTitle();
+  if(phase==="action")return renderAction();
+  if(phase==="explore")return renderExplore();
+  if(phase==="battle")return renderBattle();
 }
 
 function renderTitle(){
@@ -271,9 +228,7 @@ function renderAction(){
   </div>`;
 }
 
-function dummy(name){
-  alert(name+"は後で追加");
-}
+function dummy(name){alert(name+"は後で追加")}
 
 function goExplore(){
   explorePage=0;
@@ -284,10 +239,7 @@ function goExplore(){
 function renderExplore(){
   const p=hero();
   const maxPage=Math.ceil(DATA.stages.length/stagesPerPage)-1;
-  const pageStages=DATA.stages.slice(
-    explorePage*stagesPerPage,
-    explorePage*stagesPerPage+stagesPerPage
-  );
+  const pageStages=DATA.stages.slice(explorePage*stagesPerPage,explorePage*stagesPerPage+stagesPerPage);
 
   scene.innerHTML=`
   <div class="exploreScreen">
@@ -295,10 +247,7 @@ function renderExplore(){
       ${pageStages.map(s=>{
         const ok=p.level>=s.needLv;
         return `
-        <button
-          class="questBtn ${ok?'':'locked'}"
-          ${ok?`onclick="startStage('${s.id}')"`:'disabled'}
-        >
+        <button class="questBtn ${ok?'':'locked'}" ${ok?`onclick="startStage('${s.id}')"`:'disabled'}>
           ${ok?s.name:`${s.name} Lv${s.needLv}で解放`}
         </button>`;
       }).join("")}
@@ -313,18 +262,12 @@ function renderExplore(){
 }
 
 function prevExplorePage(){
-  if(explorePage>0){
-    explorePage--;
-    render();
-  }
+  if(explorePage>0){explorePage--;render();}
 }
 
 function nextExplorePage(){
   const maxPage=Math.ceil(DATA.stages.length/stagesPerPage)-1;
-  if(explorePage<maxPage){
-    explorePage++;
-    render();
-  }
+  if(explorePage<maxPage){explorePage++;render();}
 }
 
 function startStage(id){
