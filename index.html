@@ -3,19 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>リールバトルRPG Ver.RB-0.4.4</title>
+<title>リールバトルRPG Ver.RB-0.4.5</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#111;color:#fff;font-family:sans-serif;text-align:center}
 .wrap{max-width:390px;margin:auto;padding:12px}
 
-/* タイトル画面：背景画像使用 */
+/* タイトル画面 */
 .titleScreen{
   position:fixed;
   inset:0;
   background:url("title_bg.png") center center/cover no-repeat;
 }
-
 .titleBtn{
   position:absolute;
   left:21%;
@@ -27,24 +26,63 @@ body{margin:0;background:#111;color:#fff;font-family:sans-serif;text-align:cente
   font-weight:900;
   color:white;
   text-shadow:2px 2px 0 #000;
-  box-shadow:0 5px 0 #2b1600, inset 0 0 12px rgba(255,255,255,.35);
+  box-shadow:0 5px 0 #2b1600,inset 0 0 12px rgba(255,255,255,.35);
+}
+.titleBtn.start{top:52%;background:linear-gradient(#138cff,#003f9e)}
+.titleBtn.continue{top:63%;background:linear-gradient(#29a838,#075c12)}
+.titleBtn:disabled{background:#333;color:#777;border-color:#555}
+
+/* 行動選択画面 */
+.actionScreen{
+  position:fixed;
+  inset:0;
+  background:url("action_bg_town.png") center top/cover no-repeat;
+  padding:12px;
 }
 
-.titleBtn.start{
-  top:52%;
-  background:linear-gradient(#138cff,#003f9e);
+.heroCard{
+  position:absolute;
+  top:24%;
+  left:5%;
+  width:48%;
+  background:rgba(0,0,0,.72);
+  border:2px solid #b8860b;
+  border-radius:14px;
+  padding:12px;
+  text-align:left;
+  font-size:16px;
+  line-height:1.55;
+  box-shadow:0 0 12px #000;
 }
 
-.titleBtn.continue{
-  top:63%;
-  background:linear-gradient(#29a838,#075c12);
+.actionMenu{
+  position:absolute;
+  top:48%;
+  left:5%;
+  width:90%;
 }
 
-.titleBtn:disabled{
-  background:#333;
-  color:#777;
-  border-color:#555;
+.actionTitle{
+  font-size:30px;
+  font-weight:900;
+  margin-bottom:14px;
+  text-shadow:2px 2px 0 #000;
 }
+
+.actionBtn{
+  width:100%;
+  padding:14px;
+  margin-top:10px;
+  border-radius:12px;
+  border:2px solid #b8860b;
+  font-size:22px;
+  font-weight:900;
+  color:white;
+  text-shadow:2px 2px 0 #000;
+  box-shadow:0 4px 0 #2b1600,inset 0 0 10px rgba(255,255,255,.25);
+}
+.actionBtn.mainAct{background:linear-gradient(#168cff,#003b91)}
+.actionBtn.lockAct{background:linear-gradient(#3a3a3a,#171717);color:#aaa;border-color:#555}
 
 h1{font-size:26px;margin:18px 0}
 h2{font-size:28px;margin:14px 0}
@@ -166,24 +204,23 @@ function renderAction(){
   const p=hero();
 
   scene.innerHTML=`
-  <h1>リールバトルRPG</h1>
-  <div class="panel">
-    <div class="box">
+  <div class="actionScreen">
+    <div class="heroCard">
       ${p.name} Lv${p.level}<br>
       HP ${p.hp}/${p.maxHp}<br>
       EXP ${p.exp}/${p.nextExp}<br>
       GOLD ${p.gold}
     </div>
-  </div>
 
-  <div class="panel">
-    <h2>行動選択</h2>
-    <button class="main" onclick="goExplore()">探索</button>
-    <button class="${game.unlocked.shop?'main':'lock'}" ${game.unlocked.shop?'onclick="dummy(\'買い物\')"':'disabled'}>買い物</button>
-    <button class="${game.unlocked.recruit?'main':'lock'}" ${game.unlocked.recruit?'onclick="dummy(\'仲間を集める\')"':'disabled'}>仲間を集める</button>
-    <button class="lock" disabled>？？？</button>
-    <button class="lock" disabled>？？？</button>
-    <button class="lock" disabled>？？？</button>
+    <div class="actionMenu">
+      <div class="actionTitle">行動選択</div>
+      <button class="actionBtn mainAct" onclick="goExplore()">探索</button>
+      <button class="actionBtn ${game.unlocked.shop?'mainAct':'lockAct'}" ${game.unlocked.shop?'onclick="dummy(\'買い物\')"':'disabled'}>買い物</button>
+      <button class="actionBtn ${game.unlocked.recruit?'mainAct':'lockAct'}" ${game.unlocked.recruit?'onclick="dummy(\'仲間を集める\')"':'disabled'}>仲間を集める</button>
+      <button class="actionBtn lockAct" disabled>？？？</button>
+      <button class="actionBtn lockAct" disabled>？？？</button>
+      <button class="actionBtn lockAct" disabled>？？？</button>
+    </div>
   </div>`;
 }
 
