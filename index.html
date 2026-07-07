@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>リールバトルRPG Ver.RB-0.5.4</title>
+<title>リールバトルRPG Ver.RB-0.5.5</title>
 <style>
 *{box-sizing:border-box}
 body{margin:0;background:#111;color:#fff;font-family:sans-serif;text-align:center}
@@ -186,12 +186,14 @@ button{width:100%;padding:14px;border:0;border-radius:12px;font-size:20px;font-w
   display:flex;
   justify-content:center;
   gap:10px;
-  padding:14px;
+  width:100%;
+  height:220px;
+  padding:38px 28px 28px;
   margin:0 0 10px;
-  border-radius:18px;
-  background:linear-gradient(145deg,#5b5146,#1c1a18 45%,#6b5b45);
-  border:3px solid #8b6a36;
-  box-shadow:inset 0 0 16px #000,0 4px 0 #1b1006;
+  background:url("reel_frame.png") center center/100% 100% no-repeat;
+  border:none;
+  box-shadow:none;
+  border-radius:0;
 }
 .rpgReelWindow{
   width:78px;
@@ -199,16 +201,15 @@ button{width:100%;padding:14px;border:0;border-radius:12px;font-size:20px;font-w
 }
 .rpgReel{
   height:88px;
-  border-radius:12px;
-  background:linear-gradient(#e8dfc8,#9b907a);
-  border:3px solid #31251a;
+  background:transparent;
+  border:none;
+  box-shadow:none;
   color:#1b1208;
   font-size:46px;
   font-weight:900;
   display:flex;
   align-items:center;
   justify-content:center;
-  box-shadow:inset 0 0 10px rgba(0,0,0,.6),0 0 0 2px #b89757;
 }
 .rpgLabel{
   display:none;
