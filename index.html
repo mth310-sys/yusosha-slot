@@ -311,151 +311,102 @@ button:disabled{
    現在地
 ========================= */
 
-/* =========================
-   1画面表示向け圧縮調整
-========================= */
-
-.wrap{
-  width:min(100%,430px);
-  min-height:100dvh;
-  padding:
-    6px
-    10px
-    calc(8px + env(safe-area-inset-bottom));
-}
-
-.header{
-  margin-bottom:6px;
-  padding:8px;
-  border-radius:13px;
-}
-
-.headerTitle{
-  font-size:16px;
-}
-
-.worldInfo{
-  gap:5px;
-  margin-top:6px;
-}
-
-.infoBox{
-  padding:5px 2px;
-  border-radius:8px;
-}
-
-.infoLabel{
-  font-size:9px;
-}
-
-.infoValue{
-  margin-top:1px;
-  font-size:12px;
-}
-
-.statusPanel{
-  gap:5px;
-  margin-bottom:6px;
-}
-
-.statusBox{
-  padding:6px 4px;
-  border-radius:10px;
-  font-size:11px;
-}
-
-.statusName{
-  font-size:13px;
-}
-
-.statusNumber{
-  margin-top:2px;
-  font-size:12px;
-}
-
-.bar{
-  height:6px;
-  margin-top:3px;
-}
-
-/* 現在地表示を小型化 */
 .locationPanel{
-  min-height:105px;
-  margin-bottom:6px;
-  border-radius:13px;
+  position:relative;
+  min-height:180px;
+  margin-bottom:10px;
+  overflow:hidden;
+  border:2px solid #6f542a;
+  border-radius:16px;
+  background:
+    linear-gradient(rgba(0,0,0,.1),rgba(0,0,0,.68)),
+    radial-gradient(circle at 50% 30%,#6c9d5c,#2c4a2d 55%,#0e170f);
+  box-shadow:inset 0 0 25px rgba(0,0,0,.55);
+}
+
+.locationPanel.grass{
+  background:
+    linear-gradient(rgba(0,0,0,.08),rgba(0,0,0,.62)),
+    radial-gradient(circle at 50% 25%,#d3d66b,#68963d 52%,#263816);
+}
+
+.weatherOverlay{
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+}
+
+.weatherOverlay.rain{
+  background:
+    repeating-linear-gradient(
+      105deg,
+      transparent 0 15px,
+      rgba(185,220,255,.2) 16px 18px
+    );
+  animation:rainMove .55s linear infinite;
+}
+
+.weatherOverlay.fog{
+  background:rgba(220,230,225,.22);
+  backdrop-filter:blur(2px);
+}
+
+.weatherOverlay.storm{
+  background:rgba(40,45,70,.25);
+  animation:stormFlash 3s infinite;
+}
+
+.weatherOverlay.snow{
+  background:
+    radial-gradient(circle at 20% 10%,#fff 0 2px,transparent 3px),
+    radial-gradient(circle at 70% 25%,#fff 0 2px,transparent 3px),
+    radial-gradient(circle at 45% 65%,#fff 0 2px,transparent 3px),
+    radial-gradient(circle at 85% 80%,#fff 0 2px,transparent 3px);
+  background-size:80px 80px;
+  animation:snowMove 5s linear infinite;
+}
+
+@keyframes rainMove{
+  to{background-position:0 30px}
+}
+
+@keyframes snowMove{
+  to{background-position:20px 80px}
+}
+
+@keyframes stormFlash{
+  0%,87%,92%,100%{background-color:rgba(40,45,70,.25)}
+  89%{background-color:rgba(255,255,255,.5)}
 }
 
 .locationContent{
-  min-height:105px;
-  padding:10px 12px;
+  position:relative;
+  z-index:2;
+  min-height:180px;
+  padding:25px 18px;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
 }
 
 .locationIcon{
-  font-size:34px;
-  line-height:1;
+  font-size:58px;
+  filter:drop-shadow(0 5px 5px #000);
 }
 
 .locationName{
-  margin-top:3px;
-  font-size:20px;
+  margin-top:5px;
+  font-size:25px;
+  font-weight:1000;
+  text-shadow:2px 2px 0 #000;
 }
 
 .locationDescription{
-  margin-top:3px;
-  font-size:11px;
-  line-height:1.35;
-}
-
-/* 行動メニュー圧縮 */
-.menuPanel{
-  padding:8px;
-  border-radius:13px;
-}
-
-.menuTitle{
-  margin-bottom:5px;
-  font-size:14px;
-}
-
-.actionGrid{
-  gap:6px;
-}
-
-.actionButton{
-  min-height:43px;
-  padding:5px 3px;
-  border-radius:10px;
-  font-size:15px;
-  box-shadow:
-    0 2px 0 #1b1003,
-    inset 0 0 6px rgba(255,255,255,.14);
-}
-
-.restButton{
-  min-height:40px;
-  margin-top:6px;
-  border-radius:10px;
-  font-size:16px;
-}
-
-/* ログを常時見える高さに */
-.messageBox{
-  min-height:68px;
-  max-height:68px;
   margin-top:7px;
-  padding:8px;
-  font-size:12px;
-  line-height:1.4;
-}
-
-.systemRow{
-  gap:5px;
-  margin-top:6px;
-}
-
-.systemButton{
-  min-height:34px;
-  font-size:12px;
+  font-size:13px;
+  line-height:1.55;
+  color:#e4e4e4;
+  text-shadow:1px 1px 0 #000;
 }
 
 /* =========================
