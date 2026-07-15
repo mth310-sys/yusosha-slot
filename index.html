@@ -425,14 +425,14 @@ button:disabled{
 ========================= */
 
 .menuPanel{
-  padding:11px;
+  padding:8px 10px 9px;
   border:1px solid #444;
-  border-radius:16px;
+  border-radius:14px;
   background:var(--panel);
 }
 
 .menuTitle{
-  margin-bottom:8px;
+  margin-bottom:6px;
   font-size:15px;
   font-weight:1000;
   color:#e9d184;
@@ -441,16 +441,16 @@ button:disabled{
 .actionGrid{
   display:grid;
   grid-template-columns:repeat(2,1fr);
-  gap:8px;
+  gap:6px;
 }
 
 .actionButton{
-  min-height:54px;
-  padding:8px 4px;
+  min-height:46px;
+  padding:6px 4px;
   border:2px solid #84662e;
-  border-radius:12px;
+  border-radius:11px;
   color:#fff;
-  font-size:17px;
+  font-size:16px;
   font-weight:1000;
   text-shadow:1px 1px 0 #000;
   box-shadow:
@@ -486,45 +486,50 @@ button:disabled{
 
 .restButton{
   width:100%;
-  min-height:49px;
-  margin-top:9px;
+  min-height:42px;
+  margin-top:7px;
   border:2px solid #516480;
-  border-radius:12px;
+  border-radius:11px;
   background:linear-gradient(#506e9c,#243954);
   color:#fff;
-  font-size:18px;
+  font-size:17px;
   font-weight:1000;
   text-shadow:1px 1px 0 #000;
+  box-shadow:
+    0 3px 0 #121d2c,
+    inset 0 0 8px rgba(255,255,255,.14);
 }
 
 .messageBox{
-  min-height:92px;
-  margin-top:10px;
-  padding:11px;
+  min-height:72px;
+  max-height:72px;
+  margin-top:8px;
+  padding:9px 11px;
   overflow:auto;
-  border-radius:12px;
+  border-radius:11px;
   background:#070907;
   border:1px solid #384038;
   white-space:pre-line;
   text-align:left;
-  font-size:13px;
-  line-height:1.55;
+  font-size:12px;
+  line-height:1.45;
 }
 
 .systemRow{
   display:flex;
-  gap:7px;
-  margin-top:9px;
+  gap:6px;
+  margin-top:7px;
 }
 
 .systemButton{
   flex:1;
-  min-height:39px;
+  min-height:35px;
+  padding:5px 2px;
   border:1px solid #555;
-  border-radius:9px;
+  border-radius:8px;
   background:#292929;
   color:#eee;
-  font-size:13px;
+  font-size:12px;
   font-weight:800;
 }
 
