@@ -313,11 +313,11 @@ button:disabled{
 
 .locationPanel{
   position:relative;
-  min-height:180px;
-  margin-bottom:10px;
+  min-height:110px;
+  margin-bottom:7px;
   overflow:hidden;
   border:2px solid #6f542a;
-  border-radius:16px;
+  border-radius:14px;
   background:
     linear-gradient(rgba(0,0,0,.1),rgba(0,0,0,.68)),
     radial-gradient(circle at 50% 30%,#6c9d5c,#2c4a2d 55%,#0e170f);
@@ -367,44 +367,55 @@ button:disabled{
 }
 
 @keyframes rainMove{
-  to{background-position:0 30px}
+  to{
+    background-position:0 30px;
+  }
 }
 
 @keyframes snowMove{
-  to{background-position:20px 80px}
+  to{
+    background-position:20px 80px;
+  }
 }
 
 @keyframes stormFlash{
-  0%,87%,92%,100%{background-color:rgba(40,45,70,.25)}
-  89%{background-color:rgba(255,255,255,.5)}
+  0%,87%,92%,100%{
+    background-color:rgba(40,45,70,.25);
+  }
+
+  89%{
+    background-color:rgba(255,255,255,.5);
+  }
 }
 
 .locationContent{
   position:relative;
   z-index:2;
-  min-height:180px;
-  padding:25px 18px;
+  min-height:110px;
+  padding:9px 14px;
   display:flex;
   flex-direction:column;
   justify-content:center;
 }
 
 .locationIcon{
-  font-size:58px;
-  filter:drop-shadow(0 5px 5px #000);
+  font-size:34px;
+  line-height:1;
+  filter:drop-shadow(0 4px 4px #000);
 }
 
 .locationName{
-  margin-top:5px;
-  font-size:25px;
+  margin-top:3px;
+  font-size:20px;
   font-weight:1000;
+  line-height:1.1;
   text-shadow:2px 2px 0 #000;
 }
 
 .locationDescription{
-  margin-top:7px;
-  font-size:13px;
-  line-height:1.55;
+  margin-top:4px;
+  font-size:11px;
+  line-height:1.35;
   color:#e4e4e4;
   text-shadow:1px 1px 0 #000;
 }
