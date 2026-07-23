@@ -2,2091 +2,1137 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>黒髪ショートDK ～転生～ Ver.0.1β</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>遊創舎 パチスロ筐体</title>
 
 <style>
-*{
-  box-sizing:border-box;
+* {
+  box-sizing: border-box;
 }
 
-:root{
-  --gold:#d7aa43;
-  --gold-dark:#76501a;
-  --panel:rgba(17,20,18,.92);
-  --panel2:rgba(36,42,36,.94);
-  --green:#32934d;
-  --blue:#2679c8;
-  --red:#aa3838;
+:root {
+  --cabinet-width: 390px;
+  --gold: #e8c94a;
+  --dark-gold: #8e7016;
+  --metal-light: #f7f7f7;
+  --metal-mid: #777;
+  --metal-dark: #202020;
+  --panel-black: #070707;
+  --red: #c90000;
 }
 
-html,body{
-  min-height:100%;
-}
-
-body{
-  margin:0;
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 18px 8px 40px;
+  overflow-x: hidden;
   background:
-    radial-gradient(circle at top,#354937 0,#19211a 44%,#090c09 100%);
-  color:#fff;
+    radial-gradient(circle at 50% 10%, #373737 0%, #111 40%, #020202 100%);
+  color: #fff;
   font-family:
     -apple-system,
     BlinkMacSystemFont,
-    "Hiragino Sans",
-    "Yu Gothic",
+    "Segoe UI",
     sans-serif;
-  text-align:center;
 }
 
-button{
-  font:inherit;
-  touch-action:manipulation;
-}
-
-button:disabled{
-  cursor:not-allowed;
-}
-
-.wrap{
-  width:min(100%,430px);
-  min-height:100vh;
-  margin:auto;
-  padding:
-    12px
-    12px
-    calc(20px + env(safe-area-inset-bottom));
-}
-
-.hidden{
-  display:none!important;
-}
-
-/* =========================
-   タイトル画面
-========================= */
-
-.titleScreen{
-  position:fixed;
-  inset:0;
-  overflow:auto;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:
-    24px
-    18px
-    calc(28px + env(safe-area-inset-bottom));
+/* 床面の反射 */
+body::after {
+  content: "";
+  position: fixed;
+  left: 50%;
+  bottom: -40px;
+  transform: translateX(-50%);
+  width: 430px;
+  height: 170px;
+  pointer-events: none;
   background:
-    linear-gradient(rgba(0,0,0,.15),rgba(0,0,0,.72)),
-    radial-gradient(circle at 50% 20%,#6d916b,#203321 48%,#090d09);
-  z-index:100;
+    radial-gradient(
+      ellipse,
+      rgba(255, 220, 80, 0.18),
+      rgba(0, 0, 0, 0) 70%
+    );
+  filter: blur(12px);
 }
 
-.titleContent{
-  width:min(100%,390px);
-}
+/* 筐体全体 */
+.slot-machine {
+  position: relative;
+  width: min(var(--cabinet-width), calc(100vw - 16px));
+  padding: 8px 9px 16px;
+  overflow: hidden;
 
-.titleMark{
-  font-size:58px;
-  filter:drop-shadow(0 4px 5px #000);
-}
+  border: 3px solid #d8bd48;
+  border-radius: 28px 28px 18px 18px;
 
-.gameTitle{
-  margin:8px 0 0;
-  font-size:31px;
-  font-weight:1000;
-  line-height:1.2;
-  letter-spacing:.04em;
-  color:#fff;
-  text-shadow:
-    3px 3px 0 #000,
-    0 0 12px rgba(255,255,255,.25);
-}
+  background:
+    linear-gradient(
+      100deg,
+      #f8f8f8 0%,
+      #777 2%,
+      #202020 6%,
+      #050505 14%,
+      #171717 50%,
+      #050505 86%,
+      #292929 94%,
+      #eee 99%,
+      #888 100%
+    );
 
-.gameSubtitle{
-  margin:8px 0 28px;
-  font-size:22px;
-  font-weight:900;
-  color:#f4d582;
-  text-shadow:2px 2px 0 #000;
-}
-
-.version{
-  margin-bottom:25px;
-  color:#ddd;
-  font-size:14px;
-}
-
-.titleButton{
-  width:82%;
-  min-height:57px;
-  margin:10px auto 0;
-  display:block;
-  border:3px solid var(--gold);
-  border-radius:14px;
-  color:#fff;
-  font-size:23px;
-  font-weight:1000;
-  text-shadow:2px 2px 0 #000;
   box-shadow:
-    0 5px 0 #241400,
-    inset 0 0 13px rgba(255,255,255,.25);
+    0 0 0 2px #42350a,
+    0 0 24px rgba(255, 216, 55, 0.6),
+    0 22px 30px rgba(0, 0, 0, 0.9),
+    inset 0 0 28px #000,
+    inset 7px 0 12px rgba(255, 255, 255, 0.14),
+    inset -7px 0 12px rgba(255, 255, 255, 0.08);
 }
 
-.titleButton.start{
-  background:linear-gradient(#228df2,#06458f);
-}
-
-.titleButton.continue{
-  background:linear-gradient(#3bad55,#125f25);
-}
-
-.titleButton:disabled{
-  background:linear-gradient(#555,#282828);
-  border-color:#666;
-  color:#999;
-  box-shadow:0 5px 0 #111;
-}
-
-/* =========================
-   オープニング
-========================= */
-
-.storyScreen{
-  position:fixed;
-  inset:0;
-  z-index:90;
-  display:flex;
-  align-items:flex-end;
-  justify-content:center;
-  padding:
-    20px
-    16px
-    calc(30px + env(safe-area-inset-bottom));
+/* 外装ハイライト */
+.slot-machine::before {
+  content: "";
+  position: absolute;
+  z-index: 20;
+  top: 17px;
+  left: 9px;
+  width: 3px;
+  height: calc(100% - 40px);
+  border-radius: 10px;
+  pointer-events: none;
   background:
-    linear-gradient(rgba(0,0,0,.2),rgba(0,0,0,.88)),
-    radial-gradient(circle at 50% 15%,#515d67,#15191d 55%,#030303);
+    linear-gradient(
+      to bottom,
+      transparent,
+      rgba(255,255,255,0.9),
+      rgba(255,255,255,0.1),
+      transparent
+    );
+  opacity: 0.7;
 }
 
-.storyScreen.forest{
-  background:
-    linear-gradient(rgba(0,0,0,.12),rgba(0,0,0,.82)),
-    radial-gradient(circle at 50% 12%,#a5d58a,#365539 48%,#0b160d);
-}
+/* 上部LED */
+.top-led {
+  position: relative;
+  height: 26px;
+  margin: 0 17px 7px;
+  overflow: hidden;
 
-.storyBox{
-  width:min(100%,390px);
-  min-height:205px;
-  padding:20px;
-  border:2px solid var(--gold);
-  border-radius:18px;
-  background:rgba(6,7,7,.9);
-  box-shadow:0 0 24px #000;
-  text-align:left;
-}
+  border: 2px solid #322900;
+  border-radius: 14px;
 
-.storySpeaker{
-  min-height:24px;
-  color:#f3cf72;
-  font-size:16px;
-  font-weight:900;
-}
-
-.storyText{
-  min-height:95px;
-  margin-top:10px;
-  white-space:pre-line;
-  font-size:17px;
-  line-height:1.75;
-}
-
-.storyNext{
-  width:100%;
-  min-height:48px;
-  border:0;
-  border-radius:12px;
-  background:linear-gradient(#e3b94c,#93600f);
-  color:#fff;
-  font-size:18px;
-  font-weight:1000;
-  text-shadow:1px 1px 0 #000;
-}
-
-/* =========================
-   メイン画面
-========================= */
-
-.header{
-  margin-bottom:10px;
-  padding:12px;
-  border:2px solid var(--gold-dark);
-  border-radius:16px;
-  background:linear-gradient(145deg,#242b24,#111511);
-  box-shadow:0 5px 15px rgba(0,0,0,.5);
-}
-
-.headerTitle{
-  font-size:18px;
-  font-weight:1000;
-  color:#f1d380;
-}
-
-.worldInfo{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:6px;
-  margin-top:10px;
-}
-
-.infoBox{
-  padding:8px 2px;
-  border-radius:10px;
-  background:#0b0e0b;
-  border:1px solid #3f4a3f;
-}
-
-.infoLabel{
-  font-size:10px;
-  color:#aaa;
-}
-
-.infoValue{
-  margin-top:3px;
-  font-size:14px;
-  font-weight:900;
-  white-space:nowrap;
-}
-
-.statusPanel{
-  display:grid;
-  grid-template-columns:1.25fr 1fr 1fr;
-  gap:7px;
-  margin-bottom:10px;
-}
-
-.statusBox{
-  padding:9px 5px;
-  border-radius:12px;
-  background:var(--panel2);
-  border:1px solid #505a50;
-  font-size:12px;
-}
-
-.statusName{
-  font-size:15px;
-  font-weight:1000;
-}
-
-.statusNumber{
-  margin-top:4px;
-  font-weight:900;
-}
-
-.bar{
-  height:7px;
-  margin-top:5px;
-  overflow:hidden;
-  border-radius:8px;
-  background:#111;
-}
-
-.barFill{
-  height:100%;
-  transition:width .25s;
-}
-
-.hpFill{
-  background:linear-gradient(#ff6969,#a91818);
-}
-
-.hungerFill{
-  background:linear-gradient(#ffcf51,#c87805);
-}
-
-.energyFill{
-  background:linear-gradient(#66d4ff,#176ab0);
-}
-
-/* =========================
-   現在地
-========================= */
-
-.locationPanel{
-  position:relative;
-  min-height:110px;
-  margin-bottom:7px;
-  overflow:hidden;
-  border:2px solid #6f542a;
-  border-radius:14px;
-  background:
-    linear-gradient(rgba(0,0,0,.1),rgba(0,0,0,.68)),
-    radial-gradient(circle at 50% 30%,#6c9d5c,#2c4a2d 55%,#0e170f);
-  box-shadow:inset 0 0 25px rgba(0,0,0,.55);
-}
-
-.locationPanel.grass{
-  background:
-    linear-gradient(rgba(0,0,0,.08),rgba(0,0,0,.62)),
-    radial-gradient(circle at 50% 25%,#d3d66b,#68963d 52%,#263816);
-}
-
-.weatherOverlay{
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-}
-
-.weatherOverlay.rain{
   background:
     repeating-linear-gradient(
-      105deg,
-      transparent 0 15px,
-      rgba(185,220,255,.2) 16px 18px
+      90deg,
+      #3d3100 0 8px,
+      #ffdf00 8px 14px,
+      #fff199 14px 17px,
+      #5b4700 17px 24px
     );
-  animation:rainMove .55s linear infinite;
+
+  box-shadow:
+    0 0 8px #ffe900,
+    inset 0 2px 4px rgba(255,255,255,0.6),
+    inset 0 -3px 5px rgba(0,0,0,0.8);
 }
 
-.weatherOverlay.fog{
-  background:rgba(220,230,225,.22);
-  backdrop-filter:blur(2px);
-}
+.top-led::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -40%;
+  width: 30%;
+  height: 100%;
+  transform: skewX(-25deg);
 
-.weatherOverlay.storm{
-  background:rgba(40,45,70,.25);
-  animation:stormFlash 3s infinite;
-}
-
-.weatherOverlay.snow{
   background:
-    radial-gradient(circle at 20% 10%,#fff 0 2px,transparent 3px),
-    radial-gradient(circle at 70% 25%,#fff 0 2px,transparent 3px),
-    radial-gradient(circle at 45% 65%,#fff 0 2px,transparent 3px),
-    radial-gradient(circle at 85% 80%,#fff 0 2px,transparent 3px);
-  background-size:80px 80px;
-  animation:snowMove 5s linear infinite;
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,0.9),
+      transparent
+    );
+
+  animation: ledRun 2.8s linear infinite;
 }
 
-@keyframes rainMove{
-  to{
-    background-position:0 30px;
+@keyframes ledRun {
+  to {
+    left: 120%;
   }
 }
 
-@keyframes snowMove{
-  to{
-    background-position:20px 80px;
-  }
-}
+/* 左右サイドLED */
+.side-led {
+  position: absolute;
+  z-index: 10;
+  top: 56px;
+  width: 13px;
+  height: 605px;
 
-@keyframes stormFlash{
-  0%,87%,92%,100%{
-    background-color:rgba(40,45,70,.25);
-  }
+  border: 1px solid #665400;
+  border-radius: 12px;
 
-  89%{
-    background-color:rgba(255,255,255,.5);
-  }
-}
+  background:
+    repeating-radial-gradient(
+      circle at center,
+      #fff8b0 0 2px,
+      #ffd900 3px 5px,
+      #392d00 6px 9px
+    );
 
-.locationContent{
-  position:relative;
-  z-index:2;
-  min-height:110px;
-  padding:9px 14px;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-}
-
-.locationIcon{
-  font-size:34px;
-  line-height:1;
-  filter:drop-shadow(0 4px 4px #000);
-}
-
-.locationName{
-  margin-top:3px;
-  font-size:20px;
-  font-weight:1000;
-  line-height:1.1;
-  text-shadow:2px 2px 0 #000;
-}
-
-.locationDescription{
-  margin-top:4px;
-  font-size:11px;
-  line-height:1.35;
-  color:#e4e4e4;
-  text-shadow:1px 1px 0 #000;
-}
-
-/* =========================
-   行動メニュー
-========================= */
-
-.menuPanel{
-  padding:8px 10px 9px;
-  border:1px solid #444;
-  border-radius:14px;
-  background:var(--panel);
-}
-
-.menuTitle{
-  margin-bottom:6px;
-  font-size:15px;
-  font-weight:1000;
-  color:#e9d184;
-}
-
-.actionGrid{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:6px;
-}
-
-.actionButton{
-  min-height:46px;
-  padding:6px 4px;
-  border:2px solid #84662e;
-  border-radius:11px;
-  color:#fff;
-  font-size:16px;
-  font-weight:1000;
-  text-shadow:1px 1px 0 #000;
   box-shadow:
-    0 3px 0 #1b1003,
-    inset 0 0 8px rgba(255,255,255,.16);
+    0 0 9px #ffd900,
+    inset 0 0 5px #fff;
 }
 
-.actionButton.explore{
-  background:linear-gradient(#3c9d58,#17612e);
+.side-led.left {
+  left: 3px;
 }
 
-.actionButton.craft{
-  background:linear-gradient(#b98235,#68400d);
+.side-led.right {
+  right: 3px;
 }
 
-.actionButton.move{
-  background:linear-gradient(#388bc0,#145070);
+.side-led::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.35);
+  animation: sidePulse 1.5s ease-in-out infinite alternate;
 }
 
-.actionButton.life{
-  background:linear-gradient(#78a631,#3e6413);
+@keyframes sidePulse {
+  from {
+    opacity: 0.2;
+  }
+  to {
+    opacity: 0.8;
+  }
 }
 
-.actionButton.inventory{
-  background:linear-gradient(#8d6abd,#4c3472);
-}
+/* 共通内側パネル */
+.machine-panel {
+  position: relative;
+  margin: 0 12px 7px;
 
-.actionButton.locked{
-  background:linear-gradient(#4d4d4d,#242424);
-  border-color:#555;
-  color:#999;
-}
+  border: 2px solid #6f5b18;
+  border-radius: 13px;
 
-.restButton{
-  width:100%;
-  min-height:42px;
-  margin-top:7px;
-  border:2px solid #516480;
-  border-radius:11px;
-  background:linear-gradient(#506e9c,#243954);
-  color:#fff;
-  font-size:17px;
-  font-weight:1000;
-  text-shadow:1px 1px 0 #000;
+  background:
+    linear-gradient(145deg, #262626, #050505 36%, #151515 65%, #000);
+
   box-shadow:
-    0 3px 0 #121d2c,
-    inset 0 0 8px rgba(255,255,255,.14);
+    inset 0 0 0 2px #000,
+    inset 0 5px 9px rgba(255,255,255,0.08),
+    0 3px 8px rgba(0,0,0,0.9);
 }
 
-.messageBox{
-  min-height:72px;
-  max-height:72px;
-  margin-top:8px;
-  padding:9px 11px;
-  overflow:auto;
-  border-radius:11px;
-  background:#070907;
-  border:1px solid #384038;
-  white-space:pre-line;
-  text-align:left;
-  font-size:12px;
-  line-height:1.45;
+/* 上部タイトルパネル */
+.header-panel {
+  padding: 12px 10px 10px;
+  text-align: center;
+
+  background:
+    radial-gradient(circle at 50% 20%, #4b420f, #090909 55%),
+    linear-gradient(#191919, #020202);
 }
 
-.systemRow{
-  display:flex;
-  gap:6px;
-  margin-top:7px;
+.manufacturer {
+  margin-bottom: 2px;
+  color: #e6cf72;
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-shadow: 0 0 4px #d6aa00;
 }
 
-.systemButton{
-  flex:1;
-  min-height:35px;
-  padding:5px 2px;
-  border:1px solid #555;
-  border-radius:8px;
-  background:#292929;
-  color:#eee;
-  font-size:12px;
-  font-weight:800;
+.title {
+  margin: 0;
+  font-size: 27px;
+  font-weight: 900;
+  letter-spacing: 0.09em;
+
+  color: #f7e98e;
+
+  text-shadow:
+    0 1px 0 #fff,
+    0 3px 0 #6e5500,
+    0 0 7px #ffdc00,
+    0 0 14px rgba(255, 210, 0, 0.8);
 }
 
-/* =========================
-   モーダル共通
-========================= */
-
-.modal{
-  position:fixed;
-  inset:0;
-  z-index:80;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:
-    18px
-    14px
-    calc(18px + env(safe-area-inset-bottom));
-  background:rgba(0,0,0,.82);
+.subtitle {
+  margin-top: 3px;
+  color: #c6b978;
+  font-size: 9px;
+  letter-spacing: 0.2em;
 }
 
-.modalCard{
-  width:min(100%,400px);
-  max-height:88vh;
-  overflow:auto;
-  padding:16px;
-  border:2px solid var(--gold);
-  border-radius:17px;
-  background:#171a17;
-  box-shadow:0 0 25px #000;
+/* 装飾ライン */
+.chrome-line {
+  height: 7px;
+  margin: 0 18px 7px;
+  border-radius: 6px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #fff,
+      #858585 24%,
+      #202020 52%,
+      #aaa 76%,
+      #333
+    );
+
+  box-shadow:
+    0 1px 3px #000,
+    inset 0 1px 1px rgba(255,255,255,0.8);
 }
 
-.modalTitle{
-  margin-bottom:12px;
-  font-size:21px;
-  font-weight:1000;
-  color:#f0d17c;
+/* 上部液晶 */
+.upper-display {
+  padding: 8px;
 }
 
-.closeButton{
-  width:100%;
-  min-height:44px;
-  margin-top:12px;
-  border:0;
-  border-radius:10px;
-  background:#444;
-  color:#fff;
-  font-weight:900;
+.screen-frame {
+  padding: 5px;
+  border: 2px solid #858585;
+  border-radius: 8px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #fafafa,
+      #454545 12%,
+      #111 45%,
+      #b8b8b8 80%,
+      #272727
+    );
+
+  box-shadow:
+    inset 0 0 7px #000,
+    0 0 6px rgba(255,255,255,0.16);
 }
 
-/* =========================
-   マップ
-========================= */
+.screen {
+  position: relative;
+  height: 118px;
+  overflow: hidden;
 
-.mapGrid{
-  display:grid;
-  grid-template-columns:repeat(4,1fr);
-  gap:5px;
+  border: 3px solid #060606;
+  border-radius: 4px;
+
+  background:
+    radial-gradient(circle at 50% 44%, #29373b, #091015 48%, #000 100%);
+
+  box-shadow:
+    inset 0 0 24px #000,
+    inset 0 0 5px #7fd4ff;
 }
 
-.mapCell{
-  aspect-ratio:1/1;
-  padding:2px;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  border:2px solid #6f5d36;
-  border-radius:9px;
-  background:#304c2f;
-  color:#fff;
-  font-weight:900;
-  text-shadow:1px 1px 0 #000;
+.screen::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      transparent 0 3px,
+      rgba(255,255,255,0.025) 3px 4px
+    );
 }
 
-.mapCell.grassCell{
-  background:#738e35;
+.screen::after {
+  content: "";
+  position: absolute;
+  top: -30%;
+  left: -40%;
+  width: 70%;
+  height: 180%;
+  transform: rotate(20deg);
+
+  background:
+    linear-gradient(
+      to right,
+      transparent,
+      rgba(255,255,255,0.12),
+      transparent
+    );
 }
 
-.mapCell.lockCell{
-  background:#202020;
-  border-color:#444;
-  color:#777;
+.screen-content {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  text-align: center;
 }
 
-.mapCell.current{
-  outline:3px solid #ffe264;
-  box-shadow:0 0 14px #ffe264;
+.screen-logo {
+  color: #e9d46e;
+  font-size: 24px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+
+  text-shadow:
+    0 0 6px #ffee8a,
+    0 3px 0 #483700;
 }
 
-.mapCell.moveable{
-  cursor:pointer;
+.screen-text {
+  margin-top: 8px;
+  color: #9baeb7;
+  font-size: 10px;
+  letter-spacing: 0.3em;
 }
 
-.mapCell.moveable:active{
-  transform:scale(.96);
+/* リール部分 */
+.reel-section {
+  padding: 10px 9px 11px;
+
+  background:
+    radial-gradient(circle at center, #393939, #090909 72%);
 }
 
-.mapIcon{
-  font-size:24px;
+.reel-top-label {
+  margin-bottom: 7px;
+  text-align: center;
+  color: #b9a95b;
+  font-size: 9px;
+  letter-spacing: 0.25em;
 }
 
-.mapName{
-  margin-top:2px;
-  font-size:11px;
+.reel-outer-frame {
+  padding: 7px;
+
+  border: 2px solid #858585;
+  border-radius: 10px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f1f1f1,
+      #4b4b4b 11%,
+      #121212 38%,
+      #8d8d8d 73%,
+      #222
+    );
+
+  box-shadow:
+    inset 0 0 6px #000,
+    0 3px 6px #000;
 }
 
-.mapLock{
-  margin-top:2px;
-  font-size:11px;
-  color:#aaa;
+.reel-window {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+  padding: 6px;
+
+  border: 3px solid #080808;
+  border-radius: 6px;
+
+  background:
+    linear-gradient(to bottom, #d7d7d7, #fff 45%, #b9b9b9);
+
+  box-shadow:
+    inset 0 8px 12px rgba(0,0,0,0.42),
+    inset 0 -8px 12px rgba(0,0,0,0.42);
 }
 
-.mapHelp{
-  margin-top:10px;
-  font-size:12px;
-  color:#ccc;
-  line-height:1.5;
+.reel {
+  position: relative;
+  width: 92px;
+  height: 134px;
+  overflow: hidden;
+
+  border-right: 1px solid #777;
+  border-left: 1px solid #bbb;
+
+  background:
+    linear-gradient(to right, #c8c8c8, #fff 18%, #fff 82%, #bdbdbd);
 }
 
-/* =========================
-   持ち物
-========================= */
-
-.inventoryList{
-  display:grid;
-  gap:7px;
+.reel-strip {
+  position: absolute;
+  inset: -38px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
 }
 
-.inventoryItem{
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  padding:10px;
-  border-radius:10px;
-  background:#252b25;
-  border:1px solid #465046;
-  text-align:left;
+.symbol {
+  width: 78px;
+  height: 60px;
+  display: grid;
+  place-content: center;
+
+  color: #1b1b1b;
+  font-size: 17px;
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  text-shadow: 0 1px 0 #fff;
 }
 
-.inventoryName{
-  font-weight:900;
+.symbol.red-seven {
+  color: #d50000;
+  font-family: Georgia, serif;
+  font-size: 42px;
+  font-style: italic;
+
+  text-shadow:
+    0 1px 0 #fff,
+    0 3px 0 #690000;
 }
 
-.inventoryCount{
-  min-width:42px;
-  text-align:right;
-  color:#f0d17c;
-  font-weight:1000;
+.symbol.bar {
+  width: 68px;
+  height: 28px;
+  margin: 8px 0;
+  border: 3px solid #151515;
+  border-radius: 3px;
+
+  color: #eee;
+  font-size: 19px;
+
+  background:
+    linear-gradient(#222, #000);
+
+  box-shadow:
+    inset 0 0 0 2px #aaa;
 }
 
-/* =========================
-   クラフト・生活
-========================= */
-
-.subActionList{
-  display:grid;
-  gap:8px;
+.symbol.bell {
+  color: #ce9b00;
+  font-size: 38px;
 }
 
-.subActionButton{
-  width:100%;
-  min-height:53px;
-  padding:9px;
-  border:2px solid #6e5a31;
-  border-radius:11px;
-  background:linear-gradient(#4d554d,#242a24);
-  color:#fff;
-  text-align:left;
+.payline {
+  position: absolute;
+  z-index: 10;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+
+  background: rgba(255, 0, 0, 0.75);
+
+  box-shadow:
+    0 0 4px #ff0000,
+    0 0 1px #fff;
 }
 
-.subActionButton:disabled{
-  opacity:.45;
+/* 情報表示 */
+.data-panel {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+  padding: 7px 9px;
 }
 
-.subActionName{
-  font-size:16px;
-  font-weight:1000;
+.data-box {
+  padding: 5px 3px 6px;
+  text-align: center;
+
+  border: 1px solid #89732f;
+  border-radius: 5px;
+
+  background:
+    linear-gradient(#171717, #020202);
+
+  box-shadow:
+    inset 0 0 5px #000;
 }
 
-.subActionNeed{
-  margin-top:4px;
-  font-size:11px;
-  color:#d2d2d2;
+.data-label {
+  color: #9f956c;
+  font-size: 8px;
+  letter-spacing: 0.15em;
 }
 
-/* =========================
-   通知
-========================= */
+.data-number {
+  margin-top: 2px;
 
-.toast{
-  position:fixed;
-  left:50%;
-  bottom:calc(18px + env(safe-area-inset-bottom));
-  z-index:120;
-  width:min(88%,360px);
-  padding:11px;
-  transform:translateX(-50%);
-  border:1px solid #d8ad4a;
-  border-radius:12px;
-  background:rgba(0,0,0,.92);
-  color:#fff;
-  font-weight:900;
-  opacity:0;
-  pointer-events:none;
-  transition:.2s;
+  color: #ff4b2b;
+  font-family: "Courier New", monospace;
+  font-size: 18px;
+  font-weight: bold;
+
+  text-shadow:
+    0 0 3px #f00,
+    0 0 7px rgba(255,0,0,0.5);
 }
 
-.toast.show{
-  opacity:1;
+/* 操作パネル */
+.control-section {
+  padding: 11px 10px 13px;
+
+  background:
+    linear-gradient(
+      165deg,
+      #6e6e6e 0%,
+      #d7d7d7 9%,
+      #555 22%,
+      #181818 45%,
+      #050505 75%,
+      #4d4d4d 100%
+    );
+}
+
+.control-surface {
+  position: relative;
+  min-height: 150px;
+  padding: 12px 9px 10px;
+
+  border: 2px solid #1c1c1c;
+  border-radius: 10px 10px 18px 18px;
+
+  background:
+    linear-gradient(
+      175deg,
+      #333,
+      #101010 34%,
+      #050505 72%,
+      #1d1d1d
+    );
+
+  box-shadow:
+    inset 0 3px 5px rgba(255,255,255,0.12),
+    inset 0 -7px 9px #000,
+    0 4px 7px #000;
+}
+
+.small-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 13px;
+  margin-bottom: 12px;
+}
+
+/* 汎用丸ボタン */
+.small-button {
+  position: relative;
+  width: 46px;
+  height: 46px;
+  border: 0;
+  border-radius: 50%;
+
+  color: #fff;
+  font-size: 8px;
+  font-weight: 800;
+
+  background:
+    radial-gradient(circle at 35% 25%, #fff, #d4d4d4 14%, #666 42%, #141414 74%);
+
+  box-shadow:
+    0 0 0 3px #080808,
+    0 0 0 5px #777,
+    inset 0 -5px 7px rgba(0,0,0,0.75),
+    inset 0 3px 3px rgba(255,255,255,0.75);
+}
+
+.small-button span {
+  position: relative;
+  z-index: 1;
+  display: block;
+  color: #111;
+  line-height: 1.05;
+  text-shadow: 0 1px 0 #fff;
+}
+
+.small-button.red {
+  background:
+    radial-gradient(circle at 35% 25%, #ff8e8e, #d60000 30%, #720000 70%);
+
+  box-shadow:
+    0 0 0 3px #080808,
+    0 0 0 5px #888,
+    inset 0 -5px 7px #460000,
+    inset 0 3px 3px rgba(255,255,255,0.55);
+}
+
+.small-button.red span {
+  color: #fff;
+  text-shadow: 0 1px 2px #000;
+}
+
+/* レバー */
+.lever-area {
+  position: absolute;
+  left: 15px;
+  bottom: 13px;
+  width: 58px;
+  height: 81px;
+}
+
+.lever-base {
+  position: absolute;
+  bottom: 0;
+  left: 4px;
+  width: 52px;
+  height: 32px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(ellipse, #bbb 0%, #4b4b4b 35%, #111 70%);
+
+  box-shadow:
+    0 3px 6px #000,
+    inset 0 2px 4px #ddd;
+}
+
+.lever-stick {
+  position: absolute;
+  left: 28px;
+  bottom: 21px;
+  width: 9px;
+  height: 44px;
+
+  transform: rotate(13deg);
+  transform-origin: bottom;
+
+  border-radius: 5px;
+
+  background:
+    linear-gradient(to right, #333, #ddd, #555);
+
+  box-shadow: 2px 2px 3px #000;
+}
+
+.lever-ball {
+  position: absolute;
+  z-index: 2;
+  left: 25px;
+  top: 0;
+  width: 29px;
+  height: 29px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(circle at 32% 25%, #ffadad, #e30000 37%, #700000 75%);
+
+  box-shadow:
+    0 3px 5px #000,
+    inset 0 2px 3px rgba(255,255,255,0.7);
+}
+
+/* STOPボタン */
+.stop-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 11px;
+  margin-left: 52px;
+}
+
+.stop-unit {
+  text-align: center;
+}
+
+.stop-button {
+  position: relative;
+  width: 70px;
+  height: 70px;
+
+  border: 0;
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 37% 27%,
+      #ffb4b4 0%,
+      #ef2b2b 19%,
+      #c50000 47%,
+      #700000 76%,
+      #260000 100%
+    );
+
+  box-shadow:
+    0 0 0 3px #090909,
+    0 0 0 7px #858585,
+    0 0 0 9px #111,
+    0 5px 8px #000,
+    inset 0 5px 5px rgba(255,255,255,0.5),
+    inset 0 -8px 10px rgba(0,0,0,0.8);
+
+  cursor: pointer;
+}
+
+.stop-button::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1px solid rgba(255,255,255,0.35);
+  border-radius: 50%;
+}
+
+.stop-button:active {
+  transform: translateY(3px) scale(0.97);
+
+  box-shadow:
+    0 0 0 3px #090909,
+    0 0 0 7px #777,
+    0 0 0 9px #111,
+    0 2px 3px #000,
+    inset 0 7px 10px rgba(0,0,0,0.75);
+}
+
+.stop-label {
+  margin-top: 8px;
+  color: #c9c9c9;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+/* コイン投入口 */
+.coin-slot-area {
+  position: absolute;
+  right: 15px;
+  bottom: 103px;
+  text-align: center;
+}
+
+.coin-label {
+  margin-bottom: 3px;
+  color: #a9a9a9;
+  font-size: 7px;
+  letter-spacing: 0.1em;
+}
+
+.coin-slot {
+  width: 38px;
+  height: 9px;
+
+  border: 2px solid #777;
+  border-radius: 5px;
+
+  background: #000;
+
+  box-shadow:
+    inset 0 0 4px #000,
+    0 1px 2px #aaa;
+}
+
+/* 下部パネル */
+.lower-panel {
+  padding: 10px 9px 8px;
+
+  background:
+    radial-gradient(circle at 50% 25%, #302b12, #070707 68%);
+}
+
+.lower-art {
+  height: 83px;
+  display: grid;
+  place-content: center;
+  text-align: center;
+
+  border: 2px solid #4d4217;
+  border-radius: 7px;
+
+  background:
+    linear-gradient(140deg, #111, #222 42%, #050505 70%);
+
+  box-shadow:
+    inset 0 0 18px #000,
+    inset 0 0 0 2px #020202;
+}
+
+.lower-art strong {
+  color: #d8c36a;
+  font-size: 18px;
+  letter-spacing: 0.13em;
+
+  text-shadow:
+    0 0 6px #c39800,
+    0 2px 0 #352900;
+}
+
+.lower-art span {
+  margin-top: 4px;
+  color: #777;
+  font-size: 8px;
+  letter-spacing: 0.24em;
+}
+
+/* 払出口・下皿 */
+.tray-section {
+  position: relative;
+  margin: 0 11px;
+  padding: 9px 10px 7px;
+
+  border: 2px solid #242424;
+  border-radius: 5px 5px 14px 14px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #6c6c6c,
+      #272727 17%,
+      #090909 52%,
+      #181818
+    );
+
+  box-shadow:
+    inset 0 3px 5px rgba(255,255,255,0.16),
+    0 4px 7px #000;
+}
+
+.payout-mouth {
+  width: 124px;
+  height: 25px;
+  margin: auto;
+
+  border: 3px solid #555;
+  border-radius: 4px 4px 12px 12px;
+
+  background:
+    linear-gradient(to bottom, #050505, #000);
+
+  box-shadow:
+    inset 0 5px 8px #000,
+    0 1px 2px #aaa;
+}
+
+.coin-tray {
+  height: 59px;
+  margin-top: 7px;
+
+  border: 2px solid #555;
+  border-radius: 5px 5px 14px 14px;
+
+  background:
+    radial-gradient(ellipse at center bottom, #242424, #080808 70%);
+
+  box-shadow:
+    inset 0 9px 12px #000,
+    inset 0 -3px 4px rgba(255,255,255,0.12);
+}
+
+/* スピーカー */
+.speaker {
+  position: absolute;
+  bottom: 82px;
+  width: 36px;
+  height: 36px;
+
+  border: 2px solid #444;
+  border-radius: 50%;
+
+  background:
+    radial-gradient(circle, #090909 0 2px, transparent 2px 4px),
+    #171717;
+
+  background-size: 6px 6px;
+
+  box-shadow:
+    inset 0 0 8px #000,
+    0 1px 2px #777;
+}
+
+.speaker.left {
+  left: 15px;
+}
+
+.speaker.right {
+  right: 15px;
+}
+
+/* 底部 */
+.machine-foot {
+  height: 10px;
+  margin: 7px 27px -7px;
+
+  border-radius: 0 0 10px 10px;
+
+  background:
+    linear-gradient(to bottom, #555, #080808);
+
+  box-shadow:
+    0 5px 8px #000;
+}
+
+@media (max-width: 360px) {
+  .stop-button {
+    width: 62px;
+    height: 62px;
+  }
+
+  .stop-buttons {
+    gap: 9px;
+  }
+
+  .reel {
+    width: 82px;
+  }
+
+  .symbol {
+    width: 70px;
+  }
 }
 </style>
 </head>
 
 <body>
 
-<div class="wrap">
-  <main id="gameRoot"></main>
-</div>
+<main class="slot-machine">
 
-<div id="toast" class="toast"></div>
+  <div class="side-led left"></div>
+  <div class="side-led right"></div>
 
-<script>
-"use strict";
+  <div class="top-led"></div>
 
-/* =========================
-   基本データ
-========================= */
+  <section class="machine-panel header-panel">
+    <div class="manufacturer">🌱 遊創舎</div>
+    <h1 class="title">PACHISLOT</h1>
+    <div class="subtitle">REAL CABINET PROTOTYPE</div>
+  </section>
 
-const SAVE_KEY = "kurokamiTensei_v001beta";
+  <div class="chrome-line"></div>
 
-const TIME_NAMES = ["朝","昼","夜"];
-
-const WEATHER_DATA = {
-  clear:{
-    name:"晴れ",
-    icon:"☀️",
-    overlay:""
-  },
-  cloudy:{
-    name:"曇り",
-    icon:"☁️",
-    overlay:""
-  },
-  rain:{
-    name:"雨",
-    icon:"🌧️",
-    overlay:"rain"
-  },
-  storm:{
-    name:"雷雨",
-    icon:"⛈️",
-    overlay:"storm"
-  },
-  fog:{
-    name:"霧",
-    icon:"🌫️",
-    overlay:"fog"
-  },
-  snow:{
-    name:"雪",
-    icon:"❄️",
-    overlay:"snow"
-  }
-};
-
-const MAP = [
-  [
-    {name:"古城",type:"locked",icon:"🏰",locked:true},
-    {name:"山岳",type:"locked",icon:"⛰️",locked:true},
-    {name:"洞窟",type:"locked",icon:"🕳️",locked:true},
-    {name:"神殿",type:"locked",icon:"⛩️",locked:true}
-  ],
-  [
-    {name:"森",type:"locked",icon:"🌲",locked:true},
-    {name:"北西の森",type:"forest",icon:"🌲"},
-    {name:"北の森",type:"forest",icon:"🌲"},
-    {name:"北東の草原",type:"grass",icon:"🌾"}
-  ],
-  [
-    {name:"村",type:"locked",icon:"🏘️",locked:true},
-    {name:"西の森",type:"forest",icon:"🌲"},
-    {name:"中央草原",type:"grass",icon:"🌾"},
-    {name:"東の草原",type:"grass",icon:"🌾"}
-  ],
-  [
-    {name:"港",type:"locked",icon:"⚓",locked:true},
-    {name:"南西の森",type:"forest",icon:"🌲"},
-    {name:"南の草原",type:"grass",icon:"🌾"},
-    {name:"転生の森",type:"forest",icon:"🌲",start:true}
-  ]
-];
-
-const STORY = [
-  {
-    speaker:"クロカミ",
-    text:"いつもと変わらない学校帰りだった。\n\n信号の向こうから、子どもの叫び声が聞こえた。"
-  },
-  {
-    speaker:"クロカミ",
-    text:"「危ない！」\n\n考えるより先に、身体が動いていた。"
-  },
-  {
-    speaker:"",
-    text:"子どもを押し出した直後、激しい衝撃がクロカミを襲った。\n\n音も、光も、すべてが遠ざかっていく。"
-  },
-  {
-    speaker:"謎の声",
-    text:"『あなたの命は、ここで尽きました。』"
-  },
-  {
-    speaker:"謎の声",
-    text:"『ですが、あなたが示した勇気は、新たな世界で必要とされています。』"
-  },
-  {
-    speaker:"",
-    text:"まばゆい光が、クロカミの意識を包み込んだ。"
-  },
-  {
-    speaker:"クロカミ",
-    text:"「……ここは？」\n\n目を覚ますと、見知らぬ森の中にいた。"
-  },
-  {
-    speaker:"謎の声",
-    text:"『転生が完了しました。』\n\n『この世界で、あなた自身の生き方を見つけてください。』"
-  },
-  {
-    speaker:"クロカミ",
-    text:"「元の世界には……戻れないのか。」\n\n答える声は、もう聞こえなかった。"
-  },
-  {
-    speaker:"",
-    text:"Day 1　春　朝\n\nクロカミの異世界での100日が始まる。"
-  }
-];
-
-const CRAFTS = [
-  {
-    id:"stoneAxe",
-    name:"石斧",
-    description:"木材の採取に使える簡単な斧。",
-    need:{wood:2,stone:2}
-  },
-  {
-    id:"campfire",
-    name:"焚き火",
-    description:"休憩時の回復量を増やす。",
-    need:{wood:3,stone:2}
-  },
-  {
-    id:"bed",
-    name:"簡易寝床",
-    description:"夜の休憩効果を高める。",
-    need:{wood:4,grass:4}
-  }
-];
-
-/* =========================
-   ゲーム状態
-========================= */
-
-let game = null;
-let storyIndex = 0;
-let currentModal = null;
-
-function createNewGame(){
-  return {
-    version:"0.1β",
-    day:1,
-    turn:0,
-    weather:"clear",
-
-    position:{
-      row:3,
-      col:3
-    },
-
-    player:{
-      name:"クロカミ",
-      level:1,
-      hp:100,
-      maxHp:100,
-      hunger:100,
-      energy:100
-    },
-
-    inventory:{
-      wood:0,
-      stone:0,
-      grass:0,
-      herb:0,
-      berry:0,
-      mushroom:0,
-      water:1,
-      fish:0
-    },
-
-    crafted:{
-      stoneAxe:false,
-      campfire:false,
-      bed:false
-    },
-
-    stats:{
-      explored:0,
-      moved:0,
-      rested:0,
-      crafted:0
-    },
-
-    log:"見知らぬ森で目を覚ました。\nまずは周囲の状況を確認しよう。"
-  };
-}
-
-/* =========================
-   保存・読み込み
-========================= */
-
-function hasSave(){
-  return localStorage.getItem(SAVE_KEY) !== null;
-}
-
-function saveGame(showMessage=true){
-  if(!game)return;
-
-  try{
-    localStorage.setItem(SAVE_KEY,JSON.stringify(game));
-
-    if(showMessage){
-      showToast("セーブしました");
-    }
-  }catch(error){
-    console.error(error);
-    showToast("セーブに失敗しました");
-  }
-}
-
-function loadGame(){
-  try{
-    const raw = localStorage.getItem(SAVE_KEY);
-
-    if(!raw){
-      showToast("セーブデータがありません");
-      return false;
-    }
-
-    game = JSON.parse(raw);
-    return true;
-  }catch(error){
-    console.error(error);
-    showToast("セーブデータを読み込めませんでした");
-    return false;
-  }
-}
-
-/* =========================
-   表示補助
-========================= */
-
-function getSeason(day){
-  if(day <= 25)return {name:"春",icon:"🌸"};
-  if(day <= 50)return {name:"夏",icon:"☀️"};
-  if(day <= 75)return {name:"秋",icon:"🍁"};
-  return {name:"冬",icon:"❄️"};
-}
-
-function chooseWeather(){
-  const season = getSeason(game.day).name;
-  const r = Math.random();
-
-  if(season === "冬"){
-    if(r < .27)return "clear";
-    if(r < .47)return "cloudy";
-    if(r < .62)return "snow";
-    if(r < .75)return "fog";
-    if(r < .9)return "rain";
-    return "storm";
-  }
-
-  if(r < .36)return "clear";
-  if(r < .57)return "cloudy";
-  if(r < .76)return "rain";
-  if(r < .87)return "fog";
-  return "storm";
-}
-
-function getCurrentMap(){
-  return MAP[game.position.row][game.position.col];
-}
-
-function getLocationDescription(cell){
-  if(cell.type === "forest"){
-    return "木材や薬草を集められる森。モンスターに遭遇することもある。";
-  }
-
-  if(cell.type === "grass"){
-    return "見通しのよい草原。食料や草素材を見つけやすい。";
-  }
-
-  return "この場所にはまだ入れない。";
-}
-
-function itemLabel(key){
-  const labels = {
-    wood:"木材",
-    stone:"石",
-    grass:"丈夫な草",
-    herb:"薬草",
-    berry:"木の実",
-    mushroom:"キノコ",
-    water:"飲み水",
-    fish:"魚"
-  };
-
-  return labels[key] || key;
-}
-
-function weatherOverlayClass(){
-  return WEATHER_DATA[game.weather].overlay;
-}
-
-function clamp(value,min,max){
-  return Math.max(min,Math.min(max,value));
-}
-
-function showToast(text){
-  const toast = document.getElementById("toast");
-
-  toast.textContent = text;
-  toast.classList.add("show");
-
-  clearTimeout(showToast.timer);
-
-  showToast.timer = setTimeout(()=>{
-    toast.classList.remove("show");
-  },1500);
-}
-
-/* =========================
-   タイトル
-========================= */
-
-function renderTitle(){
-  gameRoot.innerHTML = `
-    <section class="titleScreen">
-      <div class="titleContent">
-        <div class="titleMark">🌲</div>
-
-        <h1 class="gameTitle">
-          黒髪ショートDK
-        </h1>
-
-        <div class="gameSubtitle">
-          ～転生～
+  <section class="machine-panel upper-display">
+    <div class="screen-frame">
+      <div class="screen">
+        <div class="screen-content">
+          <div class="screen-logo">遊創舎</div>
+          <div class="screen-text">SLOT MACHINE</div>
         </div>
-
-        <div class="version">
-          Ver.0.1 β　開拓者ルート試作版
-        </div>
-
-        <button
-          class="titleButton start"
-          onclick="beginNewGame()"
-        >
-          はじめから
-        </button>
-
-        <button
-          class="titleButton continue"
-          onclick="continueGame()"
-          ${hasSave() ? "" : "disabled"}
-        >
-          つづきから
-        </button>
       </div>
-    </section>
-  `;
-}
+    </div>
+  </section>
 
-function beginNewGame(){
-  const oldSave = hasSave();
+  <section class="machine-panel reel-section">
+    <div class="reel-top-label">MAIN REEL UNIT</div>
 
-  if(oldSave){
-    const ok = confirm(
-      "現在のセーブデータを消して、はじめから開始しますか？"
-    );
+    <div class="reel-outer-frame">
+      <div class="reel-window">
 
-    if(!ok)return;
-  }
-
-  game = createNewGame();
-  game.weather = chooseWeather();
-
-  storyIndex = 0;
-  renderStory();
-}
-
-function continueGame(){
-  if(!loadGame())return;
-  renderGame();
-}
-
-/* =========================
-   オープニング
-========================= */
-
-function renderStory(){
-  const part = STORY[storyIndex];
-  const forestClass = storyIndex >= 6 ? "forest" : "";
-
-  gameRoot.innerHTML = `
-    <section class="storyScreen ${forestClass}">
-      <div class="storyBox">
-        <div class="storySpeaker">
-          ${part.speaker}
-        </div>
-
-        <div class="storyText">
-          ${part.text}
-        </div>
-
-        <button
-          class="storyNext"
-          onclick="nextStory()"
-        >
-          ${storyIndex >= STORY.length-1 ? "異世界で目覚める" : "次へ"}
-        </button>
-      </div>
-    </section>
-  `;
-}
-
-function nextStory(){
-  storyIndex++;
-
-  if(storyIndex >= STORY.length){
-    saveGame(false);
-    renderGame();
-    return;
-  }
-
-  renderStory();
-}
-
-/* =========================
-   メイン画面
-========================= */
-
-function renderGame(){
-  closeModal(false);
-
-  const season = getSeason(game.day);
-  const weather = WEATHER_DATA[game.weather];
-  const place = getCurrentMap();
-
-  gameRoot.innerHTML = `
-    <header class="header">
-      <div class="headerTitle">
-        黒髪ショートDK ～転生～
-      </div>
-
-      <div class="worldInfo">
-        <div class="infoBox">
-          <div class="infoLabel">DAY</div>
-          <div class="infoValue">
-            ${game.day}/100
+        <div class="reel">
+          <div class="payline"></div>
+          <div class="reel-strip">
+            <div class="symbol bell">🔔</div>
+            <div class="symbol red-seven">7</div>
+            <div class="symbol bar">BAR</div>
           </div>
         </div>
 
-        <div class="infoBox">
-          <div class="infoLabel">時間</div>
-          <div class="infoValue">
-            ${TIME_NAMES[game.turn]}
+        <div class="reel">
+          <div class="payline"></div>
+          <div class="reel-strip">
+            <div class="symbol">🍇</div>
+            <div class="symbol red-seven">7</div>
+            <div class="symbol bell">🔔</div>
           </div>
         </div>
 
-        <div class="infoBox">
-          <div class="infoLabel">季節</div>
-          <div class="infoValue">
-            ${season.icon}${season.name}
+        <div class="reel">
+          <div class="payline"></div>
+          <div class="reel-strip">
+            <div class="symbol bar">BAR</div>
+            <div class="symbol red-seven">7</div>
+            <div class="symbol">🍒</div>
           </div>
         </div>
 
-        <div class="infoBox">
-          <div class="infoLabel">天候</div>
-          <div class="infoValue">
-            ${weather.icon}${weather.name}
-          </div>
-        </div>
       </div>
-    </header>
+    </div>
+  </section>
 
-    <section class="statusPanel">
-      <div class="statusBox">
-        <div class="statusName">
-          ${game.player.name}
-        </div>
+  <section class="machine-panel data-panel">
+    <div class="data-box">
+      <div class="data-label">CREDIT</div>
+      <div class="data-number">50</div>
+    </div>
 
-        <div class="statusNumber">
-          HP ${game.player.hp}/${game.player.maxHp}
-        </div>
+    <div class="data-box">
+      <div class="data-label">BET</div>
+      <div class="data-number">03</div>
+    </div>
 
-        <div class="bar">
-          <div
-            class="barFill hpFill"
-            style="width:${game.player.hp / game.player.maxHp * 100}%"
-          ></div>
-        </div>
-      </div>
+    <div class="data-box">
+      <div class="data-label">PAYOUT</div>
+      <div class="data-number">00</div>
+    </div>
+  </section>
 
-      <div class="statusBox">
-        <div>🍖 空腹</div>
+  <section class="machine-panel control-section">
+    <div class="control-surface">
 
-        <div class="statusNumber">
-          ${game.player.hunger}
-        </div>
-
-        <div class="bar">
-          <div
-            class="barFill hungerFill"
-            style="width:${game.player.hunger}%"
-          ></div>
-        </div>
+      <div class="coin-slot-area">
+        <div class="coin-label">MEDAL</div>
+        <div class="coin-slot"></div>
       </div>
 
-      <div class="statusBox">
-        <div>⚡ 体力</div>
-
-        <div class="statusNumber">
-          ${game.player.energy}
-        </div>
-
-        <div class="bar">
-          <div
-            class="barFill energyFill"
-            style="width:${game.player.energy}%"
-          ></div>
-        </div>
-      </div>
-    </section>
-
-    <section class="locationPanel ${place.type === "grass" ? "grass" : ""}">
-      <div class="weatherOverlay ${weatherOverlayClass()}"></div>
-
-      <div class="locationContent">
-        <div class="locationIcon">
-          ${place.icon}
-        </div>
-
-        <div class="locationName">
-          ${place.name}
-        </div>
-
-        <div class="locationDescription">
-          ${getLocationDescription(place)}
-        </div>
-      </div>
-    </section>
-
-    <section class="menuPanel">
-      <div class="menuTitle">
-        自由行動
-      </div>
-
-      <div class="actionGrid">
-        <button
-          class="actionButton explore"
-          onclick="exploreAction()"
-        >
-          🔍 探索
+      <div class="small-controls">
+        <button class="small-button">
+          <span>1<br>BET</span>
         </button>
 
-        <button
-          class="actionButton craft"
-          onclick="openCraft()"
-        >
-          🔨 クラフト
+        <button class="small-button red">
+          <span>MAX<br>BET</span>
         </button>
 
-        <button
-          class="actionButton move"
-          onclick="openMap()"
-        >
-          🧭 移動
-        </button>
-
-        <button
-          class="actionButton life"
-          onclick="openLife()"
-        >
-          🌾 生活
-        </button>
-
-        <button
-          class="actionButton inventory"
-          onclick="openInventory()"
-        >
-          🎒 持ち物
-        </button>
-
-        <button
-          class="actionButton locked"
-          disabled
-        >
-          ❓ ？？？
+        <button class="small-button">
+          <span>RETURN</span>
         </button>
       </div>
 
-      <button
-        class="restButton"
-        onclick="restAction()"
-      >
-        💤 休憩
-      </button>
-
-      <div class="messageBox">
-        ${game.log}
+      <div class="lever-area">
+        <div class="lever-ball"></div>
+        <div class="lever-stick"></div>
+        <div class="lever-base"></div>
       </div>
 
-      <div class="systemRow">
-        <button
-          class="systemButton"
-          onclick="saveGame(true)"
-        >
-          セーブ
-        </button>
+      <div class="stop-buttons">
 
-        <button
-          class="systemButton"
-          onclick="confirmReturnTitle()"
-        >
-          タイトル
-        </button>
+        <div class="stop-unit">
+          <button class="stop-button"></button>
+          <div class="stop-label">STOP 1</div>
+        </div>
 
-        <button
-          class="systemButton"
-          onclick="showHelp()"
-        >
-          ヘルプ
-        </button>
+        <div class="stop-unit">
+          <button class="stop-button"></button>
+          <div class="stop-label">STOP 2</div>
+        </div>
+
+        <div class="stop-unit">
+          <button class="stop-button"></button>
+          <div class="stop-label">STOP 3</div>
+        </div>
+
       </div>
-    </section>
-  `;
-}
 
-/* =========================
-   ターン進行
-========================= */
-
-function consumeTurn(actionText){
-  game.player.hunger = clamp(game.player.hunger - 5,0,100);
-  game.player.energy = clamp(game.player.energy - 6,0,100);
-
-  if(game.player.hunger <= 0){
-    game.player.hp = clamp(game.player.hp - 8,0,game.player.maxHp);
-    actionText += "\n\n空腹でHPが8減った。";
-  }
-
-  if(game.player.energy <= 0){
-    game.player.hp = clamp(game.player.hp - 5,0,game.player.maxHp);
-    actionText += "\n\n疲労でHPが5減った。";
-  }
-
-  game.turn++;
-
-  if(game.turn >= 3){
-    game.turn = 0;
-    game.day++;
-
-    if(game.day > 100){
-      game.day = 100;
-      game.log = actionText;
-      saveGame(false);
-      renderBetaEnding();
-      return;
-    }
-
-    game.weather = chooseWeather();
-
-    actionText +=
-      `\n\nDay ${game.day}の朝になった。` +
-      `\n今日の天候：${WEATHER_DATA[game.weather].name}`;
-  }
-
-  game.log = actionText;
-
-  saveGame(false);
-  renderGame();
-}
-
-/* =========================
-   探索
-========================= */
-
-function exploreAction(){
-  const place = getCurrentMap();
-
-  if(place.type === "forest"){
-    exploreForest();
-    return;
-  }
-
-  if(place.type === "grass"){
-    exploreGrass();
-    return;
-  }
-}
-
-function exploreForest(){
-  game.stats.explored++;
-
-  const r = Math.random();
-  let text = "森を探索した。";
-
-  if(r < .22){
-    const amount = randomInt(1,3) + (game.crafted.stoneAxe ? 1 : 0);
-    game.inventory.wood += amount;
-
-    text += `\n木材を${amount}個入手した。`;
-
-    if(game.crafted.stoneAxe){
-      text += "\n石斧のおかげで多く集められた。";
-    }
-  }else if(r < .39){
-    const amount = randomInt(1,3);
-    game.inventory.stone += amount;
-    text += `\n石を${amount}個入手した。`;
-  }else if(r < .53){
-    const amount = randomInt(1,3);
-    game.inventory.grass += amount;
-    text += `\n丈夫な草を${amount}個入手した。`;
-  }else if(r < .64){
-    game.inventory.herb++;
-    text += "\n薬草を1個入手した。";
-  }else if(r < .76){
-    const amount = randomInt(1,2);
-    game.inventory.berry += amount;
-    text += `\n木の実を${amount}個入手した。`;
-  }else if(r < .85){
-    game.inventory.mushroom++;
-    text += "\nキノコを1個入手した。";
-  }else if(r < .93){
-    const damage = randomInt(5,14);
-    game.player.hp = clamp(
-      game.player.hp-damage,
-      0,
-      game.player.maxHp
-    );
-
-    text +=
-      `\n野生の魔物に襲われた！` +
-      `\nなんとか逃げ切ったが、HPが${damage}減った。`;
-  }else{
-    game.inventory.water++;
-    text += "\n小さな湧き水を発見した。\n飲み水を1個入手した。";
-  }
-
-  applyWeatherExploreBonus(text=>{
-    consumeTurn(text);
-  },text);
-}
-
-function exploreGrass(){
-  game.stats.explored++;
-
-  const r = Math.random();
-  let text = "草原を探索した。";
-
-  if(r < .28){
-    const amount = randomInt(1,4);
-    game.inventory.grass += amount;
-    text += `\n丈夫な草を${amount}個入手した。`;
-  }else if(r < .48){
-    const amount = randomInt(1,3);
-    game.inventory.berry += amount;
-    text += `\n木の実を${amount}個入手した。`;
-  }else if(r < .63){
-    const amount = randomInt(1,2);
-    game.inventory.stone += amount;
-    text += `\n石を${amount}個入手した。`;
-  }else if(r < .76){
-    game.inventory.herb++;
-    text += "\n薬草を1個入手した。";
-  }else if(r < .88){
-    text += "\n遠くで動物の姿を見つけたが、逃げられてしまった。";
-  }else{
-    const damage = randomInt(4,11);
-    game.player.hp = clamp(
-      game.player.hp-damage,
-      0,
-      game.player.maxHp
-    );
-
-    text +=
-      `\n草むらから魔物が飛び出した！` +
-      `\n逃走中にHPが${damage}減った。`;
-  }
-
-  applyWeatherExploreBonus(text=>{
-    consumeTurn(text);
-  },text);
-}
-
-function applyWeatherExploreBonus(callback,text){
-  if(game.weather === "rain" && Math.random() < .35){
-    game.inventory.mushroom++;
-    text += "\n雨のおかげでキノコも1個見つけた。";
-  }
-
-  if(game.weather === "storm" && Math.random() < .3){
-    const damage = randomInt(3,8);
-    game.player.hp = clamp(
-      game.player.hp-damage,
-      0,
-      game.player.maxHp
-    );
-
-    text += `\n雷雨で体力を消耗し、HPが${damage}減った。`;
-  }
-
-  if(game.weather === "snow"){
-    game.player.energy = clamp(game.player.energy-5,0,100);
-    text += "\n雪の寒さで体力を余計に消耗した。";
-  }
-
-  callback(text);
-}
-
-function randomInt(min,max){
-  return Math.floor(Math.random()*(max-min+1))+min;
-}
-
-/* =========================
-   移動
-========================= */
-
-function openMap(){
-  const cells = MAP.map((row,rowIndex)=>{
-    return row.map((cell,colIndex)=>{
-      const current =
-        rowIndex === game.position.row &&
-        colIndex === game.position.col;
-
-      const moveable = canMoveTo(rowIndex,colIndex);
-      const classes = [
-        "mapCell",
-        cell.type === "grass" ? "grassCell" : "",
-        cell.locked ? "lockCell" : "",
-        current ? "current" : "",
-        moveable ? "moveable" : ""
-      ].join(" ");
-
-      return `
-        <button
-          class="${classes}"
-          ${moveable ? `onclick="moveTo(${rowIndex},${colIndex})"` : "disabled"}
-        >
-          <span class="mapIcon">${cell.icon}</span>
-          <span class="mapName">${cell.name}</span>
-          ${cell.locked ? `<span class="mapLock">🔒</span>` : ""}
-          ${current ? `<span class="mapLock">現在地</span>` : ""}
-        </button>
-      `;
-    }).join("");
-  }).join("");
-
-  openModal(`
-    <div class="modalTitle">
-      🧭 世界マップ
     </div>
+  </section>
 
-    <div class="mapGrid">
-      ${cells}
+  <section class="machine-panel lower-panel">
+
+    <div class="speaker left"></div>
+    <div class="speaker right"></div>
+
+    <div class="lower-art">
+      <strong>遊創舎</strong>
+      <span>遊び心を、かたちに。</span>
     </div>
+  </section>
 
-    <div class="mapHelp">
-      現在地と上下左右で隣接している、解放済みの場所へ移動できます。<br>
-      移動すると1ターン経過します。
-    </div>
+  <section class="tray-section">
+    <div class="payout-mouth"></div>
+    <div class="coin-tray"></div>
+  </section>
 
-    <button
-      class="closeButton"
-      onclick="closeModal()"
-    >
-      戻る
-    </button>
-  `);
-}
+  <div class="machine-foot"></div>
 
-function canMoveTo(row,col){
-  const target = MAP[row]?.[col];
-
-  if(!target || target.locked)return false;
-
-  const distance =
-    Math.abs(row-game.position.row) +
-    Math.abs(col-game.position.col);
-
-  return distance === 1;
-}
-
-function moveTo(row,col){
-  if(!canMoveTo(row,col))return;
-
-  game.position.row = row;
-  game.position.col = col;
-  game.stats.moved++;
-
-  const place = getCurrentMap();
-
-  closeModal(false);
-
-  consumeTurn(
-    `${place.name}へ移動した。` +
-    `\n周囲の様子を確認した。`
-  );
-}
-
-/* =========================
-   持ち物
-========================= */
-
-function openInventory(){
-  const rows = Object.entries(game.inventory)
-    .map(([key,value])=>{
-      return `
-        <div class="inventoryItem">
-          <div class="inventoryName">
-            ${itemLabel(key)}
-          </div>
-
-          <div class="inventoryCount">
-            ×${value}
-          </div>
-        </div>
-      `;
-    })
-    .join("");
-
-  const craftedRows = CRAFTS
-    .filter(craft=>game.crafted[craft.id])
-    .map(craft=>{
-      return `
-        <div class="inventoryItem">
-          <div class="inventoryName">
-            ${craft.name}
-          </div>
-
-          <div class="inventoryCount">
-            所持
-          </div>
-        </div>
-      `;
-    })
-    .join("");
-
-  openModal(`
-    <div class="modalTitle">
-      🎒 持ち物
-    </div>
-
-    <div class="inventoryList">
-      ${rows}
-      ${craftedRows || ""}
-    </div>
-
-    <div class="mapHelp">
-      持ち物を確認しても時間は経過しません。
-    </div>
-
-    <button
-      class="closeButton"
-      onclick="closeModal()"
-    >
-      戻る
-    </button>
-  `);
-}
-
-/* =========================
-   クラフト
-========================= */
-
-function openCraft(){
-  const list = CRAFTS.map(craft=>{
-    const already = game.crafted[craft.id];
-    const possible = canCraft(craft);
-
-    return `
-      <button
-        class="subActionButton"
-        onclick="craftItem('${craft.id}')"
-        ${already || !possible ? "disabled" : ""}
-      >
-        <div class="subActionName">
-          ${already ? "✅" : "🔨"} ${craft.name}
-        </div>
-
-        <div class="subActionNeed">
-          ${craft.description}<br>
-          必要：${needText(craft.need)}
-          ${already ? "　【作成済み】" : ""}
-        </div>
-      </button>
-    `;
-  }).join("");
-
-  openModal(`
-    <div class="modalTitle">
-      🔨 クラフト
-    </div>
-
-    <div class="subActionList">
-      ${list}
-    </div>
-
-    <div class="mapHelp">
-      クラフトに成功すると1ターン経過します。
-    </div>
-
-    <button
-      class="closeButton"
-      onclick="closeModal()"
-    >
-      戻る
-    </button>
-  `);
-}
-
-function canCraft(craft){
-  return Object.entries(craft.need)
-    .every(([key,value])=>game.inventory[key] >= value);
-}
-
-function needText(need){
-  return Object.entries(need)
-    .map(([key,value])=>`${itemLabel(key)}×${value}`)
-    .join("、");
-}
-
-function craftItem(id){
-  const craft = CRAFTS.find(item=>item.id === id);
-
-  if(!craft || game.crafted[id] || !canCraft(craft)){
-    return;
-  }
-
-  Object.entries(craft.need).forEach(([key,value])=>{
-    game.inventory[key] -= value;
-  });
-
-  game.crafted[id] = true;
-  game.stats.crafted++;
-
-  closeModal(false);
-
-  consumeTurn(
-    `${craft.name}を作成した。` +
-    `\n${craft.description}`
-  );
-}
-
-/* =========================
-   生活
-========================= */
-
-function openLife(){
-  openModal(`
-    <div class="modalTitle">
-      🌾 生活
-    </div>
-
-    <div class="subActionList">
-      <button
-        class="subActionButton"
-        onclick="drinkWater()"
-        ${game.inventory.water <= 0 ? "disabled" : ""}
-      >
-        <div class="subActionName">
-          💧 水を飲む
-        </div>
-
-        <div class="subActionNeed">
-          飲み水を1個消費してHPと体力を回復。<br>
-          1ターン経過します。
-        </div>
-      </button>
-
-      <button
-        class="subActionButton"
-        onclick="eatFood()"
-        ${(game.inventory.berry + game.inventory.mushroom) <= 0 ? "disabled" : ""}
-      >
-        <div class="subActionName">
-          🍽️ 食事をする
-        </div>
-
-        <div class="subActionNeed">
-          木の実またはキノコを食べて空腹を回復。<br>
-          1ターン経過します。
-        </div>
-      </button>
-
-      <button
-        class="subActionButton"
-        disabled
-      >
-        <div class="subActionName">
-          🌱 農業
-        </div>
-
-        <div class="subActionNeed">
-          今後の更新で実装予定。
-        </div>
-      </button>
-
-      <button
-        class="subActionButton"
-        disabled
-      >
-        <div class="subActionName">
-          🎣 釣り
-        </div>
-
-        <div class="subActionNeed">
-          今後の更新で実装予定。
-        </div>
-      </button>
-    </div>
-
-    <button
-      class="closeButton"
-      onclick="closeModal()"
-    >
-      戻る
-    </button>
-  `);
-}
-
-function drinkWater(){
-  if(game.inventory.water <= 0)return;
-
-  game.inventory.water--;
-
-  game.player.hp = clamp(
-    game.player.hp+8,
-    0,
-    game.player.maxHp
-  );
-
-  game.player.energy = clamp(
-    game.player.energy+12,
-    0,
-    100
-  );
-
-  closeModal(false);
-
-  consumeTurn(
-    "水を飲んだ。" +
-    "\nHPが8、体力が12回復した。"
-  );
-}
-
-function eatFood(){
-  let foodName = "";
-
-  if(game.inventory.berry > 0){
-    game.inventory.berry--;
-    foodName = "木の実";
-  }else if(game.inventory.mushroom > 0){
-    game.inventory.mushroom--;
-    foodName = "キノコ";
-  }else{
-    return;
-  }
-
-  game.player.hunger = clamp(
-    game.player.hunger+28,
-    0,
-    100
-  );
-
-  closeModal(false);
-
-  consumeTurn(
-    `${foodName}を食べた。` +
-    "\n空腹が28回復した。"
-  );
-}
-
-/* =========================
-   休憩
-========================= */
-
-function restAction(){
-  let hpRecovery = 8;
-  let energyRecovery = 25;
-
-  if(game.crafted.campfire){
-    hpRecovery += 5;
-    energyRecovery += 8;
-  }
-
-  if(game.crafted.bed && game.turn === 2){
-    hpRecovery += 10;
-    energyRecovery += 20;
-  }
-
-  game.player.hp = clamp(
-    game.player.hp+hpRecovery,
-    0,
-    game.player.maxHp
-  );
-
-  game.player.energy = clamp(
-    game.player.energy+energyRecovery,
-    0,
-    100
-  );
-
-  game.stats.rested++;
-
-  consumeTurn(
-    "その場で身体を休めた。" +
-    `\nHPが${hpRecovery}、体力が${energyRecovery}回復した。`
-  );
-}
-
-/* =========================
-   モーダル
-========================= */
-
-function openModal(content){
-  closeModal(false);
-
-  currentModal = document.createElement("div");
-  currentModal.className = "modal";
-
-  currentModal.innerHTML = `
-    <div class="modalCard">
-      ${content}
-    </div>
-  `;
-
-  document.body.appendChild(currentModal);
-}
-
-function closeModal(remove=true){
-  if(!currentModal)return;
-
-  if(remove){
-    currentModal.remove();
-  }else{
-    currentModal.remove();
-  }
-
-  currentModal = null;
-}
-
-/* =========================
-   システム
-========================= */
-
-function confirmReturnTitle(){
-  const ok = confirm(
-    "タイトル画面へ戻りますか？\n現在の状態は自動セーブされます。"
-  );
-
-  if(!ok)return;
-
-  saveGame(false);
-  renderTitle();
-}
-
-function showHelp(){
-  openModal(`
-    <div class="modalTitle">
-      ヘルプ
-    </div>
-
-    <div class="messageBox" style="height:auto">
-・1日は朝、昼、夜の3ターンです。
-
-・探索、クラフト、移動、生活、休憩を行うと1ターン経過します。
-
-・持ち物の確認では時間は経過しません。
-
-・探索結果は場所、季節、天候によって変化します。
-
-・上段と左端のエリアは、現在の開拓者ルート版ではロックされています。
-
-・100日目まで生き抜き、生活基盤を整えることが目標です。
-    </div>
-
-    <button
-      class="closeButton"
-      onclick="closeModal()"
-    >
-      戻る
-    </button>
-  `);
-}
-
-/* =========================
-   β版エンディング
-========================= */
-
-function renderBetaEnding(){
-  const developed =
-    game.crafted.stoneAxe &&
-    game.crafted.campfire &&
-    game.crafted.bed;
-
-  gameRoot.innerHTML = `
-    <section class="storyScreen forest">
-      <div class="storyBox">
-        <div class="storySpeaker">
-          Day 100
-        </div>
-
-        <div class="storyText">
-${developed
-? `100日前、クロカミは何も持たずにこの森へ転生した。
-
-今では石斧、焚き火、寝床を作り、この世界で生きる術を身につけている。
-
-まだ小さな一歩にすぎない。
-それでも、ここから新しい暮らしが始まる。
-
-【β版 開拓者エンド】`
-: `100日目を迎えた。
-
-クロカミは異世界で生き延びたが、まだ安定した生活基盤を築けていない。
-
-森での日々は、これからも続いていく。
-
-【β版 生存エンド】`}
-        </div>
-
-        <button
-          class="storyNext"
-          onclick="renderTitle()"
-        >
-          タイトルへ
-        </button>
-      </div>
-    </section>
-  `;
-}
-
-/* =========================
-   起動
-========================= */
-
-renderTitle();
-</script>
+</main>
 
 </body>
 </html>
