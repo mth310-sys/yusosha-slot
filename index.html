@@ -3,20 +3,34 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>パチスロ筐体モデル</title>
+
+<title>遊創舎 共通パチスロ筐体</title>
 
 <style>
+/* =========================================================
+   遊創舎 共通パチスロ筐体
+   パーツ分割型・組立ベース
+========================================================= */
+
 * {
   box-sizing: border-box;
 }
 
 :root {
-  --cabinet-width: 370px;
-  --cabinet-height: 720px;
-  --gold: #c7a72d;
-  --gold-light: #f5dc72;
-  --black: #050505;
-  --metal: #777;
+  /* 筐体全体寸法 */
+  --cabinet-width: 390px;
+  --cabinet-height: 760px;
+
+  /* 共通色 */
+  --cabinet-black: #080808;
+  --cabinet-dark: #151515;
+  --cabinet-metal: #777;
+  --cabinet-silver: #d8d8d8;
+  --cabinet-gold: #c5a52b;
+
+  /* 共通奥行き */
+  --cabinet-depth-shadow:
+    0 22px 35px rgba(0, 0, 0, 0.85);
 }
 
 html,
@@ -27,873 +41,964 @@ body {
 
 body {
   min-height: 100vh;
+
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-start;
 
-  padding: 24px 10px;
+  padding: 20px 8px 50px;
 
   background:
     radial-gradient(
-      ellipse at center,
-      #343434 0%,
-      #151515 42%,
+      circle at center top,
+      #353535 0%,
+      #111 45%,
       #020202 100%
     );
 
-  font-family: sans-serif;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
-/* ========================================
-   パチスロ筐体本体
-======================================== */
+/* =========================================================
+   00：筐体全体ラッパー
+========================================================= */
 
-.slot-cabinet {
+#yusosha-slot-machine {
   position: relative;
 
-  width: min(var(--cabinet-width), calc(100vw - 20px));
-  aspect-ratio: 370 / 720;
+  width: min(
+    var(--cabinet-width),
+    calc(100vw - 16px)
+  );
 
-  padding: 14px 17px 17px;
-
-  border-radius: 31px 31px 18px 18px;
-
-  background:
-    linear-gradient(
-      90deg,
-      #111 0%,
-      #686868 2%,
-      #ededed 3.5%,
-      #686868 5%,
-      #151515 8%,
-      #050505 14%,
-      #171717 50%,
-      #050505 86%,
-      #151515 92%,
-      #686868 95%,
-      #ededed 96.5%,
-      #686868 98%,
-      #111 100%
-    );
-
-  border:
-    3px solid var(--gold);
-
-  box-shadow:
-    0 0 0 3px #332900,
-    0 0 24px rgba(255, 214, 52, 0.45),
-    0 22px 32px rgba(0, 0, 0, 0.9),
-    inset 0 0 24px #000,
-    inset 8px 0 10px rgba(255,255,255,0.13),
-    inset -8px 0 10px rgba(255,255,255,0.08);
+  min-height: var(--cabinet-height);
 }
 
-/* 外周金枠 */
+/* =========================================================
+   01：筐体外装フレーム
+========================================================= */
 
-.slot-cabinet::before {
-  content: "";
-
-  position: absolute;
-  inset: 8px;
-
-  pointer-events: none;
-
-  border:
-    2px solid var(--gold);
-
-  border-radius: 24px 24px 13px 13px;
-
-  box-shadow:
-    0 0 7px rgba(255, 220, 75, 0.55),
-    inset 0 0 4px rgba(255, 220, 75, 0.4);
-}
-
-/* ガラス風ハイライト */
-
-.slot-cabinet::after {
-  content: "";
-
-  position: absolute;
-  z-index: 30;
-
-  top: 21px;
-  left: 21px;
-
-  width: 2px;
-  height: calc(100% - 47px);
-
-  pointer-events: none;
-
-  border-radius: 10px;
-
-  background:
-    linear-gradient(
-      to bottom,
-      transparent,
-      rgba(255,255,255,0.82),
-      rgba(255,255,255,0.1),
-      transparent
-    );
-
-  opacity: 0.68;
-}
-
-/* ========================================
-   サイドランプ外装
-======================================== */
-
-.side-rail {
-  position: absolute;
-  z-index: 12;
-
-  top: 64px;
-  bottom: 70px;
-
-  width: 12px;
-
-  border:
-    1px solid #7d6818;
-
-  border-radius: 8px;
-
-  background:
-    linear-gradient(
-      90deg,
-      #191300,
-      #ddbd34 30%,
-      #fff1a0 50%,
-      #b28c12 73%,
-      #1a1400
-    );
-
-  box-shadow:
-    0 0 6px rgba(255, 215, 57, 0.52),
-    inset 0 0 4px #fff2a3;
-}
-
-.side-rail::after {
-  content: "";
-
-  position: absolute;
-  inset: 3px;
-
-  border-radius: inherit;
-
-  background:
-    repeating-linear-gradient(
-      to bottom,
-      rgba(255,255,255,0.75) 0 4px,
-      rgba(107,84,0,0.65) 4px 8px
-    );
-
-  opacity: 0.55;
-}
-
-.side-rail.left {
-  left: 10px;
-}
-
-.side-rail.right {
-  right: 10px;
-}
-
-/* ========================================
-   上部ランプユニット
-======================================== */
-
-.top-light-unit {
+#cabinet-outer-frame {
   position: relative;
-  z-index: 3;
 
-  height: 24px;
-  margin: 0 26px 9px;
+  width: 100%;
+  min-height: var(--cabinet-height);
 
-  border:
-    2px solid #4d3e07;
+  padding: 16px;
 
-  border-radius: 13px;
+  border-radius: 30px 30px 18px 18px;
 
-  background:
-    linear-gradient(
-      to bottom,
-      #302800,
-      #ffe45c 35%,
-      #8d7012 70%,
-      #1c1700
-    );
+  background: #111;
 
   box-shadow:
-    0 0 7px rgba(255, 216, 49, 0.55),
-    inset 0 2px 3px rgba(255,255,255,0.7),
-    inset 0 -3px 4px rgba(0,0,0,0.75);
+    var(--cabinet-depth-shadow);
+
+  overflow: hidden;
 }
 
-/* ========================================
-   共通ユニットフレーム
-======================================== */
+/* =========================================================
+   02：左サイド外装
+========================================================= */
 
-.unit {
+#cabinet-side-left {
+  position: absolute;
+
+  top: 25px;
+  bottom: 25px;
+  left: 0;
+
+  width: 22px;
+
+  background: #252525;
+}
+
+/* =========================================================
+   03：右サイド外装
+========================================================= */
+
+#cabinet-side-right {
+  position: absolute;
+
+  top: 25px;
+  right: 0;
+  bottom: 25px;
+
+  width: 22px;
+
+  background: #252525;
+}
+
+/* =========================================================
+   04：筐体中央ボディ
+========================================================= */
+
+#cabinet-main-body {
   position: relative;
   z-index: 2;
 
+  width: 100%;
+}
+
+/* 各ユニット共通 */
+
+.cabinet-unit {
+  position: relative;
+
+  width: 100%;
+
   margin-bottom: 8px;
 
-  border:
-    2px solid #80691e;
+  border-radius: 10px;
 
-  border-radius: 12px;
+  background: #171717;
 
-  background:
-    linear-gradient(
-      145deg,
-      #303030,
-      #090909 30%,
-      #171717 70%,
-      #020202
-    );
-
-  box-shadow:
-    inset 0 0 0 2px #000,
-    inset 0 4px 7px rgba(255,255,255,0.07),
-    0 3px 7px rgba(0,0,0,0.85);
+  border: 1px solid #333;
 }
 
-/* ========================================
-   上部化粧パネル
-======================================== */
+/* =========================================================
+   05：天板
+========================================================= */
 
-.upper-decoration {
-  height: 87px;
+#cabinet-top-cap {
+  height: 20px;
 
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  border-radius: 15px 15px 5px 5px;
 
-  background:
-    radial-gradient(
-      ellipse at center,
-      #272727,
-      #070707 66%
-    );
+  background: #333;
 }
 
-.blank-panel {
-  width: calc(100% - 28px);
-  height: 55px;
+/* =========================================================
+   06：上部ランプユニット
+========================================================= */
 
-  border:
-    2px solid #4d4d4d;
-
-  border-radius: 8px;
-
-  background:
-    linear-gradient(
-      160deg,
-      #191919,
-      #050505 55%,
-      #111
-    );
-
-  box-shadow:
-    inset 0 0 13px #000,
-    0 0 0 2px #050505;
+#top-light-unit {
+  height: 34px;
 }
 
-/* ========================================
-   上部表示機器取付スペース
-======================================== */
+/* 上部ランプ本体 */
 
-.display-bay {
-  height: 126px;
-  padding: 11px;
+#top-light-bar {
+  position: absolute;
+  inset: 6px 28px;
+
+  border-radius: 20px;
+
+  background: #3b3b3b;
 }
 
-.mounting-frame {
+/* =========================================================
+   07：上部タイトルパネルユニット
+========================================================= */
+
+#title-panel-unit {
+  height: 92px;
+
+  padding: 10px;
+}
+
+/* タイトルパネル取付枠 */
+
+#title-panel-bezel {
+  width: 100%;
+  height: 100%;
+
+  padding: 6px;
+
+  border-radius: 9px;
+
+  background: #303030;
+}
+
+/* タイトルパネル表示面 */
+
+#title-panel-surface {
+  width: 100%;
+  height: 100%;
+
+  border-radius: 6px;
+
+  background: #080808;
+}
+
+/* =========================================================
+   08：上部液晶ユニット
+========================================================= */
+
+#upper-display-unit {
+  height: 145px;
+
+  padding: 10px;
+}
+
+/* 液晶外周ベゼル */
+
+#upper-display-bezel {
   width: 100%;
   height: 100%;
 
   padding: 8px;
 
-  border:
-    2px solid #868686;
+  border-radius: 10px;
 
-  border-radius: 9px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #efefef,
-      #454545 10%,
-      #111 37%,
-      #888 75%,
-      #202020
-    );
-
-  box-shadow:
-    inset 0 0 5px #000,
-    0 2px 5px #000;
+  background: #333;
 }
 
-.empty-display {
+/* 液晶保護ガラス */
+
+#upper-display-glass {
+  position: relative;
+
   width: 100%;
   height: 100%;
 
-  border:
-    4px solid #060606;
-
   border-radius: 5px;
 
-  background:
-    radial-gradient(
-      ellipse at center,
-      #171b1d,
-      #050606 72%,
-      #000
-    );
+  background: #050505;
 
-  box-shadow:
-    inset 0 0 20px #000,
-    inset 0 0 4px #5d6970;
+  overflow: hidden;
 }
 
-/* ========================================
-   リールユニット取付スペース
-======================================== */
+/* 液晶表示面 */
 
-.reel-bay {
-  height: 175px;
-  padding: 12px 11px;
+#upper-display-screen {
+  position: absolute;
+  inset: 5px;
+
+  background: #101010;
 }
 
-.reel-metal-frame {
+/* =========================================================
+   09：中央装飾パネル
+========================================================= */
+
+#center-decoration-unit {
+  height: 44px;
+
+  padding: 6px 12px;
+}
+
+#center-decoration-panel {
+  width: 100%;
+  height: 100%;
+
+  border-radius: 6px;
+
+  background: #090909;
+}
+
+/* =========================================================
+   10：リールユニット
+========================================================= */
+
+#reel-unit {
+  height: 190px;
+
+  padding: 10px;
+}
+
+/* リール外周ベゼル */
+
+#reel-bezel {
   width: 100%;
   height: 100%;
 
   padding: 9px;
 
-  border:
-    2px solid #8e8e8e;
+  border-radius: 11px;
 
-  border-radius: 10px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #f0f0f0,
-      #555 11%,
-      #171717 40%,
-      #949494 76%,
-      #242424
-    );
-
-  box-shadow:
-    inset 0 0 7px #000,
-    0 3px 6px #000;
+  background: #383838;
 }
 
-.empty-reel-window {
+/* リール保護ガラス */
+
+#reel-glass {
   position: relative;
 
   width: 100%;
   height: 100%;
 
-  border:
-    5px solid #070707;
+  padding: 5px;
 
   border-radius: 6px;
 
-  background:
-    linear-gradient(
-      to bottom,
-      #050505,
-      #171717 16%,
-      #080808 84%,
-      #000
-    );
-
-  box-shadow:
-    inset 0 10px 15px #000,
-    inset 0 -10px 15px #000;
+  background: #050505;
 }
 
-/* リール取付位置を示す仕切りだけ */
+/* リール機構取付部 */
 
-.reel-mount-divider {
-  position: absolute;
+#reel-mechanism {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 5px;
 
-  top: 10px;
-  bottom: 10px;
-
-  width: 2px;
-
-  background:
-    linear-gradient(
-      to right,
-      #000,
-      #686868,
-      #000
-    );
-
-  opacity: 0.55;
+  width: 100%;
+  height: 100%;
 }
 
-.reel-mount-divider.one {
-  left: 33.333%;
+/* 左リール取付部 */
+
+#reel-left-mount {
+  background: #181818;
 }
 
-.reel-mount-divider.two {
-  left: 66.666%;
+/* 中リール取付部 */
+
+#reel-center-mount {
+  background: #181818;
 }
 
-/* ========================================
-   表示パネル取付スペース
-======================================== */
+/* 右リール取付部 */
 
-.counter-bay {
-  height: 70px;
-  padding: 9px 10px;
+#reel-right-mount {
+  background: #181818;
 }
 
-.counter-mounts {
+/* =========================================================
+   11：情報表示ユニット
+========================================================= */
+
+#information-display-unit {
+  height: 65px;
+
+  padding: 8px 12px;
+}
+
+#information-display-frame {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 8px;
 
-  height: 100%;
-}
-
-.counter-slot {
-  border:
-    1px solid #826a1c;
-
-  border-radius: 5px;
-
-  background:
-    linear-gradient(
-      #141414,
-      #030303
-    );
-
-  box-shadow:
-    inset 0 0 7px #000;
-}
-
-/* ========================================
-   操作ユニット取付スペース
-======================================== */
-
-.control-bay {
-  height: 147px;
-  padding: 11px;
-}
-
-.control-surface {
-  position: relative;
-
   width: 100%;
   height: 100%;
-
-  border:
-    2px solid #222;
-
-  border-radius: 10px 10px 16px 16px;
-
-  background:
-    linear-gradient(
-      170deg,
-      #4b4b4b 0%,
-      #181818 15%,
-      #090909 58%,
-      #1d1d1d 100%
-    );
-
-  box-shadow:
-    inset 0 4px 5px rgba(255,255,255,0.12),
-    inset 0 -7px 9px #000,
-    0 3px 6px #000;
 }
 
-/* ボタン穴 */
+/* クレジット表示取付部 */
 
-.button-hole {
-  position: absolute;
-
-  border-radius: 50%;
-
-  background:
-    radial-gradient(
-      circle,
-      #030303 0%,
-      #080808 55%,
-      #4f4f4f 58%,
-      #111 72%
-    );
-
-  box-shadow:
-    inset 0 0 8px #000,
-    0 1px 2px rgba(255,255,255,0.25);
+#credit-display-mount {
+  background: #050505;
 }
 
-.button-hole.small {
-  top: 15px;
+/* ベット表示取付部 */
 
-  width: 36px;
-  height: 36px;
+#bet-display-mount {
+  background: #050505;
 }
 
-.button-hole.small.one {
-  left: 82px;
+/* 払出表示取付部 */
+
+#payout-display-mount {
+  background: #050505;
 }
 
-.button-hole.small.two {
-  left: 50%;
-  transform: translateX(-50%);
-}
+/* =========================================================
+   12：操作パネルユニット
+========================================================= */
 
-.button-hole.small.three {
-  right: 82px;
-}
+#control-panel-unit {
+  height: 150px;
 
-.button-hole.stop {
-  bottom: 14px;
-
-  width: 61px;
-  height: 61px;
-}
-
-.button-hole.stop.one {
-  left: 80px;
-}
-
-.button-hole.stop.two {
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.button-hole.stop.three {
-  right: 80px;
-}
-
-/* レバー取付穴 */
-
-.lever-hole {
-  position: absolute;
-
-  left: 18px;
-  bottom: 21px;
-
-  width: 48px;
-  height: 48px;
-
-  border-radius: 50%;
-
-  background:
-    radial-gradient(
-      circle,
-      #020202 0 40%,
-      #494949 43%,
-      #111 70%
-    );
-
-  box-shadow:
-    inset 0 0 7px #000,
-    0 2px 3px #000;
-}
-
-/* コイン投入口取付穴 */
-
-.medal-slot-hole {
-  position: absolute;
-
-  top: 26px;
-  right: 18px;
-
-  width: 39px;
-  height: 8px;
-
-  border:
-    2px solid #555;
-
-  border-radius: 5px;
-
-  background: #000;
-
-  box-shadow:
-    inset 0 0 4px #000,
-    0 1px 1px #aaa;
-}
-
-/* ========================================
-   下部化粧パネル
-======================================== */
-
-lower-panel,
-.lower-panel {
-  height: 92px;
   padding: 10px;
 }
 
-.lower-blank-panel {
+/* 操作盤本体 */
+
+#control-panel-surface {
+  position: relative;
+
   width: 100%;
   height: 100%;
 
-  border:
-    2px solid #353535;
+  border-radius: 10px 10px 16px 16px;
 
-  border-radius: 7px;
-
-  background:
-    radial-gradient(
-      ellipse at center,
-      #171717,
-      #050505 70%
-    );
-
-  box-shadow:
-    inset 0 0 15px #000;
+  background: #202020;
 }
 
-/* スピーカー穴 */
+/* =========================================================
+   13：ベットボタン取付部
+========================================================= */
 
-.speaker {
+#bet-button-mount {
   position: absolute;
-  z-index: 5;
 
-  bottom: 74px;
+  top: 14px;
+  left: 82px;
 
-  width: 35px;
-  height: 35px;
-
-  border:
-    2px solid #3d3d3d;
+  width: 38px;
+  height: 38px;
 
   border-radius: 50%;
 
-  background:
-    radial-gradient(
-      circle,
-      #000 0 2px,
-      transparent 2px 4px
-    ),
-    #151515;
-
-  background-size: 6px 6px;
-
-  box-shadow:
-    inset 0 0 7px #000,
-    0 1px 2px #666;
+  background: #080808;
 }
 
-.speaker.left {
-  left: 16px;
+/* =========================================================
+   14：マックスベットボタン取付部
+========================================================= */
+
+#max-bet-button-mount {
+  position: absolute;
+
+  top: 14px;
+  left: 50%;
+
+  width: 38px;
+  height: 38px;
+
+  border-radius: 50%;
+
+  background: #080808;
+
+  transform: translateX(-50%);
 }
 
-.speaker.right {
-  right: 16px;
+/* =========================================================
+   15：精算ボタン取付部
+========================================================= */
+
+#return-button-mount {
+  position: absolute;
+
+  top: 14px;
+  right: 82px;
+
+  width: 38px;
+  height: 38px;
+
+  border-radius: 50%;
+
+  background: #080808;
 }
 
-/* ========================================
-   メダル払出口・下皿
-======================================== */
+/* =========================================================
+   16：スタートレバー取付部
+========================================================= */
 
-tray-section,
-.tray-section {
-  position: relative;
-  z-index: 2;
+#start-lever-mount {
+  position: absolute;
 
-  height: 96px;
+  left: 15px;
+  bottom: 18px;
 
-  padding: 9px 13px;
+  width: 52px;
+  height: 52px;
 
-  border:
-    2px solid #292929;
+  border-radius: 50%;
 
-  border-radius: 7px 7px 14px 14px;
-
-  background:
-    linear-gradient(
-      to bottom,
-      #696969,
-      #252525 18%,
-      #070707 52%,
-      #171717
-    );
-
-  box-shadow:
-    inset 0 3px 5px rgba(255,255,255,0.14),
-    inset 0 -5px 8px #000,
-    0 4px 7px #000;
+  background: #070707;
 }
 
-.payout-opening {
-  width: 110px;
-  height: 22px;
+/* =========================================================
+   17：左STOPボタン取付部
+========================================================= */
 
-  margin: 0 auto 7px;
+#stop-button-left-mount {
+  position: absolute;
 
-  border:
-    3px solid #555;
+  left: 79px;
+  bottom: 14px;
 
-  border-radius: 4px 4px 11px 11px;
+  width: 62px;
+  height: 62px;
+
+  border-radius: 50%;
+
+  background: #080808;
+}
+
+/* =========================================================
+   18：中央STOPボタン取付部
+========================================================= */
+
+#stop-button-center-mount {
+  position: absolute;
+
+  left: 50%;
+  bottom: 14px;
+
+  width: 62px;
+  height: 62px;
+
+  border-radius: 50%;
+
+  background: #080808;
+
+  transform: translateX(-50%);
+}
+
+/* =========================================================
+   19：右STOPボタン取付部
+========================================================= */
+
+#stop-button-right-mount {
+  position: absolute;
+
+  right: 79px;
+  bottom: 14px;
+
+  width: 62px;
+  height: 62px;
+
+  border-radius: 50%;
+
+  background: #080808;
+}
+
+/* =========================================================
+   20：メダル投入口取付部
+========================================================= */
+
+#medal-insert-mount {
+  position: absolute;
+
+  top: 28px;
+  right: 18px;
+
+  width: 42px;
+  height: 9px;
+
+  border-radius: 5px;
 
   background: #020202;
-
-  box-shadow:
-    inset 0 5px 8px #000,
-    0 1px 2px rgba(255,255,255,0.28);
 }
 
-.medal-tray {
-  height: 51px;
+/* =========================================================
+   21：下部装飾パネルユニット
+========================================================= */
 
-  border:
-    2px solid #535353;
+#lower-decoration-unit {
+  height: 105px;
 
-  border-radius: 5px 5px 13px 13px;
-
-  background:
-    radial-gradient(
-      ellipse at center bottom,
-      #252525,
-      #070707 72%
-    );
-
-  box-shadow:
-    inset 0 8px 12px #000,
-    inset 0 -3px 4px rgba(255,255,255,0.1);
+  padding: 9px 12px;
 }
 
-/* ========================================
-   底部
-======================================== */
+/* 下部パネル外周枠 */
 
-.machine-base {
-  height: 10px;
+#lower-panel-bezel {
+  position: relative;
 
-  margin: 7px 22px -8px;
+  width: 100%;
+  height: 100%;
 
-  border-radius: 0 0 9px 9px;
+  padding: 7px;
 
-  background:
-    linear-gradient(
-      to bottom,
-      #5e5e5e,
-      #090909
-    );
+  border-radius: 8px;
 
-  box-shadow:
-    0 5px 7px #000;
+  background: #303030;
 }
 
-/* ========================================
-   スマートフォン調整
-======================================== */
+/* 下部パネル表示面 */
 
-@media (max-height: 760px) and (min-width: 340px) {
-  body {
-    align-items: flex-start;
-  }
+#lower-panel-surface {
+  width: 100%;
+  height: 100%;
 
-  .slot-cabinet {
-    transform-origin: top center;
-  }
+  border-radius: 5px;
+
+  background: #080808;
 }
 
-@media (max-width: 350px) {
-  .button-hole.stop.one {
-    left: 70px;
-  }
+/* =========================================================
+   22：左スピーカーユニット
+========================================================= */
 
-  .button-hole.stop.three {
-    right: 70px;
-  }
+#speaker-left-unit {
+  position: absolute;
 
-  .button-hole.small.one {
-    left: 71px;
-  }
+  left: 15px;
+  bottom: 13px;
 
-  .button-hole.small.three {
-    right: 71px;
-  }
+  width: 38px;
+  height: 38px;
+
+  border-radius: 50%;
+
+  background: #111;
+}
+
+/* =========================================================
+   23：右スピーカーユニット
+========================================================= */
+
+#speaker-right-unit {
+  position: absolute;
+
+  right: 15px;
+  bottom: 13px;
+
+  width: 38px;
+  height: 38px;
+
+  border-radius: 50%;
+
+  background: #111;
+}
+
+/* =========================================================
+   24：メダル払出ユニット
+========================================================= */
+
+#medal-payout-unit {
+  height: 35px;
+
+  padding: 7px 65px;
+}
+
+#medal-payout-opening {
+  width: 100%;
+  height: 100%;
+
+  border-radius: 5px 5px 12px 12px;
+
+  background: #020202;
+}
+
+/* =========================================================
+   25：下皿ユニット
+========================================================= */
+
+#medal-tray-unit {
+  height: 83px;
+
+  padding: 8px 12px 12px;
+}
+
+#medal-tray {
+  width: 100%;
+  height: 100%;
+
+  border-radius: 5px 5px 16px 16px;
+
+  background: #111;
+}
+
+/* =========================================================
+   26：筐体底部
+========================================================= */
+
+#cabinet-bottom-base {
+  height: 15px;
+
+  margin: 0 22px;
+
+  border-radius: 0 0 10px 10px;
+
+  background: #222;
+}
+
+/* =========================================================
+   部品名確認用ラベル
+   完成時は body の show-part-names を削除する
+========================================================= */
+
+.show-part-names [data-part-name]::before {
+  content: attr(data-part-name);
+
+  position: absolute;
+  z-index: 100;
+
+  top: 3px;
+  left: 5px;
+
+  padding: 2px 4px;
+
+  color: #fff;
+  background: rgba(0, 0, 0, 0.7);
+
+  border-radius: 3px;
+
+  font-size: 8px;
+  line-height: 1.2;
+
+  pointer-events: none;
 }
 </style>
 </head>
 
-<body>
+<body class="show-part-names">
 
-<div class="slot-cabinet">
+<!-- ======================================================
+     00：遊創舎 共通パチスロ筐体
+======================================================= -->
 
-  <div class="side-rail left"></div>
-  <div class="side-rail right"></div>
+<main
+  id="yusosha-slot-machine"
+  data-part-name="00 共通パチスロ筐体"
+>
 
-  <div class="top-light-unit"></div>
+  <!-- 01：筐体外装フレーム -->
+  <div
+    id="cabinet-outer-frame"
+    data-part-name="01 筐体外装フレーム"
+  >
 
-  <!-- 上部化粧板 -->
-  <section class="unit upper-decoration">
-    <div class="blank-panel"></div>
-  </section>
+    <!-- 02：左サイド外装 -->
+    <aside
+      id="cabinet-side-left"
+      data-part-name="02 左サイド外装"
+    ></aside>
 
-  <!-- 液晶などを取り付ける空間 -->
-  <section class="unit display-bay">
-    <div class="mounting-frame">
-      <div class="empty-display"></div>
+    <!-- 03：右サイド外装 -->
+    <aside
+      id="cabinet-side-right"
+      data-part-name="03 右サイド外装"
+    ></aside>
+
+    <!-- 04：筐体中央ボディ -->
+    <div
+      id="cabinet-main-body"
+      data-part-name="04 筐体中央ボディ"
+    >
+
+      <!-- 05：天板 -->
+      <div
+        id="cabinet-top-cap"
+        data-part-name="05 天板"
+      ></div>
+
+      <!-- 06：上部ランプユニット -->
+      <section
+        id="top-light-unit"
+        class="cabinet-unit"
+        data-part-name="06 上部ランプユニット"
+      >
+        <div
+          id="top-light-bar"
+          data-part-name="06-A 上部ランプ本体"
+        ></div>
+      </section>
+
+      <!-- 07：上部タイトルパネルユニット -->
+      <section
+        id="title-panel-unit"
+        class="cabinet-unit"
+        data-part-name="07 上部タイトルパネル"
+      >
+        <div
+          id="title-panel-bezel"
+          data-part-name="07-A タイトルパネル枠"
+        >
+          <div
+            id="title-panel-surface"
+            data-part-name="07-B タイトルパネル面"
+          ></div>
+        </div>
+      </section>
+
+      <!-- 08：上部液晶ユニット -->
+      <section
+        id="upper-display-unit"
+        class="cabinet-unit"
+        data-part-name="08 上部液晶ユニット"
+      >
+        <div
+          id="upper-display-bezel"
+          data-part-name="08-A 液晶ベゼル"
+        >
+          <div
+            id="upper-display-glass"
+            data-part-name="08-B 液晶保護ガラス"
+          >
+            <div
+              id="upper-display-screen"
+              data-part-name="08-C 液晶表示面"
+            ></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 09：中央装飾パネル -->
+      <section
+        id="center-decoration-unit"
+        class="cabinet-unit"
+        data-part-name="09 中央装飾パネル"
+      >
+        <div
+          id="center-decoration-panel"
+          data-part-name="09-A 中央装飾面"
+        ></div>
+      </section>
+
+      <!-- 10：リールユニット -->
+      <section
+        id="reel-unit"
+        class="cabinet-unit"
+        data-part-name="10 リールユニット"
+      >
+        <div
+          id="reel-bezel"
+          data-part-name="10-A リールベゼル"
+        >
+          <div
+            id="reel-glass"
+            data-part-name="10-B リール保護ガラス"
+          >
+            <div
+              id="reel-mechanism"
+              data-part-name="10-C リール機構"
+            >
+              <div
+                id="reel-left-mount"
+                data-part-name="10-D 左リール"
+              ></div>
+
+              <div
+                id="reel-center-mount"
+                data-part-name="10-E 中リール"
+              ></div>
+
+              <div
+                id="reel-right-mount"
+                data-part-name="10-F 右リール"
+              ></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- 11：情報表示ユニット -->
+      <section
+        id="information-display-unit"
+        class="cabinet-unit"
+        data-part-name="11 情報表示ユニット"
+      >
+        <div id="information-display-frame">
+
+          <div
+            id="credit-display-mount"
+            data-part-name="11-A CREDIT表示部"
+          ></div>
+
+          <div
+            id="bet-display-mount"
+            data-part-name="11-B BET表示部"
+          ></div>
+
+          <div
+            id="payout-display-mount"
+            data-part-name="11-C PAYOUT表示部"
+          ></div>
+
+        </div>
+      </section>
+
+      <!-- 12：操作パネルユニット -->
+      <section
+        id="control-panel-unit"
+        class="cabinet-unit"
+        data-part-name="12 操作パネル"
+      >
+        <div
+          id="control-panel-surface"
+          data-part-name="12-A 操作盤表面"
+        >
+
+          <div
+            id="bet-button-mount"
+            data-part-name="13 BETボタン"
+          ></div>
+
+          <div
+            id="max-bet-button-mount"
+            data-part-name="14 MAX BETボタン"
+          ></div>
+
+          <div
+            id="return-button-mount"
+            data-part-name="15 精算ボタン"
+          ></div>
+
+          <div
+            id="start-lever-mount"
+            data-part-name="16 STARTレバー"
+          ></div>
+
+          <div
+            id="stop-button-left-mount"
+            data-part-name="17 左STOPボタン"
+          ></div>
+
+          <div
+            id="stop-button-center-mount"
+            data-part-name="18 中央STOPボタン"
+          ></div>
+
+          <div
+            id="stop-button-right-mount"
+            data-part-name="19 右STOPボタン"
+          ></div>
+
+          <div
+            id="medal-insert-mount"
+            data-part-name="20 メダル投入口"
+          ></div>
+
+        </div>
+      </section>
+
+      <!-- 21：下部装飾パネル -->
+      <section
+        id="lower-decoration-unit"
+        class="cabinet-unit"
+        data-part-name="21 下部装飾パネル"
+      >
+        <div
+          id="lower-panel-bezel"
+          data-part-name="21-A 下部パネル枠"
+        >
+          <div
+            id="lower-panel-surface"
+            data-part-name="21-B 下部パネル面"
+          ></div>
+
+          <div
+            id="speaker-left-unit"
+            data-part-name="22 左スピーカー"
+          ></div>
+
+          <div
+            id="speaker-right-unit"
+            data-part-name="23 右スピーカー"
+          ></div>
+        </div>
+      </section>
+
+      <!-- 24：メダル払出ユニット -->
+      <section
+        id="medal-payout-unit"
+        class="cabinet-unit"
+        data-part-name="24 メダル払出ユニット"
+      >
+        <div
+          id="medal-payout-opening"
+          data-part-name="24-A メダル払出口"
+        ></div>
+      </section>
+
+      <!-- 25：下皿ユニット -->
+      <section
+        id="medal-tray-unit"
+        class="cabinet-unit"
+        data-part-name="25 下皿ユニット"
+      >
+        <div
+          id="medal-tray"
+          data-part-name="25-A メダル受け皿"
+        ></div>
+      </section>
+
+      <!-- 26：筐体底部 -->
+      <div
+        id="cabinet-bottom-base"
+        data-part-name="26 筐体底部"
+      ></div>
+
     </div>
-  </section>
-
-  <!-- リールユニットを取り付ける空間 -->
-  <section class="unit reel-bay">
-    <div class="reel-metal-frame">
-      <div class="empty-reel-window">
-        <div class="reel-mount-divider one"></div>
-        <div class="reel-mount-divider two"></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- クレジット表示機器などの取付穴 -->
-  <section class="unit counter-bay">
-    <div class="counter-mounts">
-      <div class="counter-slot"></div>
-      <div class="counter-slot"></div>
-      <div class="counter-slot"></div>
-    </div>
-  </section>
-
-  <!-- 操作機器取付板 -->
-  <section class="unit control-bay">
-    <div class="control-surface">
-
-      <div class="button-hole small one"></div>
-      <div class="button-hole small two"></div>
-      <div class="button-hole small three"></div>
-
-      <div class="lever-hole"></div>
-
-      <div class="button-hole stop one"></div>
-      <div class="button-hole stop two"></div>
-      <div class="button-hole stop three"></div>
-
-      <div class="medal-slot-hole"></div>
-
-    </div>
-  </section>
-
-  <!-- 下部パネル -->
-  <section class="unit lower-panel">
-    <div class="speaker left"></div>
-    <div class="speaker right"></div>
-    <div class="lower-blank-panel"></div>
-  </section>
-
-  <!-- 払出口・下皿 -->
-  <section class="tray-section">
-    <div class="payout-opening"></div>
-    <div class="medal-tray"></div>
-  </section>
-
-  <div class="machine-base"></div>
-
-</div>
+  </div>
+</main>
 
 </body>
 </html>
