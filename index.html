@@ -6,6 +6,153 @@
 
 <title>遊創舎 共通筐体シェル Ver.01</title>
 
+/* =========================================================
+   筐体縦寸法圧縮
+   760px → 510px
+========================================================= */
+
+:root {
+  --machine-width: 390px;
+  --machine-height: 510px;
+}
+
+/* 00：共通筐体アセンブリ */
+
+#slot-cabinet-assembly {
+  width: min(
+    var(--machine-width),
+    calc(100vw - 16px)
+  );
+
+  height: var(--machine-height);
+  aspect-ratio: auto;
+}
+
+/* 01：背面筐体シェル */
+
+#rear-cabinet-shell {
+  inset:
+    0
+    13px
+    0;
+}
+
+/* 01-A：内部取付領域 */
+
+#cabinet-inner-mount-area {
+  top: 55px;
+  left: 43px;
+  right: 43px;
+  bottom: 66px;
+}
+
+/* 02：左外装サイドフレーム */
+
+#left-outer-side-frame {
+  top: 20px;
+  bottom: 43px;
+}
+
+/* 03：右外装サイドフレーム */
+
+#right-outer-side-frame {
+  top: 20px;
+  bottom: 43px;
+}
+
+/* サイド発光帯 */
+
+#left-outer-side-frame::before,
+#right-outer-side-frame::before {
+  top: 19px;
+  bottom: 22px;
+}
+
+/* サイドメッキライン */
+
+#left-outer-side-frame::after,
+#right-outer-side-frame::after {
+  top: 6px;
+  bottom: 8px;
+}
+
+/* 04：上部トップクラウン */
+
+#upper-top-crown {
+  left: 31px;
+  right: 31px;
+
+  height: 61px;
+}
+
+/* クラウン内部 */
+
+#upper-top-crown-inner {
+  inset:
+    6px
+    11px
+    8px;
+}
+
+/* クラウン表示取付面 */
+
+#top-crown-content-mount {
+  inset:
+    10px
+    20px
+    14px;
+}
+
+/* 04-C：クラウン下部ネック */
+
+#top-crown-neck {
+  top: 52px;
+  left: 44px;
+  right: 44px;
+
+  height: 27px;
+}
+
+/* ネック中央ライト */
+
+#top-crown-neck::after {
+  top: 8px;
+  height: 6px;
+}
+
+/* 中央筐体補強フレーム */
+
+#center-body-silhouette {
+  top: 70px;
+  left: 24px;
+  right: 24px;
+  bottom: 48px;
+}
+
+/* 下部筐体シェル */
+
+#lower-cabinet-shell {
+  left: 18px;
+  right: 18px;
+
+  height: 84px;
+}
+
+/* 下部内部空間 */
+
+#lower-cabinet-shell::before {
+  inset:
+    13px
+    30px
+    10px;
+}
+
+/* 下部中央補強 */
+
+#lower-cabinet-shell::after {
+  width: 64px;
+  height: 29px;
+}
 <style>
 /* =========================================================
    遊創舎 共通パチスロ筐体
