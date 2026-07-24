@@ -999,11 +999,25 @@ body {
   box-shadow:
     inset 0 0 16px #000;
 }
+/* 下部ビジュアル画像 */
 
+#lower-visual-image {
+  display: block;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
+
+  user-select: none;
+  pointer-events: none;
+}
 #lower-visual-surface::before {
   content: "";
 
   position: absolute;
+  z-index: 2;
 
   top: -35%;
   left: -12%;
@@ -1020,6 +1034,8 @@ body {
       rgba(255,255,255,0.02) 40%,
       transparent 67%
     );
+
+  pointer-events: none;
 }
 
 /* =========================================================
@@ -1316,11 +1332,16 @@ body {
       class="cabinet-section"
       data-part-name="07 下部ビジュアル"
     >
-      <div id="lower-visual-bezel">
-        <div
-          id="lower-visual-surface"
-          data-part-name="07-A 下部表示面"
-        ></div>
+     <div
+  id="lower-visual-surface"
+  data-part-name="07-A 下部表示面"
+>
+  <img
+    id="lower-visual-image"
+    src="images/ptaro_kyoran_lower.png"
+    alt="狂乱鬼面"
+  >
+</div>
       </div>
     </section>
 
