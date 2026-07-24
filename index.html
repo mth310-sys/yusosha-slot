@@ -959,25 +959,34 @@ body {
     );
 }
 
-.lower-screen {
-  width: 100%;
-  height: 100%;
+.lower-panel{
+  position:relative;
+  width:100%;
+  height:120px; /* 現在の下部表示面の高さに合わせて調整 */
+  overflow:hidden;
 
-  border-radius: 9px;
-
-  background:
-    radial-gradient(
-      ellipse at 50% 40%,
-      #151515 0%,
-      #040404 66%,
-      #000000 100%
-    );
-
-  border: 2px solid #292929;
+  background:#000;
+  border:3px solid #c79a42;
+  border-radius:10px;
 
   box-shadow:
-    inset 0 0 18px #000000,
-    0 0 0 1px #535353;
+    inset 0 0 12px #000,
+    0 0 7px rgba(255,80,170,.35);
+}
+
+.lower-panel-image{
+  display:block;
+  width:100%;
+  height:100%;
+
+  /* 画像全体を表示面いっぱいに入れる */
+  object-fit:cover;
+
+  /* 鬼の顔を中央に固定 */
+  object-position:center center;
+
+  user-select:none;
+  pointer-events:none;
 }
 
 
@@ -1205,9 +1214,12 @@ body {
 
 
       <!-- 下部パネル -->
-      <section class="panel lower-panel">
-        <div class="lower-screen"></div>
-      </section>
+     <section class="panel lower-panel">
+    <img
+        src="images/ptaro_kyoran_lower.png"
+        class="lower-screen"
+        alt="狂乱">
+</section>
 
 
       <!-- ベース -->
