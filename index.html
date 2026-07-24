@@ -4,11 +4,26 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>遊創舎 共通筐体 Ver.1.1</title>
+<title>遊創舎 共通筐体 Ver.1</title>
 
 <style>
 /* =========================================================
-   基本設定
+   遊創舎 共通パチスロ筐体 Ver.1
+
+   基準サイズ：390 × 600
+   構成：
+   01 外装シェル
+   02 トップクラウン
+   03 タイトルパネル
+   04 メイン表示部
+   05 リール部
+   06 操作卓
+   07 下部ビジュアルパネル
+   08 左サイドLEDフレーム
+   09 右サイドLEDフレーム
+   10 底部ベース
+
+   スピーカー・下皿・払出口なし
 ========================================================= */
 
 * {
@@ -17,1219 +32,1308 @@
 
 :root {
   --machine-width: 390px;
+  --machine-height: 600px;
 
-  --black-1: #020202;
-  --black-2: #090909;
-  --black-3: #151515;
-  --black-4: #242424;
+  --frame-black: #050505;
+  --frame-dark: #111;
+  --frame-mid: #292929;
 
-  --silver-1: #ffffff;
-  --silver-2: #cfcfcf;
-  --silver-3: #777777;
-  --silver-4: #292929;
-  --silver-5: #080808;
+  --chrome-dark: #252525;
+  --chrome-mid: #7c7c7c;
+  --chrome-light: #f3f3f3;
 
-  --gold-1: #fff4a1;
-  --gold-2: #e4bd20;
-  --gold-3: #6f4c00;
+  --accent: #ff236b;
+  --accent-dark: #7b0c35;
+  --accent-light: #ff9abb;
 
-  --led-main: #ff3fbf;
-  --led-light: #ffd4f4;
-  --led-dark: #9d006f;
+  --gold-dark: #55400c;
+  --gold-mid: #b79734;
+  --gold-light: #fff0a0;
 }
 
 html,
 body {
+  margin: 0;
   min-height: 100%;
 }
 
 body {
-  margin: 0;
-  padding: 16px 8px 30px;
-
-  background:
-    radial-gradient(
-      circle at 50% 28%,
-      #282022 0%,
-      #100d0f 34%,
-      #030303 72%
-    );
-
-  color: #ffffff;
-  font-family:
-    -apple-system,
-    BlinkMacSystemFont,
-    "Segoe UI",
-    "Hiragino Kaku Gothic ProN",
-    "Yu Gothic",
-    sans-serif;
+  min-height: 100vh;
 
   display: flex;
   justify-content: center;
   align-items: flex-start;
-}
 
-
-/* =========================================================
-   全体ラッパー
-========================================================= */
-
-.machine-wrap {
-  width: min(var(--machine-width), 100%);
-  position: relative;
-  padding: 9px 7px 18px;
-}
-
-
-/* 床面の影 */
-.machine-wrap::after {
-  content: "";
-  position: absolute;
-  left: 11%;
-  right: 11%;
-  bottom: 2px;
-  height: 23px;
-
-  border-radius: 50%;
-  background: rgba(0, 0, 0, 0.85);
-  filter: blur(11px);
-
-  z-index: 0;
-}
-
-
-/* =========================================================
-   外周筐体
-========================================================= */
-
-.machine {
-  position: relative;
-  z-index: 1;
-
-  width: 100%;
-  min-height: 620px;
-
-  padding:
-    58px
-    31px
-    17px;
-
-  border-radius:
-    47px
-    47px
-    31px
-    31px;
-
-  background:
-    linear-gradient(
-      90deg,
-      #050505 0%,
-      #242424 4%,
-      #060606 10%,
-      #000000 18%,
-      #0a0a0a 50%,
-      #000000 82%,
-      #060606 90%,
-      #242424 96%,
-      #050505 100%
-    );
-
-  border: 2px solid #313131;
-
-  box-shadow:
-    0 0 0 2px #050505,
-    0 0 0 4px #3a3a3a,
-    0 14px 38px rgba(0, 0, 0, 0.95),
-    inset 0 0 35px rgba(255, 255, 255, 0.07),
-    inset 0 0 65px rgba(0, 0, 0, 0.95);
-
-  overflow: visible;
-}
-
-
-/* 内部の暗い背面 */
-.machine-inner {
-  position: relative;
-  z-index: 5;
-
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-
-  padding: 8px 8px 10px;
-
-  border-radius: 20px 20px 17px 17px;
-
-  background:
-    linear-gradient(
-      90deg,
-      #070707 0%,
-      #1e1e1e 4%,
-      #050505 10%,
-      #000000 50%,
-      #050505 90%,
-      #1e1e1e 96%,
-      #070707 100%
-    );
-
-  border: 1px solid #4b4b4b;
-
-  box-shadow:
-    inset 0 0 18px rgba(255, 255, 255, 0.05),
-    inset 0 0 45px rgba(0, 0, 0, 1),
-    0 0 0 2px #050505;
-}
-
-
-/* =========================================================
-   トップクラウン
-========================================================= */
-
-.top-crown {
-  position: absolute;
-
-  top: -4px;
-  left: -7px;
-  right: -7px;
-
-  height: 72px;
-
-  z-index: 12;
-
-  border-radius:
-    44px
-    44px
-    23px
-    23px;
-
-  background:
-    linear-gradient(
-      180deg,
-      #ffffff 0%,
-      #bdbdbd 8%,
-      #474747 18%,
-      #101010 34%,
-      #050505 67%,
-      #363636 88%,
-      #c8c8c8 96%,
-      #ffffff 100%
-    );
-
-  border: 2px solid #858585;
-
-  box-shadow:
-    0 4px 0 #000000,
-    0 8px 18px rgba(0, 0, 0, 0.8),
-    inset 0 3px 4px rgba(255, 255, 255, 0.75),
-    inset 0 -6px 9px rgba(0, 0, 0, 0.92);
-}
-
-
-/* クラウン中央の黒い面 */
-.top-crown::before {
-  content: "";
-
-  position: absolute;
-  inset: 9px 25px 15px;
-
-  border-radius: 27px 27px 15px 15px;
-
-  background:
-    linear-gradient(
-      180deg,
-      #191919 0%,
-      #030303 55%,
-      #111111 100%
-    );
-
-  border: 2px solid #050505;
-
-  box-shadow:
-    inset 0 0 13px rgba(255, 255, 255, 0.08),
-    inset 0 0 24px #000000,
-    0 2px 3px rgba(255, 255, 255, 0.2);
-}
-
-
-/* クラウン発光レンズ */
-.crown-led {
-  position: absolute;
-
-  left: 42px;
-  right: 42px;
-  top: 17px;
-
-  height: 14px;
-
-  z-index: 2;
-
-  border-radius: 999px;
+  padding: 20px 6px 40px;
 
   background:
     radial-gradient(
-      ellipse at 50% 30%,
-      #ffffff 0%,
-      var(--led-light) 18%,
-      var(--led-main) 43%,
-      var(--led-dark) 76%,
-      #250019 100%
+      ellipse at center top,
+      #393939 0%,
+      #171717 38%,
+      #050505 74%,
+      #010101 100%
     );
 
-  border: 1px solid #ffc8ee;
-
-  box-shadow:
-    0 0 5px #ffffff,
-    0 0 12px var(--led-main),
-    0 0 22px rgba(255, 63, 191, 0.9),
-    inset 0 1px 4px #ffffff,
-    inset 0 -4px 7px rgba(30, 0, 20, 0.8);
-
-  animation: crownGlow 2.2s ease-in-out infinite;
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
 }
 
-.crown-led::after {
+/* =========================================================
+   00：共通筐体アセンブリ
+========================================================= */
+
+#yusosha-common-cabinet {
+  position: relative;
+
+  width: min(
+    var(--machine-width),
+    calc(100vw - 12px)
+  );
+
+  aspect-ratio: 390 / 600;
+
+  filter:
+    drop-shadow(0 24px 20px rgba(0, 0, 0, 0.92));
+}
+
+/* =========================================================
+   01：外装シェル
+========================================================= */
+
+#cabinet-outer-shell {
+  position: absolute;
+  z-index: 1;
+
+  inset: 0 11px;
+
+  overflow: hidden;
+
+  border:
+    2px solid #4c4c4c;
+
+  border-radius:
+    25px 25px
+    13px 13px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #020202 0%,
+      #353535 2.4%,
+      #090909 6%,
+      #151515 15%,
+      #080808 50%,
+      #151515 85%,
+      #090909 94%,
+      #353535 97.6%,
+      #020202 100%
+    );
+
+  box-shadow:
+    inset 0 0 0 2px #000,
+    inset 7px 0 12px rgba(255,255,255,0.06),
+    inset -7px 0 12px rgba(255,255,255,0.05),
+    0 18px 28px rgba(0,0,0,0.9);
+}
+
+/* 外装中央の黒い面 */
+
+#cabinet-outer-shell::before {
   content: "";
 
   position: absolute;
-  left: 9%;
-  right: 9%;
-  top: 2px;
 
-  height: 3px;
+  inset: 17px 24px 14px;
 
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.84);
-  filter: blur(0.5px);
+  border-radius:
+    19px 19px
+    8px 8px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #171717,
+      #050505 23%,
+      #101010 58%,
+      #030303 100%
+    );
+
+  box-shadow:
+    inset 0 0 28px #000,
+    inset 0 4px 7px rgba(255,255,255,0.045);
 }
 
+/* 外装ハイライト */
 
-/* =========================================================
-   左右サイドフレーム
-========================================================= */
+#cabinet-outer-shell::after {
+  content: "";
 
-.side-frame {
   position: absolute;
 
-  top: 48px;
-  bottom: 22px;
+  top: 20px;
+  bottom: 18px;
+  left: 50%;
 
-  width: 38px;
+  width: 45%;
 
-  z-index: 9;
+  transform: translateX(-50%);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,0.018),
+      rgba(255,255,255,0.055),
+      rgba(255,255,255,0.018),
+      transparent
+    );
 
   pointer-events: none;
 }
 
-
-/* 左 */
-.side-frame.left {
-  left: -3px;
-
-  border-radius:
-    29px
-    14px
-    19px
-    31px;
-
-  clip-path: polygon(
-    21% 0%,
-    100% 2%,
-    87% 18%,
-    98% 36%,
-    81% 52%,
-    93% 69%,
-    77% 84%,
-    100% 100%,
-    12% 100%,
-    0% 87%,
-    14% 70%,
-    3% 50%,
-    18% 31%,
-    4% 13%
-  );
-}
-
-
-/* 右 */
-.side-frame.right {
-  right: -3px;
-
-  border-radius:
-    14px
-    29px
-    31px
-    19px;
-
-  clip-path: polygon(
-    0% 2%,
-    79% 0%,
-    96% 13%,
-    82% 31%,
-    97% 50%,
-    86% 70%,
-    100% 87%,
-    88% 100%,
-    0% 100%,
-    23% 84%,
-    7% 69%,
-    19% 52%,
-    2% 36%,
-    13% 18%
-  );
-}
-
-
-/* メッキ本体 */
-.side-frame {
-  background:
-    linear-gradient(
-      90deg,
-      #050505 0%,
-      #777777 9%,
-      #ffffff 17%,
-      #565656 27%,
-      #080808 42%,
-      #2b2b2b 64%,
-      #d7d7d7 82%,
-      #545454 92%,
-      #050505 100%
-    );
-
-  border: 1px solid #a1a1a1;
-
-  box-shadow:
-    0 0 0 2px #050505,
-    0 0 11px rgba(0, 0, 0, 0.95),
-    inset 0 0 7px rgba(255, 255, 255, 0.7),
-    inset 0 0 17px rgba(0, 0, 0, 0.85);
-}
-
-
-/* ゴールドアクセント */
-.side-gold {
-  position: absolute;
-
-  top: 8px;
-  bottom: 8px;
-
-  width: 8px;
-
-  border-radius: 999px;
-
-  background:
-    linear-gradient(
-      90deg,
-      #5c3a00 0%,
-      #fff0a0 28%,
-      #f2c229 52%,
-      #6c4700 100%
-    );
-
-  box-shadow:
-    0 0 4px rgba(255, 218, 63, 0.65),
-    inset 1px 0 2px rgba(255, 255, 255, 0.75),
-    inset -2px 0 3px rgba(60, 30, 0, 0.8);
-}
-
-.left .side-gold {
-  right: 8px;
-}
-
-.right .side-gold {
-  left: 8px;
-}
-
-
 /* =========================================================
-   LEDレンズ列
+   08・09：左右サイドLEDフレーム
 ========================================================= */
 
-.side-led-column {
+.side-led-frame {
   position: absolute;
+  z-index: 20;
 
-  top: 23px;
-  bottom: 23px;
+  top: 13px;
+  bottom: 15px;
 
-  width: 11px;
+  width: 54px;
 
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-}
-
-.left .side-led-column {
-  left: 7px;
-}
-
-.right .side-led-column {
-  right: 7px;
-}
-
-.side-led {
-  width: 9px;
-  height: 18px;
-
-  border-radius: 50%;
-
-  background:
-    radial-gradient(
-      ellipse at 35% 25%,
-      #ffffff 0%,
-      #ffe4f8 16%,
-      var(--led-main) 42%,
-      #a80073 73%,
-      #230018 100%
-    );
-
-  border: 1px solid rgba(255, 220, 246, 0.9);
-
-  box-shadow:
-    0 0 4px #ffffff,
-    0 0 9px var(--led-main),
-    0 0 15px rgba(255, 63, 191, 0.8),
-    inset 0 2px 3px #ffffff,
-    inset 0 -4px 4px rgba(45, 0, 31, 0.8);
-
-  animation: sideLedPulse 1.7s ease-in-out infinite;
-}
-
-.side-led:nth-child(2n) {
-  animation-delay: 0.35s;
-}
-
-.side-led:nth-child(3n) {
-  animation-delay: 0.7s;
-}
-
-
-/* =========================================================
-   共通パネル
-========================================================= */
-
-.panel {
-  position: relative;
   overflow: hidden;
 
   background:
     linear-gradient(
-      145deg,
-      #292929 0%,
-      #080808 12%,
-      #020202 58%,
-      #151515 86%,
-      #3a3a3a 100%
+      90deg,
+      #170209,
+      var(--accent-dark) 17%,
+      var(--accent) 39%,
+      var(--accent-light) 52%,
+      var(--accent) 66%,
+      var(--accent-dark) 83%,
+      #170209
     );
-
-  border: 2px solid #505050;
 
   box-shadow:
-    inset 0 0 0 2px #050505,
-    inset 0 0 14px rgba(255, 255, 255, 0.05),
-    inset 0 0 24px #000000,
-    0 2px 6px rgba(0, 0, 0, 0.9);
+    inset 5px 0 8px rgba(255,255,255,0.2),
+    inset -7px 0 9px rgba(0,0,0,0.72),
+    0 0 13px rgba(255,35,107,0.52);
 }
 
+#left-side-led-frame {
+  left: 0;
 
-/* パネル上部の反射 */
-.panel::before {
-  content: "";
-
-  position: absolute;
-  left: 9%;
-  right: 9%;
-  top: 3px;
-
-  height: 1px;
-
-  background: rgba(255, 255, 255, 0.25);
-}
-
-
-/* =========================================================
-   タイトルパネル
-========================================================= */
-
-.title-panel {
-  height: 65px;
-
-  border-radius: 16px 16px 11px 11px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background:
-    radial-gradient(
-      ellipse at 50% 40%,
-      #171717 0%,
-      #050505 62%,
-      #000000 100%
+  clip-path:
+    polygon(
+      16% 0%,
+      88% 2%,
+      100% 10%,
+      87% 28%,
+      92% 48%,
+      82% 67%,
+      89% 84%,
+      72% 100%,
+      9% 98%,
+      0% 89%,
+      9% 69%,
+      3% 49%,
+      11% 28%,
+      2% 10%
     );
 }
 
+#right-side-led-frame {
+  right: 0;
 
-/* 内側タイトル画面 */
-.title-screen {
-  width: calc(100% - 18px);
-  height: calc(100% - 14px);
-
-  border-radius: 11px;
-
-  background:
-    linear-gradient(
-      180deg,
-      #080808 0%,
-      #000000 100%
-    );
-
-  border: 2px solid #242424;
-
-  box-shadow:
-    inset 0 0 15px #000000,
-    0 0 0 1px #535353;
-}
-
-
-/* =========================================================
-   メイン表示パネル
-========================================================= */
-
-.display-panel {
-  height: 166px;
-  border-radius: 12px;
-  padding: 7px;
-}
-
-.display-screen {
-  width: 100%;
-  height: 100%;
-
-  border-radius: 8px;
-
-  background:
-    radial-gradient(
-      circle at 50% 40%,
-      #121212 0%,
-      #030303 64%,
-      #000000 100%
-    );
-
-  border: 2px solid #090909;
-
-  box-shadow:
-    inset 0 0 20px #000000,
-    inset 0 0 3px rgba(255, 255, 255, 0.1),
-    0 0 0 1px #3e3e3e;
-}
-
-
-/* =========================================================
-   リールパネル
-========================================================= */
-
-.reel-panel {
-  height: 133px;
-
-  border-radius: 11px;
-  padding: 8px;
-
-  background:
-    linear-gradient(
-      180deg,
-      #353535 0%,
-      #0c0c0c 12%,
-      #030303 45%,
-      #131313 88%,
-      #3a3a3a 100%
+  clip-path:
+    polygon(
+      12% 2%,
+      84% 0%,
+      98% 10%,
+      89% 28%,
+      97% 49%,
+      91% 69%,
+      100% 89%,
+      91% 98%,
+      28% 100%,
+      11% 84%,
+      18% 67%,
+      8% 48%,
+      13% 28%,
+      0% 10%
     );
 }
 
-.reel-window {
-  height: 100%;
+/* LED発光列 */
 
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 5px;
-
-  padding: 6px;
-
-  border-radius: 8px;
-
-  background:
-    linear-gradient(
-      180deg,
-      #050505 0%,
-      #1d1d1d 8%,
-      #000000 20%,
-      #000000 80%,
-      #252525 94%,
-      #050505 100%
-    );
-
-  border: 2px solid #585858;
-
-  box-shadow:
-    inset 0 0 13px #000000,
-    0 0 0 2px #050505;
-}
-
-.reel {
-  position: relative;
-
-  border-radius: 5px;
-
-  background:
-    linear-gradient(
-      180deg,
-      #171717 0%,
-      #030303 50%,
-      #171717 100%
-    );
-
-  border: 2px solid #333333;
-
-  box-shadow:
-    inset 0 0 14px #000000;
-}
-
-.reel + .reel::before {
-  content: "";
-
-  position: absolute;
-  left: -5px;
-  top: 4px;
-  bottom: 4px;
-
-  width: 1px;
-
-  background: #6e6e6e;
-
-  box-shadow:
-    1px 0 0 #000000;
-}
-
-
-/* =========================================================
-   操作卓
-========================================================= */
-
-.control-deck {
-  position: relative;
-
-  height: 94px;
-
-  margin-left: -13px;
-  margin-right: -13px;
-
-  padding: 14px 16px 11px;
-
-  border-radius:
-    11px
-    11px
-    23px
-    23px;
-
-  background:
-    linear-gradient(
-      180deg,
-      #ffffff 0%,
-      #acacac 5%,
-      #343434 12%,
-      #090909 25%,
-      #181818 62%,
-      #030303 84%,
-      #393939 100%
-    );
-
-  border: 2px solid #777777;
-
-  box-shadow:
-    0 8px 0 #030303,
-    0 12px 15px rgba(0, 0, 0, 0.75),
-    inset 0 3px 4px rgba(255, 255, 255, 0.5),
-    inset 0 -8px 12px rgba(0, 0, 0, 0.95);
-
-  transform: perspective(400px) rotateX(2deg);
-}
-
-
-/* 操作卓の前縁 */
-.control-deck::after {
+.side-led-frame::before {
   content: "";
 
   position: absolute;
 
+  top: 17px;
+  bottom: 18px;
+
+  width: 20px;
+
+  border-radius: 15px;
+
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,238,244,1) 0 4px,
+      rgba(255,83,137,0.95) 4px 9px,
+      rgba(112,7,45,0.92) 9px 13px
+    );
+
+  box-shadow:
+    0 0 7px var(--accent),
+    0 0 15px rgba(255,35,107,0.8),
+    inset 0 0 5px #fff;
+}
+
+#left-side-led-frame::before {
   left: 9px;
+}
+
+#right-side-led-frame::before {
   right: 9px;
-  bottom: -9px;
-
-  height: 12px;
-
-  border-radius: 0 0 20px 20px;
-
-  background:
-    linear-gradient(
-      180deg,
-      #252525 0%,
-      #050505 55%,
-      #000000 100%
-    );
-
-  border: 1px solid #3c3c3c;
-
-  box-shadow:
-    inset 0 2px 2px rgba(255, 255, 255, 0.12);
 }
 
+/* 内側ゴールドライン */
 
-/* 操作部品配置 */
-.control-grid {
-  position: relative;
-  z-index: 2;
+.side-led-frame::after {
+  content: "";
 
-  display: grid;
-  grid-template-columns: 50px 1fr;
-  align-items: center;
-  gap: 10px;
+  position: absolute;
 
-  height: 100%;
-}
+  top: 5px;
+  bottom: 7px;
 
+  width: 10px;
 
-/* レバー */
-.lever-base {
-  width: 45px;
-  height: 45px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  border-radius: 50%;
-
-  background:
-    radial-gradient(
-      circle,
-      #303030 0%,
-      #060606 61%,
-      #777777 66%,
-      #1a1a1a 100%
-    );
-
-  box-shadow:
-    inset 0 0 7px #000000,
-    0 2px 5px rgba(0, 0, 0, 0.9);
-}
-
-.lever {
-  position: relative;
-
-  width: 13px;
-  height: 34px;
-
-  border-radius: 999px;
+  border-radius: 8px;
 
   background:
     linear-gradient(
       90deg,
-      #222222 0%,
-      #ffffff 27%,
-      #777777 50%,
-      #1c1c1c 100%
+      var(--gold-dark),
+      var(--gold-mid) 30%,
+      var(--gold-light) 50%,
+      var(--gold-mid) 70%,
+      var(--gold-dark)
     );
 
-  transform: rotate(16deg);
-
   box-shadow:
-    2px 3px 5px rgba(0, 0, 0, 0.9);
+    inset 0 0 2px #fff0a0,
+    0 0 3px #000;
 }
 
-.lever::after {
+#left-side-led-frame::after {
+  right: 4px;
+}
+
+#right-side-led-frame::after {
+  left: 4px;
+}
+
+/* =========================================================
+   02：トップクラウン
+========================================================= */
+
+#top-crown-unit {
+  position: absolute;
+  z-index: 30;
+
+  top: 0;
+  left: 31px;
+  right: 31px;
+
+  height: 67px;
+
+  padding: 7px 11px 9px;
+
+  clip-path:
+    polygon(
+      8% 0%,
+      92% 0%,
+      100% 16%,
+      96% 82%,
+      88% 100%,
+      12% 100%,
+      4% 82%,
+      0% 16%
+    );
+
+  background:
+    linear-gradient(
+      145deg,
+      #777 0%,
+      #fafafa 4%,
+      #5b5b5b 9%,
+      #111 17%,
+      #050505 68%,
+      #3d3d3d 91%,
+      #ededed 100%
+    );
+
+  box-shadow:
+    0 7px 8px rgba(0,0,0,0.75),
+    inset 0 0 8px #000;
+}
+
+#top-crown-surface {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  clip-path:
+    polygon(
+      6% 0%,
+      94% 0%,
+      100% 14%,
+      96% 86%,
+      89% 100%,
+      11% 100%,
+      4% 86%,
+      0% 14%
+    );
+
+  border:
+    2px solid #751536;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      #2b111b,
+      #090406 66%,
+      #020202
+    );
+
+  box-shadow:
+    inset 0 0 14px #000,
+    0 0 7px rgba(255,35,107,0.52);
+}
+
+#top-crown-surface::after {
   content: "";
 
   position: absolute;
 
-  left: 50%;
-  top: -7px;
+  left: 14px;
+  right: 14px;
+  bottom: 6px;
 
-  width: 22px;
-  height: 22px;
+  height: 3px;
 
-  transform: translateX(-50%);
+  border-radius: 8px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--accent),
+      #fff,
+      var(--accent),
+      transparent
+    );
+
+  box-shadow:
+    0 0 6px var(--accent);
+}
+
+/* =========================================================
+   中央コンテンツアセンブリ
+========================================================= */
+
+#cabinet-content-assembly {
+  position: absolute;
+  z-index: 10;
+
+  top: 62px;
+  left: 45px;
+  right: 45px;
+  bottom: 16px;
+
+  display: grid;
+
+  grid-template-rows:
+    47px
+    137px
+    110px
+    69px
+    101px
+    1fr;
+
+  gap: 4px;
+}
+
+/* 各ユニット共通 */
+
+.cabinet-section {
+  position: relative;
+
+  min-height: 0;
+
+  border:
+    1px solid #393939;
+
+  background:
+    linear-gradient(
+      145deg,
+      #222,
+      #060606 34%,
+      #111 70%,
+      #030303
+    );
+
+  box-shadow:
+    inset 0 0 0 2px #030303,
+    inset 0 3px 5px rgba(255,255,255,0.05),
+    0 2px 4px rgba(0,0,0,0.85);
+
+  overflow: hidden;
+}
+
+/* =========================================================
+   03：タイトルパネル
+========================================================= */
+
+#title-panel-unit {
+  padding: 5px 8px;
+
+  border-radius: 9px 9px 4px 4px;
+}
+
+#title-panel-bezel {
+  width: 100%;
+  height: 100%;
+
+  padding: 4px;
+
+  clip-path:
+    polygon(
+      4% 0,
+      96% 0,
+      100% 18%,
+      97% 100%,
+      3% 100%,
+      0 18%
+    );
+
+  background:
+    linear-gradient(
+      135deg,
+      #e4e4e4,
+      #525252 9%,
+      #151515 30%,
+      #646464 88%,
+      #ededed
+    );
+}
+
+#title-panel-surface {
+  width: 100%;
+  height: 100%;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      #211018,
+      #050405 72%
+    );
+
+  box-shadow:
+    inset 0 0 10px #000;
+}
+
+/* =========================================================
+   04：メイン表示部
+========================================================= */
+
+#main-display-unit {
+  padding: 6px;
+
+  border-radius: 5px;
+}
+
+#main-display-bezel {
+  width: 100%;
+  height: 100%;
+
+  padding: 5px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #e9e9e9,
+      #505050 8%,
+      #101010 22%,
+      #101010 78%,
+      #5f5f5f 92%,
+      #eee
+    );
+
+  box-shadow:
+    inset 0 0 5px #000;
+}
+
+#main-display-glass {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  border:
+    3px solid #050505;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      #19191d,
+      #050506 76%
+    );
+
+  box-shadow:
+    inset 0 0 19px #000;
+
+  overflow: hidden;
+}
+
+/* ガラス反射 */
+
+#main-display-glass::before {
+  content: "";
+
+  position: absolute;
+  z-index: 2;
+
+  top: -32%;
+  left: -10%;
+
+  width: 70%;
+  height: 90%;
+
+  transform: rotate(-11deg);
+
+  background:
+    linear-gradient(
+      115deg,
+      rgba(255,255,255,0.14),
+      rgba(255,255,255,0.025) 38%,
+      transparent 66%
+    );
+
+  pointer-events: none;
+}
+
+#main-display-mount {
+  position: absolute;
+  inset: 3px;
+
+  background:
+    radial-gradient(
+      circle at 50% 40%,
+      #26131d,
+      #080609 70%
+    );
+}
+
+/* =========================================================
+   05：リール部
+========================================================= */
+
+#reel-unit {
+  padding: 6px 9px;
+
+  border-radius: 4px;
+}
+
+#reel-bezel {
+  width: 100%;
+  height: 100%;
+
+  padding: 5px 7px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f0f0f0,
+      #4c4c4c 8%,
+      #111 18%,
+      #111 82%,
+      #5f5f5f 92%,
+      #ededed
+    );
+
+  box-shadow:
+    inset 0 0 6px #000;
+}
+
+#reel-window {
+  position: relative;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  width: 100%;
+  height: 100%;
+
+  padding: 4px;
+  gap: 5px;
+
+  border:
+    3px solid #050505;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #020202,
+      #151515 13%,
+      #080808 88%,
+      #020202
+    );
+
+  box-shadow:
+    inset 0 9px 12px #000,
+    inset 0 -9px 12px #000;
+}
+
+.reel-mount {
+  position: relative;
+
+  overflow: hidden;
+
+  border:
+    1px solid #353535;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #e7e7e7,
+      #bcbcbc 12%,
+      #f5f5f5 50%,
+      #bababa 88%,
+      #e9e9e9
+    );
+
+  box-shadow:
+    inset 0 8px 8px rgba(0,0,0,0.24),
+    inset 0 -8px 8px rgba(0,0,0,0.24);
+}
+
+/* 空リールの基準線 */
+
+.reel-mount::before,
+.reel-mount::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  height: 1px;
+
+  background:
+    rgba(0,0,0,0.18);
+}
+
+.reel-mount::before {
+  top: 33.333%;
+}
+
+.reel-mount::after {
+  top: 66.666%;
+}
+
+/* =========================================================
+   06：操作卓
+========================================================= */
+
+#control-deck-unit {
+  overflow: visible;
+
+  border-radius: 4px 4px 10px 10px;
+
+  perspective: 500px;
+}
+
+#control-deck-surface {
+  position: absolute;
+
+  inset: 2px 0 -4px;
+
+  border:
+    2px solid #4b4b4b;
+
+  border-radius:
+    4px 4px
+    15px 15px;
+
+  background:
+    linear-gradient(
+      165deg,
+      #e3e3e3 0%,
+      #676767 12%,
+      #1b1b1b 31%,
+      #070707 68%,
+      #292929 100%
+    );
+
+  box-shadow:
+    inset 0 4px 6px rgba(255,255,255,0.15),
+    inset 0 -8px 10px #000,
+    0 5px 7px rgba(0,0,0,0.88);
+
+  transform:
+    rotateX(4deg);
+}
+
+/* 操作卓中央黒枠 */
+
+#control-button-panel {
+  position: absolute;
+
+  top: 15px;
+  left: 76px;
+  right: 61px;
+  bottom: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  padding: 0 8px;
+
+  border:
+    2px solid #555;
+
+  border-radius: 26px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #111,
+      #030303 55%,
+      #181818
+    );
+
+  box-shadow:
+    inset 0 0 8px #000,
+    0 1px 3px rgba(255,255,255,0.18);
+}
+
+/* STOPボタン */
+
+.stop-button-mount {
+  width: 39px;
+  height: 39px;
+
+  border:
+    4px solid #202020;
 
   border-radius: 50%;
 
   background:
     radial-gradient(
-      circle at 35% 28%,
-      #ffffff 0%,
-      #ff9be1 18%,
-      #d91691 48%,
-      #67003f 100%
+      circle at 38% 30%,
+      #ffb0b0 0%,
+      #ff4b58 24%,
+      #e20d26 61%,
+      #66000b 100%
     );
 
-  border: 2px solid #ffd6f2;
+  box-shadow:
+    0 0 0 2px #777,
+    0 3px 4px #000,
+    inset 0 3px 5px rgba(255,255,255,0.52),
+    inset 0 -5px 7px rgba(0,0,0,0.55);
+}
+
+/* レバー */
+
+#start-lever-mount {
+  position: absolute;
+
+  left: 24px;
+  top: 17px;
+
+  width: 41px;
+  height: 41px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 38% 33%,
+      #777,
+      #151515 34%,
+      #020202 66%,
+      #4a4a4a 70%,
+      #0b0b0b
+    );
 
   box-shadow:
-    0 0 7px var(--led-main),
-    inset 0 -4px 5px rgba(55, 0, 35, 0.7);
+    0 0 0 3px #717171,
+    inset 0 0 8px #000,
+    0 3px 4px #000;
 }
 
+/* BETボタン */
 
-/* ボタン群 */
-.control-buttons {
-  display: grid;
-  grid-template-columns: 34px repeat(3, 1fr);
-  gap: 7px;
-  align-items: center;
-}
+#bet-button-mount {
+  position: absolute;
 
-.small-button {
-  width: 30px;
-  height: 30px;
+  left: 9px;
+  top: 25px;
+
+  width: 23px;
+  height: 23px;
+
+  border:
+    3px solid #272727;
 
   border-radius: 50%;
 
   background:
     radial-gradient(
       circle at 35% 30%,
-      #ffffff 0%,
-      #d3d3d3 13%,
-      #656565 44%,
-      #121212 78%,
-      #000000 100%
+      #888,
+      #252525 43%,
+      #060606
     );
 
-  border: 2px solid #8b8b8b;
-
   box-shadow:
-    0 3px 0 #000000,
-    inset 0 2px 3px rgba(255, 255, 255, 0.65);
+    0 0 0 1px #777,
+    0 2px 3px #000;
 }
 
-.stop-button {
-  width: 54px;
-  height: 54px;
+/* メダル投入口 */
 
-  margin: auto;
+#medal-insert-mount {
+  position: absolute;
+
+  right: 12px;
+  top: 20px;
+
+  width: 38px;
+  height: 30px;
+
+  border:
+    2px solid #555;
 
   border-radius: 50%;
 
   background:
     radial-gradient(
-      circle at 35% 27%,
-      #ffffff 0%,
-      #ffcdcd 9%,
-      #f02626 30%,
-      #a00000 67%,
-      #350000 100%
+      ellipse,
+      #030303 0 34%,
+      #777 37%,
+      #222 65%,
+      #050505
     );
 
-  border: 4px solid #d3d3d3;
-
   box-shadow:
-    0 0 0 3px #202020,
-    0 4px 0 #000000,
-    0 0 8px rgba(255, 255, 255, 0.32),
-    inset 0 3px 4px rgba(255, 255, 255, 0.75),
-    inset 0 -8px 8px rgba(50, 0, 0, 0.65);
+    0 2px 4px #000;
 }
 
-
 /* =========================================================
-   下部パネル
+   07：下部ビジュアルパネル
 ========================================================= */
 
-.lower-panel {
-  height: 111px;
+#lower-visual-unit {
+  padding: 5px 8px;
 
-  margin-top: 5px;
+  border-radius: 5px;
+}
 
-  border-radius: 13px 13px 18px 18px;
-  padding: 8px;
+#lower-visual-bezel {
+  width: 100%;
+  height: 100%;
+
+  padding: 5px;
 
   background:
     linear-gradient(
-      145deg,
-      #282828 0%,
-      #070707 14%,
-      #000000 60%,
-      #1d1d1d 100%
+      135deg,
+      #e6e6e6,
+      #4c4c4c 8%,
+      #111 21%,
+      #111 79%,
+      #5e5e5e 92%,
+      #ededed
     );
-}
-
-.lower-panel{
-  position:relative;
-  width:100%;
-  height:120px; /* 現在の下部表示面の高さに合わせて調整 */
-  overflow:hidden;
-
-  background:#000;
-  border:3px solid #c79a42;
-  border-radius:10px;
 
   box-shadow:
-    inset 0 0 12px #000,
-    0 0 7px rgba(255,80,170,.35);
+    inset 0 0 5px #000;
 }
 
-.lower-panel-image{
-  display:block;
-  width:100%;
-  height:100%;
-
-  /* 画像全体を表示面いっぱいに入れる */
-  object-fit:cover;
-
-  /* 鬼の顔を中央に固定 */
-  object-position:center center;
-
-  user-select:none;
-  pointer-events:none;
-}
-
-
-/* =========================================================
-   ベース
-========================================================= */
-
-.machine-base {
+#lower-visual-surface {
   position: relative;
 
-  height: 29px;
+  width: 100%;
+  height: 100%;
 
-  margin:
-    6px
-    -7px
-    -9px;
+  overflow: hidden;
 
-  border-radius:
-    6px
-    6px
-    20px
-    20px;
+  border:
+    3px solid #050505;
 
   background:
-    linear-gradient(
-      180deg,
-      #383838 0%,
-      #0b0b0b 33%,
-      #000000 100%
+    radial-gradient(
+      ellipse at center,
+      #25131d,
+      #070507 74%
     );
 
-  border: 1px solid #555555;
-
   box-shadow:
-    inset 0 3px 3px rgba(255, 255, 255, 0.08),
-    0 6px 9px rgba(0, 0, 0, 0.8);
+    inset 0 0 16px #000;
 }
 
-.machine-base::after {
+#lower-visual-surface::before {
   content: "";
 
   position: absolute;
 
-  left: 18px;
-  right: 18px;
-  bottom: 5px;
+  top: -35%;
+  left: -12%;
 
-  height: 5px;
+  width: 75%;
+  height: 100%;
 
-  border-radius: 999px;
+  transform: rotate(-12deg);
 
-  background: #020202;
+  background:
+    linear-gradient(
+      115deg,
+      rgba(255,255,255,0.13),
+      rgba(255,255,255,0.02) 40%,
+      transparent 67%
+    );
+}
+
+/* =========================================================
+   10：底部ベース
+========================================================= */
+
+#cabinet-base-unit {
+  border-radius:
+    3px 3px
+    9px 9px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #272727,
+      #080808 38%,
+      #030303 72%,
+      #161616
+    );
 
   box-shadow:
-    inset 0 1px 2px rgba(255, 255, 255, 0.09);
+    inset 0 4px 6px rgba(255,255,255,0.05),
+    inset 0 -6px 8px #000;
 }
 
+/* 底部中央補強 */
+
+#cabinet-base-unit::after {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  bottom: 0;
+
+  width: 58px;
+  height: 29px;
+
+  transform:
+    translateX(-50%);
+
+  clip-path:
+    polygon(
+      50% 0,
+      100% 100%,
+      0 100%
+    );
+
+  background:
+    linear-gradient(
+      90deg,
+      #050505,
+      #242424 50%,
+      #050505
+    );
+
+  opacity: 0.72;
+}
 
 /* =========================================================
-   アニメーション
+   パーツ名確認表示
+   bodyのshow-part-namesを削除すると非表示
 ========================================================= */
 
-@keyframes crownGlow {
-  0%,
-  100% {
-    opacity: 0.75;
+.show-part-names [data-part-name]::after {
+  content: attr(data-part-name);
 
-    box-shadow:
-      0 0 5px #ffffff,
-      0 0 10px var(--led-main),
-      0 0 18px rgba(255, 63, 191, 0.68),
-      inset 0 1px 4px #ffffff,
-      inset 0 -4px 7px rgba(30, 0, 20, 0.8);
-  }
+  position: absolute;
+  z-index: 200;
 
-  50% {
-    opacity: 1;
+  top: 3px;
+  left: 50%;
 
-    box-shadow:
-      0 0 7px #ffffff,
-      0 0 17px var(--led-main),
-      0 0 29px rgba(255, 63, 191, 1),
-      inset 0 1px 5px #ffffff,
-      inset 0 -4px 7px rgba(30, 0, 20, 0.8);
-  }
+  max-width: 94%;
+
+  padding: 2px 5px;
+
+  transform: translateX(-50%);
+
+  overflow: hidden;
+
+  color: #fff;
+  background: rgba(0,0,0,0.72);
+
+  border:
+    1px solid rgba(255,255,255,0.15);
+
+  border-radius: 3px;
+
+  font-size: 7px;
+  line-height: 1.2;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  pointer-events: none;
 }
 
-@keyframes sideLedPulse {
-  0%,
-  100% {
-    opacity: 0.62;
-    filter: brightness(0.83);
-  }
+/* サイドフレームのラベル */
 
-  50% {
-    opacity: 1;
-    filter: brightness(1.3);
-  }
+.show-part-names
+.side-led-frame[data-part-name]::after {
+  top: 50%;
+  left: 50%;
+
+  writing-mode: vertical-rl;
+
+  transform:
+    translate(-50%, -50%);
 }
-
 
 /* =========================================================
-   スマートフォン調整
+   スマートフォン対応
 ========================================================= */
 
-@media (max-width: 410px) {
-  body {
-    padding-left: 4px;
-    padding-right: 4px;
+@media (max-width: 350px) {
+  #cabinet-content-assembly {
+    left: 41px;
+    right: 41px;
   }
 
-  .machine-wrap {
-    transform-origin: top center;
-  }
-}
-
-@media (max-width: 365px) {
-  .machine {
-    padding-left: 29px;
-    padding-right: 29px;
+  #control-button-panel {
+    left: 70px;
+    right: 56px;
   }
 
-  .stop-button {
-    width: 50px;
-    height: 50px;
-  }
-
-  .control-buttons {
-    gap: 5px;
+  .stop-button-mount {
+    width: 35px;
+    height: 35px;
   }
 }
 </style>
 </head>
 
-<body>
+<body class="show-part-names">
 
-<div class="machine-wrap">
+<main
+  id="yusosha-common-cabinet"
+  data-part-name="00 遊創舎 共通筐体"
+>
 
-  <main class="machine">
+  <!-- 01：外装シェル -->
+  <div
+    id="cabinet-outer-shell"
+    data-part-name="01 外装シェル"
+  ></div>
 
-    <!-- トップクラウン -->
-    <header class="top-crown">
-      <div class="crown-led"></div>
-    </header>
+  <!-- 08：左サイドLEDフレーム -->
+  <aside
+    id="left-side-led-frame"
+    class="side-led-frame"
+    data-part-name="08 左サイドLED"
+  ></aside>
 
+  <!-- 09：右サイドLEDフレーム -->
+  <aside
+    id="right-side-led-frame"
+    class="side-led-frame"
+    data-part-name="09 右サイドLED"
+  ></aside>
 
-    <!-- 左サイドフレーム -->
-    <aside class="side-frame left">
-      <div class="side-led-column">
-        <span class="side-led"></span>
-        <span class="side-led"></span>
-        <span class="side-led"></span>
-        <span class="side-led"></span>
-        <span class="side-led"></span>
-        <span class="side-led"></span>
-        <span class="side-led"></span>
-        <span class="side-led"></span>
+  <!-- 02：トップクラウン -->
+  <header
+    id="top-crown-unit"
+    data-part-name="02 トップクラウン"
+  >
+    <div
+      id="top-crown-surface"
+      data-part-name="02-A クラウン表示面"
+    ></div>
+  </header>
+
+  <!-- 中央コンテンツ -->
+  <div id="cabinet-content-assembly">
+
+    <!-- 03：タイトルパネル -->
+    <section
+      id="title-panel-unit"
+      class="cabinet-section"
+      data-part-name="03 タイトルパネル"
+    >
+      <div id="title-panel-bezel">
+        <div
+          id="title-panel-surface"
+          data-part-name="03-A タイトル表示面"
+        ></div>
       </div>
+    </section>
 
-      <div class="side-gold"></div>
-    </aside>
-
-
-    <!-- 右サイドフレーム -->
-    <aside class="side-frame right">
-      <div class="side-led-column">
-        <span class="side-led"></span>
-        <span class="side-led"></span>
-        <span class="side-led"></span>
-        <span class="side-led"></span>
-        <span class="side-led"></span>
-        <span class="side-led"></span>
-        <span class="side-led"></span>
-        <span class="side-led"></span>
+    <!-- 04：メイン表示部 -->
+    <section
+      id="main-display-unit"
+      class="cabinet-section"
+      data-part-name="04 メイン表示部"
+    >
+      <div id="main-display-bezel">
+        <div
+          id="main-display-glass"
+          data-part-name="04-A メイン表示ガラス"
+        >
+          <div
+            id="main-display-mount"
+            data-part-name="04-B メイン表示取付面"
+          ></div>
+        </div>
       </div>
+    </section>
 
-      <div class="side-gold"></div>
-    </aside>
+    <!-- 05：リール部 -->
+    <section
+      id="reel-unit"
+      class="cabinet-section"
+      data-part-name="05 リール部"
+    >
+      <div id="reel-bezel">
+        <div
+          id="reel-window"
+          data-part-name="05-A リール窓"
+        >
+          <div
+            id="left-reel-mount"
+            class="reel-mount"
+            data-part-name="05-B 左リール"
+          ></div>
 
+          <div
+            id="center-reel-mount"
+            class="reel-mount"
+            data-part-name="05-C 中リール"
+          ></div>
 
-    <!-- 筐体内部 -->
-    <div class="machine-inner">
-
-      <!-- タイトルパネル -->
-      <section class="panel title-panel">
-        <div class="title-screen"></div>
-      </section>
-
-
-      <!-- メイン表示 -->
-      <section class="panel display-panel">
-        <div class="display-screen"></div>
-      </section>
-
-
-      <!-- リール -->
-      <section class="panel reel-panel">
-        <div class="reel-window">
-          <div class="reel"></div>
-          <div class="reel"></div>
-          <div class="reel"></div>
+          <div
+            id="right-reel-mount"
+            class="reel-mount"
+            data-part-name="05-D 右リール"
+          ></div>
         </div>
-      </section>
+      </div>
+    </section>
 
+    <!-- 06：操作卓 -->
+    <section
+      id="control-deck-unit"
+      class="cabinet-section"
+      data-part-name="06 操作卓"
+    >
+      <div
+        id="control-deck-surface"
+        data-part-name="06-A 操作卓表面"
+      >
 
-      <!-- 操作卓 -->
-      <section class="control-deck">
+        <div
+          id="bet-button-mount"
+          data-part-name="06-B BET"
+        ></div>
 
-        <div class="control-grid">
+        <div
+          id="start-lever-mount"
+          data-part-name="06-C START"
+        ></div>
 
-          <div class="lever-base">
-            <div class="lever"></div>
-          </div>
+        <div id="control-button-panel">
 
-          <div class="control-buttons">
-            <div class="small-button"></div>
-            <div class="stop-button"></div>
-            <div class="stop-button"></div>
-            <div class="stop-button"></div>
-          </div>
+          <div
+            id="left-stop-button"
+            class="stop-button-mount"
+            data-part-name="06-D STOP1"
+          ></div>
+
+          <div
+            id="center-stop-button"
+            class="stop-button-mount"
+            data-part-name="06-E STOP2"
+          ></div>
+
+          <div
+            id="right-stop-button"
+            class="stop-button-mount"
+            data-part-name="06-F STOP3"
+          ></div>
 
         </div>
 
-      </section>
+        <div
+          id="medal-insert-mount"
+          data-part-name="06-G メダル投入口"
+        ></div>
 
+      </div>
+    </section>
 
-      <!-- 下部パネル -->
-     <section class="panel lower-panel">
-    <img
-        src="images/ptaro_kyoran_lower.png"
-        class="lower-screen"
-        alt="狂乱">
-</section>
+    <!-- 07：下部ビジュアルパネル -->
+    <section
+      id="lower-visual-unit"
+      class="cabinet-section"
+      data-part-name="07 下部ビジュアル"
+    >
+      <div id="lower-visual-bezel">
+        <div
+          id="lower-visual-surface"
+          data-part-name="07-A 下部表示面"
+        ></div>
+      </div>
+    </section>
 
+    <!-- 10：底部ベース -->
+    <footer
+      id="cabinet-base-unit"
+      class="cabinet-section"
+      data-part-name="10 底部ベース"
+    ></footer>
 
-      <!-- ベース -->
-      <footer class="machine-base"></footer>
+  </div>
 
-    </div>
-
-  </main>
-
-</div>
+</main>
 
 </body>
 </html>
