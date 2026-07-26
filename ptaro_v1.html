@@ -996,15 +996,14 @@ body {
   border:
     3px solid #050505;
 
-  background:
-    radial-gradient(
-      ellipse at center,
-      #25131d,
-      #070507 74%
-    );
+  background: #000000;
 
   box-shadow:
     inset 0 0 16px #000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 #lower-visual-surface img {
@@ -1014,8 +1013,8 @@ body {
   width: 100% !important;
   height: 100% !important;
 
-  object-fit: cover !important;
-  object-position: center !important;
+  object-fit: contain !important;
+  object-position: center center !important;
 
   margin: 0 !important;
   padding: 0 !important;
