@@ -1035,6 +1035,10 @@ body.super-flash {
 
 const SYMBOLS = ['MOMO','ONI','BAR','BELL','GRAPE','CHERRY'];
 
+/* タイミング・リトライ定数 */
+const REEL_SPIN_INTERVAL_MS  = 80;  /* リール1コマ更新間隔（ms） */
+const MAX_MISS_RETRY          = 12;  /* MISS時ゾロ目回避最大試行回数 */
+
 const SYMBOL_EMOJI = {
   MOMO:   '🍑',
   ONI:    '👹',
@@ -1060,13 +1064,6 @@ let targetSymbol = null;
 
 function rand() {
   return SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
-}
-
-function randExcept(exclude) {
-  let s;
-  let tries = 0;
-  do { s = rand(); tries++; } while (s === exclude && tries < 20);
-  return s;
 }
 
 function drawReel(i) {
@@ -1209,7 +1206,7 @@ function doStart() {
     timers[i] = setInterval(() => {
       reels[i] = rand();
       drawReel(i);
-    }, 80);
+    }, REEL_SPIN_INTERVAL_MS);
   }
 
   updateUI();
@@ -1249,9 +1246,13 @@ function doStop(i) {
       /* 全停後にゾロ目になってしまう場合を回避 */
       if (i === 2) {
         let tries = 0;
-        while (reels[0] === reels[1] && reels[1] === reels[2] && tries < 12) {
+        while (reels[0] === reels[1] && reels[1] === reels[2] && tries < MAX_MISS_RETRY) {
           reels[2] = rand();
           tries++;
+        }
+        /* リトライ上限後もゾロ目の場合はシンボルリストから別のものを強制選択 */
+        if (reels[0] === reels[1] && reels[1] === reels[2]) {
+          reels[2] = SYMBOLS.find(s => s !== reels[0]) || 'CHERRY';
         }
       }
       break;
@@ -1262,7 +1263,7 @@ function doStop(i) {
   /* ストップ時バウンス */
   const el = document.getElementById('r' + i);
   el.classList.remove('stop-bounce');
-  void el.offsetWidth;
+  void el.offsetWidth; /* ブラウザに強制リフローさせてアニメーションをリスタート */
   el.classList.add('stop-bounce');
 
   stopped++;
@@ -1286,7 +1287,7 @@ function showWinEffect(text) {
   const el = document.getElementById('win-effect');
   el.textContent = text;
   el.classList.remove('show');
-  void el.offsetWidth;
+  void el.offsetWidth; /* 強制リフローでアニメーションをリスタート */
   el.classList.add('show');
 }
 
@@ -1340,7 +1341,7 @@ function judge() {
   } else if (r0 === 'GRAPE' && r1 === 'GRAPE' && r2 === 'GRAPE') {
     payout(8, '🍇 ブドウ 8枚');
 
-  } else if (reels.includes('CHERRY')) {
+  } else if (r0 === 'CHERRY') {
     payout(2, '🍒 チェリー 2枚');
 
   } else {
