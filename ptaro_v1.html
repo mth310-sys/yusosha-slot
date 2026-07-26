@@ -1012,13 +1012,16 @@ body {
 }
 
 #lower-visual-surface img {
-  max-width: 100%;
-  max-height: 100%;
+  position: absolute;
+  inset: 0;
 
-  width: auto;
-  height: auto;
+  display: block;
 
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+  object-position: center;
 }
 
 #lower-visual-surface::before {
@@ -1346,7 +1349,7 @@ body {
           id="lower-visual-surface"
           data-part-name="07-A 下部表示面"
         >
-          <img src="ptaro_kyoran_lower.png" alt="P太郎 狂乱鬼ヶ島 下部パネル" />
+          <img src="ptaro_kyoran_lower.png.png" alt="P太郎 狂乱鬼ヶ島 下部パネル" />
         </div>
       </div>
     </section>
