@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Ｐ太郎 ～狂乱鬼ヶ島～ Ver.1</title>
+
+<style>
+/* =========================================================
+   Ｐ太郎 ～狂乱鬼ヶ島～ 共通筐体 Ver.1
+
+   基準サイズ：390 × 600
+   構成：
+   01 外装シェル
+   02 トップクラウン
+   03 タイトルパネル
+   04 メイン表示部
+   05 リール部
+   06 操作卓
+   07 下部ビジュアルパネル
+   08 左サイドLEDフレーム
+   09 右サイドLEDフレーム
+   10 底部ベース
+========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+:root {
+  --machine-width: 390px;
+  --machine-height: 600px;
+
+  --frame-black: #050505;
+  --frame-dark: #111;
+  --frame-mid: #292929;
+
+  --chrome-dark: #252525;
+  --chrome-mid: #7c7c7c;
+  --chrome-light: #f3f3f3;
+
+  --accent: #ff236b;
+  --accent-dark: #7b0c35;
+  --accent-light: #ff9abb;
+
+  --gold-dark: #55400c;
+  --gold-mid: #b79734;
+  --gold-light: #fff0a0;
+}
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  padding: 20px 6px 40px;
+
+  background:
+    radial-gradient(
+      ellipse at center top,
+      #393939 0%,
+      #171717 38%,
+      #050505 74%,
+      #010101 100%
+    );
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
+
+/* =========================================================
+   00：共通筐体アセンブリ
+========================================================= */
+
+#ptaro-cabinet {
+  position: relative;
+
+  width: min(
+    var(--machine-width),
+    calc(100vw - 12px)
+  );
+
+  aspect-ratio: 390 / 600;
+
+  filter:
+    drop-shadow(0 24px 20px rgba(0, 0, 0, 0.92));
+}
+
+/* =========================================================
+   01：外装シェル
+========================================================= */
+
+#cabinet-outer-shell {
+  position: absolute;
+  z-index: 1;
+
+  inset: 0 11px;
+
+  overflow: hidden;
+
+  border:
+    2px solid #4c4c4c;
+
+  border-radius:
+    25px 25px
+    13px 13px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #020202 0%,
+      #353535 2.4%,
+      #090909 6%,
+      #151515 15%,
+      #080808 50%,
+      #151515 85%,
+      #090909 94%,
+      #353535 97.6%,
+      #020202 100%
+    );
+
+  box-shadow:
+    inset 0 0 0 2px #000,
+    inset 7px 0 12px rgba(255,255,255,0.06),
+    inset -7px 0 12px rgba(255,255,255,0.05),
+    0 18px 28px rgba(0,0,0,0.9);
+}
+
+/* 外装中央の黒い面 */
+
+#cabinet-outer-shell::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 17px 24px 14px;
+
+  border-radius:
+    19px 19px
+    8px 8px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #171717,
+      #050505 23%,
+      #101010 58%,
+      #030303 100%
+    );
+
+  box-shadow:
+    inset 0 0 28px #000,
+    inset 0 4px 7px rgba(255,255,255,0.045);
+}
+
+/* 外装ハイライト */
+
+#cabinet-outer-shell::after {
+  content: "";
+
+  position: absolute;
+
+  top: 20px;
+  bottom: 18px;
+  left: 50%;
+
+  width: 45%;
+
+  transform: translateX(-50%);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,0.018),
+      rgba(255,255,255,0.055),
+      rgba(255,255,255,0.018),
+      transparent
+    );
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   08・09：左右サイドLEDフレーム
+========================================================= */
+
+.side-led-frame {
+  position: absolute;
+  z-index: 20;
+
+  top: 13px;
+  bottom: 15px;
+
+  width: 54px;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      90deg,
+      #170209,
+      var(--accent-dark) 17%,
+      var(--accent) 39%,
+      var(--accent-light) 52%,
+      var(--accent) 66%,
+      var(--accent-dark) 83%,
+      #170209
+    );
+
+  box-shadow:
+    inset 5px 0 8px rgba(255,255,255,0.2),
+    inset -7px 0 9px rgba(0,0,0,0.72),
+    0 0 13px rgba(255,35,107,0.52);
+}
+
+#left-side-led-frame {
+  left: 0;
+
+  clip-path:
+    polygon(
+      16% 0%,
+      88% 2%,
+      100% 10%,
+      87% 28%,
+      92% 48%,
+      82% 67%,
+      89% 84%,
+      72% 100%,
+      9% 98%,
+      0% 89%,
+      9% 69%,
+      3% 49%,
+      11% 28%,
+      2% 10%
+    );
+}
+
+#right-side-led-frame {
+  right: 0;
+
+  clip-path:
+    polygon(
+      12% 2%,
+      84% 0%,
+      98% 10%,
+      89% 28%,
+      97% 49%,
+      91% 69%,
+      100% 89%,
+      91% 98%,
+      28% 100%,
+      11% 84%,
+      18% 67%,
+      8% 48%,
+      13% 28%,
+      0% 10%
+    );
+}
+
+/* LED発光列 */
+
+.side-led-frame::before {
+  content: "";
+
+  position: absolute;
+
+  top: 17px;
+  bottom: 18px;
+
+  width: 20px;
+
+  border-radius: 15px;
+
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,238,244,1) 0 4px,
+      rgba(255,83,137,0.95) 4px 9px,
+      rgba(112,7,45,0.92) 9px 13px
+    );
+
+  box-shadow:
+    0 0 7px var(--accent),
+    0 0 15px rgba(255,35,107,0.8),
+    inset 0 0 5px #fff;
+}
+
+#left-side-led-frame::before {
+  left: 9px;
+}
+
+#right-side-led-frame::before {
+  right: 9px;
+}
+
+/* 内側ゴールドライン */
+
+.side-led-frame::after {
+  content: "";
+
+  position: absolute;
+
+  top: 5px;
+  bottom: 7px;
+
+  width: 10px;
+
+  border-radius: 8px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--gold-dark),
+      var(--gold-mid) 30%,
+      var(--gold-light) 50%,
+      var(--gold-mid) 70%,
+      var(--gold-dark)
+    );
+
+  box-shadow:
+    inset 0 0 2px #fff0a0,
+    0 0 3px #000;
+}
+
+#left-side-led-frame::after {
+  right: 4px;
+}
+
+#right-side-led-frame::after {
+  left: 4px;
+}
+
+/* =========================================================
+   02：トップクラウン
+========================================================= */
+
+#top-crown-unit {
+  position: absolute;
+  z-index: 30;
+
+  top: 0;
+  left: 31px;
+  right: 31px;
+
+  height: 67px;
+
+  padding: 7px 11px 9px;
+
+  clip-path:
+    polygon(
+      8% 0%,
+      92% 0%,
+      100% 16%,
+      96% 82%,
+      88% 100%,
+      12% 100%,
+      4% 82%,
+      0% 16%
+    );
+
+  background:
+    linear-gradient(
+      145deg,
+      #777 0%,
+      #fafafa 4%,
+      #5b5b5b 9%,
+      #111 17%,
+      #050505 68%,
+      #3d3d3d 91%,
+      #ededed 100%
+    );
+
+  box-shadow:
+    0 7px 8px rgba(0,0,0,0.75),
+    inset 0 0 8px #000;
+}
+
+#top-crown-surface {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  clip-path:
+    polygon(
+      6% 0%,
+      94% 0%,
+      100% 14%,
+      96% 86%,
+      89% 100%,
+      11% 100%,
+      4% 86%,
+      0% 14%
+    );
+
+  border:
+    2px solid #751536;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      #2b111b,
+      #090406 66%,
+      #020202
+    );
+
+  box-shadow:
+    inset 0 0 14px #000,
+    0 0 7px rgba(255,35,107,0.52);
+}
+
+#top-crown-surface::after {
+  content: "";
+
+  position: absolute;
+
+  left: 14px;
+  right: 14px;
+  bottom: 6px;
+
+  height: 3px;
+
+  border-radius: 8px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--accent),
+      #fff,
+      var(--accent),
+      transparent
+    );
+
+  box-shadow:
+    0 0 6px var(--accent);
+}
+
+/* =========================================================
+   中央コンテンツアセンブリ
+========================================================= */
+
+#cabinet-content-assembly {
+  position: absolute;
+  z-index: 10;
+
+  top: 62px;
+  left: 45px;
+  right: 45px;
+  bottom: 16px;
+
+  display: grid;
+
+  grid-template-rows:
+    47px
+    137px
+    110px
+    69px
+    101px
+    1fr;
+
+  gap: 4px;
+}
+
+/* 各ユニット共通 */
+
+.cabinet-section {
+  position: relative;
+
+  min-height: 0;
+
+  border:
+    1px solid #393939;
+
+  background:
+    linear-gradient(
+      145deg,
+      #222,
+      #060606 34%,
+      #111 70%,
+      #030303
+    );
+
+  box-shadow:
+    inset 0 0 0 2px #030303,
+    inset 0 3px 5px rgba(255,255,255,0.05),
+    0 2px 4px rgba(0,0,0,0.85);
+
+  overflow: hidden;
+}
+
+/* =========================================================
+   03：タイトルパネル
+========================================================= */
+
+#title-panel-unit {
+  padding: 5px 8px;
+
+  border-radius: 9px 9px 4px 4px;
+}
+
+#title-panel-bezel {
+  width: 100%;
+  height: 100%;
+
+  padding: 4px;
+
+  clip-path:
+    polygon(
+      4% 0,
+      96% 0,
+      100% 18%,
+      97% 100%,
+      3% 100%,
+      0 18%
+    );
+
+  background:
+    linear-gradient(
+      135deg,
+      #e4e4e4,
+      #525252 9%,
+      #151515 30%,
+      #646464 88%,
+      #ededed
+    );
+}
+
+#title-panel-surface {
+  width: 100%;
+  height: 100%;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      #211018,
+      #050405 72%
+    );
+
+  box-shadow:
+    inset 0 0 10px #000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 18px;
+  font-weight: bold;
+  color: var(--accent-light);
+  text-shadow: 0 0 8px var(--accent);
+}
+
+/* =========================================================
+   04：メイン表示部
+========================================================= */
+
+#main-display-unit {
+  padding: 6px;
+
+  border-radius: 5px;
+}
+
+#main-display-bezel {
+  width: 100%;
+  height: 100%;
+
+  padding: 5px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #e9e9e9,
+      #505050 8%,
+      #101010 22%,
+      #101010 78%,
+      #5f5f5f 92%,
+      #eee
+    );
+
+  box-shadow:
+    inset 0 0 5px #000;
+}
+
+#main-display-glass {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  border:
+    3px solid #050505;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      #19191d,
+      #050506 76%
+    );
+
+  box-shadow:
+    inset 0 0 19px #000;
+
+  overflow: hidden;
+}
+
+/* ガラス反射 */
+
+#main-display-glass::before {
+  content: "";
+
+  position: absolute;
+  z-index: 2;
+
+  top: -32%;
+  left: -10%;
+
+  width: 70%;
+  height: 90%;
+
+  transform: rotate(-11deg);
+
+  background:
+    linear-gradient(
+      115deg,
+      rgba(255,255,255,0.14),
+      rgba(255,255,255,0.025) 38%,
+      transparent 66%
+    );
+
+  pointer-events: none;
+}
+
+#main-display-mount {
+  position: absolute;
+  inset: 3px;
+
+  background:
+    radial-gradient(
+      circle at 50% 40%,
+      #26131d,
+      #080609 70%
+    );
+}
+
+/* =========================================================
+   05：リール部
+========================================================= */
+
+#reel-unit {
+  padding: 6px 9px;
+
+  border-radius: 4px;
+}
+
+#reel-bezel {
+  width: 100%;
+  height: 100%;
+
+  padding: 5px 7px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f0f0f0,
+      #4c4c4c 8%,
+      #111 18%,
+      #111 82%,
+      #5f5f5f 92%,
+      #ededed
+    );
+
+  box-shadow:
+    inset 0 0 6px #000;
+}
+
+#reel-window {
+  position: relative;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  width: 100%;
+  height: 100%;
+
+  padding: 4px;
+  gap: 5px;
+
+  border:
+    3px solid #050505;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #020202,
+      #151515 13%,
+      #080808 88%,
+      #020202
+    );
+
+  box-shadow:
+    inset 0 9px 12px #000,
+    inset 0 -9px 12px #000;
+}
+
+.reel-mount {
+  position: relative;
+
+  overflow: hidden;
+
+  border:
+    1px solid #353535;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #e7e7e7,
+      #bcbcbc 12%,
+      #f5f5f5 50%,
+      #bababa 88%,
+      #e9e9e9
+    );
+
+  box-shadow:
+    inset 0 8px 8px rgba(0,0,0,0.24),
+    inset 0 -8px 8px rgba(0,0,0,0.24);
+}
+
+/* 空リールの基準線 */
+
+.reel-mount::before,
+.reel-mount::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  height: 1px;
+
+  background:
+    rgba(0,0,0,0.18);
+}
+
+.reel-mount::before {
+  top: 33.333%;
+}
+
+.reel-mount::after {
+  top: 66.666%;
+}
+
+/* =========================================================
+   06：操作卓
+========================================================= */
+
+#control-deck-unit {
+  overflow: visible;
+
+  border-radius: 4px 4px 10px 10px;
+
+  perspective: 500px;
+}
+
+#control-deck-surface {
+  position: absolute;
+
+  inset: 2px 0 -4px;
+
+  border:
+    2px solid #4b4b4b;
+
+  border-radius:
+    4px 4px
+    15px 15px;
+
+  background:
+    linear-gradient(
+      165deg,
+      #e3e3e3 0%,
+      #676767 12%,
+      #1b1b1b 31%,
+      #070707 68%,
+      #292929 100%
+    );
+
+  box-shadow:
+    inset 0 4px 6px rgba(255,255,255,0.15),
+    inset 0 -8px 10px #000,
+    0 5px 7px rgba(0,0,0,0.88);
+
+  transform:
+    rotateX(4deg);
+}
+
+/* 操作卓中央黒枠 */
+
+#control-button-panel {
+  position: absolute;
+
+  top: 15px;
+  left: 76px;
+  right: 61px;
+  bottom: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  padding: 0 8px;
+
+  border:
+    2px solid #555;
+
+  border-radius: 26px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #111,
+      #030303 55%,
+      #181818
+    );
+
+  box-shadow:
+    inset 0 0 8px #000,
+    0 1px 3px rgba(255,255,255,0.18);
+}
+
+/* STOPボタン */
+
+.stop-button-mount {
+  width: 39px;
+  height: 39px;
+
+  border:
+    4px solid #202020;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 38% 30%,
+      #ffb0b0 0%,
+      #ff4b58 24%,
+      #e20d26 61%,
+      #66000b 100%
+    );
+
+  box-shadow:
+    0 0 0 2px #777,
+    0 3px 4px #000,
+    inset 0 3px 5px rgba(255,255,255,0.52),
+    inset 0 -5px 7px rgba(0,0,0,0.55);
+}
+
+/* レバー */
+
+#start-lever-mount {
+  position: absolute;
+
+  left: 24px;
+  top: 17px;
+
+  width: 41px;
+  height: 41px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 38% 33%,
+      #777,
+      #151515 34%,
+      #020202 66%,
+      #4a4a4a 70%,
+      #0b0b0b
+    );
+
+  box-shadow:
+    0 0 0 3px #717171,
+    inset 0 0 8px #000,
+    0 3px 4px #000;
+}
+
+/* BETボタン */
+
+#bet-button-mount {
+  position: absolute;
+
+  left: 9px;
+  top: 25px;
+
+  width: 23px;
+  height: 23px;
+
+  border:
+    3px solid #272727;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      #888,
+      #252525 43%,
+      #060606
+    );
+
+  box-shadow:
+    0 0 0 1px #777,
+    0 2px 3px #000;
+}
+
+/* メダル投入口 */
+
+#medal-insert-mount {
+  position: absolute;
+
+  right: 12px;
+  top: 20px;
+
+  width: 38px;
+  height: 30px;
+
+  border:
+    2px solid #555;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      ellipse,
+      #030303 0 34%,
+      #777 37%,
+      #222 65%,
+      #050505
+    );
+
+  box-shadow:
+    0 2px 4px #000;
+}
+
+/* =========================================================
+   07：下部ビジュアルパネル
+========================================================= */
+
+#lower-visual-unit {
+  padding: 5px 8px;
+
+  border-radius: 5px;
+}
+
+#lower-visual-bezel {
+  width: 100%;
+  height: 100%;
+
+  padding: 5px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #e6e6e6,
+      #4c4c4c 8%,
+      #111 21%,
+      #111 79%,
+      #5e5e5e 92%,
+      #ededed
+    );
+
+  box-shadow:
+    inset 0 0 5px #000;
+}
+
+#lower-visual-surface {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  border:
+    3px solid #050505;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      #25131d,
+      #070507 74%
+    );
+
+  box-shadow:
+    inset 0 0 16px #000;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 下部ビジュアルパネル画像 */
+
+#lower-visual-surface img {
+  max-width: 100%;
+  max-height: 100%;
+
+  width: auto;
+  height: auto;
+
+  object-fit: contain;
+}
+
+/* ガラスの反射エフェクト */
+
+#lower-visual-surface::before {
+  content: "";
+
+  position: absolute;
+  z-index: 2;
+
+  top: -18%;
+  left: -12%;
+
+  width: 68%;
+  height: 86%;
+
+  transform: rotate(-9deg);
+
+  background:
+    linear-gradient(
+      118deg,
+      rgba(255,255,255,0.12),
+      rgba(255,255,255,0.018) 39%,
+      transparent 64%
+    );
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   10：底部ベース
+========================================================= */
+
+#bottom-base-unit {
+  position: absolute;
+  z-index: 5;
+
+  bottom: 0;
+  left: 47px;
+  right: 47px;
+
+  height: 14px;
+
+  border:
+    2px solid #4b4b4b;
+
+  border-radius: 0 0 8px 8px;
+
+  background:
+    linear-gradient(
+      to right,
+      #1a1a1a,
+      #2d2d2d,
+      #1a1a1a
+    );
+
+  box-shadow:
+    inset 0 0 4px rgba(255,255,255,0.15),
+    0 3px 5px rgba(0,0,0,0.75);
+}
+
+</style>
+
+</head>
+
+<body>
+
+<!-- ===================================================== -->
+<!-- 00：共通筐体アセンブリ -->
+<!-- ===================================================== -->
+
+<div id="ptaro-cabinet">
+
+  <!-- ===================================================== -->
+  <!-- 01：外装シェル -->
+  <!-- ===================================================== -->
+
+  <div id="cabinet-outer-shell"></div>
+
+  <!-- ===================================================== -->
+  <!-- 08・09：左右サイドLEDフレーム -->
+  <!-- ===================================================== -->
+
+  <div id="left-side-led-frame" class="side-led-frame"></div>
+  <div id="right-side-led-frame" class="side-led-frame"></div>
+
+  <!-- ===================================================== -->
+  <!-- 02：トップクラウン -->
+  <!-- ===================================================== -->
+
+  <div id="top-crown-unit">
+    <div id="top-crown-surface"></div>
+  </div>
+
+  <!-- ===================================================== -->
+  <!-- 中央コンテンツアセンブリ -->
+  <!-- ===================================================== -->
+
+  <div id="cabinet-content-assembly">
+
+    <!-- ===================================================== -->
+    <!-- 03：タイトルパネル -->
+    <!-- ===================================================== -->
+
+    <div id="title-panel-unit" class="cabinet-section">
+      <div id="title-panel-bezel">
+        <div id="title-panel-surface">Ｐ太郎 ～狂乱鬼ヶ島～</div>
+      </div>
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- 04：メイン表示部 -->
+    <!-- ===================================================== -->
+
+    <div id="main-display-unit" class="cabinet-section">
+      <div id="main-display-bezel">
+        <div id="main-display-glass">
+          <div id="main-display-mount"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- 05：リール部 -->
+    <!-- ===================================================== -->
+
+    <div id="reel-unit" class="cabinet-section">
+      <div id="reel-bezel">
+        <div id="reel-window">
+          <div class="reel-mount"></div>
+          <div class="reel-mount"></div>
+          <div class="reel-mount"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- 06：操作卓 -->
+    <!-- ===================================================== -->
+
+    <div id="control-deck-unit" class="cabinet-section">
+      <div id="start-lever-mount"></div>
+      <div id="bet-button-mount"></div>
+      <div id="medal-insert-mount"></div>
+      <div id="control-deck-surface">
+        <div id="control-button-panel">
+          <div class="stop-button-mount"></div>
+          <div class="stop-button-mount"></div>
+          <div class="stop-button-mount"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================== -->
+    <!-- 07：下部ビジュアルパネル -->
+    <!-- ===================================================== -->
+
+    <div id="lower-visual-unit" class="cabinet-section">
+      <div id="lower-visual-bezel">
+        <div id="lower-visual-surface">
+          <img src="ptaro_kyoran_lower.png.png" alt="Ｐ太郎 狂乱鬼ヶ島 下部パネル" />
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ===================================================== -->
+  <!-- 10：底部ベース -->
+  <!-- ===================================================== -->
+
+  <div id="bottom-base-unit"></div>
+
+</div>
+
+</body>
+
+</html>
