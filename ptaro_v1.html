@@ -552,15 +552,6 @@ body {
 
   box-shadow:
     inset 0 0 10px #000;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 18px;
-  font-weight: bold;
-  color: var(--accent-light);
-  text-shadow: 0 0 8px var(--accent);
 }
 
 /* =========================================================
@@ -1005,196 +996,343 @@ body {
 
   box-shadow:
     inset 0 0 16px #000;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
 }
-
-/* 下部ビジュアルパネル画像 */
-
-#lower-visual-surface img {
-  max-width: 100%;
-  max-height: 100%;
-
-  width: auto;
-  height: auto;
-
-  object-fit: contain;
-}
-
-/* ガラスの反射エフェクト */
 
 #lower-visual-surface::before {
   content: "";
 
   position: absolute;
-  z-index: 2;
 
-  top: -18%;
+  top: -35%;
   left: -12%;
 
-  width: 68%;
-  height: 86%;
+  width: 75%;
+  height: 100%;
 
-  transform: rotate(-9deg);
+  transform: rotate(-12deg);
 
   background:
     linear-gradient(
-      118deg,
-      rgba(255,255,255,0.12),
-      rgba(255,255,255,0.018) 39%,
-      transparent 64%
+      115deg,
+      rgba(255,255,255,0.13),
+      rgba(255,255,255,0.02) 40%,
+      transparent 67%
     );
-
-  pointer-events: none;
 }
 
 /* =========================================================
    10：底部ベース
 ========================================================= */
 
-#bottom-base-unit {
-  position: absolute;
-  z-index: 5;
-
-  bottom: 0;
-  left: 47px;
-  right: 47px;
-
-  height: 14px;
-
-  border:
-    2px solid #4b4b4b;
-
-  border-radius: 0 0 8px 8px;
+#cabinet-base-unit {
+  border-radius:
+    3px 3px
+    9px 9px;
 
   background:
     linear-gradient(
-      to right,
-      #1a1a1a,
-      #2d2d2d,
-      #1a1a1a
+      to bottom,
+      #272727,
+      #080808 38%,
+      #030303 72%,
+      #161616
     );
 
   box-shadow:
-    inset 0 0 4px rgba(255,255,255,0.15),
-    0 3px 5px rgba(0,0,0,0.75);
+    inset 0 4px 6px rgba(255,255,255,0.05),
+    inset 0 -6px 8px #000;
 }
 
+/* 底部中央補強 */
+
+#cabinet-base-unit::after {
+  content: "";
+
+  position: absolute;
+
+  left: 50%;
+  bottom: 0;
+
+  width: 58px;
+  height: 29px;
+
+  transform:
+    translateX(-50%);
+
+  clip-path:
+    polygon(
+      50% 0,
+      100% 100%,
+      0 100%
+    );
+
+  background:
+    linear-gradient(
+      90deg,
+      #050505,
+      #242424 50%,
+      #050505
+    );
+
+  opacity: 0.72;
+}
+
+/* =========================================================
+   パーツ名確認表示
+   bodyのshow-part-namesを削除すると非表示
+========================================================= */
+
+.show-part-names [data-part-name]::after {
+  content: attr(data-part-name);
+
+  position: absolute;
+  z-index: 200;
+
+  top: 3px;
+  left: 50%;
+
+  max-width: 94%;
+
+  padding: 2px 5px;
+
+  transform: translateX(-50%);
+
+  overflow: hidden;
+
+  color: #fff;
+  background: rgba(0,0,0,0.72);
+
+  border:
+    1px solid rgba(255,255,255,0.15);
+
+  border-radius: 3px;
+
+  font-size: 7px;
+  line-height: 1.2;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+
+  pointer-events: none;
+}
+
+/* サイドフレームのラベル */
+
+.show-part-names
+.side-led-frame[data-part-name]::after {
+  top: 50%;
+  left: 50%;
+
+  writing-mode: vertical-rl;
+
+  transform:
+    translate(-50%, -50%);
+}
+
+/* =========================================================
+   スマートフォン対応
+========================================================= */
+
+@media (max-width: 350px) {
+  #cabinet-content-assembly {
+    left: 41px;
+    right: 41px;
+  }
+
+  #control-button-panel {
+    left: 70px;
+    right: 56px;
+  }
+
+  .stop-button-mount {
+    width: 35px;
+    height: 35px;
+  }
+}
 </style>
 
 </head>
 
-<body>
+<body class="show-part-names">
 
-<!-- ===================================================== -->
-<!-- 00：共通筐体アセンブリ -->
-<!-- ===================================================== -->
+<main
+  id="ptaro-cabinet"
+  data-part-name="00 P太郎 狂乱鬼ヶ島"
+>
 
-<div id="ptaro-cabinet">
-
-  <!-- ===================================================== -->
   <!-- 01：外装シェル -->
-  <!-- ===================================================== -->
+  <div
+    id="cabinet-outer-shell"
+    data-part-name="01 外装シェル"
+  ></div>
 
-  <div id="cabinet-outer-shell"></div>
+  <!-- 08：左サイドLEDフレーム -->
+  <aside
+    id="left-side-led-frame"
+    class="side-led-frame"
+    data-part-name="08 左サイドLED"
+  ></aside>
 
-  <!-- ===================================================== -->
-  <!-- 08・09：左右サイドLEDフレーム -->
-  <!-- ===================================================== -->
+  <!-- 09：右サイドLEDフレーム -->
+  <aside
+    id="right-side-led-frame"
+    class="side-led-frame"
+    data-part-name="09 右サイドLED"
+  ></aside>
 
-  <div id="left-side-led-frame" class="side-led-frame"></div>
-  <div id="right-side-led-frame" class="side-led-frame"></div>
-
-  <!-- ===================================================== -->
   <!-- 02：トップクラウン -->
-  <!-- ===================================================== -->
+  <header
+    id="top-crown-unit"
+    data-part-name="02 トップクラウン"
+  >
+    <div
+      id="top-crown-surface"
+      data-part-name="02-A クラウン表示面"
+    ></div>
+  </header>
 
-  <div id="top-crown-unit">
-    <div id="top-crown-surface"></div>
-  </div>
-
-  <!-- ===================================================== -->
-  <!-- 中央コンテンツアセンブリ -->
-  <!-- ===================================================== -->
-
+  <!-- 中央コンテンツ -->
   <div id="cabinet-content-assembly">
 
-    <!-- ===================================================== -->
     <!-- 03：タイトルパネル -->
-    <!-- ===================================================== -->
-
-    <div id="title-panel-unit" class="cabinet-section">
+    <section
+      id="title-panel-unit"
+      class="cabinet-section"
+      data-part-name="03 タイトルパネル"
+    >
       <div id="title-panel-bezel">
-        <div id="title-panel-surface">Ｐ太郎 ～狂乱鬼ヶ島～</div>
+        <div
+          id="title-panel-surface"
+          data-part-name="03-A タイトル表示面"
+        ></div>
       </div>
-    </div>
+    </section>
 
-    <!-- ===================================================== -->
     <!-- 04：メイン表示部 -->
-    <!-- ===================================================== -->
-
-    <div id="main-display-unit" class="cabinet-section">
+    <section
+      id="main-display-unit"
+      class="cabinet-section"
+      data-part-name="04 メイン表示部"
+    >
       <div id="main-display-bezel">
-        <div id="main-display-glass">
-          <div id="main-display-mount"></div>
+        <div
+          id="main-display-glass"
+          data-part-name="04-A メイン表示ガラス"
+        >
+          <div
+            id="main-display-mount"
+            data-part-name="04-B メイン表示取付面"
+          ></div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- ===================================================== -->
     <!-- 05：リール部 -->
-    <!-- ===================================================== -->
-
-    <div id="reel-unit" class="cabinet-section">
+    <section
+      id="reel-unit"
+      class="cabinet-section"
+      data-part-name="05 リール部"
+    >
       <div id="reel-bezel">
-        <div id="reel-window">
-          <div class="reel-mount"></div>
-          <div class="reel-mount"></div>
-          <div class="reel-mount"></div>
+        <div
+          id="reel-window"
+          data-part-name="05-A リール窓"
+        >
+          <div
+            id="left-reel-mount"
+            class="reel-mount"
+            data-part-name="05-B 左リール"
+          ></div>
+
+          <div
+            id="center-reel-mount"
+            class="reel-mount"
+            data-part-name="05-C 中リール"
+          ></div>
+
+          <div
+            id="right-reel-mount"
+            class="reel-mount"
+            data-part-name="05-D 右リール"
+          ></div>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- ===================================================== -->
     <!-- 06：操作卓 -->
-    <!-- ===================================================== -->
+    <section
+      id="control-deck-unit"
+      class="cabinet-section"
+      data-part-name="06 操作卓"
+    >
+      <div
+        id="control-deck-surface"
+        data-part-name="06-A 操作卓表面"
+      >
 
-    <div id="control-deck-unit" class="cabinet-section">
-      <div id="start-lever-mount"></div>
-      <div id="bet-button-mount"></div>
-      <div id="medal-insert-mount"></div>
-      <div id="control-deck-surface">
+        <div
+          id="bet-button-mount"
+          data-part-name="06-B BET"
+        ></div>
+
+        <div
+          id="start-lever-mount"
+          data-part-name="06-C START"
+        ></div>
+
         <div id="control-button-panel">
-          <div class="stop-button-mount"></div>
-          <div class="stop-button-mount"></div>
-          <div class="stop-button-mount"></div>
-        </div>
-      </div>
-    </div>
 
-    <!-- ===================================================== -->
+          <div
+            id="left-stop-button"
+            class="stop-button-mount"
+            data-part-name="06-D STOP1"
+          ></div>
+
+          <div
+            id="center-stop-button"
+            class="stop-button-mount"
+            data-part-name="06-E STOP2"
+          ></div>
+
+          <div
+            id="right-stop-button"
+            class="stop-button-mount"
+            data-part-name="06-F STOP3"
+          ></div>
+
+        </div>
+
+        <div
+          id="medal-insert-mount"
+          data-part-name="06-G メダル投入口"
+        ></div>
+
+      </div>
+    </section>
+
     <!-- 07：下部ビジュアルパネル -->
-    <!-- ===================================================== -->
-
-    <div id="lower-visual-unit" class="cabinet-section">
+    <section
+      id="lower-visual-unit"
+      class="cabinet-section"
+      data-part-name="07 下部ビジュアル"
+    >
       <div id="lower-visual-bezel">
-        <div id="lower-visual-surface">
-          <img src="ptaro_kyoran_lower.png.png" alt="Ｐ太郎 狂乱鬼ヶ島 下部パネル" />
-        </div>
+        <div
+          id="lower-visual-surface"
+          data-part-name="07-A 下部表示面"
+        ></div>
       </div>
-    </div>
+    </section>
+
+    <!-- 10：底部ベース -->
+    <footer
+      id="cabinet-base-unit"
+      class="cabinet-section"
+      data-part-name="10 底部ベース"
+    ></footer>
 
   </div>
 
-  <!-- ===================================================== -->
-  <!-- 10：底部ベース -->
-  <!-- ===================================================== -->
-
-  <div id="bottom-base-unit"></div>
-
-</div>
+</main>
 
 </body>
 
