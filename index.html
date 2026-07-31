@@ -1103,7 +1103,7 @@ let targetResult   = "MISS";
 
 /* リールアニメーション状態（リールごと） */
 const reelStates = [0, 1, 2].map(() => ({
-  rawPos:     LOOP_LEN, // 絶対位置（常に増加、正規化はbouncing終了時）
+  rawPos:     LOOP_LEN, // 絶対位置（停止時に正規化）
   speed:      0,
   state:      "idle",   // idle|accelerating|spinning|decelerating|bouncing
   targetPos:  0,
@@ -1151,8 +1151,12 @@ const payEffect = document.getElementById("payEffect");
  * ストリップは同一パターンを3コピー持つため、
  * displayPos がどの範囲にあっても中段コピーが表示される。
  */
+function positiveMod(value, mod) {
+  return ((value % mod) + mod) % mod;
+}
+
 function getDisplayPos(rawPos) {
-  return LOOP_LEN + ((rawPos - LOOP_LEN) % LOOP_LEN);
+  return LOOP_LEN + positiveMod(rawPos - LOOP_LEN, LOOP_LEN);
 }
 
 /* リールストリップの CSS transform を更新 */
@@ -1162,7 +1166,7 @@ function applyStripPos(i) {
   let by = 0;
   if (rs.bouncePhase >= 0) {
     // 停止後の軽い揺り戻し
-    const BOUNCE = [-5, -4, -2, 1, 2, 1, 0, -1, 0, 0, 0, 0];
+    const BOUNCE = [5, 4, 2, -1, -2, -1, 0, 1, 0, 0, 0, 0];
     by = rs.bouncePhase < BOUNCE.length ? BOUNCE[rs.bouncePhase] : 0;
   }
   reelStrips[i].style.transform = `translateY(${-dp + by}px)`;
@@ -1178,17 +1182,17 @@ function getStopTarget(reelIndex, symbolKey, rawPos, speed) {
 
   // targetResidual: displayPos - LOOP_LEN でシンボル t が中央に来る残差 ∈ [0, LOOP_LEN)
   const targetResidual  = ((t - 1 + N) % N) * SH;
-  const currentResidual = (rawPos - LOOP_LEN) % LOOP_LEN;
+  const currentResidual = positiveMod(rawPos - LOOP_LEN, LOOP_LEN);
 
-  let gap = (targetResidual - currentResidual + LOOP_LEN) % LOOP_LEN;
+  let gap = positiveMod(currentResidual - targetResidual, LOOP_LEN);
   if (gap === 0) gap = LOOP_LEN; // 現在位置に即停止させない
 
   // 最低2シンボル分の減速距離を確保
   while (gap < SH * 2) gap += LOOP_LEN;
 
-  const targetPos = rawPos + gap;
+  const targetPos = rawPos - gap;
 
-  // 物理式: v²=2aD → a = v²/(2D)  →  rawPos + gap で速度がちょうど0になる
+  // 物理式: v²=2aD → a = v²/(2D)  →  rawPos - gap で速度がちょうど0になる
   const decelA = Math.max((speed * speed) / (2 * gap), 0.005);
 
   return { targetPos, decelA };
@@ -1206,22 +1210,22 @@ function tickAllReels() {
     if (rs.state === "accelerating") {
       rs.speed = Math.min(rs.speed + ACCEL, MAX_SPEED);
       if (rs.speed >= MAX_SPEED) rs.state = "spinning";
-      rs.rawPos += rs.speed;
+      rs.rawPos -= rs.speed;
 
     } else if (rs.state === "spinning") {
-      rs.rawPos += rs.speed;
+      rs.rawPos -= rs.speed;
 
     } else if (rs.state === "decelerating") {
       rs.speed = Math.max(0, rs.speed - rs.decelA);
       // 次フレームで目標を越えるか、速度ゼロになったらスナップ
-      if (rs.speed === 0 || rs.rawPos + rs.speed >= rs.targetPos) {
+      if (rs.speed === 0 || rs.rawPos - rs.speed <= rs.targetPos) {
         rs.rawPos     = rs.targetPos;
         rs.speed      = 0;
         rs.state      = "bouncing";
         rs.bouncePhase = 0;
         onReelPhysicallyStopped(i);
       } else {
-        rs.rawPos += rs.speed;
+        rs.rawPos -= rs.speed;
       }
 
     } else if (rs.state === "bouncing") {
