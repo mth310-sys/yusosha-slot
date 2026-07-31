@@ -1,2015 +1,1180 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <meta name="theme-color" content="#060204">
-  <title>テラフォーマーズ スロット | 遊創舎</title>
-  <style>
-    /* =============================================
-       [0] リセット・基盤
-    ============================================= */
-    *, *::before, *::after {
-      box-sizing: border-box; margin: 0; padding: 0;
-      -webkit-tap-highlight-color: transparent;
-    }
-    html { height: 100%; background: #040103; overflow-x: hidden; }
-    body {
-      min-height: 100%;
-      background: radial-gradient(ellipse at center, #1a0608 0%, #040103 100%);
-      display: flex; justify-content: center; align-items: flex-start;
-      font-family: 'Courier New', 'Lucida Console', monospace;
-      overflow-x: hidden;
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    /* =============================================
-       [1] Canvas オーバーレイ
-    ============================================= */
-    #effectCanvas {
-      position: fixed; top: 0; left: 0;
-      width: 100%; height: 100%;
-      pointer-events: none; z-index: 9000;
-    }
+<title>遊創舎 共通筐体 Ver.1</title>
 
-    /* =============================================
-       [2] 筐体
-    ============================================= */
-    #cabinet {
-      width: 390px; min-height: 100vh; position: relative;
-      background: linear-gradient(175deg, #1a0808 0%, #0a0304 35%, #120608 65%, #1c0a0a 100%);
-      border-left: 3px solid #6b0e08; border-right: 3px solid #6b0e08;
-      overflow: hidden;
-      box-shadow:
-        -6px 0 20px rgba(160, 30, 10, 0.30),
-         6px 0 20px rgba(160, 30, 10, 0.30),
-        inset 0 0 60px rgba(0,0,0,0.55);
-    }
-    #cabinet::before {
-      content: ''; position: absolute; inset: 0;
-      background: repeating-linear-gradient(
-        0deg, transparent 0px, transparent 3px,
-        rgba(255,255,255,0.012) 3px, rgba(255,255,255,0.012) 4px
-      );
-      pointer-events: none; z-index: 0;
-    }
-    #cabinet > * { position: relative; z-index: 1; }
-    #cabinet.cabinet-flash { animation: cabinetFlash 0.28s ease-in-out 8; }
-    @keyframes cabinetFlash {
-      0%, 100% { filter: brightness(1); }
-      50%       { filter: brightness(1.6) saturate(1.5); }
-    }
+<style>
+/* =========================================================
+   遊創舎 共通パチスロ筐体 Ver.1
 
-    /* =============================================
-       [3] フレームランプ（最上部）
-    ============================================= */
-    .frame-lamp {
-      height: 6px;
-      background: linear-gradient(to right, #5a0000, #cc1800, #ff4400, #cc1800, #ff2200, #cc1800, #5a0000);
-      animation: framePulseNormal 1.4s ease-in-out infinite;
-    }
-    .frame-lamp.mode-at {
-      height: 8px;
-      animation: framePulseAt 0.25s steps(1) infinite;
-    }
-    .frame-lamp.mode-bonus {
-      height: 8px;
-      animation: framePulseBonus 0.12s steps(1) infinite;
-    }
-    @keyframes framePulseNormal {
-      0%, 100% { opacity: 0.6; }
-      50%       { opacity: 1; filter: brightness(1.6); }
-    }
-    @keyframes framePulseAt {
-      0%   { background: #ff0000; }
-      14%  { background: #ff6600; }
-      28%  { background: #ffcc00; }
-      42%  { background: #ff0066; }
-      57%  { background: #cc00ff; }
-      71%  { background: #0088ff; }
-      85%  { background: #00ff88; }
-    }
-    @keyframes framePulseBonus {
-      0%   { background: #ff0000; }
-      33%  { background: #ff8800; }
-      66%  { background: #ffdd00; }
-    }
+   基準サイズ：390 × 600
+   構成：
+   01 外装シェル
+   02 トップクラウン
+   03 タイトルパネル
+   04 メイン表示部
+   05 リール部
+   06 操作卓
+   07 下部ビジュアルパネル
+   08 左サイドLEDフレーム
+   09 右サイドLEDフレーム
+   10 底部ベース
 
-    /* =============================================
-       [4] 上部 LED ストリップ
-    ============================================= */
-    .top-led-strip {
-      display: flex; justify-content: center; align-items: center;
-      gap: 5px; padding: 8px 20px 6px;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.65) 0%, transparent 100%);
-    }
-    .led-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
-    .led-dot.red {
-      background: #ff2200;
-      box-shadow: 0 0 5px #ff2200, 0 0 10px rgba(255,34,0,0.5);
-      animation: ledPulse 1.6s ease-in-out infinite;
-    }
-    .led-dot.amber {
-      background: #ff8800;
-      box-shadow: 0 0 5px #ff8800, 0 0 10px rgba(255,136,0,0.5);
-      animation: ledPulse 1.6s ease-in-out infinite;
-    }
-    .led-dot:nth-child(odd)  { animation-delay: 0s; }
-    .led-dot:nth-child(even) { animation-delay: 0.8s; }
-    @keyframes ledPulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50%       { opacity: 0.18; transform: scale(0.68); }
-    }
+   スピーカー・下皿・払出口なし
+========================================================= */
 
-    /* =============================================
-       [5] マシン ヘッダー
-    ============================================= */
-    .machine-header {
-      text-align: center; padding: 4px 20px 8px; position: relative; cursor: pointer;
-    }
-    .machine-header::before, .machine-header::after {
-      content: ''; position: absolute; top: 50%; transform: translateY(-50%);
-      width: 20%; height: 1px;
-      background: linear-gradient(to right, transparent, #8b2000 60%, #ff3300 100%);
-    }
-    .machine-header::before { left: 4%; }
-    .machine-header::after  { right: 4%; transform: translateY(-50%) scaleX(-1); }
-    .machine-name {
-      font-size: 19px; font-weight: 900; letter-spacing: 5px;
-      color: #ff3300;
-      text-shadow:
-        0 0 10px rgba(255,50,0,0.95),
-        0 0 28px rgba(200,20,0,0.55),
-        0 2px 4px rgba(0,0,0,0.95);
-      font-family: 'Arial Black', 'Impact', sans-serif;
-    }
-    .machine-subtitle {
-      font-size: 7px; letter-spacing: 3px; color: #5a1a08;
-      margin-top: 3px; text-transform: uppercase;
-    }
+* {
+  box-sizing: border-box;
+}
 
-    /* =============================================
-       [6] LCD パネル
-    ============================================= */
-    .lcd-panel {
-      margin: 2px 8px 6px;
-      background: #02040c;
-      border: 2px solid #2a0e06;
-      border-radius: 8px;
-      padding: 7px 10px 6px;
-      position: relative;
-      height: 116px;
-      overflow: hidden;
-      box-shadow:
-        inset 0 0 35px rgba(0,0,0,0.98),
-        0 0 12px rgba(160,50,0,0.18),
-        0 3px 10px rgba(0,0,0,0.8);
-    }
-    .lcd-panel::before {
-      content: ''; position: absolute; inset: 0;
-      background: repeating-linear-gradient(
-        0deg, transparent 0px, transparent 3px,
-        rgba(0,0,0,0.18) 3px, rgba(0,0,0,0.18) 4px
-      );
-      pointer-events: none; z-index: 5; border-radius: 6px;
-    }
-    .lcd-panel::after {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 32%;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.035) 0%, transparent 100%);
-      border-radius: 6px 6px 0 0; pointer-events: none; z-index: 6;
-    }
-    .lcd-content { position: relative; z-index: 4; height: 100%; display: flex; flex-direction: column; }
+:root {
+  --machine-width: 390px;
+  --machine-height: 600px;
 
-    .lcd-header {
-      display: flex; justify-content: space-between; align-items: center;
-      border-bottom: 1px solid #1e0c04; padding-bottom: 4px; margin-bottom: 5px;
-    }
-    .lcd-mode-tag {
-      font-size: 8px; letter-spacing: 2px; color: #cc3300;
-      background: rgba(160,30,0,0.18); padding: 1px 6px;
-      border: 1px solid #3a0e00; border-radius: 2px;
-    }
-    .lcd-year { font-size: 8px; color: #2e1408; letter-spacing: 2px; }
+  --frame-black: #050505;
+  --frame-dark: #111;
+  --frame-mid: #292929;
 
-    .lcd-main {
-      text-align: center; font-size: 16px; font-weight: bold; letter-spacing: 3px;
-      color: #ff6622;
-      text-shadow: 0 0 9px rgba(255,100,0,0.75), 0 0 20px rgba(200,60,0,0.35);
-      min-height: 24px; transition: opacity 0.15s;
-    }
-    .lcd-main.flash { animation: lcdFlash 0.3s ease-out; }
-    @keyframes lcdFlash {
-      0% { opacity: 0; transform: scaleX(1.06); }
-      100% { opacity: 1; transform: scaleX(1); }
-    }
-    .lcd-sub {
-      text-align: center; font-size: 9px; letter-spacing: 1px;
-      color: #7a3010; margin-top: 3px; min-height: 14px;
-    }
+  --chrome-dark: #252525;
+  --chrome-mid: #7c7c7c;
+  --chrome-light: #f3f3f3;
 
-    .lcd-at-bar {
-      display: none; align-items: center; gap: 6px;
-      margin-top: 6px; padding-top: 5px; border-top: 1px solid #1e0c04;
-    }
-    .lcd-at-bar.visible { display: flex; }
-    .lcd-at-label { font-size: 8px; color: #ff3300; letter-spacing: 1px; white-space: nowrap; }
-    .lcd-at-gauge {
-      flex: 1; height: 7px; background: #080204;
-      border: 1px solid #2a0800; border-radius: 4px; overflow: hidden;
-    }
-    .lcd-at-fill {
-      height: 100%;
-      background: linear-gradient(to right, #aa1800, #ff4400, #ff8800);
-      border-radius: 4px; transition: width 0.35s ease;
-      box-shadow: 0 0 5px rgba(255,80,0,0.6);
-    }
-    .lcd-at-count {
-      font-size: 12px; font-weight: bold; color: #ff6622; white-space: nowrap;
-      text-shadow: 0 0 5px rgba(255,100,0,0.7);
-      min-width: 36px; text-align: right;
-    }
+  --accent: #ff236b;
+  --accent-dark: #7b0c35;
+  --accent-light: #ff9abb;
 
-    /* =============================================
-       [7] リールエリア全体
-    ============================================= */
-    .reel-area {
-      display: flex; align-items: stretch;
-      padding: 0 8px; gap: 4px; margin-bottom: 5px;
-    }
+  --gold-dark: #55400c;
+  --gold-mid: #b79734;
+  --gold-light: #fff0a0;
+}
 
-    /* =============================================
-       [8] サイドパネル・PEKAランプ
-    ============================================= */
-    .side-panel {
-      width: 18px; display: flex; flex-direction: column;
-      align-items: center; gap: 5px; padding: 8px 0; flex-shrink: 0;
-    }
-    .peka-lamp {
-      width: 14px; height: 30px; border-radius: 4px;
-      background: radial-gradient(circle at 50% 40%, #1c0400 30%, #0a0200 100%);
-      border: 1px solid #380800; box-shadow: 0 0 3px rgba(0,0,0,0.9);
-      transition: background 0.07s, box-shadow 0.07s, border-color 0.07s;
-      flex-shrink: 0;
-    }
-    .peka-lamp.lit {
-      background: radial-gradient(circle at 50% 35%, #ffffff 15%, #ff7733 50%, #cc2200 100%);
-      border-color: #ff4400;
-      box-shadow: 0 0 9px #ff6600, 0 0 22px #ff3300, 0 0 44px rgba(255,80,0,0.65);
-      animation: pekaFlash 0.12s ease-in-out infinite alternate;
-    }
-    @keyframes pekaFlash {
-      from { box-shadow: 0 0 9px #ff6600, 0 0 22px #ff3300, 0 0 44px rgba(255,80,0,0.65); }
-      to   { box-shadow: 0 0 18px #ffffff, 0 0 38px #ff6600, 0 0 72px rgba(255,130,0,0.90); }
-    }
-    .side-led { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    .side-led.red {
-      background: #ff2200;
-      box-shadow: 0 0 4px #ff2200, 0 0 8px rgba(255,34,0,0.4);
-      animation: sideLed 2.0s ease-in-out infinite;
-    }
-    .side-led.amber {
-      background: #ff7700;
-      box-shadow: 0 0 4px #ff7700, 0 0 8px rgba(255,120,0,0.4);
-      animation: sideLed 2.0s ease-in-out infinite;
-    }
-    .side-led.at-red {
-      background: #ff0044;
-      box-shadow: 0 0 6px #ff0044, 0 0 14px rgba(255,0,60,0.6);
-      animation: sideLedAt 0.3s ease-in-out infinite alternate;
-    }
-    .side-panel.left  .side-led:nth-child(odd)  { animation-delay: 0.0s; }
-    .side-panel.left  .side-led:nth-child(even) { animation-delay: 1.0s; }
-    .side-panel.right .side-led:nth-child(odd)  { animation-delay: 0.5s; }
-    .side-panel.right .side-led:nth-child(even) { animation-delay: 1.5s; }
-    @keyframes sideLed    { 0%, 100% { opacity: 1; } 50% { opacity: 0.12; } }
-    @keyframes sideLedAt  { from { opacity: 0.3; } to { opacity: 1; } }
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+}
 
-    /* =============================================
-       [9] リール窓フレーム
-    ============================================= */
-    .reel-frame {
-      flex: 1; position: relative; border-radius: 10px;
-      background: linear-gradient(145deg, #200c0c 0%, #0c0404 50%, #180808 100%);
-      padding: 3px;
-      border: 2px solid transparent; outline: 1px solid #280800;
-      box-shadow:
-        0 6px 30px rgba(0,0,0,0.98),
-        inset 0 1px 3px rgba(255,255,255,0.055),
-        inset 0 -1px 3px rgba(0,0,0,0.7);
-    }
-    .reel-frame::before {
-      content: ''; position: absolute; inset: -2px; border-radius: 12px;
-      background: linear-gradient(145deg, #8b0e00 0%, #cc2800 30%, #4a0600 50%, #cc2800 70%, #8b0e00 100%);
-      z-index: -1;
-    }
-    .reel-frame::after {
-      content: ''; position: absolute; top: 4px; left: 4px; right: 4px; height: 28%;
-      background: linear-gradient(to bottom, rgba(255,255,255,0.06) 0%, transparent 100%);
-      border-radius: 8px 8px 0 0; pointer-events: none; z-index: 8;
-    }
-    .reel-frame-inner {
-      background: #030203; border-radius: 8px; padding: 10px 8px; position: relative;
-      box-shadow: inset 0 2px 10px rgba(0,0,0,0.98);
-    }
-    .reel-frame-inner::before {
-      content: ''; position: absolute; inset: 0; border-radius: 8px;
-      background: radial-gradient(ellipse at 50% 65%, rgba(160,30,0,0.07) 0%, transparent 70%);
-      pointer-events: none; z-index: 0;
-    }
+body {
+  min-height: 100vh;
 
-    /* =============================================
-       [10] 当選ライン
-    ============================================= */
-    .win-line {
-      position: absolute; left: 6px; right: 6px; top: 118px; height: 2px;
-      background: linear-gradient(
-        to right,
-        transparent,
-        rgba(255,80,0,0.35) 15%,
-        rgba(255,100,0,0.65) 50%,
-        rgba(255,80,0,0.35) 85%,
-        transparent
-      );
-      z-index: 9; pointer-events: none;
-    }
-    .win-line.active {
-      animation: winLinePulse 0.45s ease-in-out infinite;
-    }
-    @keyframes winLinePulse {
-      0%, 100% { opacity: 1; box-shadow: 0 0 4px rgba(255,80,0,0.5); }
-      50%       { opacity: 0.55; box-shadow: 0 0 14px rgba(255,140,0,0.9); }
-    }
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
 
-    /* =============================================
-       [11] リールコンテナ・リール窓
-    ============================================= */
-    .reel-container { display: flex; gap: 5px; position: relative; z-index: 1; }
-    .reel-window {
-      flex: 1; height: 228px; overflow: hidden; position: relative;
-      background: #020102; border-radius: 4px; border: 1px solid #180606;
-      box-shadow: inset 0 0 28px rgba(0,0,0,0.98), inset 0 0 6px rgba(0,0,0,1);
-    }
-    .reel-window::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 44px;
-      background: linear-gradient(to bottom, rgba(0,0,0,0.97) 0%, rgba(0,0,0,0.52) 65%, transparent 100%);
-      z-index: 6; pointer-events: none;
-    }
-    .reel-window::after {
-      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 44px;
-      background: linear-gradient(to top, rgba(0,0,0,0.97) 0%, rgba(0,0,0,0.52) 65%, transparent 100%);
-      z-index: 6; pointer-events: none;
-    }
-    @keyframes reelStopFlash {
-      0%   { box-shadow: inset 0 0 32px rgba(255,80,0,0.65), inset 0 0 6px rgba(0,0,0,1); border-color: #ff4400; }
-      100% { box-shadow: inset 0 0 28px rgba(0,0,0,0.98), inset 0 0 6px rgba(0,0,0,1); border-color: #180606; }
-    }
-    .reel-window.flash-stop { animation: reelStopFlash 0.45s ease-out forwards; }
-    .reel-scanline {
-      position: absolute; inset: 0;
-      background: repeating-linear-gradient(0deg, transparent 0px, transparent 5px, rgba(0,0,0,0.07) 5px, rgba(0,0,0,0.07) 6px);
-      z-index: 5; pointer-events: none; border-radius: 4px;
-    }
-    .reel-tape { position: absolute; top: 0; left: 0; right: 0; will-change: transform; }
+  padding: 20px 6px 40px;
 
-    /* =============================================
-       [12] シンボル
-    ============================================= */
-    .reel-sym {
-      height: 76px; display: flex; align-items: center; justify-content: center;
-      font-size: 28px; line-height: 1; user-select: none; position: relative;
-    }
-    .sym-mars {
-      font-size: 18px; font-weight: 900; color: #ff2200; letter-spacing: 0px;
-      text-shadow:
-        0 0 10px rgba(255,40,0,1),
-        0 0 26px rgba(200,10,0,0.65),
-        0 2px 3px rgba(0,0,0,0.98);
-      font-family: 'Arial Black', 'Impact', sans-serif;
-    }
-    .sym-terra {
-      font-size: 18px; font-weight: 900; color: #d0d0d0; letter-spacing: -1px;
-      text-shadow:
-        0 0 7px rgba(180,180,180,0.55),
-        0 0 18px rgba(255,80,80,0.25),
-        0 1px 2px rgba(0,0,0,0.98);
-      font-family: 'Arial Black', 'Impact', sans-serif;
-    }
-    .sym-squad {
-      font-size: 18px; font-weight: 900; color: #4488ff; letter-spacing: 0px;
-      text-shadow: 0 0 8px rgba(60,130,255,0.75), 0 1px 2px rgba(0,0,0,0.95);
-      font-family: 'Arial Black', 'Impact', sans-serif;
-    }
-    .sym-bugs {
-      font-size: 14px; font-weight: 900; color: #44dd66; letter-spacing: 1px;
-      text-shadow: 0 0 8px rgba(60,200,80,0.75), 0 1px 2px rgba(0,0,0,0.95);
-      font-family: 'Courier New', monospace;
-    }
-    .sym-rocket { font-size: 28px; filter: drop-shadow(0 0 4px rgba(180,200,255,0.5)); }
-    .sym-moss   { font-size: 28px; filter: drop-shadow(0 0 3px rgba(60,160,60,0.45)); }
-    .sym-g {
-      font-size: 24px; font-weight: 900; color: #668833;
-      text-shadow: 0 0 5px rgba(90,110,40,0.45), 0 1px 2px rgba(0,0,0,0.95);
-      font-family: 'Arial Black', 'Impact', sans-serif;
-    }
+  background:
+    radial-gradient(
+      ellipse at center top,
+      #393939 0%,
+      #171717 38%,
+      #050505 74%,
+      #010101 100%
+    );
 
-    /* =============================================
-       [13] 情報表示パネル
-    ============================================= */
-    .info-panel {
-      display: flex; justify-content: space-between; align-items: center;
-      margin: 0 8px 4px;
-      background: linear-gradient(to bottom, #0e0404 0%, #060202 50%, #0e0404 100%);
-      border: 1px solid #2a0800; border-radius: 6px;
-      padding: 7px 10px;
-      box-shadow: 0 3px 10px rgba(0,0,0,0.88), inset 0 1px 3px rgba(0,0,0,0.8);
-    }
-    .info-item { text-align: center; flex: 1; }
-    .info-item + .info-item { border-left: 1px solid #1e0600; }
-    .info-label { font-size: 8px; letter-spacing: 2px; color: #5a1a00; margin-bottom: 4px; }
-    .info-value {
-      font-size: 24px; font-weight: 900; color: #ff4400; letter-spacing: 2px;
-      text-shadow: 0 0 8px rgba(255,80,0,0.85), 0 0 20px rgba(200,40,0,0.4);
-      font-variant-numeric: tabular-nums;
-    }
-    @keyframes infoBlink {
-      0%, 49% { opacity: 1; }
-      50%, 100%{ opacity: 0; }
-    }
-    .info-value.blink { animation: infoBlink 0.36s steps(1) infinite; }
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Segoe UI",
+    sans-serif;
+}
 
-    /* =============================================
-       [14] AT ストリップ
-    ============================================= */
-    .at-strip {
-      margin: 0 8px 3px;
-      background: linear-gradient(to right, #0a0204, #160608, #0a0204);
-      border: 1px solid #380a00; border-radius: 4px;
-      padding: 3px 10px;
-      display: flex; align-items: center; justify-content: space-between;
-      opacity: 0; pointer-events: none;
-      transition: opacity 0.3s; height: 26px;
-    }
-    .at-strip.visible { opacity: 1; }
-    .at-strip-label { font-size: 8px; letter-spacing: 2px; color: #ff3300; }
-    .at-strip-count {
-      font-size: 15px; font-weight: bold; color: #ff5522;
-      font-family: 'Courier New', monospace;
-      text-shadow: 0 0 6px rgba(255,90,0,0.7);
-    }
-    .at-strip-stock { font-size: 8px; color: #6a2000; }
+/* =========================================================
+   00：共通筐体アセンブリ
+========================================================= */
 
-    /* =============================================
-       [15] ボタン行
-    ============================================= */
-    .button-row { display: flex; gap: 6px; padding: 4px 8px; }
-    .main-buttons { gap: 8px; padding: 5px 10px; }
-    .btn {
-      flex: 1; border: none; cursor: pointer;
-      font-family: 'Courier New', monospace; font-weight: 900;
-      letter-spacing: 1px; border-radius: 8px; user-select: none;
-      touch-action: manipulation; position: relative;
-      transition: transform 0.07s, filter 0.07s;
-      -webkit-appearance: none;
-    }
-    .btn:active:not(:disabled) { transform: translateY(3px) scale(0.97); filter: brightness(0.68); }
-    .btn:disabled { opacity: 0.30; cursor: not-allowed; }
-    .btn:disabled:active { transform: none; filter: none; }
+#yusosha-common-cabinet {
+  position: relative;
 
-    .btn-bet {
-      height: 52px; font-size: 13px; color: #cc8866;
-      background: linear-gradient(to bottom, #2e1008 0%, #1a0804 40%, #140602 60%, #241008 100%);
-      box-shadow: 0 4px 0 #0a0200, 0 5px 8px rgba(0,0,0,0.75), inset 0 1px 2px rgba(255,150,100,0.10);
-      border-top: 1px solid #4a1a08;
-    }
-    .btn-maxbet {
-      height: 52px; font-size: 10px; color: #dd9933;
-      background: linear-gradient(to bottom, #261808 0%, #160e02 40%, #100a00 60%, #1e1404 100%);
-      box-shadow: 0 4px 0 #080400, 0 5px 8px rgba(0,0,0,0.75), inset 0 1px 2px rgba(255,180,60,0.08);
-      border-top: 1px solid #3e2808;
-    }
-    .btn-start {
-      height: 52px; font-size: 14px; color: #55cc33;
-      background: linear-gradient(to bottom, #1a3808 0%, #0e1e04 40%, #0a1802 60%, #142e06 100%);
-      box-shadow: 0 4px 0 #040c00, 0 5px 10px rgba(0,0,0,0.8), inset 0 1px 2px rgba(80,200,40,0.07), 0 0 12px rgba(60,160,0,0.2);
-      border-top: 1px solid #2a5a10;
-      text-shadow: 0 0 8px rgba(80,200,40,0.6);
-    }
-    .btn-start.ready {
-      color: #88ff44;
-      box-shadow: 0 4px 0 #040c00, 0 5px 10px rgba(0,0,0,0.8), inset 0 1px 2px rgba(80,200,40,0.07), 0 0 28px rgba(100,220,40,0.55);
-      text-shadow: 0 0 14px rgba(130,255,60,0.95);
-      animation: startPulse 1.0s ease-in-out infinite;
-    }
-    @keyframes startPulse {
-      0%, 100% { box-shadow: 0 4px 0 #040c00, 0 0 12px rgba(80,200,20,0.35); }
-      50%       { box-shadow: 0 4px 0 #040c00, 0 0 30px rgba(120,240,40,0.7); }
-    }
-    .btn-stop {
-      height: 62px; font-size: 11px; line-height: 1.2; color: #bb4422;
-      background: linear-gradient(to bottom, #2e0c08 0%, #1a0806 40%, #140604 60%, #241008 100%);
-      box-shadow: 0 4px 0 #0c0200, 0 5px 8px rgba(0,0,0,0.82), inset 0 1px 2px rgba(255,80,40,0.08);
-      border-top: 1px solid #481408;
-      display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1px;
-    }
-    .btn-stop:not(:disabled) {
-      color: #ff4422;
-      box-shadow: 0 4px 0 #0c0200, 0 5px 8px rgba(0,0,0,0.82), 0 0 12px rgba(200,50,0,0.25);
-    }
-    .btn-stop.nav-highlight {
-      color: #ff9900; border-top-color: #cc6600;
-      box-shadow: 0 4px 0 #0c0200, 0 0 18px rgba(255,150,0,0.55);
-      animation: navBtnPulse 0.5s ease-in-out infinite alternate;
-    }
-    .btn-stop.nav-correct { color: #44ff44 !important; }
-    .btn-stop.nav-wrong   { color: #ff2222 !important; }
-    @keyframes navBtnPulse {
-      from { box-shadow: 0 4px 0 #0c0200, 0 0 8px rgba(255,130,0,0.35); }
-      to   { box-shadow: 0 4px 0 #0c0200, 0 0 22px rgba(255,200,0,0.7); }
-    }
-    .stop-num { display: block; font-size: 18px; margin-top: 1px; }
+  width: min(
+    var(--machine-width),
+    calc(100vw - 12px)
+  );
 
-    /* =============================================
-       [16] プッシュ順ナビゲーター
-    ============================================= */
-    .push-nav {
-      margin: 2px 8px 2px;
-      background: rgba(8,2,4,0.92); border: 1px solid #280800;
-      border-radius: 4px; padding: 4px 10px;
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      opacity: 0; transition: opacity 0.3s; pointer-events: none; height: 30px;
-    }
-    .push-nav.visible { opacity: 1; }
-    .push-nav-label { font-size: 7px; color: #4a1800; letter-spacing: 1px; white-space: nowrap; }
-    .push-nav-seq { display: flex; gap: 4px; align-items: center; }
-    .push-nav-step {
-      width: 22px; height: 22px; border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 11px; font-weight: bold;
-      border: 1px solid #280800; color: #3a1200; background: #080204;
-      transition: all 0.15s;
-    }
-    .push-nav-step.next {
-      border-color: #ff5500; color: #ff8800; background: rgba(160,50,0,0.22);
-      box-shadow: 0 0 7px rgba(255,90,0,0.55);
-      animation: navStepPulse 0.5s ease-in-out infinite alternate;
-    }
-    .push-nav-step.done { border-color: #226622; color: #44dd44; background: rgba(20,90,10,0.22); }
-    .push-nav-arrow { font-size: 8px; color: #2a0e00; }
-    @keyframes navStepPulse {
-      from { box-shadow: 0 0 4px rgba(255,90,0,0.4); }
-      to   { box-shadow: 0 0 12px rgba(255,170,0,0.75); }
-    }
+  aspect-ratio: 390 / 600;
 
-    /* =============================================
-       [17] 底部
-    ============================================= */
-    .bottom-bar {
-      margin: 8px 8px 0; height: 2px;
-      background: linear-gradient(to right, transparent, #6b0e00 15%, #cc2200 50%, #6b0e00 85%, transparent);
-      border-radius: 1px;
-    }
-    .bottom-info {
-      text-align: center; padding: 5px 8px 14px;
-      font-size: 7px; letter-spacing: 3px; color: #280600;
-    }
+  filter:
+    drop-shadow(0 24px 20px rgba(0, 0, 0, 0.92));
+}
 
-    /* =============================================
-       [18] 統計ストリップ
-    ============================================= */
-    .stats-strip {
-      display: flex; justify-content: space-around;
-      margin: 2px 8px 2px;
-      padding: 3px 4px;
-      border-top: 1px solid #160400;
-    }
-    .stat-item { text-align: center; }
-    .stat-label { font-size: 6px; color: #280800; letter-spacing: 1px; }
-    .stat-val   { font-size: 9px; color: #4a1800; font-family: 'Courier New', monospace; }
+/* =========================================================
+   01：外装シェル
+========================================================= */
 
-    /* =============================================
-       [19] 当選メッセージ オーバーレイ
-    ============================================= */
-    #winMessage {
-      position: fixed; top: 50%; left: 50%;
-      transform: translate(-50%, -50%) scale(0.5);
-      background: rgba(4,1,2,0.92);
-      border: 3px solid #cc2200; border-radius: 14px;
-      padding: 20px 40px; text-align: center;
-      z-index: 5000; opacity: 0; pointer-events: none;
-      box-shadow: 0 0 50px rgba(220,50,0,0.55), inset 0 0 30px rgba(160,20,0,0.10);
-      transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.20s ease;
-    }
-    #winMessage.show {
-      transform: translate(-50%, -50%) scale(1);
-      opacity: 1; pointer-events: auto;
-    }
-    .wm-label  { font-size: 9px; letter-spacing: 4px; color: #882200; margin-bottom: 5px; }
-    .wm-amount { font-size: 54px; font-weight: 900; color: #ff4400; letter-spacing: 2px; line-height: 1; text-shadow: 0 0 20px #ff4400, 0 0 45px #cc2200; }
-    .wm-medals { font-size: 9px; color: #6a1a00; letter-spacing: 2px; margin-top: 1px; }
-    .wm-name   { font-size: 12px; font-weight: bold; color: #ff7744; letter-spacing: 3px; margin-top: 6px; }
+#cabinet-outer-shell {
+  position: absolute;
+  z-index: 1;
 
-    /* =============================================
-       [20] ボーナス告知 オーバーレイ
-    ============================================= */
-    #bonusAnnounce {
-      position: fixed; inset: 0;
-      display: flex; align-items: center; justify-content: center;
-      background: rgba(0,0,0,0.90); z-index: 7000;
-      opacity: 0; pointer-events: none; transition: opacity 0.3s;
-    }
-    #bonusAnnounce.show { opacity: 1; pointer-events: auto; }
-    .ba-inner {
-      background: linear-gradient(135deg, #1e0606, #0c0202);
-      border: 3px solid #cc1800; border-radius: 16px;
-      padding: 28px 38px; text-align: center;
-      box-shadow: 0 0 65px rgba(220,40,0,0.65), inset 0 0 35px rgba(160,10,0,0.35);
-      animation: baAppear 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    @keyframes baAppear {
-      from { transform: scale(0.45); opacity: 0; }
-      to   { transform: scale(1);    opacity: 1; }
-    }
-    .ba-title  { font-size: 9px; letter-spacing: 5px; color: #aa3300; margin-bottom: 8px; }
-    .ba-name   { font-size: 27px; font-weight: 900; color: #ff1800; letter-spacing: 3px; font-family: 'Arial Black', sans-serif; text-shadow: 0 0 22px rgba(255,30,0,0.9); }
-    .ba-sub    { font-size: 10px; color: #ff7744; letter-spacing: 2px; margin-top: 7px; }
-    .ba-payout { font-size: 20px; font-weight: bold; color: #ff5522; margin-top: 5px; font-family: 'Courier New', monospace; text-shadow: 0 0 8px rgba(255,80,0,0.7); }
+  inset: 0 11px;
 
-    /* =============================================
-       [21] 設定パネル
-    ============================================= */
-    #settingsPanel {
-      position: fixed; inset: 0;
-      display: flex; align-items: center; justify-content: center;
-      background: rgba(0,0,0,0.92); z-index: 9500;
-      opacity: 0; pointer-events: none; transition: opacity 0.25s;
-    }
-    #settingsPanel.show { opacity: 1; pointer-events: auto; }
-    .sp-inner {
-      background: #0a0202; border: 2px solid #3e0e00; border-radius: 10px;
-      padding: 20px 22px; min-width: 260px;
-    }
-    .sp-title { font-size: 10px; color: #cc3300; letter-spacing: 4px; text-align: center; margin-bottom: 16px; }
-    .sp-row {
-      display: flex; justify-content: space-between; align-items: center;
-      margin-bottom: 10px; font-size: 9px; color: #6a2800; letter-spacing: 1px;
-    }
-    .sp-btns { display: flex; gap: 4px; }
-    .sp-btn {
-      width: 30px; height: 26px;
-      background: #160604; border: 1px solid #2e0a00; border-radius: 3px;
-      color: #aa3300; font-size: 10px; cursor: pointer;
-      font-family: 'Courier New', monospace; font-weight: bold;
-    }
-    .sp-btn.active {
-      background: #3e0e00; color: #ff6622; border-color: #aa3300;
-      box-shadow: 0 0 6px rgba(180,50,0,0.45);
-    }
-    .sp-info { font-size: 8px; color: #3a1200; line-height: 1.8; margin: 8px 0; letter-spacing: 0; }
-    .sp-close {
-      display: block; width: 100%; margin-top: 14px;
-      background: #160804; border: 1px solid #3e1400; border-radius: 5px;
-      color: #aa4400; font-family: 'Courier New', monospace; font-size: 9px;
-      letter-spacing: 2px; padding: 7px; cursor: pointer;
-    }
-  </style>
+  overflow: hidden;
+
+  border:
+    2px solid #4c4c4c;
+
+  border-radius:
+    25px 25px
+    13px 13px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #020202 0%,
+      #353535 2.4%,
+      #090909 6%,
+      #151515 15%,
+      #080808 50%,
+      #151515 85%,
+      #090909 94%,
+      #353535 97.6%,
+      #020202 100%
+    );
+
+  box-shadow:
+    inset 0 0 0 2px #000,
+    inset 7px 0 12px rgba(255,255,255,0.06),
+    inset -7px 0 12px rgba(255,255,255,0.05),
+    0 18px 28px rgba(0,0,0,0.9);
+}
+
+/* 外装中央の黒い面 */
+
+#cabinet-outer-shell::before {
+  content: "";
+
+  position: absolute;
+
+  inset: 17px 24px 14px;
+
+  border-radius:
+    19px 19px
+    8px 8px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #171717,
+      #050505 23%,
+      #101010 58%,
+      #030303 100%
+    );
+
+  box-shadow:
+    inset 0 0 28px #000,
+    inset 0 4px 7px rgba(255,255,255,0.045);
+}
+
+/* 外装ハイライト */
+
+#cabinet-outer-shell::after {
+  content: "";
+
+  position: absolute;
+
+  top: 20px;
+  bottom: 18px;
+  left: 50%;
+
+  width: 45%;
+
+  transform: translateX(-50%);
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255,255,255,0.018),
+      rgba(255,255,255,0.055),
+      rgba(255,255,255,0.018),
+      transparent
+    );
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   08・09：左右サイドLEDフレーム
+========================================================= */
+
+.side-led-frame {
+  position: absolute;
+  z-index: 20;
+
+  top: 13px;
+  bottom: 15px;
+
+  width: 54px;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      90deg,
+      #170209,
+      var(--accent-dark) 17%,
+      var(--accent) 39%,
+      var(--accent-light) 52%,
+      var(--accent) 66%,
+      var(--accent-dark) 83%,
+      #170209
+    );
+
+  box-shadow:
+    inset 5px 0 8px rgba(255,255,255,0.2),
+    inset -7px 0 9px rgba(0,0,0,0.72),
+    0 0 13px rgba(255,35,107,0.52);
+}
+
+#left-side-led-frame {
+  left: 0;
+
+  clip-path:
+    polygon(
+      16% 0%,
+      88% 2%,
+      100% 10%,
+      87% 28%,
+      92% 48%,
+      82% 67%,
+      89% 84%,
+      72% 100%,
+      9% 98%,
+      0% 89%,
+      9% 69%,
+      3% 49%,
+      11% 28%,
+      2% 10%
+    );
+}
+
+#right-side-led-frame {
+  right: 0;
+
+  clip-path:
+    polygon(
+      12% 2%,
+      84% 0%,
+      98% 10%,
+      89% 28%,
+      97% 49%,
+      91% 69%,
+      100% 89%,
+      91% 98%,
+      28% 100%,
+      11% 84%,
+      18% 67%,
+      8% 48%,
+      13% 28%,
+      0% 10%
+    );
+}
+
+/* LED発光列 */
+
+.side-led-frame::before {
+  content: "";
+
+  position: absolute;
+
+  top: 17px;
+  bottom: 18px;
+
+  width: 20px;
+
+  border-radius: 15px;
+
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      rgba(255,238,244,1) 0 4px,
+      rgba(255,83,137,0.95) 4px 9px,
+      rgba(112,7,45,0.92) 9px 13px
+    );
+
+  box-shadow:
+    0 0 7px var(--accent),
+    0 0 15px rgba(255,35,107,0.8),
+    inset 0 0 5px #fff;
+}
+
+#left-side-led-frame::before {
+  left: 9px;
+}
+
+#right-side-led-frame::before {
+  right: 9px;
+}
+
+/* 内側ゴールドライン */
+
+.side-led-frame::after {
+  content: "";
+
+  position: absolute;
+
+  top: 5px;
+  bottom: 7px;
+
+  width: 10px;
+
+  border-radius: 8px;
+
+  background:
+    linear-gradient(
+      90deg,
+      var(--gold-dark),
+      var(--gold-mid) 30%,
+      var(--gold-light) 50%,
+      var(--gold-mid) 70%,
+      var(--gold-dark)
+    );
+
+  box-shadow:
+    inset 0 0 2px #fff0a0,
+    0 0 3px #000;
+}
+
+#left-side-led-frame::after {
+  right: 4px;
+}
+
+#right-side-led-frame::after {
+  left: 4px;
+}
+
+/* =========================================================
+   02：トップクラウン
+========================================================= */
+
+#top-crown-unit {
+  position: absolute;
+  z-index: 30;
+
+  top: 0;
+  left: 31px;
+  right: 31px;
+
+  height: 67px;
+
+  padding: 7px 11px 9px;
+
+  clip-path:
+    polygon(
+      8% 0%,
+      92% 0%,
+      100% 16%,
+      96% 82%,
+      88% 100%,
+      12% 100%,
+      4% 82%,
+      0% 16%
+    );
+
+  background:
+    linear-gradient(
+      145deg,
+      #777 0%,
+      #fafafa 4%,
+      #5b5b5b 9%,
+      #111 17%,
+      #050505 68%,
+      #3d3d3d 91%,
+      #ededed 100%
+    );
+
+  box-shadow:
+    0 7px 8px rgba(0,0,0,0.75),
+    inset 0 0 8px #000;
+}
+
+#top-crown-surface {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  clip-path:
+    polygon(
+      6% 0%,
+      94% 0%,
+      100% 14%,
+      96% 86%,
+      89% 100%,
+      11% 100%,
+      4% 86%,
+      0% 14%
+    );
+
+  border:
+    2px solid #751536;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      #2b111b,
+      #090406 66%,
+      #020202
+    );
+
+  box-shadow:
+    inset 0 0 14px #000,
+    0 0 7px rgba(255,35,107,0.52);
+}
+
+#top-crown-surface::after {
+  content: "";
+
+  position: absolute;
+
+  left: 14px;
+  right: 14px;
+  bottom: 6px;
+
+  height: 3px;
+
+  border-radius: 8px;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      var(--accent),
+      #fff,
+      var(--accent),
+      transparent
+    );
+
+  box-shadow:
+    0 0 6px var(--accent);
+}
+
+/* =========================================================
+   中央コンテンツアセンブリ
+========================================================= */
+
+#cabinet-content-assembly {
+  position: absolute;
+  z-index: 10;
+
+  top: 62px;
+  left: 45px;
+  right: 45px;
+  bottom: 16px;
+
+  display: grid;
+
+  grid-template-rows:
+    47px
+    137px
+    110px
+    69px
+    101px
+    1fr;
+
+  gap: 4px;
+}
+
+/* 各ユニット共通 */
+
+.cabinet-section {
+  position: relative;
+
+  min-height: 0;
+
+  border:
+    1px solid #393939;
+
+  background:
+    linear-gradient(
+      145deg,
+      #222,
+      #060606 34%,
+      #111 70%,
+      #030303
+    );
+
+  box-shadow:
+    inset 0 0 0 2px #030303,
+    inset 0 3px 5px rgba(255,255,255,0.05),
+    0 2px 4px rgba(0,0,0,0.85);
+
+  overflow: hidden;
+}
+
+/* =========================================================
+   03：タイトルパネル
+========================================================= */
+
+#title-panel-unit {
+  padding: 5px 8px;
+
+  border-radius: 9px 9px 4px 4px;
+}
+
+#title-panel-bezel {
+  width: 100%;
+  height: 100%;
+
+  padding: 4px;
+
+  clip-path:
+    polygon(
+      4% 0,
+      96% 0,
+      100% 18%,
+      97% 100%,
+      3% 100%,
+      0 18%
+    );
+
+  background:
+    linear-gradient(
+      135deg,
+      #e4e4e4,
+      #525252 9%,
+      #151515 30%,
+      #646464 88%,
+      #ededed
+    );
+}
+
+#title-panel-surface {
+  width: 100%;
+  height: 100%;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      #211018,
+      #050405 72%
+    );
+
+  box-shadow:
+    inset 0 0 10px #000;
+}
+
+/* =========================================================
+   04：メイン表示部
+========================================================= */
+
+#main-display-unit {
+  padding: 6px;
+
+  border-radius: 5px;
+}
+
+#main-display-bezel {
+  width: 100%;
+  height: 100%;
+
+  padding: 5px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #e9e9e9,
+      #505050 8%,
+      #101010 22%,
+      #101010 78%,
+      #5f5f5f 92%,
+      #eee
+    );
+
+  box-shadow:
+    inset 0 0 5px #000;
+}
+
+#main-display-glass {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  border:
+    3px solid #050505;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      #19191d,
+      #050506 76%
+    );
+
+  box-shadow:
+    inset 0 0 19px #000;
+
+  overflow: hidden;
+}
+
+/* ガラス反射 */
+
+#main-display-glass::before {
+  content: "";
+
+  position: absolute;
+  z-index: 2;
+
+  top: -32%;
+  left: -10%;
+
+  width: 70%;
+  height: 90%;
+
+  transform: rotate(-11deg);
+
+  background:
+    linear-gradient(
+      115deg,
+      rgba(255,255,255,0.14),
+      rgba(255,255,255,0.025) 38%,
+      transparent 66%
+    );
+
+  pointer-events: none;
+}
+
+#main-display-mount {
+  position: absolute;
+  inset: 3px;
+
+  background:
+    radial-gradient(
+      circle at 50% 40%,
+      #26131d,
+      #080609 70%
+    );
+}
+
+/* =========================================================
+   05：リール部
+========================================================= */
+
+#reel-unit {
+  padding: 6px 9px;
+
+  border-radius: 4px;
+}
+
+#reel-bezel {
+  width: 100%;
+  height: 100%;
+
+  padding: 5px 7px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #f0f0f0,
+      #4c4c4c 8%,
+      #111 18%,
+      #111 82%,
+      #5f5f5f 92%,
+      #ededed
+    );
+
+  box-shadow:
+    inset 0 0 6px #000;
+}
+
+#reel-window {
+  position: relative;
+
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  width: 100%;
+  height: 100%;
+
+  padding: 4px;
+  gap: 5px;
+
+  border:
+    3px solid #050505;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #020202,
+      #151515 13%,
+      #080808 88%,
+      #020202
+    );
+
+  box-shadow:
+    inset 0 9px 12px #000,
+    inset 0 -9px 12px #000;
+}
+
+.reel-mount {
+  position: relative;
+
+  overflow: hidden;
+
+  border:
+    1px solid #353535;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #e7e7e7,
+      #bcbcbc 12%,
+      #f5f5f5 50%,
+      #bababa 88%,
+      #e9e9e9
+    );
+
+  box-shadow:
+    inset 0 8px 8px rgba(0,0,0,0.24),
+    inset 0 -8px 8px rgba(0,0,0,0.24);
+}
+
+/* 空リールの基準線 */
+
+.reel-mount::before,
+.reel-mount::after {
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  right: 0;
+
+  height: 1px;
+
+  background:
+    rgba(0,0,0,0.18);
+}
+
+.reel-mount::before {
+  top: 33.333%;
+}
+
+.reel-mount::after {
+  top: 66.666%;
+}
+
+/* =========================================================
+   06：操作卓
+========================================================= */
+
+#control-deck-unit {
+  overflow: visible;
+
+  border-radius: 4px 4px 10px 10px;
+
+  perspective: 500px;
+}
+
+#control-deck-surface {
+  position: absolute;
+
+  inset: 2px 0 -4px;
+
+  border:
+    2px solid #4b4b4b;
+
+  border-radius:
+    4px 4px
+    15px 15px;
+
+  background:
+    linear-gradient(
+      165deg,
+      #e3e3e3 0%,
+      #676767 12%,
+      #1b1b1b 31%,
+      #070707 68%,
+      #292929 100%
+    );
+
+  box-shadow:
+    inset 0 4px 6px rgba(255,255,255,0.15),
+    inset 0 -8px 10px #000,
+    0 5px 7px rgba(0,0,0,0.88);
+
+  transform:
+    rotateX(4deg);
+}
+
+/* 操作卓中央黒枠 */
+
+#control-button-panel {
+  position: absolute;
+
+  top: 15px;
+  left: 76px;
+  right: 61px;
+  bottom: 10px;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+
+  padding: 0 8px;
+
+  border:
+    2px solid #555;
+
+  border-radius: 26px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #111,
+      #030303 55%,
+      #181818
+    );
+
+  box-shadow:
+    inset 0 0 8px #000,
+    0 1px 3px rgba(255,255,255,0.18);
+}
+
+/* STOPボタン */
+
+.stop-button-mount {
+  width: 39px;
+  height: 39px;
+
+  border:
+    4px solid #202020;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 38% 30%,
+      #ffb0b0 0%,
+      #ff4b58 24%,
+      #e20d26 61%,
+      #66000b 100%
+    );
+
+  box-shadow:
+    0 0 0 2px #777,
+    0 3px 4px #000,
+    inset 0 3px 5px rgba(255,255,255,0.52),
+    inset 0 -5px 7px rgba(0,0,0,0.55);
+}
+
+/* レバー */
+
+#start-lever-mount {
+  position: absolute;
+
+  left: 24px;
+  top: 17px;
+
+  width: 41px;
+  height: 41px;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 38% 33%,
+      #777,
+      #151515 34%,
+      #020202 66%,
+      #4a4a4a 70%,
+      #0b0b0b
+    );
+
+  box-shadow:
+    0 0 0 3px #717171,
+    inset 0 0 8px #000,
+    0 3px 4px #000;
+}
+
+/* BETボタン */
+
+#bet-button-mount {
+  position: absolute;
+
+  left: 9px;
+  top: 25px;
+
+  width: 23px;
+  height: 23px;
+
+  border:
+    3px solid #272727;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      circle at 35% 30%,
+      #888,
+      #252525 43%,
+      #060606
+    );
+
+  box-shadow:
+    0 0 0 1px #777,
+    0 2px 3px #000;
+}
+
+/* メダル投入口 */
+
+#medal-insert-mount {
+  position: absolute;
+
+  right: 12px;
+  top: 20px;
+
+  width: 38px;
+  height: 30px;
+
+  border:
+    2px solid #555;
+
+  border-radius: 50%;
+
+  background:
+    radial-gradient(
+      ellipse,
+      #030303 0 34%,
+      #777 37%,
+      #222 65%,
+      #050505
+    );
+
+  box-shadow:
+    0 2px 4px #000;
+}
+
+/* =========================================================
+   07：下部ビジュアルパネル
+========================================================= */
+
+#lower-visual-unit {
+  padding: 5px 8px;
+
+  border-radius: 5px;
+}
+
+#lower-visual-bezel {
+  width: 100%;
+  height: 100%;
+
+  padding: 5px;
+
+  background:
+    linear-gradient(
+      135deg,
+      #e6e6e6,
+      #4c4c4c 8%,
+      #111 21%,
+      #111 79%,
+      #5e5e5e 92%,
+      #ededed
+    );
+
+  box-shadow:
+    inset 0 0 5px #000;
+}
+
+#lower-visual-surface {
+  position: relative;
+
+  width: 100%;
+  height: 100%;
+
+  overflow: hidden;
+
+  border:
+    3px solid #050505;
+
+  background:
+    radial-gradient(
+      ellipse at center,
+      #25131d,
+      #070507 74%
+    );
+
+  box-shadow:
+    inset 0 0 16px #000;
+}
+
+/* 下部ビジュアルパネル画像 */
+
+#lower-visual-surface img {
+  position: absolute;
+  inset: 0;
+
+  width: 100%;
+  height: 100%;
+
+  object-fit: cover;
+}
+
+/* ガラスの反射エフェクト */
+
+#lower-visual-surface::before {
+  content: "";
+
+  position: absolute;
+  z-index: 2;
+
+  top: -18%;
+  left: -12%;
+
+  width: 68%;
+  height: 86%;
+
+  transform: rotate(-9deg);
+
+  background:
+    linear-gradient(
+      118deg,
+      rgba(255,255,255,0.12),
+      rgba(255,255,255,0.018) 39%,
+      transparent 64%
+    );
+
+  pointer-events: none;
+}
+
+/* =========================================================
+   10：底部ベース
+========================================================= */
+
+#bottom-base-unit {
+  position: absolute;
+  z-index: 5;
+
+  bottom: 0;
+  left: 47px;
+  right: 47px;
+
+  height: 14px;
+
+  border:
+    2px solid #4b4b4b;
+
+  border-radius: 0 0 8px 8px;
+
+  background:
+    linear-gradient(
+      to right,
+      #1a1a1a,
+      #2d2d2d,
+      #1a1a1a
+    );
+
+  box-shadow:
+    inset 0 0 4px rgba(255,255,255,0.15),
+    0 3px 5px rgba(0,0,0,0.75);
+}
+
+</style>
+
 </head>
+
 <body>
 
-<canvas id="effectCanvas"></canvas>
+<!-- ===================================================== -->
+<!-- 00：共通筐体アセンブリ -->
+<!-- ===================================================== -->
 
-<div id="cabinet">
+<div id="yusosha-common-cabinet">
 
-  <!-- フレームランプ -->
-  <div class="frame-lamp" id="frameLamp"></div>
+  <!-- ===================================================== -->
+  <!-- 01：外装シェル -->
+  <!-- ===================================================== -->
 
-  <!-- 上部 LED ストリップ -->
-  <div class="top-led-strip" id="topLedStrip"></div>
+  <div id="cabinet-outer-shell"></div>
 
-  <!-- マシン ヘッダー（長押しで設定） -->
-  <div class="machine-header" id="machineHeader">
-    <div class="machine-name">テラフォーマーズ</div>
-    <div class="machine-subtitle">TERRA FORMARS SLOT · 遊創舎</div>
+  <!-- ===================================================== -->
+  <!-- 08・09：左右サイドLEDフレーム -->
+  <!-- ===================================================== -->
+
+  <div id="left-side-led-frame" class="side-led-frame"></div>
+  <div id="right-side-led-frame" class="side-led-frame"></div>
+
+  <!-- ===================================================== -->
+  <!-- 02：トップクラウン -->
+  <!-- ===================================================== -->
+
+  <div id="top-crown-unit">
+    <div id="top-crown-surface"></div>
   </div>
 
-  <!-- LCD パネル -->
-  <div class="lcd-panel">
-    <div class="lcd-content">
-      <div class="lcd-header">
-        <div class="lcd-mode-tag" id="lcdMode">STANDBY</div>
-        <div class="lcd-year">MARS 2577</div>
-      </div>
-      <div class="lcd-main" id="lcdMain">TERRA FORMARS</div>
-      <div class="lcd-sub"  id="lcdSub">― 任務待機中 ―</div>
-      <div class="lcd-at-bar" id="lcdAtBar">
-        <div class="lcd-at-label">討伐RUSH</div>
-        <div class="lcd-at-gauge"><div class="lcd-at-fill" id="lcdAtFill" style="width:100%"></div></div>
-        <div class="lcd-at-count" id="lcdAtCount">30G</div>
-      </div>
-    </div>
-  </div>
+  <!-- ===================================================== -->
+  <!-- 中央コンテンツアセンブリ -->
+  <!-- ===================================================== -->
 
-  <!-- リールエリア -->
-  <div class="reel-area">
-    <div class="side-panel left" id="leftPanel">
-      <div class="peka-lamp" id="pekaLamp"></div>
+  <div id="cabinet-content-assembly">
+
+    <!-- 03：タイトルパネル -->
+
+    <div id="title-panel-unit" class="cabinet-section">
+      <div id="title-panel-bezel">
+        <div id="title-panel-surface"></div>
+      </div>
     </div>
-    <div class="reel-frame">
-      <div class="reel-frame-inner">
-        <div class="reel-container">
-          <div class="reel-window" id="rw0"><div class="reel-tape" id="tape0"></div><div class="reel-scanline"></div></div>
-          <div class="reel-window" id="rw1"><div class="reel-tape" id="tape1"></div><div class="reel-scanline"></div></div>
-          <div class="reel-window" id="rw2"><div class="reel-tape" id="tape2"></div><div class="reel-scanline"></div></div>
+
+    <!-- 04：メイン表示部 -->
+
+    <div id="main-display-unit" class="cabinet-section">
+      <div id="main-display-bezel">
+        <div id="main-display-glass">
+          <div id="main-display-mount"></div>
         </div>
-        <div class="win-line" id="winLine"></div>
       </div>
     </div>
-    <div class="side-panel right" id="rightPanel"></div>
-  </div>
 
-  <!-- 情報表示 -->
-  <div class="info-panel">
-    <div class="info-item"><div class="info-label">CREDIT</div><div class="info-value" id="creditDisplay">050</div></div>
-    <div class="info-item"><div class="info-label">BET</div><div class="info-value" id="betDisplay">0</div></div>
-    <div class="info-item"><div class="info-label">PAYOUT</div><div class="info-value" id="payoutDisplay">000</div></div>
-  </div>
+    <!-- 05：リール部 -->
 
-  <!-- AT ストリップ -->
-  <div class="at-strip" id="atStrip">
-    <div class="at-strip-label">討伐RUSH</div>
-    <div class="at-strip-count"><span id="atCount">30</span>G</div>
-    <div class="at-strip-stock">STOCK: <span id="atStock">0</span></div>
-  </div>
-
-  <!-- プッシュ順ナビ -->
-  <div class="push-nav" id="pushNav">
-    <div class="push-nav-label">PUSH ORDER</div>
-    <div class="push-nav-seq" id="pushNavSeq"></div>
-  </div>
-
-  <!-- メインボタン -->
-  <div class="button-row main-buttons">
-    <button class="btn btn-bet"    id="btnBet"    type="button">BET</button>
-    <button class="btn btn-maxbet" id="btnMaxBet" type="button">MAX<br>BET</button>
-    <button class="btn btn-start"  id="btnStart"  type="button">START</button>
-  </div>
-
-  <!-- STOPボタン -->
-  <div class="button-row stop-buttons">
-    <button class="btn btn-stop" id="btnStop0" type="button" disabled>STOP<span class="stop-num">①</span></button>
-    <button class="btn btn-stop" id="btnStop1" type="button" disabled>STOP<span class="stop-num">②</span></button>
-    <button class="btn btn-stop" id="btnStop2" type="button" disabled>STOP<span class="stop-num">③</span></button>
-  </div>
-
-  <!-- 統計 -->
-  <div class="stats-strip">
-    <div class="stat-item"><div class="stat-label">GAME</div><div class="stat-val" id="statGames">0</div></div>
-    <div class="stat-item"><div class="stat-label">BIG</div><div class="stat-val" id="statBig">0</div></div>
-    <div class="stat-item"><div class="stat-label">REG</div><div class="stat-val" id="statReg">0</div></div>
-    <div class="stat-item"><div class="stat-label">AT</div><div class="stat-val" id="statAt">0</div></div>
-    <div class="stat-item"><div class="stat-label">SET.</div><div class="stat-val" id="statSetting">1</div></div>
-  </div>
-
-  <div class="bottom-bar"></div>
-  <div class="bottom-info">YUSOSHA · 遊創舎 · SLOT LAB</div>
-
-</div><!-- /#cabinet -->
-
-<!-- 当選メッセージ -->
-<div id="winMessage" role="alert" aria-live="assertive">
-  <div class="wm-label">MISSION COMPLETE</div>
-  <div class="wm-amount" id="wmAmount">0</div>
-  <div class="wm-medals">MEDALS</div>
-  <div class="wm-name"   id="wmName">WIN</div>
-</div>
-
-<!-- ボーナス告知 -->
-<div id="bonusAnnounce">
-  <div class="ba-inner">
-    <div class="ba-title"  id="baTitle">BONUS START</div>
-    <div class="ba-name"   id="baName">TERRA BONUS</div>
-    <div class="ba-sub"    id="baSub">討伐成功！</div>
-    <div class="ba-payout" id="baPayout">+240 MEDALS</div>
-  </div>
-</div>
-
-<!-- 設定パネル -->
-<div id="settingsPanel">
-  <div class="sp-inner">
-    <div class="sp-title">── 設定変更 ──</div>
-    <div class="sp-row">
-      <span>設定値</span>
-      <div class="sp-btns" id="settingBtns"></div>
+    <div id="reel-unit" class="cabinet-section">
+      <div id="reel-bezel">
+        <div id="reel-window">
+          <div class="reel-mount"></div>
+          <div class="reel-mount"></div>
+          <div class="reel-mount"></div>
+        </div>
+      </div>
     </div>
-    <div class="sp-info" id="spInfo"></div>
-    <button class="sp-close" id="spClose">CLOSE</button>
+
+    <!-- 06：操作卓 -->
+
+    <div id="control-deck-unit" class="cabinet-section">
+      <div id="start-lever-mount"></div>
+      <div id="bet-button-mount"></div>
+      <div id="medal-insert-mount"></div>
+      <div id="control-deck-surface">
+        <div id="control-button-panel">
+          <div class="stop-button-mount"></div>
+          <div class="stop-button-mount"></div>
+          <div class="stop-button-mount"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 07：下部ビジュアルパネル -->
+
+    <div id="lower-visual-unit" class="cabinet-section">
+      <div id="lower-visual-bezel">
+        <div id="lower-visual-surface">
+          <img src="ptaro_kyoran_lower.png.png" alt="下部ビジュアルパネル" />
+        </div>
+      </div>
+    </div>
+
   </div>
+
+  <!-- ===================================================== -->
+  <!-- 10：底部ベース -->
+  <!-- ===================================================== -->
+
+  <div id="bottom-base-unit"></div>
+
 </div>
 
-<!-- ===================================================================
-     JavaScript
-=================================================================== -->
-<script>
-'use strict';
-
-/* =============================================
-   [A] 定数・設定
-============================================= */
-
-const SYM_H   = 76;
-const VISIBLE = 3;
-const WINDOW_H = SYM_H * VISIBLE;  // 228px
-
-const SYMBOLS = [
-  { id: 'mars',   cls: 'sym-mars',   text: '火星'  },
-  { id: 'terra',  cls: 'sym-terra',  text: 'テラ'  },
-  { id: 'squad',  cls: 'sym-squad',  text: '隊員'  },
-  { id: 'bugs',   cls: 'sym-bugs',   text: 'BUGS'  },
-  { id: 'rocket', cls: 'sym-rocket', text: '🚀'    },
-  { id: 'moss',   cls: 'sym-moss',   text: '苔'    },
-  { id: 'g',      cls: 'sym-g',      text: 'Ｇ'    },
-];
-
-const N             = SYMBOLS.length;        // 7
-const LOOP_H        = N * SYM_H;             // 532px
-const COPIES        = 8;
-const TAPE_H        = LOOP_H * COPIES;       // 4256px
-const SPIN_SPEED    = 14;
-const DECEL_ALPHA   = 0.055;
-const DECEL_DIST    = SPIN_SPEED / DECEL_ALPHA;
-const EXTRA_LOOPS   = 2;
-const WRAP_THRESHOLD = LOOP_H * (COPIES - EXTRA_LOOPS - 2);
-
-// シンボルID → インデックス
-const SYM_IDX = {};
-SYMBOLS.forEach((s, i) => { SYM_IDX[s.id] = i; });
-
-// 配当テーブル（中段ラインのみ）
-const PAY_TABLE = {
-  'mars-mars-mars':      { pay: 0,  name: 'TERRA JACKPOT!!', type: 'big'    },
-  'terra-terra-terra':   { pay: 0,  name: 'MISSION BONUS',   type: 'reg'    },
-  'squad-squad-squad':   { pay: 15, name: 'SQUAD ALL OUT',   type: 'small'  },
-  'bugs-bugs-bugs':      { pay: 10, name: 'BUGS COMPLETE',   type: 'small'  },
-  'rocket-rocket-rocket':{ pay:  8, name: 'LAUNCH!!',        type: 'small'  },
-  'moss-moss-moss':      { pay:  5, name: 'OVERGROWTH',      type: 'small'  },
-  'g-g-g':               { pay:  5, name: 'G SWARM',         type: 'small'  },
-  'squad-squad':         { pay:  2, name: 'COMBAT READY',    type: 'cherry' },
-  'squad':               { pay:  1, name: 'STANDBY',         type: 'cherry' },
-};
-
-// 確率テーブル（/65536 カウント）
-const PROB_NORMAL = {
-  1: { big: 164,  reg: 218,  at: 655,  ch2: 1500, ch1: 3000 },
-  2: { big: 182,  reg: 240,  at: 720,  ch2: 1650, ch1: 3200 },
-  3: { big: 204,  reg: 273,  at: 800,  ch2: 1800, ch1: 3500 },
-  4: { big: 234,  reg: 310,  at: 910,  ch2: 2000, ch1: 3800 },
-  5: { big: 273,  reg: 365,  at: 1040, ch2: 2200, ch1: 4100 },
-  6: { big: 327,  reg: 437,  at: 1200, ch2: 2500, ch1: 4500 },
-};
-
-// AT中の確率（高め）
-const PROB_AT = {
-  1: { big: 220,  reg: 327,  at: 0, ch2: 5000, ch1: 8000 },
-  2: { big: 240,  reg: 360,  at: 0, ch2: 5500, ch1: 8500 },
-  3: { big: 270,  reg: 400,  at: 0, ch2: 6000, ch1: 9000 },
-  4: { big: 310,  reg: 460,  at: 0, ch2: 6500, ch1: 9500 },
-  5: { big: 360,  reg: 540,  at: 0, ch2: 7200, ch1: 10500 },
-  6: { big: 437,  reg: 655,  at: 0, ch2: 8000, ch1: 12000 },
-};
-
-const BONUS_PARAMS = {
-  big: { payout: 240, name: 'TERRA BONUS',   sub: '討伐成功！大当たり！', atGiftMin: 30, atGiftMax: 60 },
-  reg: { payout:  80, name: 'MISSION BONUS', sub: '任務完了',             atGiftMin: 0,  atGiftMax: 10 },
-};
-
-/* =============================================
-   [B] ユーティリティ
-============================================= */
-
-function pad(n, len = 3) { return String(n).padStart(len, '0'); }
-function rand(n)          { return Math.floor(Math.random() * n); }
-function randExcept(exclude) {
-  let r;
-  do { r = rand(N); } while (r === exclude);
-  return r;
-}
-
-/* =============================================
-   [C] Reel クラス
-============================================= */
-
-class Reel {
-  constructor(tapeEl, windowEl) {
-    this.tape      = tapeEl;
-    this.win       = windowEl;
-    this.pos       = 0;
-    this.phase     = 'idle';
-    this.result    = null;
-    this.stopEnd   = 0;
-    this.stopSpeed = 0;
-    this.stopFast  = false;
-    this.onStopped = null;
-  }
-
-  buildTape() {
-    const frag = document.createDocumentFragment();
-    for (let c = 0; c < COPIES; c++) {
-      for (let s = 0; s < N; s++) {
-        const div = document.createElement('div');
-        div.className = `reel-sym ${SYMBOLS[s].cls}`;
-        div.textContent = SYMBOLS[s].text;
-        frag.appendChild(div);
-      }
-    }
-    this.tape.appendChild(frag);
-    this._applyTransform();
-  }
-
-  startSpin() {
-    this.phase     = 'spinning';
-    this.result    = null;
-    this.onStopped = null;
-  }
-
-  requestStop(resultIndex) {
-    if (this.phase !== 'spinning') return;
-    this.result = resultIndex;
-
-    const targetInLoop = ((resultIndex - 1 + N) % N) * SYM_H;
-    const currentMod   = this.pos % LOOP_H;
-    let dist = targetInLoop - currentMod;
-    if (dist <= 0) dist += LOOP_H;
-    dist += LOOP_H * EXTRA_LOOPS;
-
-    this.stopEnd   = this.pos + dist;
-    this.stopSpeed = SPIN_SPEED;
-    this.stopFast  = (dist > DECEL_DIST);
-    this.phase     = 'stopping';
-  }
-
-  update() {
-    if (this.phase === 'idle' || this.phase === 'stopped') return;
-
-    if (this.phase === 'spinning') {
-      this.pos += SPIN_SPEED;
-      if (this.pos >= WRAP_THRESHOLD) this.pos -= LOOP_H * (COPIES - EXTRA_LOOPS - 2);
-      this._applyTransform();
-      return;
-    }
-
-    // stopping
-    const remain = this.stopEnd - this.pos;
-    if (remain <= 0) {
-      this.pos   = this.stopEnd;
-      this.phase = 'stopped';
-      this._applyTransform();
-      if (this.onStopped) this.onStopped();
-      return;
-    }
-
-    if (this.stopFast) {
-      this.pos += SPIN_SPEED;
-      if (this.stopEnd - this.pos <= DECEL_DIST) this.stopFast = false;
-    } else {
-      this.stopSpeed *= (1 - DECEL_ALPHA);
-      this.pos += Math.max(this.stopSpeed, 1);
-      if (this.stopSpeed < 1) {
-        this.pos   = this.stopEnd;
-        this.phase = 'stopped';
-        this._applyTransform();
-        if (this.onStopped) this.onStopped();
-      }
-    }
-    this._applyTransform();
-  }
-
-  _applyTransform() {
-    this.tape.style.transform = `translateY(${-(this.pos % TAPE_H)}px)`;
-  }
-
-  getResult() { return this.result !== null ? SYMBOLS[this.result] : null; }
-}
-
-/* =============================================
-   [D] サウンド（Web Audio API）
-============================================= */
-
-let _audioCtx = null;
-function getCtx() {
-  if (!_audioCtx) _audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-  return _audioCtx;
-}
-
-function tone(freq, type, dur, vol = 0.08) {
-  try {
-    const ctx = getCtx();
-    const o = ctx.createOscillator();
-    const g = ctx.createGain();
-    o.connect(g); g.connect(ctx.destination);
-    o.type = type; o.frequency.value = freq;
-    g.gain.setValueAtTime(vol, ctx.currentTime);
-    g.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + dur);
-    o.start(); o.stop(ctx.currentTime + dur);
-  } catch(e) {}
-}
-
-function playSfx(type) {
-  const T = (f, t, d, v) => tone(f, t, d, v);
-  switch (type) {
-    case 'bet':
-      T(660, 'square', 0.05, 0.05); break;
-    case 'start':
-      T(440, 'sawtooth', 0.14, 0.07); break;
-    case 'stop':
-      T(330, 'square', 0.09, 0.07); break;
-    case 'cherry':
-      T(880, 'sine', 0.10, 0.08);
-      setTimeout(() => T(1100, 'sine', 0.10, 0.08), 90);
-      break;
-    case 'win':
-      [523,659,784,1047].forEach((f,i) => setTimeout(() => T(f,'sine',0.18,0.10), i*80));
-      break;
-    case 'bonus':
-      [523,659,784,880,1047,1319].forEach((f,i) => setTimeout(() => T(f,'square',0.25,0.12), i*80));
-      break;
-    case 'jackpot':
-      [523,784,1047,1319,1568].forEach((f,i) => {
-        setTimeout(() => T(f,'sawtooth',0.30,0.14), i*60);
-        setTimeout(() => T(f*2,'sine',0.18,0.10), i*60+30);
-      });
-      break;
-    case 'at_start':
-      [440,550,660,880,1100].forEach((f,i) => setTimeout(() => T(f,'square',0.22,0.10), i*110));
-      break;
-    case 'nav_ok':
-      T(1100, 'sine', 0.07, 0.06); break;
-    case 'nav_ng':
-      T(110, 'sawtooth', 0.12, 0.07); break;
-  }
-}
-
-/* =============================================
-   [E] LCD 演出
-============================================= */
-
-const lcdModeEl  = document.getElementById('lcdMode');
-const lcdMainEl  = document.getElementById('lcdMain');
-const lcdSubEl   = document.getElementById('lcdSub');
-const lcdAtBarEl = document.getElementById('lcdAtBar');
-const lcdAtFillEl  = document.getElementById('lcdAtFill');
-const lcdAtCountEl = document.getElementById('lcdAtCount');
-
-const NORMAL_MSGS = [
-  ['TERRA FORMARS',     '― 任務待機中 ―'],
-  ['火星 西暦2577年',    '― 地球連合軍 出撃準備 ―'],
-  ['アネックス計画',     '― テラフォーマー討伐指令 ―'],
-  ['Ｇ型高速個体 警戒',  '― 高レベル個体を確認 ―'],
-  ['Ｇ型変異体 接近中',  '― 全隊員 戦闘配備 ―'],
-];
-const SPIN_MSGS = [
-  ['クエスト受注',       '― 任務遂行開始 ―'],
-  ['出撃！',            '― 隊員全員 突撃命令 ―'],
-  ['テラフォーマー発見', '― 高レベル個体 接近中 ―'],
-  ['BUGS手術 発動',     '― 昆虫特化型 変異開始 ―'],
-];
-const BATTLE_MSGS = [
-  ['バトル！',          '― 近接戦闘 開始 ―'],
-  ['近接攻撃！',        '― コンビネーション ―'],
-  ['急所命中！',        '― クリティカルヒット ―'],
-  ['テラフォーマー！',   '― 人型ゴキブリ 迎撃中 ―'],
-];
-const AT_WIN_MSGS = [
-  ['ヒット！',           '― 討伐ポイント 加算 ―'],
-  ['コンビネーション！', '― 連続攻撃 命中 ―'],
-  ['必殺技 発動！',      '― BUGS × FULL POWER ―'],
-];
-const AT_START_MSGS = [
-  ['討伐RUSH 突入！',   '― テラフォーマー 大量出現 ―'],
-  ['AT モード 開始！',  '― 連続討伐 チャンス ―'],
-];
-
-let _lcdIntervalId = null;
-
-function showLcd(mode, main, sub) {
-  clearInterval(_lcdIntervalId);
-  _lcdIntervalId = null;
-  lcdModeEl.textContent = mode;
-  _setLcd(main, sub);
-}
-
-function showLcdCycle(mode, msgs, intervalMs = 4000) {
-  clearInterval(_lcdIntervalId);
-  lcdModeEl.textContent = mode;
-  let idx = 0;
-  const tick = () => { _setLcd(msgs[idx][0], msgs[idx][1]); idx = (idx + 1) % msgs.length; };
-  tick();
-  _lcdIntervalId = setInterval(tick, intervalMs);
-}
-
-function _setLcd(main, sub) {
-  lcdMainEl.classList.remove('flash');
-  requestAnimationFrame(() => {
-    lcdMainEl.textContent = main || '';
-    lcdSubEl.textContent  = sub  || '';
-    lcdMainEl.classList.add('flash');
-  });
-}
-
-function updateLcdAtBar(count, max) {
-  lcdAtBarEl.classList.add('visible');
-  const pct = max > 0 ? Math.max(2, (count / max) * 100) : 0;
-  lcdAtFillEl.style.width  = `${pct}%`;
-  lcdAtCountEl.textContent = `${count}G`;
-}
-
-function hideLcdAtBar() {
-  lcdAtBarEl.classList.remove('visible');
-}
-
-/* =============================================
-   [F] フレームランプ制御
-============================================= */
-
-const frameLampEl = document.getElementById('frameLamp');
-function setLampMode(mode) {
-  frameLampEl.className = 'frame-lamp';
-  if (mode === 'at')    frameLampEl.classList.add('mode-at');
-  if (mode === 'bonus') frameLampEl.classList.add('mode-bonus');
-}
-
-/* =============================================
-   [G] リール インスタンス生成
-============================================= */
-
-const reels = [
-  new Reel(document.getElementById('tape0'), document.getElementById('rw0')),
-  new Reel(document.getElementById('tape1'), document.getElementById('rw1')),
-  new Reel(document.getElementById('tape2'), document.getElementById('rw2')),
-];
-reels.forEach((reel, i) => {
-  reel.buildTape();
-  reel.pos = i * Math.floor(LOOP_H / 3);
-  reel._applyTransform();
-});
-
-/* =============================================
-   [H] ゲームステート
-============================================= */
-
-const game = {
-  credit:       50,
-  bet:          0,
-  payout:       0,
-  phase:        'idle',   // idle | spinning | result | bonus
-  mode:         'normal', // normal | at | big | reg
-
-  atCount:      0,
-  atMax:        30,
-  atStock:      0,
-  atWasActive:  false,
-
-  internalFlag: null,
-  plannedStops: [],
-  stoppedCount: 0,
-
-  pushTarget:   [],
-  pushDone:     [],
-
-  totalGames:   0,
-  totalBig:     0,
-  totalReg:     0,
-  totalAt:      0,
-  setting:      1,
-};
-
-let autoStopTimer = null;
-
-/* =============================================
-   [I] 内部抽選
-============================================= */
-
-function drawFlag() {
-  const tbl = (game.mode === 'at') ? PROB_AT[game.setting] : PROB_NORMAL[game.setting];
-  const r   = Math.floor(Math.random() * 65536);
-  let acc = 0;
-  acc += tbl.big; if (r < acc) return 'big';
-  acc += tbl.reg; if (r < acc) return 'reg';
-  acc += tbl.at;  if (r < acc) return 'at';
-  acc += tbl.ch2; if (r < acc) return 'ch2';
-  acc += tbl.ch1; if (r < acc) return 'ch1';
-  return null;
-}
-
-function calcStops(flag) {
-  switch (flag) {
-    case 'big':  return [SYM_IDX.mars,  SYM_IDX.mars,  SYM_IDX.mars];
-    case 'reg':  return [SYM_IDX.terra, SYM_IDX.terra, SYM_IDX.terra];
-    case 'ch2':  return [SYM_IDX.squad, SYM_IDX.squad, randExcept(SYM_IDX.squad)];
-    case 'ch1':  return [SYM_IDX.squad, randExcept(SYM_IDX.squad), randExcept(SYM_IDX.squad)];
-    default:     return calcMissStops();
-  }
-}
-
-function calcMissStops() {
-  let r0, r1, r2, attempts = 0;
-  do {
-    r0 = rand(N); r1 = rand(N); r2 = rand(N);
-    const k3 = `${SYMBOLS[r0].id}-${SYMBOLS[r1].id}-${SYMBOLS[r2].id}`;
-    const k2 = `${SYMBOLS[r0].id}-${SYMBOLS[r1].id}`;
-    const k1 = SYMBOLS[r0].id;
-    if (!PAY_TABLE[k3] && !PAY_TABLE[k2] && !PAY_TABLE[k1]) break;
-    attempts++;
-  } while (attempts < 500);
-  return [r0, r1, r2];
-}
-
-/* =============================================
-   [J] AT システム
-============================================= */
-
-function startAt(bonus = 30) {
-  if (game.mode === 'at') {
-    game.atCount = Math.min(game.atCount + bonus, 999);
-    game.atMax   = Math.max(game.atMax, game.atCount);
-    showLcd('討伐RUSH', `討伐RUSH 延長！`, `+${bonus}G 追加`);
-    setTimeout(() => showLcdAtState(), 2000);
-  } else {
-    game.mode     = 'at';
-    game.atCount  = bonus;
-    game.atMax    = bonus;
-    game.totalAt++;
-    setLampMode('at');
-    document.getElementById('atStrip').classList.add('visible');
-    setAtSideLeds();
-    playSfx('at_start');
-    showLcd('討伐RUSH', AT_START_MSGS[rand(AT_START_MSGS.length)][0], AT_START_MSGS[rand(AT_START_MSGS.length)][1]);
-    setTimeout(showLcdAtState, 2500);
-  }
-  updateAtDisplay();
-  updateStats();
-  saveState();
-}
-
-function tickAt() {
-  if (game.mode !== 'at') return;
-  game.atCount--;
-  updateAtDisplay();
-  if (game.atCount <= 0) {
-    if (game.atStock > 0) {
-      game.atStock--;
-      game.atCount = 30;
-      game.atMax   = 30;
-      updateAtDisplay();
-      showLcd('討伐RUSH', 'ストック消化！', `残ストック: ${game.atStock}`);
-      setTimeout(showLcdAtState, 2000);
-    } else {
-      endAt();
-    }
-  }
-}
-
-function endAt() {
-  game.mode    = 'normal';
-  game.atCount = 0;
-  setLampMode('normal');
-  document.getElementById('atStrip').classList.remove('visible');
-  hidePushNav();
-  hideLcdAtBar();
-  showLcdCycle('NORMAL', NORMAL_MSGS);
-  resetSideLeds();
-}
-
-function updateAtDisplay() {
-  document.getElementById('atCount').textContent = game.atCount;
-  document.getElementById('atStock').textContent = game.atStock;
-  if (game.mode === 'at') updateLcdAtBar(game.atCount, game.atMax);
-  else                    hideLcdAtBar();
-}
-
-function showLcdAtState() {
-  if (game.mode !== 'at') return;
-  const enemies = ['Ｇ型変異体', 'テラフォーマー', '翅型個体', '高速型個体', '壁越え個体'];
-  const enemy = enemies[rand(enemies.length)];
-  showLcd('討伐RUSH', `${enemy} 出現！`, `残り ${game.atCount}G`);
-}
-
-/* =============================================
-   [K] ボーナス システム
-============================================= */
-
-function startBonus(type) {
-  game.atWasActive = (game.mode === 'at');
-  if (game.mode === 'at') hidePushNav();
-  game.mode    = type;
-  game.phase   = 'bonus';
-
-  if (type === 'big') { game.totalBig++; } else { game.totalReg++; }
-
-  const bp      = BONUS_PARAMS[type];
-  const payout  = bp.payout;
-  game.credit  += payout;
-  game.payout   = payout;
-
-  setLampMode('bonus');
-  updateDisplay();
-  updateStats();
-
-  document.getElementById('baTitle').textContent  = 'BONUS START';
-  document.getElementById('baName').textContent   = bp.name;
-  document.getElementById('baSub').textContent    = bp.sub;
-  document.getElementById('baPayout').textContent = `+${payout} MEDALS`;
-  document.getElementById('bonusAnnounce').classList.add('show');
-
-  playSfx(type === 'big' ? 'jackpot' : 'bonus');
-  cabinet.classList.remove('cabinet-flash');
-  requestAnimationFrame(() => {
-    cabinet.classList.add('cabinet-flash');
-    cabinet.addEventListener('animationend', () => cabinet.classList.remove('cabinet-flash'), { once: true });
-  });
-  const rect = cabinet.getBoundingClientRect();
-  triggerWinEffect(rect, type === 'big' ? 'jackpot' : 'bonus');
-
-  payoutDisplay.classList.add('blink');
-  setTimeout(() => {
-    document.getElementById('bonusAnnounce').classList.remove('show');
-    payoutDisplay.classList.remove('blink');
-    endBonus(type);
-  }, 4000);
-
-  saveState();
-}
-
-function endBonus(type) {
-  const bp = BONUS_PARAMS[type];
-
-  // BIG bonus: gift AT games
-  const atGift = bp.atGiftMin + rand(bp.atGiftMax - bp.atGiftMin + 1);
-  if (atGift > 0 || game.atWasActive) {
-    game.mode = 'normal'; // reset so startAt treats it as new
-    if (game.atWasActive && game.atCount > 0) {
-      // Resume AT
-      game.mode    = 'at';
-      game.atCount = game.atCount; // kept
-      setLampMode('at');
-      document.getElementById('atStrip').classList.add('visible');
-      setAtSideLeds();
-    }
-    if (atGift > 0) startAt(atGift);
-    else if (game.mode !== 'at') { resetSideLeds(); setLampMode('normal'); }
-  } else {
-    game.mode = 'normal';
-    setLampMode('normal');
-    resetSideLeds();
-    showLcdCycle('NORMAL', NORMAL_MSGS);
-  }
-
-  game.atWasActive = false;
-  resetRound();
-}
-
-/* =============================================
-   [L] プッシュ順ナビ
-============================================= */
-
-const pushNavEl  = document.getElementById('pushNav');
-const pushNavSeq = document.getElementById('pushNavSeq');
-
-function generatePushOrder() {
-  const arr = [0, 1, 2];
-  for (let i = arr.length - 1; i > 0; i--) {
-    const j = rand(i + 1);
-    [arr[i], arr[j]] = [arr[j], arr[i]];
-  }
-  game.pushTarget = arr;
-  game.pushDone   = [];
-}
-
-function showPushNav() {
-  if (game.mode !== 'at') return;
-  generatePushOrder();
-  renderPushNav();
-  pushNavEl.classList.add('visible');
-
-  // Highlight next STOP button
-  const nextStop = game.pushTarget[0];
-  btnStops.forEach((b, i) => b.classList.toggle('nav-highlight', i === nextStop));
-}
-
-function renderPushNav() {
-  pushNavSeq.innerHTML = '';
-  const labels = ['①', '②', '③'];
-  game.pushTarget.forEach((reelIdx, step) => {
-    if (step > 0) {
-      const arw = document.createElement('div');
-      arw.className = 'push-nav-arrow'; arw.textContent = '→';
-      pushNavSeq.appendChild(arw);
-    }
-    const el = document.createElement('div');
-    el.className = 'push-nav-step';
-    el.textContent = labels[reelIdx];
-    const doneIdx = game.pushDone.indexOf(reelIdx);
-    if (doneIdx !== -1) {
-      el.classList.add('done');
-    } else if (game.pushDone.length === step) {
-      el.classList.add('next');
-    }
-    pushNavSeq.appendChild(el);
-  });
-}
-
-function hidePushNav() {
-  pushNavEl.classList.remove('visible');
-  btnStops.forEach(b => b.classList.remove('nav-highlight'));
-  game.pushTarget = [];
-  game.pushDone   = [];
-}
-
-function checkPush(reelIndex) {
-  if (game.mode !== 'at' || game.pushTarget.length === 0) return 'none';
-  const expected = game.pushTarget[game.pushDone.length];
-  game.pushDone.push(reelIndex);
-  renderPushNav();
-
-  // Highlight next button
-  const nextStep = game.pushDone.length;
-  if (nextStep < game.pushTarget.length) {
-    const next = game.pushTarget[nextStep];
-    btnStops.forEach((b, i) => b.classList.toggle('nav-highlight', i === next && !b.disabled));
-  } else {
-    btnStops.forEach(b => b.classList.remove('nav-highlight'));
-  }
-
-  if (expected === reelIndex) { playSfx('nav_ok'); return 'ok'; }
-  playSfx('nav_ng'); return 'ng';
-}
-
-/* =============================================
-   [M] 表示更新
-============================================= */
-
-const creditDisplay = document.getElementById('creditDisplay');
-const betDisplay    = document.getElementById('betDisplay');
-const payoutDisplay = document.getElementById('payoutDisplay');
-const pekaLamp      = document.getElementById('pekaLamp');
-const winLine       = document.getElementById('winLine');
-const cabinet       = document.getElementById('cabinet');
-const btnBet        = document.getElementById('btnBet');
-const btnMaxBet     = document.getElementById('btnMaxBet');
-const btnStart      = document.getElementById('btnStart');
-const btnStops      = [
-  document.getElementById('btnStop0'),
-  document.getElementById('btnStop1'),
-  document.getElementById('btnStop2'),
-];
-
-function updateDisplay() {
-  creditDisplay.textContent = pad(game.credit);
-  betDisplay.textContent    = String(game.bet);
-  payoutDisplay.textContent = pad(game.payout);
-  btnStart.classList.toggle('ready', game.bet > 0 && game.phase === 'idle');
-}
-
-function updateStats() {
-  document.getElementById('statGames').textContent   = game.totalGames;
-  document.getElementById('statBig').textContent     = game.totalBig;
-  document.getElementById('statReg').textContent     = game.totalReg;
-  document.getElementById('statAt').textContent      = game.totalAt;
-  document.getElementById('statSetting').textContent = game.setting;
-}
-
-/* =============================================
-   [N] ゲームロジック
-============================================= */
-
-function onBet() {
-  if (game.phase !== 'idle') return;
-  if (game.credit <= 0 || game.bet >= 3) return;
-  game.bet++;
-  game.credit--;
-  playSfx('bet');
-  updateDisplay();
-}
-
-function onMaxBet() {
-  if (game.phase !== 'idle') return;
-  const need = Math.min(3 - game.bet, game.credit);
-  if (need <= 0) return;
-  game.bet    += need;
-  game.credit -= need;
-  playSfx('bet');
-  updateDisplay();
-}
-
-function onStart() {
-  if (game.phase !== 'idle') return;
-  if (game.bet <= 0) {
-    btnBet.style.filter = 'brightness(2.5)';
-    setTimeout(() => { btnBet.style.filter = ''; }, 280);
-    return;
-  }
-
-  game.internalFlag  = drawFlag();
-  game.plannedStops  = calcStops(game.internalFlag);
-  game.phase         = 'spinning';
-  game.payout        = 0;
-  game.stoppedCount  = 0;
-  game.totalGames++;
-
-  updateDisplay();
-  updateStats();
-
-  btnBet.disabled    = true;
-  btnMaxBet.disabled = true;
-  btnStart.disabled  = true;
-  btnStops.forEach(b => { b.disabled = false; b.classList.remove('nav-highlight','nav-correct','nav-wrong'); });
-
-  if (game.mode === 'at') showPushNav();
-
-  reels.forEach(r => r.startSpin());
-  playSfx('start');
-
-  const msg = SPIN_MSGS[rand(SPIN_MSGS.length)];
-  showLcd('QUEST', msg[0], msg[1]);
-
-  const rect = cabinet.getBoundingClientRect();
-  triggerParticles(rect.left + rect.width / 2, rect.top + rect.height * 0.45, 14);
-
-  autoStopTimer = setTimeout(() => {
-    btnStops.forEach((b, i) => { if (!b.disabled) onStop(i); });
-  }, 10000);
-}
-
-function onStop(reelIndex) {
-  const reel = reels[reelIndex];
-  if (reel.phase !== 'spinning') return;
-
-  btnStops[reelIndex].disabled = true;
-  btnStops[reelIndex].classList.remove('nav-highlight');
-
-  const navResult = checkPush(reelIndex);
-
-  // AT中 押し順ミス: ch2→ch1 に格下げ
-  let planned = game.plannedStops[reelIndex];
-  if (game.mode === 'at' && game.internalFlag === 'ch2' && navResult === 'ng' && reelIndex === 1) {
-    planned = randExcept(SYM_IDX.squad);
-    game.plannedStops[1] = planned;
-  }
-
-  reel.requestStop(planned);
-
-  if (navResult === 'ok') btnStops[reelIndex].classList.add('nav-correct');
-  if (navResult === 'ng') btnStops[reelIndex].classList.add('nav-wrong');
-  playSfx('stop');
-
-  reel.onStopped = () => {
-    btnStops[reelIndex].classList.remove('nav-correct', 'nav-wrong');
-
-    reel.win.classList.add('flash-stop');
-    reel.win.addEventListener('animationend', () => reel.win.classList.remove('flash-stop'), { once: true });
-
-    const wRect = reel.win.getBoundingClientRect();
-    triggerSparks(wRect.left + wRect.width / 2, wRect.top + wRect.height / 2, 8);
-
-    const bm = BATTLE_MSGS[rand(BATTLE_MSGS.length)];
-    showLcd('BATTLE', bm[0], bm[1]);
-
-    game.stoppedCount++;
-    if (game.stoppedCount === 3) onAllStopped();
-  };
-}
-
-function onAllStopped() {
-  if (autoStopTimer) { clearTimeout(autoStopTimer); autoStopTimer = null; }
-  hidePushNav();
-  game.phase = 'result';
-
-  const r0 = reels[0].getResult();
-  const r1 = reels[1].getResult();
-  const r2 = reels[2].getResult();
-
-  const key3 = `${r0.id}-${r1.id}-${r2.id}`;
-  const key2 = `${r0.id}-${r1.id}`;
-  const key1 = r0.id;
-
-  const win = PAY_TABLE[key3] || PAY_TABLE[key2] || PAY_TABLE[key1] || null;
-
-  if (win) {
-    winLine.classList.add('active');
-
-    if (win.type === 'big') {
-      pekaLamp.classList.add('lit');
-      setTimeout(() => {
-        pekaLamp.classList.remove('lit');
-        winLine.classList.remove('active');
-        startBonus('big');
-      }, 600);
-      return;
-    }
-    if (win.type === 'reg') {
-      pekaLamp.classList.add('lit');
-      setTimeout(() => {
-        pekaLamp.classList.remove('lit');
-        winLine.classList.remove('active');
-        startBonus('reg');
-      }, 600);
-      return;
-    }
-
-    // Regular / cherry wins
-    const total = win.pay * game.bet;
-    game.payout  = total;
-    game.credit += total;
-    updateDisplay();
-
-    if (win.type === 'cherry') {
-      playSfx('cherry');
-    } else {
-      playSfx('win');
-      pekaLamp.classList.add('lit');
-    }
-
-    if (game.mode === 'at') {
-      const wm = AT_WIN_MSGS[rand(AT_WIN_MSGS.length)];
-      showLcd('討伐RUSH', wm[0], wm[1]);
-    }
-
-    showWin(win, total);
-
-    // AT trigger check
-    if (game.internalFlag === 'at') {
-      setTimeout(() => startAt(), 2000);
-    } else if (game.mode === 'at') {
-      setTimeout(tickAt, 200);
-    }
-
-  } else {
-    // No win
-    winLine.classList.remove('active');
-
-    if (game.internalFlag === 'at') {
-      // AT triggers without visual win
-      setTimeout(() => startAt(), 600);
-    } else if (game.mode === 'at') {
-      tickAt();
-      if (game.mode === 'at') showLcdAtState();
-      setTimeout(resetRound, 500);
-    } else {
-      showLcdCycle('NORMAL', NORMAL_MSGS);
-      setTimeout(resetRound, 500);
-    }
-  }
-}
-
-function showWin(win, amount) {
-  document.getElementById('wmAmount').textContent = amount;
-  document.getElementById('wmName').textContent   = win.name;
-  document.getElementById('winMessage').classList.add('show');
-
-  payoutDisplay.classList.add('blink');
-
-  cabinet.classList.remove('cabinet-flash');
-  requestAnimationFrame(() => {
-    cabinet.classList.add('cabinet-flash');
-    cabinet.addEventListener('animationend', () => cabinet.classList.remove('cabinet-flash'), { once: true });
-  });
-
-  const rect = cabinet.getBoundingClientRect();
-  if (win.type !== 'cherry') triggerWinEffect(rect, 'win');
-
-  setTimeout(() => {
-    document.getElementById('winMessage').classList.remove('show');
-    pekaLamp.classList.remove('lit');
-    winLine.classList.remove('active');
-    payoutDisplay.classList.remove('blink');
-    if (game.mode !== 'at') showLcdCycle('NORMAL', NORMAL_MSGS);
-    resetRound();
-  }, 3000);
-}
-
-function resetRound() {
-  if (autoStopTimer) { clearTimeout(autoStopTimer); autoStopTimer = null; }
-  if (game.phase === 'bonus') return; // bonus handles its own reset
-  game.phase = 'idle';
-  game.bet   = 0;
-
-  btnBet.disabled    = false;
-  btnMaxBet.disabled = false;
-  btnStart.disabled  = false;
-  btnStops.forEach(b => { b.disabled = true; });
-
-  if (game.credit <= 0) {
-    game.credit = 50;
-    showLcd('CREDIT', 'クレジット補充', '50枚');
-    setTimeout(() => { if (game.mode !== 'at') showLcdCycle('NORMAL', NORMAL_MSGS); }, 2000);
-  }
-
-  updateDisplay();
-  saveState();
-}
-
-/* =============================================
-   [O] LED 装飾の初期化
-============================================= */
-
-function buildTopLED() {
-  const strip   = document.getElementById('topLedStrip');
-  const pattern = ['red','amber','red','amber','red','amber','red','amber','red','amber','red','amber','red','amber','red'];
-  pattern.forEach(color => {
-    const d = document.createElement('div');
-    d.className = `led-dot ${color}`;
-    strip.appendChild(d);
-  });
-}
-
-function buildSideLEDs(panelId, colors) {
-  const panel = document.getElementById(panelId);
-  colors.forEach(color => {
-    const d = document.createElement('div');
-    d.className = `side-led ${color}`;
-    panel.appendChild(d);
-  });
-}
-
-function resetSideLeds() {
-  ['leftPanel','rightPanel'].forEach(id => {
-    const p = document.getElementById(id);
-    p.querySelectorAll('.side-led').forEach(el => {
-      el.classList.remove('at-red');
-      el.classList.add(el.dataset.origClass || 'red');
-    });
-  });
-}
-
-function setAtSideLeds() {
-  ['leftPanel','rightPanel'].forEach(id => {
-    const p = document.getElementById(id);
-    p.querySelectorAll('.side-led').forEach(el => {
-      if (!el.dataset.origClass) el.dataset.origClass = el.classList.contains('amber') ? 'amber' : 'red';
-      el.classList.remove('red','amber');
-      el.classList.add('at-red');
-    });
-  });
-}
-
-buildTopLED();
-buildSideLEDs('leftPanel',  ['red','amber','red','amber','red','amber']);
-buildSideLEDs('rightPanel', ['amber','red','amber','red','amber','red']);
-
-/* =============================================
-   [P] Canvas エフェクトシステム
-============================================= */
-
-const canvas = document.getElementById('effectCanvas');
-const ctx    = canvas.getContext('2d');
-
-(function resizeCanvas() {
-  canvas.width  = window.innerWidth;
-  canvas.height = window.innerHeight;
-  window.addEventListener('resize', () => {
-    canvas.width  = window.innerWidth;
-    canvas.height = window.innerHeight;
-  });
-})();
-
-const sparks     = [];
-const particles  = [];
-const lightnings = [];
-
-class Spark {
-  constructor(x, y, hue) {
-    this.x    = x; this.y = y;
-    this.vx   = (Math.random() - 0.5) * 10;
-    this.vy   = -(Math.random() * 6 + 2);
-    this.life = 1;
-    this.fade = 0.035 + Math.random() * 0.04;
-    this.size = 1.5 + Math.random() * 2.0;
-    const h   = (hue !== undefined) ? hue : (5 + Math.random() * 25); // red-orange
-    this.col  = `hsl(${h},100%,65%)`;
-  }
-  update() { this.vy += 0.22; this.x += this.vx; this.y += this.vy; this.vx *= 0.96; this.life -= this.fade; }
-  draw(c) {
-    if (this.life <= 0) return;
-    c.save(); c.globalAlpha = Math.max(0, this.life);
-    c.fillStyle = this.col;
-    c.beginPath(); c.arc(this.x, this.y, Math.max(0.1, this.size * this.life), 0, Math.PI * 2);
-    c.fill(); c.restore();
-  }
-}
-
-class Particle {
-  constructor(x, y, col) {
-    this.x    = x; this.y = y;
-    this.vx   = (Math.random() - 0.5) * 5;
-    this.vy   = (Math.random() - 0.5) * 5 - 1.5;
-    this.life = 1;
-    this.fade = 0.009 + Math.random() * 0.014;
-    this.size = 5 + Math.random() * 9;
-    this.col  = col || `hsl(${Math.random() * 30},100%,70%)`;
-  }
-  update() { this.x += this.vx; this.y += this.vy; this.vy -= 0.04; this.vx *= 0.99; this.size *= 0.993; this.life -= this.fade; }
-  draw(c) {
-    if (this.life <= 0 || this.size < 0.5) return;
-    c.save(); c.globalAlpha = Math.max(0, this.life * 0.72);
-    const g = c.createRadialGradient(this.x, this.y, 0, this.x, this.y, this.size);
-    g.addColorStop(0, this.col); g.addColorStop(1, 'transparent');
-    c.fillStyle = g; c.beginPath(); c.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-    c.fill(); c.restore();
-  }
-}
-
-class Lightning {
-  constructor(x1, y1, x2, y2) {
-    this.x1 = x1; this.y1 = y1; this.x2 = x2; this.y2 = y2;
-    this.life = 1; this.fade = 0.08; this.pts = this._gen();
-  }
-  _gen() {
-    const pts = [{ x: this.x1, y: this.y1 }];
-    const steps = 8 + Math.floor(Math.random() * 5);
-    for (let i = 1; i < steps; i++) {
-      const t = i / steps;
-      pts.push({
-        x: this.x1 + (this.x2 - this.x1) * t + (Math.random() - 0.5) * 45,
-        y: this.y1 + (this.y2 - this.y1) * t + (Math.random() - 0.5) * 45,
-      });
-    }
-    pts.push({ x: this.x2, y: this.y2 }); return pts;
-  }
-  update() { this.life -= this.fade; }
-  draw(c) {
-    if (this.life <= 0) return;
-    c.save();
-    c.globalAlpha = this.life * 0.45; c.strokeStyle = 'rgba(255,140,80,1)';
-    c.lineWidth = 4; c.shadowColor = '#ff8844'; c.shadowBlur = 22;
-    c.beginPath();
-    this.pts.forEach((p, i) => (i === 0 ? c.moveTo(p.x, p.y) : c.lineTo(p.x, p.y)));
-    c.stroke();
-    c.globalAlpha = this.life; c.strokeStyle = '#ffffff'; c.lineWidth = 1; c.shadowBlur = 6;
-    c.stroke(); c.restore();
-  }
-}
-
-function triggerSparks(x, y, count = 12, hue) {
-  for (let i = 0; i < count; i++) sparks.push(new Spark(x, y, hue));
-}
-function triggerParticles(x, y, count = 20, col) {
-  for (let i = 0; i < count; i++) {
-    particles.push(new Particle(
-      x + (Math.random() - 0.5) * 180,
-      y + (Math.random() - 0.5) * 80,
-      col
-    ));
-  }
-}
-function triggerLightning(rect) {
-  const x1 = rect.left + Math.random() * rect.width;
-  const y1 = rect.top  + Math.random() * rect.height * 0.25;
-  const x2 = rect.left + Math.random() * rect.width;
-  const y2 = rect.top  + rect.height * (0.35 + Math.random() * 0.3);
-  lightnings.push(new Lightning(x1, y1, x2, y2));
-}
-function triggerWinEffect(rect, style) {
-  const cx = rect.left + rect.width  / 2;
-  const cy = rect.top  + rect.height * 0.38;
-  const isJackpot = style === 'jackpot';
-  const cnt = isJackpot ? 50 : 30;
-  for (let i = 0; i < cnt; i++) {
-    sparks.push(new Spark(cx + (Math.random() - 0.5) * rect.width * 0.75, cy + (Math.random() - 0.5) * 60));
-  }
-  for (let i = 0; i < (isJackpot ? 40 : 22); i++) {
-    particles.push(new Particle(
-      cx + (Math.random() - 0.5) * rect.width * 0.8,
-      cy + (Math.random() - 0.5) * 80,
-      `hsl(${Math.random() * 35},100%,70%)`
-    ));
-  }
-  const ltCount = isJackpot ? 8 : 4;
-  for (let i = 0; i < ltCount; i++) {
-    setTimeout(() => { triggerLightning(rect); triggerLightning(rect); }, i * 220);
-  }
-}
-
-function drawEffects() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  [particles, sparks, lightnings].forEach(arr => {
-    for (let i = arr.length - 1; i >= 0; i--) {
-      arr[i].update(); arr[i].draw(ctx);
-      if (arr[i].life <= 0) arr.splice(i, 1);
-    }
-  });
-}
-
-/* =============================================
-   [Q] 統計・localStorage
-============================================= */
-
-const SAVE_KEY = 'tf_slot_save';
-
-function saveState() {
-  try {
-    localStorage.setItem(SAVE_KEY, JSON.stringify({
-      credit:     game.credit,
-      totalGames: game.totalGames,
-      totalBig:   game.totalBig,
-      totalReg:   game.totalReg,
-      totalAt:    game.totalAt,
-      setting:    game.setting,
-    }));
-  } catch(e) {}
-}
-
-function loadState() {
-  try {
-    const s = JSON.parse(localStorage.getItem(SAVE_KEY) || '{}');
-    if (s.credit     !== undefined) game.credit     = s.credit;
-    if (s.totalGames !== undefined) game.totalGames = s.totalGames;
-    if (s.totalBig   !== undefined) game.totalBig   = s.totalBig;
-    if (s.totalReg   !== undefined) game.totalReg   = s.totalReg;
-    if (s.totalAt    !== undefined) game.totalAt    = s.totalAt;
-    if (s.setting    !== undefined) game.setting    = s.setting;
-  } catch(e) {}
-}
-
-/* =============================================
-   [R] 設定パネル
-============================================= */
-
-const SETTING_INFO = {
-  1: 'BIG: 約1/400  REG: 約1/300  AT: 約1/100',
-  2: 'BIG: 約1/360  REG: 約1/273  AT: 約1/91',
-  3: 'BIG: 約1/321  REG: 約1/240  AT: 約1/82',
-  4: 'BIG: 約1/280  REG: 約1/211  AT: 約1/72',
-  5: 'BIG: 約1/240  REG: 約1/179  AT: 約1/63',
-  6: 'BIG: 約1/200  REG: 約1/150  AT: 約1/55',
-};
-
-function buildSettingBtns() {
-  const container = document.getElementById('settingBtns');
-  for (let s = 1; s <= 6; s++) {
-    const btn = document.createElement('button');
-    btn.className = `sp-btn${s === game.setting ? ' active' : ''}`;
-    btn.textContent = s;
-    btn.addEventListener('click', () => {
-      game.setting = s;
-      document.getElementById('spInfo').textContent = SETTING_INFO[s];
-      container.querySelectorAll('.sp-btn').forEach((b, i) => b.classList.toggle('active', i + 1 === s));
-      updateStats();
-      saveState();
-    });
-    container.appendChild(btn);
-  }
-  document.getElementById('spInfo').textContent = SETTING_INFO[game.setting];
-}
-buildSettingBtns();
-
-let settingsHoldTimer = null;
-document.getElementById('machineHeader').addEventListener('pointerdown', () => {
-  settingsHoldTimer = setTimeout(() => {
-    document.getElementById('settingsPanel').classList.add('show');
-  }, 3000);
-});
-['pointerup','pointercancel','pointerleave'].forEach(ev =>
-  document.getElementById('machineHeader').addEventListener(ev, () => clearTimeout(settingsHoldTimer))
-);
-document.getElementById('spClose').addEventListener('click', () => {
-  document.getElementById('settingsPanel').classList.remove('show');
-});
-
-/* =============================================
-   [S] ボタンイベント
-============================================= */
-
-function addAction(el, fn) {
-  el.addEventListener('click', fn);
-  el.addEventListener('touchend', e => { e.preventDefault(); fn(); });
-}
-
-addAction(btnBet,    onBet);
-addAction(btnMaxBet, onMaxBet);
-addAction(btnStart,  onStart);
-btnStops.forEach((b, i) => addAction(b, () => onStop(i)));
-
-/* =============================================
-   [T] メインループ
-============================================= */
-
-let lastTime = performance.now();
-function mainLoop(ts) {
-  const dt = Math.min(ts - lastTime, 50);
-  lastTime = ts;
-  reels.forEach(r => r.update(dt));
-  drawEffects();
-  requestAnimationFrame(mainLoop);
-}
-
-/* =============================================
-   [U] 起動
-============================================= */
-
-loadState();
-updateDisplay();
-updateStats();
-updateAtDisplay();
-showLcdCycle('NORMAL', NORMAL_MSGS);
-requestAnimationFrame(mainLoop);
-
-</script>
 </body>
+
 </html>
