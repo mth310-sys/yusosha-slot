@@ -9,13 +9,13 @@
 
 <style>
 /* =========================================================
-   遊創舎 2.5D筐体試験機 Ver.T25-0.1
+   遊創舎 2.5D筐体試験機 Ver.T25-0.2
 
    目的
    ・固定視点2D筐体
    ・CSSによる金属、ガラス、奥行き表現
    ・Canvasによる雷、火花、粒子演出
-   ・簡易リール回転、停止確認
+   ・連続縦回転リール（translateY + requestAnimationFrame）
 ========================================================= */
 
 * {
@@ -466,7 +466,7 @@ button {
 
 .reel {
   position: relative;
-  height: 106px;
+  height: 240px;
   overflow: hidden;
 
   border-radius: 9px;
@@ -485,18 +485,18 @@ button {
   position: absolute;
   left: 0;
   right: 0;
-  top: -106px;
+  top: 0;
 
-  transition: transform .16s cubic-bezier(.2,.8,.3,1);
+  will-change: transform;
 }
 
 .symbol {
-  height: 106px;
+  height: 80px;
 
   display: grid;
   place-items: center;
 
-  font-size: 45px;
+  font-size: 38px;
   font-weight: 900;
 
   color: #111;
@@ -518,7 +518,7 @@ button {
 .symbol.red7 {
   color: #e00000;
   font-family: Arial Black, sans-serif;
-  font-size: 55px;
+  font-size: 48px;
 
   text-shadow:
     2px 2px 0 #ffd000,
@@ -533,10 +533,6 @@ button {
 
   background:
     linear-gradient(#fafafa, #fff, #e8e8e8);
-}
-
-.reel.spinning .reel-strip {
-  animation: reelSpin .18s linear infinite;
 }
 
 .reel.stop-flash {
@@ -842,15 +838,6 @@ body.shake .machine {
   }
 }
 
-@keyframes reelSpin {
-  from {
-    transform: translateY(0);
-  }
-  to {
-    transform: translateY(106px);
-  }
-}
-
 @keyframes reelStopFlash {
   0% {
     transform: scale(1.05);
@@ -908,12 +895,12 @@ body.shake .machine {
   }
 
   .reel {
-    height: 98px;
+    height: 219px;
   }
 
   .symbol {
-    height: 98px;
-    font-size: 41px;
+    height: 73px;
+    font-size: 34px;
   }
 
   .stop-button {
@@ -940,7 +927,7 @@ body.shake .machine {
       <section class="panel title-panel">
         <div class="brand">🌱 遊創舎</div>
         <h1 class="title">⚡ 2.5D 試験機 ⚡</h1>
-        <div class="version">YUSOSHA SLOT Ver.T25-0.1</div>
+        <div class="version">YUSOSHA SLOT Ver.T25-0.2</div>
       </section>
 
       <section class="panel reel-panel">
@@ -955,15 +942,45 @@ body.shake .machine {
 
               <div id="reel0" class="reel">
                 <div class="reel-strip">
+                  <div class="symbol red7">7</div>
                   <div class="symbol">🍇</div>
                   <div class="symbol">🔔</div>
+                  <div class="symbol">🍒</div>
+                  <div class="symbol">⭐</div>
+                  <div class="symbol bar">BAR</div>
                   <div class="symbol red7">7</div>
+                  <div class="symbol">🍇</div>
+                  <div class="symbol">🔔</div>
+                  <div class="symbol">🍒</div>
+                  <div class="symbol">⭐</div>
+                  <div class="symbol bar">BAR</div>
+                  <div class="symbol red7">7</div>
+                  <div class="symbol">🍇</div>
+                  <div class="symbol">🔔</div>
+                  <div class="symbol">🍒</div>
+                  <div class="symbol">⭐</div>
+                  <div class="symbol bar">BAR</div>
                 </div>
               </div>
 
               <div id="reel1" class="reel">
                 <div class="reel-strip">
                   <div class="symbol">🔔</div>
+                  <div class="symbol red7">7</div>
+                  <div class="symbol">🍇</div>
+                  <div class="symbol">🍒</div>
+                  <div class="symbol">⭐</div>
+                  <div class="symbol bar">BAR</div>
+                  <div class="symbol">🔔</div>
+                  <div class="symbol red7">7</div>
+                  <div class="symbol">🍇</div>
+                  <div class="symbol">🍒</div>
+                  <div class="symbol">⭐</div>
+                  <div class="symbol bar">BAR</div>
+                  <div class="symbol">🔔</div>
+                  <div class="symbol red7">7</div>
+                  <div class="symbol">🍇</div>
+                  <div class="symbol">🍒</div>
                   <div class="symbol">⭐</div>
                   <div class="symbol bar">BAR</div>
                 </div>
@@ -971,9 +988,24 @@ body.shake .machine {
 
               <div id="reel2" class="reel">
                 <div class="reel-strip">
-                  <div class="symbol">🍒</div>
                   <div class="symbol">🍇</div>
+                  <div class="symbol">🍒</div>
+                  <div class="symbol">🔔</div>
+                  <div class="symbol red7">7</div>
                   <div class="symbol">⭐</div>
+                  <div class="symbol bar">BAR</div>
+                  <div class="symbol">🍇</div>
+                  <div class="symbol">🍒</div>
+                  <div class="symbol">🔔</div>
+                  <div class="symbol red7">7</div>
+                  <div class="symbol">⭐</div>
+                  <div class="symbol bar">BAR</div>
+                  <div class="symbol">🍇</div>
+                  <div class="symbol">🍒</div>
+                  <div class="symbol">🔔</div>
+                  <div class="symbol red7">7</div>
+                  <div class="symbol">⭐</div>
+                  <div class="symbol bar">BAR</div>
                 </div>
               </div>
 
@@ -1037,45 +1069,61 @@ body.shake .machine {
 "use strict";
 
 /* =========================================================
-   簡易ゲーム状態
+   リールレイアウト定数
 ========================================================= */
 
-const SYMBOLS = [
-  { key: "RED7", html: "7", className: "red7" },
-  { key: "BAR", html: "BAR", className: "bar" },
-  { key: "STAR", html: "⭐", className: "" },
-  { key: "BELL", html: "🔔", className: "" },
-  { key: "GRAPE", html: "🍇", className: "" },
-  { key: "CHERRY", html: "🍒", className: "" }
+const REEL_LAYOUTS = [
+  ["RED7", "GRAPE", "BELL", "CHERRY", "STAR", "BAR"],  // リール0
+  ["BELL", "RED7",  "GRAPE", "CHERRY", "STAR", "BAR"], // リール1
+  ["GRAPE","CHERRY","BELL",  "RED7",   "STAR", "BAR"]  // リール2
 ];
 
+const SH       = 80;        // シンボル高さ (px)
+const N        = 6;         // パターン内シンボル数
+const LOOP_LEN = N * SH;   // 480 px — 1パターン分の高さ
+const MAX_SPEED = 8;        // 定速 (px/frame)
+const ACCEL     = 0.5;      // 加速度 (px/frame²)
+
+/* =========================================================
+   ゲーム状態
+========================================================= */
+
 let credit = 50;
-let bet = 0;
+let bet    = 0;
 let payout = 0;
 
-let spinning = [false, false, false];
-let stoppedCount = 0;
+let spinning      = [false, false, false];
+let stopPressed   = [false, false, false];
+let stoppedCount  = 0;  // STOPボタン押下数（MISS回避判定用）
+let physicalCount = 0;  // 物理的に停止したリール数
+let gameActive    = false;
 
-let reelTimers = [null, null, null];
-let currentSymbols = ["CHERRY", "GRAPE", "BELL"];
+let currentSymbols = ["", "", ""];
+let targetResult   = "MISS";
 
-let targetResult = "MISS";
+/* リールアニメーション状態（リールごと） */
+const reelStates = [0, 1, 2].map(() => ({
+  rawPos:     LOOP_LEN, // 絶対位置（常に増加、正規化はbouncing終了時）
+  speed:      0,
+  state:      "idle",   // idle|accelerating|spinning|decelerating|bouncing
+  targetPos:  0,
+  decelA:     0,
+  bouncePhase: -1
+}));
 
 /* =========================================================
    DOM
 ========================================================= */
 
-const machine = document.getElementById("machine");
-const lamp = document.getElementById("lamp");
-const message = document.getElementById("message");
-
+const machine       = document.getElementById("machine");
+const lamp          = document.getElementById("lamp");
+const message       = document.getElementById("message");
 const creditElement = document.getElementById("credit");
-const betElement = document.getElementById("bet");
+const betElement    = document.getElementById("bet");
 const payoutElement = document.getElementById("payout");
-
-const startButton = document.getElementById("startButton");
-const betButton = document.getElementById("betButton");
-const maxBetButton = document.getElementById("maxBetButton");
+const startButton   = document.getElementById("startButton");
+const betButton     = document.getElementById("betButton");
+const maxBetButton  = document.getElementById("maxBetButton");
 
 const stopButtons = [
   document.getElementById("stop0"),
@@ -1089,7 +1137,126 @@ const reelElements = [
   document.getElementById("reel2")
 ];
 
+const reelStrips = reelElements.map(r => r.querySelector(".reel-strip"));
+
 const payEffect = document.getElementById("payEffect");
+
+/* =========================================================
+   リール位置ヘルパー
+========================================================= */
+
+/*
+ * rawPos → 表示用 displayPos ∈ [LOOP_LEN, 2*LOOP_LEN)
+ * CSS translateY = -displayPos でストリップを正しい位置に配置する。
+ * ストリップは同一パターンを3コピー持つため、
+ * displayPos がどの範囲にあっても中段コピーが表示される。
+ */
+function getDisplayPos(rawPos) {
+  return LOOP_LEN + ((rawPos - LOOP_LEN) % LOOP_LEN);
+}
+
+/* リールストリップの CSS transform を更新 */
+function applyStripPos(i) {
+  const rs = reelStates[i];
+  const dp = getDisplayPos(rs.rawPos);
+  let by = 0;
+  if (rs.bouncePhase >= 0) {
+    // 停止後の軽い揺り戻し
+    const BOUNCE = [-5, -4, -2, 1, 2, 1, 0, -1, 0, 0, 0, 0];
+    by = rs.bouncePhase < BOUNCE.length ? BOUNCE[rs.bouncePhase] : 0;
+  }
+  reelStrips[i].style.transform = `translateY(${-dp + by}px)`;
+}
+
+/*
+ * 停止目標位置を計算する。
+ * symbolKey が中央ラインに来る最短の targetPos と、
+ * そこへ正確に到達するための decelA を返す。
+ */
+function getStopTarget(reelIndex, symbolKey, rawPos, speed) {
+  const t = REEL_LAYOUTS[reelIndex].indexOf(symbolKey);
+
+  // targetResidual: displayPos - LOOP_LEN でシンボル t が中央に来る残差 ∈ [0, LOOP_LEN)
+  const targetResidual  = ((t - 1 + N) % N) * SH;
+  const currentResidual = (rawPos - LOOP_LEN) % LOOP_LEN;
+
+  let gap = (targetResidual - currentResidual + LOOP_LEN) % LOOP_LEN;
+  if (gap === 0) gap = LOOP_LEN; // 現在位置に即停止させない
+
+  // 最低2シンボル分の減速距離を確保
+  while (gap < SH * 2) gap += LOOP_LEN;
+
+  const targetPos = rawPos + gap;
+
+  // 物理式: v²=2aD → a = v²/(2D)  →  rawPos + gap で速度がちょうど0になる
+  const decelA = Math.max((speed * speed) / (2 * gap), 0.005);
+
+  return { targetPos, decelA };
+}
+
+/* =========================================================
+   リールアニメーション本体（animateParticles から毎フレーム呼ばれる）
+========================================================= */
+
+function tickAllReels() {
+  for (let i = 0; i < 3; i++) {
+    const rs = reelStates[i];
+    if (rs.state === "idle") continue;
+
+    if (rs.state === "accelerating") {
+      rs.speed = Math.min(rs.speed + ACCEL, MAX_SPEED);
+      if (rs.speed >= MAX_SPEED) rs.state = "spinning";
+      rs.rawPos += rs.speed;
+
+    } else if (rs.state === "spinning") {
+      rs.rawPos += rs.speed;
+
+    } else if (rs.state === "decelerating") {
+      rs.speed = Math.max(0, rs.speed - rs.decelA);
+      // 次フレームで目標を越えるか、速度ゼロになったらスナップ
+      if (rs.speed === 0 || rs.rawPos + rs.speed >= rs.targetPos) {
+        rs.rawPos     = rs.targetPos;
+        rs.speed      = 0;
+        rs.state      = "bouncing";
+        rs.bouncePhase = 0;
+        onReelPhysicallyStopped(i);
+      } else {
+        rs.rawPos += rs.speed;
+      }
+
+    } else if (rs.state === "bouncing") {
+      rs.bouncePhase++;
+      if (rs.bouncePhase >= 12) {
+        rs.state      = "idle";
+        rs.bouncePhase = -1;
+        // rawPos を正規化して次スピン開始位置を整える
+        rs.rawPos = getDisplayPos(rs.rawPos);
+      }
+    }
+
+    applyStripPos(i);
+  }
+}
+
+function onReelPhysicallyStopped(index) {
+  spinning[index] = false;
+  physicalCount++;
+
+  // 停止フラッシュ
+  reelElements[index].classList.remove("stop-flash");
+  void reelElements[index].offsetWidth;
+  reelElements[index].classList.add("stop-flash");
+
+  if (targetResult === "RED7" || targetResult === "BAR") {
+    reelElements[index].classList.add("hot");
+  }
+
+  updateUi();
+
+  if (physicalCount === 3) {
+    window.setTimeout(() => judgeResult(), 300);
+  }
+}
 
 /* =========================================================
    表示更新
@@ -1097,25 +1264,18 @@ const payEffect = document.getElementById("payEffect");
 
 function updateUi() {
   creditElement.textContent = String(credit);
-  betElement.textContent = String(bet);
+  betElement.textContent    = String(bet);
   payoutElement.textContent = String(payout);
 
-  startButton.disabled =
-    bet !== 3 ||
-    spinning.includes(true);
+  const anySpinning = spinning.includes(true);
+  const busy        = anySpinning || gameActive;
 
-  betButton.disabled =
-    spinning.includes(true) ||
-    bet >= 3 ||
-    credit <= 0;
-
-  maxBetButton.disabled =
-    spinning.includes(true) ||
-    bet >= 3 ||
-    credit <= 0;
+  startButton.disabled  = bet !== 3 || busy;
+  betButton.disabled    = busy || bet >= 3 || credit <= 0;
+  maxBetButton.disabled = busy || bet >= 3 || credit <= 0;
 
   stopButtons.forEach((button, index) => {
-    button.disabled = !spinning[index];
+    button.disabled = !spinning[index] || stopPressed[index];
   });
 }
 
@@ -1123,71 +1283,34 @@ function setMessage(text) {
   message.textContent = text;
 }
 
-function symbolByKey(key) {
-  return SYMBOLS.find((symbol) => symbol.key === key) || SYMBOLS[0];
-}
-
-function randomSymbol() {
-  return SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
-}
-
-function drawReel(index, key) {
-  const reel = reelElements[index];
-  const strip = reel.querySelector(".reel-strip");
-
-  const center = symbolByKey(key);
-  const upper = randomSymbol();
-  const lower = randomSymbol();
-
-  strip.innerHTML = `
-    <div class="symbol ${upper.className}">${upper.html}</div>
-    <div class="symbol ${center.className}">${center.html}</div>
-    <div class="symbol ${lower.className}">${lower.html}</div>
-  `;
-
-  strip.style.transform = "translateY(0)";
-}
-
 /* =========================================================
    BET
 ========================================================= */
 
 function betOne() {
-  if (spinning.includes(true)) return;
+  if (spinning.includes(true) || gameActive) return;
   if (credit <= 0 || bet >= 3) return;
 
   credit -= 1;
-  bet += 1;
-  payout = 0;
+  bet    += 1;
+  payout  = 0;
 
   lamp.classList.remove("on");
-
-  setMessage(
-    bet === 3
-      ? "STARTできます"
-      : "BET中"
-  );
-
+  setMessage(bet === 3 ? "STARTできます" : "BET中");
   updateUi();
 }
 
 function maxBet() {
-  if (spinning.includes(true)) return;
+  if (spinning.includes(true) || gameActive) return;
 
   while (bet < 3 && credit > 0) {
     credit -= 1;
-    bet += 1;
+    bet    += 1;
   }
 
   payout = 0;
   lamp.classList.remove("on");
-
-  setMessage(
-    bet === 3
-      ? "STARTできます"
-      : "クレジット不足"
-  );
-
+  setMessage(bet === 3 ? "STARTできます" : "クレジット不足");
   updateUi();
 }
 
@@ -1196,15 +1319,13 @@ function maxBet() {
 ========================================================= */
 
 function chooseResult() {
-  const random = Math.random();
-
-  if (random < 0.07) return "RED7";
-  if (random < 0.13) return "BAR";
-  if (random < 0.23) return "STAR";
-  if (random < 0.36) return "BELL";
-  if (random < 0.52) return "GRAPE";
-  if (random < 0.70) return "CHERRY";
-
+  const r = Math.random();
+  if (r < 0.07) return "RED7";
+  if (r < 0.13) return "BAR";
+  if (r < 0.23) return "STAR";
+  if (r < 0.36) return "BELL";
+  if (r < 0.52) return "GRAPE";
+  if (r < 0.70) return "CHERRY";
   return "MISS";
 }
 
@@ -1213,17 +1334,18 @@ function chooseResult() {
 ========================================================= */
 
 function startSpin() {
-  if (bet !== 3) return;
-  if (spinning.includes(true)) return;
+  if (bet !== 3 || spinning.includes(true) || gameActive) return;
 
-  stoppedCount = 0;
-  payout = 0;
+  stoppedCount   = 0;
+  physicalCount  = 0;
+  payout         = 0;
+  gameActive     = true;
+  currentSymbols = ["", "", ""];
+  stopPressed    = [false, false, false];
 
   targetResult = chooseResult();
 
-  reelElements.forEach((reel) => {
-    reel.classList.remove("hot", "stop-flash");
-  });
+  reelElements.forEach(reel => reel.classList.remove("hot", "stop-flash"));
 
   if (targetResult === "RED7" || targetResult === "BAR") {
     lamp.classList.add("on");
@@ -1234,15 +1356,12 @@ function startSpin() {
     setMessage("リール回転中");
   }
 
-  for (let index = 0; index < 3; index += 1) {
-    spinning[index] = true;
-    reelElements[index].classList.add("spinning");
-
-    reelTimers[index] = window.setInterval(() => {
-      const symbol = randomSymbol();
-      currentSymbols[index] = symbol.key;
-      drawReel(index, symbol.key);
-    }, 90 + index * 12);
+  for (let i = 0; i < 3; i++) {
+    spinning[i]           = true;
+    reelStates[i].speed   = 0;
+    reelStates[i].state   = "accelerating";
+    reelStates[i].bouncePhase = -1;
+    // rawPos はそのまま（前回停止位置から継続して回転）
   }
 
   updateUi();
@@ -1253,62 +1372,52 @@ function startSpin() {
 ========================================================= */
 
 function stopReel(index) {
-  if (!spinning[index]) return;
+  if (!spinning[index] || stopPressed[index]) return;
 
-  window.clearInterval(reelTimers[index]);
+  const rs = reelStates[index];
+  if (rs.state !== "accelerating" && rs.state !== "spinning") return;
 
-  spinning[index] = false;
-  reelElements[index].classList.remove("spinning");
-
+  /* --- 停止図柄の決定 --- */
   let finalSymbol;
 
-  if (
-    targetResult === "RED7" ||
-    targetResult === "BAR" ||
-    targetResult === "STAR" ||
-    targetResult === "BELL" ||
-    targetResult === "GRAPE"
-  ) {
+  if (["RED7", "BAR", "STAR", "BELL", "GRAPE"].includes(targetResult)) {
     finalSymbol = targetResult;
-  } else if (targetResult === "CHERRY") {
-    finalSymbol =
-      index === 0
-        ? "CHERRY"
-        : randomSymbol().key;
-  } else {
-    finalSymbol = randomSymbol().key;
 
-    if (
-      index === 2 &&
-      currentSymbols[0] === currentSymbols[1] &&
-      currentSymbols[1] === finalSymbol
-    ) {
+  } else if (targetResult === "CHERRY") {
+    if (index === 0) {
       finalSymbol = "CHERRY";
+    } else {
+      const nonCherry = REEL_LAYOUTS[index].filter(k => k !== "CHERRY");
+      finalSymbol = nonCherry[Math.floor(Math.random() * nonCherry.length)];
+    }
+
+  } else {
+    // MISS: ランダム停止
+    finalSymbol = REEL_LAYOUTS[index][Math.floor(Math.random() * N)];
+
+    // 3番目のSTOP時に3枚揃いになる場合は回避
+    if (stoppedCount === 2) {
+      const others = [0, 1, 2].filter(j => j !== index);
+      const s0 = currentSymbols[others[0]];
+      const s1 = currentSymbols[others[1]];
+      if (s0 !== "" && s0 === s1 && finalSymbol === s0) {
+        const diff = REEL_LAYOUTS[index].filter(k => k !== s0);
+        finalSymbol = diff[Math.floor(Math.random() * diff.length)];
+      }
     }
   }
 
   currentSymbols[index] = finalSymbol;
-  drawReel(index, finalSymbol);
+  stopPressed[index]    = true;
+  stoppedCount++;
 
-  reelElements[index].classList.remove("stop-flash");
-  void reelElements[index].offsetWidth;
-  reelElements[index].classList.add("stop-flash");
-
-  if (
-    targetResult === "RED7" ||
-    targetResult === "BAR"
-  ) {
-    reelElements[index].classList.add("hot");
-  }
-
-  stoppedCount += 1;
+  /* --- 減速目標を設定 --- */
+  const { targetPos, decelA } = getStopTarget(index, finalSymbol, rs.rawPos, rs.speed);
+  rs.targetPos = targetPos;
+  rs.decelA    = decelA;
+  rs.state     = "decelerating";
 
   pressVisual(stopButtons[index]);
-
-  if (stoppedCount === 3) {
-    judgeResult();
-  }
-
   updateUi();
 }
 
@@ -1317,54 +1426,21 @@ function stopReel(index) {
 ========================================================= */
 
 function judgeResult() {
+  gameActive = false;
+
   const [left, center, right] = currentSymbols;
 
-  if (
-    left === "RED7" &&
-    center === "RED7" &&
-    right === "RED7"
-  ) {
-    win(50, "BIG BONUS！！");
-
-  } else if (
-    left === "BAR" &&
-    center === "BAR" &&
-    right === "BAR"
-  ) {
-    win(20, "雷BONUS！！");
-
-  } else if (
-    left === "STAR" &&
-    center === "STAR" &&
-    right === "STAR"
-  ) {
-    win(15, "STAR 15枚");
-
-  } else if (
-    left === "BELL" &&
-    center === "BELL" &&
-    right === "BELL"
-  ) {
-    win(10, "ベル 10枚");
-
-  } else if (
-    left === "GRAPE" &&
-    center === "GRAPE" &&
-    right === "GRAPE"
-  ) {
-    win(8, "ブドウ 8枚");
-
-  } else if (currentSymbols.includes("CHERRY")) {
-    win(2, "チェリー 2枚");
-
-  } else {
+  if      (left === "RED7"  && center === "RED7"  && right === "RED7")  { win(50, "BIG BONUS！！"); }
+  else if (left === "BAR"   && center === "BAR"   && right === "BAR")   { win(20, "雷BONUS！！"); }
+  else if (left === "STAR"  && center === "STAR"  && right === "STAR")  { win(15, "STAR 15枚"); }
+  else if (left === "BELL"  && center === "BELL"  && right === "BELL")  { win(10, "ベル 10枚"); }
+  else if (left === "GRAPE" && center === "GRAPE" && right === "GRAPE") { win(8,  "ブドウ 8枚"); }
+  else if (currentSymbols.includes("CHERRY"))                           { win(2,  "チェリー 2枚"); }
+  else {
     payout = 0;
     setMessage("ハズレ");
-
     window.setTimeout(() => {
-      reelElements.forEach((reel) => {
-        reel.classList.remove("hot");
-      });
+      reelElements.forEach(reel => reel.classList.remove("hot"));
     }, 650);
   }
 
@@ -1373,7 +1449,7 @@ function judgeResult() {
 }
 
 function win(amount, text) {
-  payout = amount;
+  payout  = amount;
   credit += amount;
 
   setMessage(text);
@@ -1400,47 +1476,41 @@ function win(amount, text) {
 
 function pressVisual(element) {
   element.classList.add("pressed");
-
-  window.setTimeout(() => {
-    element.classList.remove("pressed");
-  }, 130);
+  window.setTimeout(() => element.classList.remove("pressed"), 130);
 }
 
 /* =========================================================
    Canvas演出
 ========================================================= */
 
-const canvas = document.getElementById("fxCanvas");
+const canvas  = document.getElementById("fxCanvas");
 const context = canvas.getContext("2d");
 
 let particles = [];
 
 function resizeCanvas() {
-  const rect = machine.getBoundingClientRect();
+  const rect  = machine.getBoundingClientRect();
   const ratio = Math.min(window.devicePixelRatio || 1, 2);
 
-  canvas.width = Math.floor(rect.width * ratio);
+  canvas.width  = Math.floor(rect.width  * ratio);
   canvas.height = Math.floor(rect.height * ratio);
 
-  canvas.style.width = `${rect.width}px`;
+  canvas.style.width  = `${rect.width}px`;
   canvas.style.height = `${rect.height}px`;
 
   context.setTransform(ratio, 0, 0, ratio, 0, 0);
 }
 
 function sparkBurst(count) {
-  const rect = machine.getBoundingClientRect();
-
-  const centerX = rect.width * 0.53;
+  const rect    = machine.getBoundingClientRect();
+  const centerX = rect.width  * 0.53;
   const centerY = rect.height * 0.32;
 
-  for (let index = 0; index < count; index += 1) {
+  for (let i = 0; i < count; i++) {
     const angle = Math.random() * Math.PI * 2;
     const speed = 1.3 + Math.random() * 4.4;
-
     particles.push({
-      x: centerX,
-      y: centerY,
+      x: centerX, y: centerY,
       vx: Math.cos(angle) * speed,
       vy: Math.sin(angle) * speed,
       life: 35 + Math.random() * 35,
@@ -1454,29 +1524,23 @@ function drawLightning() {
   if (!lamp.classList.contains("on")) return;
   if (Math.random() > 0.08) return;
 
-  const width = machine.clientWidth;
+  const width  = machine.clientWidth;
   const height = machine.clientHeight;
 
   let x = width * (0.2 + Math.random() * 0.6);
   let y = 45;
 
   context.save();
-
-  context.strokeStyle =
-    Math.random() > 0.4
-      ? "#fff200"
-      : "#ffffff";
-
-  context.lineWidth = 1.2 + Math.random() * 1.5;
+  context.strokeStyle = Math.random() > 0.4 ? "#fff200" : "#ffffff";
+  context.lineWidth   = 1.2 + Math.random() * 1.5;
   context.shadowColor = "#fff200";
-  context.shadowBlur = 12;
-
+  context.shadowBlur  = 12;
   context.beginPath();
   context.moveTo(x, y);
 
   while (y < height * 0.52) {
     x += -11 + Math.random() * 22;
-    y += 11 + Math.random() * 15;
+    y += 11  + Math.random() * 15;
     context.lineTo(x, y);
   }
 
@@ -1485,52 +1549,34 @@ function drawLightning() {
 }
 
 function animateParticles() {
-  context.clearRect(
-    0,
-    0,
-    machine.clientWidth,
-    machine.clientHeight
-  );
-
+  context.clearRect(0, 0, machine.clientWidth, machine.clientHeight);
   drawLightning();
 
-  particles = particles.filter((particle) => particle.life > 0);
+  particles = particles.filter(p => p.life > 0);
 
-  particles.forEach((particle) => {
-    particle.x += particle.vx;
-    particle.y += particle.vy;
+  particles.forEach(p => {
+    p.x  += p.vx;
+    p.y  += p.vy;
+    p.vx *= 0.98;
+    p.vy *= 0.98;
+    p.vy += 0.025;
+    p.life -= 1;
 
-    particle.vx *= 0.98;
-    particle.vy *= 0.98;
-    particle.vy += 0.025;
-
-    particle.life -= 1;
-
-    const opacity = Math.max(0, particle.life / 50);
+    const opacity = Math.max(0, p.life / 50);
 
     context.save();
-
     context.globalAlpha = opacity;
-    context.fillStyle =
-      particle.yellow
-        ? "#fff200"
-        : "#ffffff";
-
+    context.fillStyle   = p.yellow ? "#fff200" : "#ffffff";
     context.shadowColor = "#ff9d00";
-    context.shadowBlur = 9;
-
+    context.shadowBlur  = 9;
     context.beginPath();
-    context.arc(
-      particle.x,
-      particle.y,
-      particle.size,
-      0,
-      Math.PI * 2
-    );
+    context.arc(p.x, p.y, p.size, 0, Math.PI * 2);
     context.fill();
-
     context.restore();
   });
+
+  // リールアニメーションを毎フレーム更新
+  tickAllReels();
 
   requestAnimationFrame(animateParticles);
 }
@@ -1539,35 +1585,30 @@ function animateParticles() {
    イベント
 ========================================================= */
 
-betButton.addEventListener("click", () => {
-  pressVisual(betButton);
-  betOne();
-});
-
-maxBetButton.addEventListener("click", () => {
-  pressVisual(maxBetButton);
-  maxBet();
-});
-
-startButton.addEventListener("click", () => {
-  pressVisual(startButton);
-  startSpin();
-});
+betButton.addEventListener("click",    () => { pressVisual(betButton);    betOne(); });
+maxBetButton.addEventListener("click", () => { pressVisual(maxBetButton); maxBet(); });
+startButton.addEventListener("click",  () => { pressVisual(startButton);  startSpin(); });
 
 stopButtons.forEach((button, index) => {
-  button.addEventListener("click", () => {
-    stopReel(index);
-  });
+  button.addEventListener("click", () => stopReel(index));
 });
 
 window.addEventListener("resize", resizeCanvas);
 
 /* =========================================================
    初期化
+   初期表示: リール0=🍒, リール1=🍇, リール2=🔔 を中央に
+   displayPos = LOOP_LEN + ((t-1+N)%N)*SH  で計算
+     CHERRY(t=3 on reel0): 480 + 2*80 = 640
+     GRAPE (t=2 on reel1): 480 + 1*80 = 560
+     BELL  (t=2 on reel2): 480 + 1*80 = 560
 ========================================================= */
 
-currentSymbols.forEach((symbol, index) => {
-  drawReel(index, symbol);
+const INIT_DISPLAY_POS = [640, 560, 560];
+
+reelStates.forEach((rs, i) => {
+  rs.rawPos = INIT_DISPLAY_POS[i];
+  applyStripPos(i);
 });
 
 resizeCanvas();
