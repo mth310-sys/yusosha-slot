@@ -2,1179 +2,1578 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-<title>遊創舎 共通筐体 Ver.1</title>
+<title>遊創舎 2.5D筐体試験機</title>
 
 <style>
 /* =========================================================
-   遊創舎 共通パチスロ筐体 Ver.1
+   遊創舎 2.5D筐体試験機 Ver.T25-0.1
 
-   基準サイズ：390 × 600
-   構成：
-   01 外装シェル
-   02 トップクラウン
-   03 タイトルパネル
-   04 メイン表示部
-   05 リール部
-   06 操作卓
-   07 下部ビジュアルパネル
-   08 左サイドLEDフレーム
-   09 右サイドLEDフレーム
-   10 底部ベース
-
-   スピーカー・下皿・払出口なし
+   目的
+   ・固定視点2D筐体
+   ・CSSによる金属、ガラス、奥行き表現
+   ・Canvasによる雷、火花、粒子演出
+   ・簡易リール回転、停止確認
 ========================================================= */
 
 * {
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 :root {
   --machine-width: 390px;
-  --machine-height: 600px;
 
-  --frame-black: #050505;
-  --frame-dark: #111;
-  --frame-mid: #292929;
+  --black-1: #020202;
+  --black-2: #0a0a0a;
+  --black-3: #171717;
 
-  --chrome-dark: #252525;
-  --chrome-mid: #7c7c7c;
-  --chrome-light: #f3f3f3;
+  --gold-1: #fff28a;
+  --gold-2: #e5bd00;
+  --gold-3: #8a5d00;
 
-  --accent: #ff236b;
-  --accent-dark: #7b0c35;
-  --accent-light: #ff9abb;
-
-  --gold-dark: #55400c;
-  --gold-mid: #b79734;
-  --gold-light: #fff0a0;
+  --yellow: #fff200;
+  --orange: #ff9700;
+  --red: #e80000;
 }
 
 html,
 body {
-  margin: 0;
   min-height: 100%;
 }
 
 body {
-  min-height: 100vh;
-
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-
-  padding: 20px 6px 40px;
-
-  background:
-    radial-gradient(
-      ellipse at center top,
-      #393939 0%,
-      #171717 38%,
-      #050505 74%,
-      #010101 100%
-    );
-
+  margin: 0;
+  color: white;
   font-family:
     -apple-system,
     BlinkMacSystemFont,
-    "Segoe UI",
+    "Hiragino Kaku Gothic ProN",
+    "Yu Gothic",
+    Meiryo,
     sans-serif;
+
+  background:
+    radial-gradient(circle at 50% 28%, #4c3c00 0%, #171100 28%, #030303 72%);
+
+  text-align: center;
+  overflow-x: hidden;
 }
 
-/* =========================================================
-   00：共通筐体アセンブリ
-========================================================= */
+button {
+  font: inherit;
+  touch-action: manipulation;
+}
 
-#yusosha-common-cabinet {
+.page {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 8px 4px 30px;
+}
+
+.wrap {
+  width: min(100%, var(--machine-width));
   position: relative;
-
-  width: min(
-    var(--machine-width),
-    calc(100vw - 12px)
-  );
-
-  aspect-ratio: 390 / 600;
-
-  filter:
-    drop-shadow(0 24px 20px rgba(0, 0, 0, 0.92));
 }
 
 /* =========================================================
-   01：外装シェル
+   筐体外装
 ========================================================= */
 
-#cabinet-outer-shell {
-  position: absolute;
-  z-index: 1;
-
-  inset: 0 11px;
-
+.machine {
+  position: relative;
+  width: 100%;
   overflow: hidden;
 
-  border:
-    2px solid #4c4c4c;
+  padding: 10px 14px 14px;
 
-  border-radius:
-    25px 25px
-    13px 13px;
+  border: 5px solid #d3aa00;
+  border-radius: 27px;
 
   background:
     linear-gradient(
-      90deg,
-      #020202 0%,
-      #353535 2.4%,
-      #090909 6%,
-      #151515 15%,
-      #080808 50%,
-      #151515 85%,
-      #090909 94%,
-      #353535 97.6%,
-      #020202 100%
+      120deg,
+      rgba(255,255,255,.65) 0%,
+      rgba(255,255,255,.08) 4%,
+      transparent 11%,
+      transparent 88%,
+      rgba(255,255,255,.25) 96%,
+      rgba(255,255,255,.6) 100%
+    ),
+    linear-gradient(
+      145deg,
+      #555 0%,
+      #080808 8%,
+      #111 44%,
+      #030303 72%,
+      #3a3005 100%
     );
 
   box-shadow:
-    inset 0 0 0 2px #000,
-    inset 7px 0 12px rgba(255,255,255,0.06),
-    inset -7px 0 12px rgba(255,255,255,0.05),
-    0 18px 28px rgba(0,0,0,0.9);
+    0 20px 28px rgba(0,0,0,.75),
+    0 0 25px rgba(255,230,0,.85),
+    0 0 55px rgba(255,166,0,.38),
+    inset 0 0 0 3px #231d05,
+    inset 0 0 35px #000;
 }
 
-/* 外装中央の黒い面 */
-
-#cabinet-outer-shell::before {
+.machine::before {
   content: "";
-
   position: absolute;
-
-  inset: 17px 24px 14px;
-
-  border-radius:
-    19px 19px
-    8px 8px;
-
-  background:
-    linear-gradient(
-      to bottom,
-      #171717,
-      #050505 23%,
-      #101010 58%,
-      #030303 100%
-    );
+  inset: 8px;
+  border-radius: 20px;
+  border: 2px solid rgba(255,255,255,.65);
 
   box-shadow:
-    inset 0 0 28px #000,
-    inset 0 4px 7px rgba(255,255,255,0.045);
-}
-
-/* 外装ハイライト */
-
-#cabinet-outer-shell::after {
-  content: "";
-
-  position: absolute;
-
-  top: 20px;
-  bottom: 18px;
-  left: 50%;
-
-  width: 45%;
-
-  transform: translateX(-50%);
-
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      rgba(255,255,255,0.018),
-      rgba(255,255,255,0.055),
-      rgba(255,255,255,0.018),
-      transparent
-    );
+    0 0 8px rgba(255,255,255,.7),
+    0 0 18px rgba(255,230,0,.45),
+    inset 0 0 12px rgba(255,220,0,.22);
 
   pointer-events: none;
-}
-
-/* =========================================================
-   08・09：左右サイドLEDフレーム
-========================================================= */
-
-.side-led-frame {
-  position: absolute;
-  z-index: 20;
-
-  top: 13px;
-  bottom: 15px;
-
-  width: 54px;
-
-  overflow: hidden;
-
-  background:
-    linear-gradient(
-      90deg,
-      #170209,
-      var(--accent-dark) 17%,
-      var(--accent) 39%,
-      var(--accent-light) 52%,
-      var(--accent) 66%,
-      var(--accent-dark) 83%,
-      #170209
-    );
-
-  box-shadow:
-    inset 5px 0 8px rgba(255,255,255,0.2),
-    inset -7px 0 9px rgba(0,0,0,0.72),
-    0 0 13px rgba(255,35,107,0.52);
-}
-
-#left-side-led-frame {
-  left: 0;
-
-  clip-path:
-    polygon(
-      16% 0%,
-      88% 2%,
-      100% 10%,
-      87% 28%,
-      92% 48%,
-      82% 67%,
-      89% 84%,
-      72% 100%,
-      9% 98%,
-      0% 89%,
-      9% 69%,
-      3% 49%,
-      11% 28%,
-      2% 10%
-    );
-}
-
-#right-side-led-frame {
-  right: 0;
-
-  clip-path:
-    polygon(
-      12% 2%,
-      84% 0%,
-      98% 10%,
-      89% 28%,
-      97% 49%,
-      91% 69%,
-      100% 89%,
-      91% 98%,
-      28% 100%,
-      11% 84%,
-      18% 67%,
-      8% 48%,
-      13% 28%,
-      0% 10%
-    );
-}
-
-/* LED発光列 */
-
-.side-led-frame::before {
-  content: "";
-
-  position: absolute;
-
-  top: 17px;
-  bottom: 18px;
-
-  width: 20px;
-
-  border-radius: 15px;
-
-  background:
-    repeating-linear-gradient(
-      to bottom,
-      rgba(255,238,244,1) 0 4px,
-      rgba(255,83,137,0.95) 4px 9px,
-      rgba(112,7,45,0.92) 9px 13px
-    );
-
-  box-shadow:
-    0 0 7px var(--accent),
-    0 0 15px rgba(255,35,107,0.8),
-    inset 0 0 5px #fff;
-}
-
-#left-side-led-frame::before {
-  left: 9px;
-}
-
-#right-side-led-frame::before {
-  right: 9px;
-}
-
-/* 内側ゴールドライン */
-
-.side-led-frame::after {
-  content: "";
-
-  position: absolute;
-
-  top: 5px;
-  bottom: 7px;
-
-  width: 10px;
-
-  border-radius: 8px;
-
-  background:
-    linear-gradient(
-      90deg,
-      var(--gold-dark),
-      var(--gold-mid) 30%,
-      var(--gold-light) 50%,
-      var(--gold-mid) 70%,
-      var(--gold-dark)
-    );
-
-  box-shadow:
-    inset 0 0 2px #fff0a0,
-    0 0 3px #000;
-}
-
-#left-side-led-frame::after {
-  right: 4px;
-}
-
-#right-side-led-frame::after {
-  left: 4px;
-}
-
-/* =========================================================
-   02：トップクラウン
-========================================================= */
-
-#top-crown-unit {
-  position: absolute;
   z-index: 30;
-
-  top: 0;
-  left: 31px;
-  right: 31px;
-
-  height: 67px;
-
-  padding: 7px 11px 9px;
-
-  clip-path:
-    polygon(
-      8% 0%,
-      92% 0%,
-      100% 16%,
-      96% 82%,
-      88% 100%,
-      12% 100%,
-      4% 82%,
-      0% 16%
-    );
-
-  background:
-    linear-gradient(
-      145deg,
-      #777 0%,
-      #fafafa 4%,
-      #5b5b5b 9%,
-      #111 17%,
-      #050505 68%,
-      #3d3d3d 91%,
-      #ededed 100%
-    );
-
-  box-shadow:
-    0 7px 8px rgba(0,0,0,0.75),
-    inset 0 0 8px #000;
 }
 
-#top-crown-surface {
-  position: relative;
-
-  width: 100%;
-  height: 100%;
-
-  clip-path:
-    polygon(
-      6% 0%,
-      94% 0%,
-      100% 14%,
-      96% 86%,
-      89% 100%,
-      11% 100%,
-      4% 86%,
-      0% 14%
-    );
-
-  border:
-    2px solid #751536;
-
-  background:
-    radial-gradient(
-      ellipse at center,
-      #2b111b,
-      #090406 66%,
-      #020202
-    );
-
-  box-shadow:
-    inset 0 0 14px #000,
-    0 0 7px rgba(255,35,107,0.52);
-}
-
-#top-crown-surface::after {
+.machine::after {
   content: "";
-
   position: absolute;
-
-  left: 14px;
-  right: 14px;
-  bottom: 6px;
-
-  height: 3px;
-
-  border-radius: 8px;
-
-  background:
-    linear-gradient(
-      90deg,
-      transparent,
-      var(--accent),
-      #fff,
-      var(--accent),
-      transparent
-    );
-
-  box-shadow:
-    0 0 6px var(--accent);
-}
-
-/* =========================================================
-   中央コンテンツアセンブリ
-========================================================= */
-
-#cabinet-content-assembly {
-  position: absolute;
-  z-index: 10;
-
-  top: 62px;
-  left: 45px;
-  right: 45px;
-  bottom: 16px;
-
-  display: grid;
-
-  grid-template-rows:
-    47px
-    137px
-    110px
-    69px
-    101px
-    1fr;
-
-  gap: 4px;
-}
-
-/* 各ユニット共通 */
-
-.cabinet-section {
-  position: relative;
-
-  min-height: 0;
-
-  border:
-    1px solid #393939;
-
-  background:
-    linear-gradient(
-      145deg,
-      #222,
-      #060606 34%,
-      #111 70%,
-      #030303
-    );
-
-  box-shadow:
-    inset 0 0 0 2px #030303,
-    inset 0 3px 5px rgba(255,255,255,0.05),
-    0 2px 4px rgba(0,0,0,0.85);
-
-  overflow: hidden;
-}
-
-/* =========================================================
-   03：タイトルパネル
-========================================================= */
-
-#title-panel-unit {
-  padding: 5px 8px;
-
-  border-radius: 9px 9px 4px 4px;
-}
-
-#title-panel-bezel {
-  width: 100%;
-  height: 100%;
-
-  padding: 4px;
-
-  clip-path:
-    polygon(
-      4% 0,
-      96% 0,
-      100% 18%,
-      97% 100%,
-      3% 100%,
-      0 18%
-    );
-
-  background:
-    linear-gradient(
-      135deg,
-      #e4e4e4,
-      #525252 9%,
-      #151515 30%,
-      #646464 88%,
-      #ededed
-    );
-}
-
-#title-panel-surface {
-  width: 100%;
-  height: 100%;
-
-  background:
-    radial-gradient(
-      ellipse at center,
-      #211018,
-      #050405 72%
-    );
-
-  box-shadow:
-    inset 0 0 10px #000;
-}
-
-/* =========================================================
-   04：メイン表示部
-========================================================= */
-
-#main-display-unit {
-  padding: 6px;
-
-  border-radius: 5px;
-}
-
-#main-display-bezel {
-  width: 100%;
-  height: 100%;
-
-  padding: 5px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #e9e9e9,
-      #505050 8%,
-      #101010 22%,
-      #101010 78%,
-      #5f5f5f 92%,
-      #eee
-    );
-
-  box-shadow:
-    inset 0 0 5px #000;
-}
-
-#main-display-glass {
-  position: relative;
-
-  width: 100%;
-  height: 100%;
-
-  border:
-    3px solid #050505;
-
-  background:
-    radial-gradient(
-      ellipse at center,
-      #19191d,
-      #050506 76%
-    );
-
-  box-shadow:
-    inset 0 0 19px #000;
-
-  overflow: hidden;
-}
-
-/* ガラス反射 */
-
-#main-display-glass::before {
-  content: "";
-
-  position: absolute;
-  z-index: 2;
-
-  top: -32%;
-  left: -10%;
-
-  width: 70%;
-  height: 90%;
-
-  transform: rotate(-11deg);
+  inset: 0;
 
   background:
     linear-gradient(
       115deg,
-      rgba(255,255,255,0.14),
-      rgba(255,255,255,0.025) 38%,
-      transparent 66%
+      transparent 0 29%,
+      rgba(255,255,255,.1) 31%,
+      transparent 34% 65%,
+      rgba(255,255,255,.06) 68%,
+      transparent 72%
     );
 
   pointer-events: none;
-}
-
-#main-display-mount {
-  position: absolute;
-  inset: 3px;
-
-  background:
-    radial-gradient(
-      circle at 50% 40%,
-      #26131d,
-      #080609 70%
-    );
+  z-index: 29;
 }
 
 /* =========================================================
-   05：リール部
+   Canvas演出
 ========================================================= */
 
-#reel-unit {
-  padding: 6px 9px;
-
-  border-radius: 4px;
-}
-
-#reel-bezel {
+#fxCanvas {
+  position: absolute;
+  inset: 0;
   width: 100%;
   height: 100%;
 
-  padding: 5px 7px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #f0f0f0,
-      #4c4c4c 8%,
-      #111 18%,
-      #111 82%,
-      #5f5f5f 92%,
-      #ededed
-    );
-
-  box-shadow:
-    inset 0 0 6px #000;
+  pointer-events: none;
+  z-index: 28;
 }
 
-#reel-window {
-  position: relative;
+/* =========================================================
+   LED
+========================================================= */
 
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+.side-led {
+  position: absolute;
+  z-index: 8;
 
-  width: 100%;
-  height: 100%;
+  top: 55px;
+  bottom: 38px;
+  width: 9px;
 
-  padding: 4px;
-  gap: 5px;
-
-  border:
-    3px solid #050505;
+  border-radius: 10px;
 
   background:
-    linear-gradient(
+    repeating-linear-gradient(
       to bottom,
-      #020202,
-      #151515 13%,
-      #080808 88%,
-      #020202
+      #fff 0 4px,
+      #fff200 5px 9px,
+      #ff9d00 10px 13px,
+      #3d2a00 14px 17px
     );
 
   box-shadow:
-    inset 0 9px 12px #000,
-    inset 0 -9px 12px #000;
+    0 0 8px #fff,
+    0 0 15px var(--yellow),
+    0 0 26px var(--orange);
+
+  animation: sidePulse .65s infinite alternate;
 }
 
-.reel-mount {
+.side-led.left {
+  left: 7px;
+}
+
+.side-led.right {
+  right: 7px;
+}
+
+.top-led {
   position: relative;
+  z-index: 10;
+
+  height: 22px;
+  margin: 0 34px 7px;
+
+  border-radius: 0 0 18px 18px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #422e00,
+      #fff200,
+      #fff,
+      #ff9d00,
+      #fff,
+      #fff200,
+      #422e00
+    );
+
+  clip-path: polygon(8% 0, 92% 0, 100% 100%, 0 100%);
+
+  box-shadow:
+    0 0 11px #fff,
+    0 0 22px var(--yellow),
+    inset 0 0 9px #fff;
+
+  animation: topLed 1.1s linear infinite;
+}
+
+/* =========================================================
+   共通パネル
+========================================================= */
+
+.panel {
+  position: relative;
+  z-index: 10;
+
+  border: 2px solid #cfcfcf;
+  border-radius: 15px;
+
+  background:
+    linear-gradient(
+      130deg,
+      rgba(255,255,255,.18),
+      transparent 18%,
+      transparent 78%,
+      rgba(255,215,0,.12)
+    ),
+    radial-gradient(circle at 50% 42%, #201a00, #050505 72%);
+
+  box-shadow:
+    0 0 0 2px #111,
+    0 0 11px rgba(255,255,255,.72),
+    0 0 18px rgba(255,214,0,.75),
+    inset 0 0 20px #000;
 
   overflow: hidden;
-
-  border:
-    1px solid #353535;
-
-  background:
-    linear-gradient(
-      to bottom,
-      #e7e7e7,
-      #bcbcbc 12%,
-      #f5f5f5 50%,
-      #bababa 88%,
-      #e9e9e9
-    );
-
-  box-shadow:
-    inset 0 8px 8px rgba(0,0,0,0.24),
-    inset 0 -8px 8px rgba(0,0,0,0.24);
 }
 
-/* 空リールの基準線 */
-
-.reel-mount::before,
-.reel-mount::after {
+.panel::after {
   content: "";
-
-  position: absolute;
-
-  left: 0;
-  right: 0;
-
-  height: 1px;
-
-  background:
-    rgba(0,0,0,0.18);
-}
-
-.reel-mount::before {
-  top: 33.333%;
-}
-
-.reel-mount::after {
-  top: 66.666%;
-}
-
-/* =========================================================
-   06：操作卓
-========================================================= */
-
-#control-deck-unit {
-  overflow: visible;
-
-  border-radius: 4px 4px 10px 10px;
-
-  perspective: 500px;
-}
-
-#control-deck-surface {
-  position: absolute;
-
-  inset: 2px 0 -4px;
-
-  border:
-    2px solid #4b4b4b;
-
-  border-radius:
-    4px 4px
-    15px 15px;
-
-  background:
-    linear-gradient(
-      165deg,
-      #e3e3e3 0%,
-      #676767 12%,
-      #1b1b1b 31%,
-      #070707 68%,
-      #292929 100%
-    );
-
-  box-shadow:
-    inset 0 4px 6px rgba(255,255,255,0.15),
-    inset 0 -8px 10px #000,
-    0 5px 7px rgba(0,0,0,0.88);
-
-  transform:
-    rotateX(4deg);
-}
-
-/* 操作卓中央黒枠 */
-
-#control-button-panel {
-  position: absolute;
-
-  top: 15px;
-  left: 76px;
-  right: 61px;
-  bottom: 10px;
-
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-
-  padding: 0 8px;
-
-  border:
-    2px solid #555;
-
-  border-radius: 26px;
-
-  background:
-    linear-gradient(
-      to bottom,
-      #111,
-      #030303 55%,
-      #181818
-    );
-
-  box-shadow:
-    inset 0 0 8px #000,
-    0 1px 3px rgba(255,255,255,0.18);
-}
-
-/* STOPボタン */
-
-.stop-button-mount {
-  width: 39px;
-  height: 39px;
-
-  border:
-    4px solid #202020;
-
-  border-radius: 50%;
-
-  background:
-    radial-gradient(
-      circle at 38% 30%,
-      #ffb0b0 0%,
-      #ff4b58 24%,
-      #e20d26 61%,
-      #66000b 100%
-    );
-
-  box-shadow:
-    0 0 0 2px #777,
-    0 3px 4px #000,
-    inset 0 3px 5px rgba(255,255,255,0.52),
-    inset 0 -5px 7px rgba(0,0,0,0.55);
-}
-
-/* レバー */
-
-#start-lever-mount {
-  position: absolute;
-
-  left: 24px;
-  top: 17px;
-
-  width: 41px;
-  height: 41px;
-
-  border-radius: 50%;
-
-  background:
-    radial-gradient(
-      circle at 38% 33%,
-      #777,
-      #151515 34%,
-      #020202 66%,
-      #4a4a4a 70%,
-      #0b0b0b
-    );
-
-  box-shadow:
-    0 0 0 3px #717171,
-    inset 0 0 8px #000,
-    0 3px 4px #000;
-}
-
-/* BETボタン */
-
-#bet-button-mount {
-  position: absolute;
-
-  left: 9px;
-  top: 25px;
-
-  width: 23px;
-  height: 23px;
-
-  border:
-    3px solid #272727;
-
-  border-radius: 50%;
-
-  background:
-    radial-gradient(
-      circle at 35% 30%,
-      #888,
-      #252525 43%,
-      #060606
-    );
-
-  box-shadow:
-    0 0 0 1px #777,
-    0 2px 3px #000;
-}
-
-/* メダル投入口 */
-
-#medal-insert-mount {
-  position: absolute;
-
-  right: 12px;
-  top: 20px;
-
-  width: 38px;
-  height: 30px;
-
-  border:
-    2px solid #555;
-
-  border-radius: 50%;
-
-  background:
-    radial-gradient(
-      ellipse,
-      #030303 0 34%,
-      #777 37%,
-      #222 65%,
-      #050505
-    );
-
-  box-shadow:
-    0 2px 4px #000;
-}
-
-/* =========================================================
-   07：下部ビジュアルパネル
-========================================================= */
-
-#lower-visual-unit {
-  padding: 5px 8px;
-
-  border-radius: 5px;
-}
-
-#lower-visual-bezel {
-  width: 100%;
-  height: 100%;
-
-  padding: 5px;
-
-  background:
-    linear-gradient(
-      135deg,
-      #e6e6e6,
-      #4c4c4c 8%,
-      #111 21%,
-      #111 79%,
-      #5e5e5e 92%,
-      #ededed
-    );
-
-  box-shadow:
-    inset 0 0 5px #000;
-}
-
-#lower-visual-surface {
-  position: relative;
-
-  width: 100%;
-  height: 100%;
-
-  overflow: hidden;
-
-  border:
-    3px solid #050505;
-
-  background:
-    radial-gradient(
-      ellipse at center,
-      #25131d,
-      #070507 74%
-    );
-
-  box-shadow:
-    inset 0 0 16px #000;
-}
-
-/* 下部ビジュアルパネル画像 */
-
-#lower-visual-surface img {
   position: absolute;
   inset: 0;
 
-  width: 100%;
-  height: 100%;
-
-  object-fit: cover;
-}
-
-/* ガラスの反射エフェクト */
-
-#lower-visual-surface::before {
-  content: "";
-
-  position: absolute;
-  z-index: 2;
-
-  top: -18%;
-  left: -12%;
-
-  width: 68%;
-  height: 86%;
-
-  transform: rotate(-9deg);
-
   background:
     linear-gradient(
-      118deg,
-      rgba(255,255,255,0.12),
-      rgba(255,255,255,0.018) 39%,
-      transparent 64%
+      112deg,
+      transparent 0 25%,
+      rgba(255,255,255,.13) 28%,
+      transparent 32%
     );
 
   pointer-events: none;
 }
 
 /* =========================================================
-   10：底部ベース
+   タイトル
 ========================================================= */
 
-#bottom-base-unit {
-  position: absolute;
-  z-index: 5;
+.title-panel {
+  padding: 8px 6px 7px;
+  margin-bottom: 7px;
+}
 
-  bottom: 0;
-  left: 47px;
-  right: 47px;
+.brand {
+  font-size: 10px;
+  color: #a6ffa6;
+  opacity: .78;
+  text-shadow: 0 0 7px #3cff3c;
+}
 
-  height: 14px;
+.title {
+  margin: 0;
+  font-size: 31px;
+  line-height: 1.12;
 
-  border:
-    2px solid #4b4b4b;
+  color: var(--yellow);
 
-  border-radius: 0 0 8px 8px;
+  letter-spacing: 1px;
+
+  text-shadow:
+    0 0 8px #fff,
+    0 0 15px var(--yellow),
+    0 0 24px var(--orange),
+    2px 2px 0 #111;
+}
+
+.version {
+  margin-top: 3px;
+  font-size: 10px;
+  color: #fff2a2;
+}
+
+/* =========================================================
+   リール部
+========================================================= */
+
+.reel-panel {
+  padding: 9px 6px 7px;
+  margin-bottom: 7px;
+}
+
+.reel-row {
+  display: grid;
+  grid-template-columns: 51px 1fr;
+  align-items: center;
+  gap: 7px;
+}
+
+.lamp-frame {
+  position: relative;
+  padding: 4px;
+
+  border-radius: 13px;
 
   background:
-    linear-gradient(
-      to right,
-      #1a1a1a,
-      #2d2d2d,
-      #1a1a1a
+    linear-gradient(145deg, #fffbc7, #9d7400 22%, #332500 55%, #ffd900);
+
+  box-shadow:
+    0 0 10px #fff,
+    0 0 17px var(--yellow),
+    inset 0 0 6px #000;
+}
+
+.lamp {
+  height: 50px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 9px;
+
+  color: #9e7e20;
+  font-size: 12px;
+  font-weight: 900;
+
+  border: 1px solid #685000;
+
+  background:
+    radial-gradient(circle, #372600, #120b00 75%);
+
+  box-shadow:
+    inset 0 0 11px #000;
+}
+
+.lamp.on {
+  color: #543000;
+
+  background:
+    radial-gradient(
+      circle,
+      #fff 0 9%,
+      #fff9a6 18%,
+      #ffe500 46%,
+      #ff8b00 100%
     );
 
   box-shadow:
-    inset 0 0 4px rgba(255,255,255,0.15),
-    0 3px 5px rgba(0,0,0,0.75);
+    0 0 13px #fff,
+    0 0 25px var(--yellow),
+    0 0 42px var(--orange),
+    inset 0 0 7px #fff;
+
+  animation: lampPulse .28s infinite alternate;
 }
 
-</style>
+.reel-window {
+  position: relative;
+  padding: 8px 7px;
 
+  border-radius: 14px;
+
+  background:
+    linear-gradient(#353535, #070707 12%, #101010 88%, #3d3d3d);
+
+  border: 3px solid #a7a7a7;
+
+  box-shadow:
+    inset 0 8px 15px #000,
+    inset 0 -8px 15px #000,
+    0 0 0 2px #080808,
+    0 0 12px #fff,
+    0 0 19px #ffdd00;
+}
+
+.reel-window::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+
+  border-radius: 9px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,.68),
+      transparent 24%,
+      transparent 75%,
+      rgba(0,0,0,.72)
+    );
+
+  pointer-events: none;
+  z-index: 5;
+}
+
+.reel-window::after {
+  content: "";
+  position: absolute;
+  inset: 7px;
+
+  border-radius: 9px;
+
+  background:
+    linear-gradient(
+      115deg,
+      transparent 0 25%,
+      rgba(255,255,255,.32) 29%,
+      transparent 34% 66%,
+      rgba(255,255,255,.12) 70%,
+      transparent 75%
+    );
+
+  pointer-events: none;
+  z-index: 6;
+}
+
+.reels {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.reel {
+  position: relative;
+  height: 106px;
+  overflow: hidden;
+
+  border-radius: 9px;
+
+  background:
+    linear-gradient(90deg, #aaa, #fff 15%, #fff 85%, #999);
+
+  border: 2px solid #666;
+
+  box-shadow:
+    inset 0 0 13px #888,
+    0 0 0 2px #111;
+}
+
+.reel-strip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -106px;
+
+  transition: transform .16s cubic-bezier(.2,.8,.3,1);
+}
+
+.symbol {
+  height: 106px;
+
+  display: grid;
+  place-items: center;
+
+  font-size: 45px;
+  font-weight: 900;
+
+  color: #111;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #f5f5f5,
+      #fff 45%,
+      #ddd 55%,
+      #fafafa
+    );
+
+  border-bottom: 1px solid #d0d0d0;
+
+  text-shadow: 0 1px 0 #fff;
+}
+
+.symbol.red7 {
+  color: #e00000;
+  font-family: Arial Black, sans-serif;
+  font-size: 55px;
+
+  text-shadow:
+    2px 2px 0 #ffd000,
+    0 0 8px rgba(255,0,0,.45);
+}
+
+.symbol.bar {
+  font-size: 24px;
+  letter-spacing: -2px;
+
+  color: #111;
+
+  background:
+    linear-gradient(#fafafa, #fff, #e8e8e8);
+}
+
+.reel.spinning .reel-strip {
+  animation: reelSpin .18s linear infinite;
+}
+
+.reel.stop-flash {
+  animation: reelStopFlash .24s;
+}
+
+.reel.hot {
+  box-shadow:
+    inset 0 0 13px #888,
+    0 0 0 2px #111,
+    0 0 11px #fff,
+    0 0 20px var(--yellow),
+    0 0 31px var(--orange);
+}
+
+.message {
+  min-height: 28px;
+  margin-top: 7px;
+
+  font-size: 18px;
+  font-weight: 900;
+
+  color: var(--yellow);
+
+  text-shadow:
+    0 0 6px #fff,
+    0 0 13px var(--orange);
+}
+
+/* =========================================================
+   情報パネル
+========================================================= */
+
+.info-panel {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  padding: 7px 5px;
+  margin-bottom: 7px;
+}
+
+.info-box {
+  border-right: 1px solid #292929;
+}
+
+.info-box:last-child {
+  border-right: 0;
+}
+
+.info-label {
+  font-size: 9px;
+  color: #fff0a3;
+}
+
+.info-value {
+  margin-top: 1px;
+
+  font-family: "Courier New", monospace;
+  font-size: 28px;
+  font-weight: 900;
+
+  color: #ff2828;
+
+  text-shadow:
+    0 0 7px red,
+    0 0 13px #6c0000;
+}
+
+/* =========================================================
+   操作卓
+========================================================= */
+
+.operation-panel {
+  position: relative;
+  z-index: 10;
+
+  padding: 9px 9px 11px;
+  margin-bottom: 8px;
+
+  border-radius: 17px;
+  border: 2px solid #c89c00;
+
+  background:
+    linear-gradient(
+      160deg,
+      #fff4a3 0%,
+      #907000 5%,
+      #151515 17%,
+      #050505 70%,
+      #4c3a00 92%,
+      #ffe76d 100%
+    );
+
+  box-shadow:
+    0 8px 8px rgba(0,0,0,.75),
+    0 0 12px #fff,
+    0 0 20px var(--yellow),
+    inset 0 0 15px #000;
+}
+
+.control-row {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr 1fr;
+  gap: 8px;
+
+  margin-bottom: 10px;
+}
+
+.metal-button {
+  min-height: 54px;
+
+  border: 3px solid #bfc2c5;
+  border-radius: 12px;
+
+  color: #181100;
+  font-weight: 900;
+
+  background:
+    linear-gradient(
+      145deg,
+      #fff 0%,
+      #fff59d 8%,
+      #ffe000 43%,
+      #b37d00 100%
+    );
+
+  box-shadow:
+    inset 0 3px 4px rgba(255,255,255,.95),
+    inset 0 -8px 10px rgba(0,0,0,.55),
+    0 5px 0 #171717,
+    0 0 0 3px #252525,
+    0 0 13px #fff,
+    0 0 18px var(--yellow);
+
+  text-shadow: 0 1px 2px #fff;
+}
+
+.metal-button:active,
+.metal-button.pressed {
+  transform: translateY(4px);
+  box-shadow:
+    inset 0 4px 10px rgba(0,0,0,.65),
+    0 1px 0 #111,
+    0 0 8px var(--yellow);
+
+  filter: brightness(.83);
+}
+
+.stop-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.stop-button {
+  position: relative;
+
+  width: 68px;
+  height: 68px;
+  margin: auto;
+
+  border-radius: 50%;
+  border: 4px solid #f3f3f3;
+
+  color: white;
+  font-size: 13px;
+  font-weight: 900;
+
+  background:
+    radial-gradient(
+      circle at 34% 25%,
+      #fff 0 5%,
+      #ff6a6a 11%,
+      #e00000 42%,
+      #680000 82%
+    );
+
+  box-shadow:
+    inset 0 5px 7px rgba(255,255,255,.85),
+    inset 0 -10px 13px rgba(0,0,0,.78),
+    0 5px 0 #050505,
+    0 0 0 4px #151515,
+    0 0 0 7px #cfcfcf,
+    0 0 14px #fff,
+    0 0 21px var(--yellow);
+
+  text-shadow: 0 0 7px #fff;
+}
+
+.stop-button::before {
+  content: "";
+  position: absolute;
+  inset: -7px;
+
+  border: 2px solid var(--yellow);
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 9px #fff,
+    0 0 16px var(--yellow);
+
+  pointer-events: none;
+}
+
+.stop-button:active,
+.stop-button.pressed {
+  transform: translateY(5px) scale(.97);
+
+  box-shadow:
+    inset 0 9px 14px rgba(0,0,0,.82),
+    0 1px 0 #050505,
+    0 0 0 4px #151515,
+    0 0 0 7px #cfcfcf,
+    0 0 9px var(--yellow);
+}
+
+button:disabled {
+  opacity: .35;
+  filter: grayscale(.65);
+}
+
+.footer {
+  position: relative;
+  z-index: 10;
+
+  color: #e8dda4;
+  font-size: 10px;
+  line-height: 1.45;
+}
+
+/* =========================================================
+   画面演出
+========================================================= */
+
+body.flash {
+  animation: screenFlash .22s 4;
+}
+
+body.shake .machine {
+  animation: machineShake .08s 8;
+}
+
+.pay-effect {
+  position: fixed;
+  z-index: 100;
+
+  left: 50%;
+  top: 45%;
+
+  transform: translate(-50%, -50%);
+
+  display: none;
+
+  font-size: 42px;
+  font-weight: 900;
+  color: var(--yellow);
+
+  text-shadow:
+    0 0 12px #fff,
+    0 0 24px var(--orange);
+}
+
+.pay-effect.show {
+  display: block;
+  animation: payPop .9s forwards;
+}
+
+/* =========================================================
+   アニメーション
+========================================================= */
+
+@keyframes sidePulse {
+  from {
+    opacity: .55;
+    filter: brightness(.85);
+  }
+  to {
+    opacity: 1;
+    filter: brightness(1.7);
+  }
+}
+
+@keyframes topLed {
+  0% {
+    filter: brightness(.85);
+  }
+  50% {
+    filter: brightness(1.8);
+  }
+  100% {
+    filter: brightness(.85);
+  }
+}
+
+@keyframes lampPulse {
+  from {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  to {
+    transform: scale(1.04);
+    filter: brightness(1.7);
+  }
+}
+
+@keyframes reelSpin {
+  from {
+    transform: translateY(0);
+  }
+  to {
+    transform: translateY(106px);
+  }
+}
+
+@keyframes reelStopFlash {
+  0% {
+    transform: scale(1.05);
+    filter: brightness(1.8);
+  }
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+
+@keyframes screenFlash {
+  0% {
+    background: #fff;
+  }
+  45% {
+    background: var(--yellow);
+  }
+  100% {
+    background:
+      radial-gradient(circle at 50% 28%, #4c3c00 0%, #171100 28%, #030303 72%);
+  }
+}
+
+@keyframes machineShake {
+  0%   { transform: translateX(0); }
+  25%  { transform: translateX(3px); }
+  50%  { transform: translateX(-3px); }
+  75%  { transform: translateX(2px); }
+  100% { transform: translateX(0); }
+}
+
+@keyframes payPop {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -20%) scale(.4);
+  }
+  30% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.25);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -100%) scale(1);
+  }
+}
+
+/* =========================================================
+   小型画面調整
+========================================================= */
+
+@media (max-width: 360px) {
+  .title {
+    font-size: 27px;
+  }
+
+  .reel {
+    height: 98px;
+  }
+
+  .symbol {
+    height: 98px;
+    font-size: 41px;
+  }
+
+  .stop-button {
+    width: 62px;
+    height: 62px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-<!-- ===================================================== -->
-<!-- 00：共通筐体アセンブリ -->
-<!-- ===================================================== -->
+<div class="page">
+  <div class="wrap">
 
-<div id="yusosha-common-cabinet">
+    <div id="machine" class="machine">
+      <canvas id="fxCanvas"></canvas>
 
-  <!-- ===================================================== -->
-  <!-- 01：外装シェル -->
-  <!-- ===================================================== -->
+      <div class="side-led left"></div>
+      <div class="side-led right"></div>
 
-  <div id="cabinet-outer-shell"></div>
+      <div class="top-led"></div>
 
-  <!-- ===================================================== -->
-  <!-- 08・09：左右サイドLEDフレーム -->
-  <!-- ===================================================== -->
+      <section class="panel title-panel">
+        <div class="brand">🌱 遊創舎</div>
+        <h1 class="title">⚡ 2.5D 試験機 ⚡</h1>
+        <div class="version">YUSOSHA SLOT Ver.T25-0.1</div>
+      </section>
 
-  <div id="left-side-led-frame" class="side-led-frame"></div>
-  <div id="right-side-led-frame" class="side-led-frame"></div>
+      <section class="panel reel-panel">
+        <div class="reel-row">
 
-  <!-- ===================================================== -->
-  <!-- 02：トップクラウン -->
-  <!-- ===================================================== -->
+          <div class="lamp-frame">
+            <div id="lamp" class="lamp">PEKA</div>
+          </div>
 
-  <div id="top-crown-unit">
-    <div id="top-crown-surface"></div>
+          <div class="reel-window">
+            <div class="reels">
+
+              <div id="reel0" class="reel">
+                <div class="reel-strip">
+                  <div class="symbol">🍇</div>
+                  <div class="symbol">🔔</div>
+                  <div class="symbol red7">7</div>
+                </div>
+              </div>
+
+              <div id="reel1" class="reel">
+                <div class="reel-strip">
+                  <div class="symbol">🔔</div>
+                  <div class="symbol">⭐</div>
+                  <div class="symbol bar">BAR</div>
+                </div>
+              </div>
+
+              <div id="reel2" class="reel">
+                <div class="reel-strip">
+                  <div class="symbol">🍒</div>
+                  <div class="symbol">🍇</div>
+                  <div class="symbol">⭐</div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+        <div id="message" class="message">BETしてください</div>
+      </section>
+
+      <section class="panel info-panel">
+        <div class="info-box">
+          <div class="info-label">CREDIT</div>
+          <div id="credit" class="info-value">50</div>
+        </div>
+
+        <div class="info-box">
+          <div class="info-label">BET</div>
+          <div id="bet" class="info-value">0</div>
+        </div>
+
+        <div class="info-box">
+          <div class="info-label">PAYOUT</div>
+          <div id="payout" class="info-value">0</div>
+        </div>
+      </section>
+
+      <section class="operation-panel">
+        <div class="control-row">
+          <button id="startButton" class="metal-button" disabled>
+            START<br>レバー
+          </button>
+
+          <button id="betButton" class="metal-button">
+            BET
+          </button>
+
+          <button id="maxBetButton" class="metal-button">
+            MAX<br>BET
+          </button>
+        </div>
+
+        <div class="stop-row">
+          <button id="stop0" class="stop-button" disabled>STOP</button>
+          <button id="stop1" class="stop-button" disabled>STOP</button>
+          <button id="stop2" class="stop-button" disabled>STOP</button>
+        </div>
+      </section>
+
+      <div class="footer">
+        2D固定視点＋CSS立体表現＋Canvas演出<br>
+        外部画像・外部ライブラリ不使用
+      </div>
+    </div>
   </div>
-
-  <!-- ===================================================== -->
-  <!-- 中央コンテンツアセンブリ -->
-  <!-- ===================================================== -->
-
-  <div id="cabinet-content-assembly">
-
-    <!-- 03：タイトルパネル -->
-
-    <div id="title-panel-unit" class="cabinet-section">
-      <div id="title-panel-bezel">
-        <div id="title-panel-surface"></div>
-      </div>
-    </div>
-
-    <!-- 04：メイン表示部 -->
-
-    <div id="main-display-unit" class="cabinet-section">
-      <div id="main-display-bezel">
-        <div id="main-display-glass">
-          <div id="main-display-mount"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 05：リール部 -->
-
-    <div id="reel-unit" class="cabinet-section">
-      <div id="reel-bezel">
-        <div id="reel-window">
-          <div class="reel-mount"></div>
-          <div class="reel-mount"></div>
-          <div class="reel-mount"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 06：操作卓 -->
-
-    <div id="control-deck-unit" class="cabinet-section">
-      <div id="start-lever-mount"></div>
-      <div id="bet-button-mount"></div>
-      <div id="medal-insert-mount"></div>
-      <div id="control-deck-surface">
-        <div id="control-button-panel">
-          <div class="stop-button-mount"></div>
-          <div class="stop-button-mount"></div>
-          <div class="stop-button-mount"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 07：下部ビジュアルパネル -->
-
-    <div id="lower-visual-unit" class="cabinet-section">
-      <div id="lower-visual-bezel">
-        <div id="lower-visual-surface">
-          <img src="ptaro_kyoran_lower.png.png" alt="下部ビジュアルパネル" />
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ===================================================== -->
-  <!-- 10：底部ベース -->
-  <!-- ===================================================== -->
-
-  <div id="bottom-base-unit"></div>
-
 </div>
 
-</body>
+<div id="payEffect" class="pay-effect">+15</div>
 
+<script>
+"use strict";
+
+/* =========================================================
+   簡易ゲーム状態
+========================================================= */
+
+const SYMBOLS = [
+  { key: "RED7", html: "7", className: "red7" },
+  { key: "BAR", html: "BAR", className: "bar" },
+  { key: "STAR", html: "⭐", className: "" },
+  { key: "BELL", html: "🔔", className: "" },
+  { key: "GRAPE", html: "🍇", className: "" },
+  { key: "CHERRY", html: "🍒", className: "" }
+];
+
+let credit = 50;
+let bet = 0;
+let payout = 0;
+
+let spinning = [false, false, false];
+let stoppedCount = 0;
+
+let reelTimers = [null, null, null];
+let currentSymbols = ["CHERRY", "GRAPE", "BELL"];
+
+let targetResult = "MISS";
+
+/* =========================================================
+   DOM
+========================================================= */
+
+const machine = document.getElementById("machine");
+const lamp = document.getElementById("lamp");
+const message = document.getElementById("message");
+
+const creditElement = document.getElementById("credit");
+const betElement = document.getElementById("bet");
+const payoutElement = document.getElementById("payout");
+
+const startButton = document.getElementById("startButton");
+const betButton = document.getElementById("betButton");
+const maxBetButton = document.getElementById("maxBetButton");
+
+const stopButtons = [
+  document.getElementById("stop0"),
+  document.getElementById("stop1"),
+  document.getElementById("stop2")
+];
+
+const reelElements = [
+  document.getElementById("reel0"),
+  document.getElementById("reel1"),
+  document.getElementById("reel2")
+];
+
+const payEffect = document.getElementById("payEffect");
+
+/* =========================================================
+   表示更新
+========================================================= */
+
+function updateUi() {
+  creditElement.textContent = String(credit);
+  betElement.textContent = String(bet);
+  payoutElement.textContent = String(payout);
+
+  startButton.disabled =
+    bet !== 3 ||
+    spinning.includes(true);
+
+  betButton.disabled =
+    spinning.includes(true) ||
+    bet >= 3 ||
+    credit <= 0;
+
+  maxBetButton.disabled =
+    spinning.includes(true) ||
+    bet >= 3 ||
+    credit <= 0;
+
+  stopButtons.forEach((button, index) => {
+    button.disabled = !spinning[index];
+  });
+}
+
+function setMessage(text) {
+  message.textContent = text;
+}
+
+function symbolByKey(key) {
+  return SYMBOLS.find((symbol) => symbol.key === key) || SYMBOLS[0];
+}
+
+function randomSymbol() {
+  return SYMBOLS[Math.floor(Math.random() * SYMBOLS.length)];
+}
+
+function drawReel(index, key) {
+  const reel = reelElements[index];
+  const strip = reel.querySelector(".reel-strip");
+
+  const center = symbolByKey(key);
+  const upper = randomSymbol();
+  const lower = randomSymbol();
+
+  strip.innerHTML = `
+    <div class="symbol ${upper.className}">${upper.html}</div>
+    <div class="symbol ${center.className}">${center.html}</div>
+    <div class="symbol ${lower.className}">${lower.html}</div>
+  `;
+
+  strip.style.transform = "translateY(0)";
+}
+
+/* =========================================================
+   BET
+========================================================= */
+
+function betOne() {
+  if (spinning.includes(true)) return;
+  if (credit <= 0 || bet >= 3) return;
+
+  credit -= 1;
+  bet += 1;
+  payout = 0;
+
+  lamp.classList.remove("on");
+
+  setMessage(
+    bet === 3
+      ? "STARTできます"
+      : "BET中"
+  );
+
+  updateUi();
+}
+
+function maxBet() {
+  if (spinning.includes(true)) return;
+
+  while (bet < 3 && credit > 0) {
+    credit -= 1;
+    bet += 1;
+  }
+
+  payout = 0;
+  lamp.classList.remove("on");
+
+  setMessage(
+    bet === 3
+      ? "STARTできます"
+      : "クレジット不足"
+  );
+
+  updateUi();
+}
+
+/* =========================================================
+   抽選
+========================================================= */
+
+function chooseResult() {
+  const random = Math.random();
+
+  if (random < 0.07) return "RED7";
+  if (random < 0.13) return "BAR";
+  if (random < 0.23) return "STAR";
+  if (random < 0.36) return "BELL";
+  if (random < 0.52) return "GRAPE";
+  if (random < 0.70) return "CHERRY";
+
+  return "MISS";
+}
+
+/* =========================================================
+   スタート
+========================================================= */
+
+function startSpin() {
+  if (bet !== 3) return;
+  if (spinning.includes(true)) return;
+
+  stoppedCount = 0;
+  payout = 0;
+
+  targetResult = chooseResult();
+
+  reelElements.forEach((reel) => {
+    reel.classList.remove("hot", "stop-flash");
+  });
+
+  if (targetResult === "RED7" || targetResult === "BAR") {
+    lamp.classList.add("on");
+    setMessage("ペカッ！");
+    sparkBurst(38);
+  } else {
+    lamp.classList.remove("on");
+    setMessage("リール回転中");
+  }
+
+  for (let index = 0; index < 3; index += 1) {
+    spinning[index] = true;
+    reelElements[index].classList.add("spinning");
+
+    reelTimers[index] = window.setInterval(() => {
+      const symbol = randomSymbol();
+      currentSymbols[index] = symbol.key;
+      drawReel(index, symbol.key);
+    }, 90 + index * 12);
+  }
+
+  updateUi();
+}
+
+/* =========================================================
+   停止
+========================================================= */
+
+function stopReel(index) {
+  if (!spinning[index]) return;
+
+  window.clearInterval(reelTimers[index]);
+
+  spinning[index] = false;
+  reelElements[index].classList.remove("spinning");
+
+  let finalSymbol;
+
+  if (
+    targetResult === "RED7" ||
+    targetResult === "BAR" ||
+    targetResult === "STAR" ||
+    targetResult === "BELL" ||
+    targetResult === "GRAPE"
+  ) {
+    finalSymbol = targetResult;
+  } else if (targetResult === "CHERRY") {
+    finalSymbol =
+      index === 0
+        ? "CHERRY"
+        : randomSymbol().key;
+  } else {
+    finalSymbol = randomSymbol().key;
+
+    if (
+      index === 2 &&
+      currentSymbols[0] === currentSymbols[1] &&
+      currentSymbols[1] === finalSymbol
+    ) {
+      finalSymbol = "CHERRY";
+    }
+  }
+
+  currentSymbols[index] = finalSymbol;
+  drawReel(index, finalSymbol);
+
+  reelElements[index].classList.remove("stop-flash");
+  void reelElements[index].offsetWidth;
+  reelElements[index].classList.add("stop-flash");
+
+  if (
+    targetResult === "RED7" ||
+    targetResult === "BAR"
+  ) {
+    reelElements[index].classList.add("hot");
+  }
+
+  stoppedCount += 1;
+
+  pressVisual(stopButtons[index]);
+
+  if (stoppedCount === 3) {
+    judgeResult();
+  }
+
+  updateUi();
+}
+
+/* =========================================================
+   判定
+========================================================= */
+
+function judgeResult() {
+  const [left, center, right] = currentSymbols;
+
+  if (
+    left === "RED7" &&
+    center === "RED7" &&
+    right === "RED7"
+  ) {
+    win(50, "BIG BONUS！！");
+
+  } else if (
+    left === "BAR" &&
+    center === "BAR" &&
+    right === "BAR"
+  ) {
+    win(20, "雷BONUS！！");
+
+  } else if (
+    left === "STAR" &&
+    center === "STAR" &&
+    right === "STAR"
+  ) {
+    win(15, "STAR 15枚");
+
+  } else if (
+    left === "BELL" &&
+    center === "BELL" &&
+    right === "BELL"
+  ) {
+    win(10, "ベル 10枚");
+
+  } else if (
+    left === "GRAPE" &&
+    center === "GRAPE" &&
+    right === "GRAPE"
+  ) {
+    win(8, "ブドウ 8枚");
+
+  } else if (currentSymbols.includes("CHERRY")) {
+    win(2, "チェリー 2枚");
+
+  } else {
+    payout = 0;
+    setMessage("ハズレ");
+
+    window.setTimeout(() => {
+      reelElements.forEach((reel) => {
+        reel.classList.remove("hot");
+      });
+    }, 650);
+  }
+
+  bet = 0;
+  updateUi();
+}
+
+function win(amount, text) {
+  payout = amount;
+  credit += amount;
+
+  setMessage(text);
+
+  payEffect.textContent = `+${amount}`;
+  payEffect.classList.remove("show");
+  void payEffect.offsetWidth;
+  payEffect.classList.add("show");
+
+  document.body.classList.remove("flash", "shake");
+  void document.body.offsetWidth;
+  document.body.classList.add("flash", "shake");
+
+  sparkBurst(85);
+
+  window.setTimeout(() => {
+    document.body.classList.remove("flash", "shake");
+  }, 900);
+}
+
+/* =========================================================
+   押下表現
+========================================================= */
+
+function pressVisual(element) {
+  element.classList.add("pressed");
+
+  window.setTimeout(() => {
+    element.classList.remove("pressed");
+  }, 130);
+}
+
+/* =========================================================
+   Canvas演出
+========================================================= */
+
+const canvas = document.getElementById("fxCanvas");
+const context = canvas.getContext("2d");
+
+let particles = [];
+
+function resizeCanvas() {
+  const rect = machine.getBoundingClientRect();
+  const ratio = Math.min(window.devicePixelRatio || 1, 2);
+
+  canvas.width = Math.floor(rect.width * ratio);
+  canvas.height = Math.floor(rect.height * ratio);
+
+  canvas.style.width = `${rect.width}px`;
+  canvas.style.height = `${rect.height}px`;
+
+  context.setTransform(ratio, 0, 0, ratio, 0, 0);
+}
+
+function sparkBurst(count) {
+  const rect = machine.getBoundingClientRect();
+
+  const centerX = rect.width * 0.53;
+  const centerY = rect.height * 0.32;
+
+  for (let index = 0; index < count; index += 1) {
+    const angle = Math.random() * Math.PI * 2;
+    const speed = 1.3 + Math.random() * 4.4;
+
+    particles.push({
+      x: centerX,
+      y: centerY,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      life: 35 + Math.random() * 35,
+      size: 1 + Math.random() * 2.8,
+      yellow: Math.random() > 0.35
+    });
+  }
+}
+
+function drawLightning() {
+  if (!lamp.classList.contains("on")) return;
+  if (Math.random() > 0.08) return;
+
+  const width = machine.clientWidth;
+  const height = machine.clientHeight;
+
+  let x = width * (0.2 + Math.random() * 0.6);
+  let y = 45;
+
+  context.save();
+
+  context.strokeStyle =
+    Math.random() > 0.4
+      ? "#fff200"
+      : "#ffffff";
+
+  context.lineWidth = 1.2 + Math.random() * 1.5;
+  context.shadowColor = "#fff200";
+  context.shadowBlur = 12;
+
+  context.beginPath();
+  context.moveTo(x, y);
+
+  while (y < height * 0.52) {
+    x += -11 + Math.random() * 22;
+    y += 11 + Math.random() * 15;
+    context.lineTo(x, y);
+  }
+
+  context.stroke();
+  context.restore();
+}
+
+function animateParticles() {
+  context.clearRect(
+    0,
+    0,
+    machine.clientWidth,
+    machine.clientHeight
+  );
+
+  drawLightning();
+
+  particles = particles.filter((particle) => particle.life > 0);
+
+  particles.forEach((particle) => {
+    particle.x += particle.vx;
+    particle.y += particle.vy;
+
+    particle.vx *= 0.98;
+    particle.vy *= 0.98;
+    particle.vy += 0.025;
+
+    particle.life -= 1;
+
+    const opacity = Math.max(0, particle.life / 50);
+
+    context.save();
+
+    context.globalAlpha = opacity;
+    context.fillStyle =
+      particle.yellow
+        ? "#fff200"
+        : "#ffffff";
+
+    context.shadowColor = "#ff9d00";
+    context.shadowBlur = 9;
+
+    context.beginPath();
+    context.arc(
+      particle.x,
+      particle.y,
+      particle.size,
+      0,
+      Math.PI * 2
+    );
+    context.fill();
+
+    context.restore();
+  });
+
+  requestAnimationFrame(animateParticles);
+}
+
+/* =========================================================
+   イベント
+========================================================= */
+
+betButton.addEventListener("click", () => {
+  pressVisual(betButton);
+  betOne();
+});
+
+maxBetButton.addEventListener("click", () => {
+  pressVisual(maxBetButton);
+  maxBet();
+});
+
+startButton.addEventListener("click", () => {
+  pressVisual(startButton);
+  startSpin();
+});
+
+stopButtons.forEach((button, index) => {
+  button.addEventListener("click", () => {
+    stopReel(index);
+  });
+});
+
+window.addEventListener("resize", resizeCanvas);
+
+/* =========================================================
+   初期化
+========================================================= */
+
+currentSymbols.forEach((symbol, index) => {
+  drawReel(index, symbol);
+});
+
+resizeCanvas();
+animateParticles();
+updateUi();
+</script>
+
+</body>
 </html>
