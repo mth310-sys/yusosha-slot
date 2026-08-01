@@ -1,23 +1,17 @@
-.reel-panel
-.reel-row
+.reel-panel {
+   ...
+}
 
-.lamp-frame
-.lamp
-.lamp.on
+.reel-row {
+   ...
+}
 
-.reel-window
-.reel-window::before
-.reel-window::after
+.lamp-frame {
+   ...
+}
 
-.reels
-.reel
-.reel-strip
+/* 以下ずっと続く */
 
-.symbol
-.symbol.red7
-.symbol.bar
-
-.reel.stop-flash
-.reel.hot
-
-.message
+.message {
+   ...
+}
