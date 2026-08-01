@@ -1,1 +1,230 @@
+/* =========================================================
+   controls.css
+   情報表示・操作卓・各種ボタン・フッター
+========================================================= */
 
+/* =========================================================
+   情報パネル
+========================================================= */
+
+.info-panel {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+
+  padding: 7px 5px;
+  margin-bottom: 7px;
+}
+
+.info-box {
+  border-right: 1px solid #292929;
+}
+
+.info-box:last-child {
+  border-right: 0;
+}
+
+.info-label {
+  font-size: 9px;
+  color: #fff0a3;
+}
+
+.info-value {
+  margin-top: 1px;
+
+  font-family:
+    "Courier New",
+    monospace;
+
+  font-size: 28px;
+  font-weight: 900;
+
+  color: #ff2828;
+
+  text-shadow:
+    0 0 7px red,
+    0 0 13px #6c0000;
+}
+
+/* =========================================================
+   操作卓
+========================================================= */
+
+.operation-panel {
+  position: relative;
+  z-index: 10;
+
+  padding: 9px 9px 11px;
+  margin-bottom: 8px;
+
+  border-radius: 17px;
+  border: 2px solid #c89c00;
+
+  background:
+    linear-gradient(
+      160deg,
+      #fff4a3 0%,
+      #907000 5%,
+      #151515 17%,
+      #050505 70%,
+      #4c3a00 92%,
+      #ffe76d 100%
+    );
+
+  box-shadow:
+    0 8px 8px rgba(0,0,0,.75),
+    0 0 12px #fff,
+    0 0 20px var(--yellow),
+    inset 0 0 15px #000;
+}
+
+/* =========================================================
+   上段ボタン
+========================================================= */
+
+.control-row {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr 1fr;
+  gap: 8px;
+
+  margin-bottom: 10px;
+}
+
+.metal-button {
+  min-height: 54px;
+
+  border: 3px solid #bfc2c5;
+  border-radius: 12px;
+
+  color: #181100;
+  font-weight: 900;
+
+  background:
+    linear-gradient(
+      145deg,
+      #fff 0%,
+      #fff59d 8%,
+      #ffe000 43%,
+      #b37d00 100%
+    );
+
+  box-shadow:
+    inset 0 3px 4px rgba(255,255,255,.95),
+    inset 0 -8px 10px rgba(0,0,0,.55),
+    0 5px 0 #171717,
+    0 0 0 3px #252525,
+    0 0 13px #fff,
+    0 0 18px var(--yellow);
+
+  text-shadow:
+    0 1px 2px #fff;
+}
+
+.metal-button:active,
+.metal-button.pressed {
+  transform: translateY(4px);
+
+  box-shadow:
+    inset 0 4px 10px rgba(0,0,0,.65),
+    0 1px 0 #111,
+    0 0 8px var(--yellow);
+
+  filter: brightness(.83);
+}
+
+/* =========================================================
+   STOPボタン
+========================================================= */
+
+.stop-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+
+.stop-button {
+  position: relative;
+
+  width: 68px;
+  height: 68px;
+  margin: auto;
+
+  border-radius: 50%;
+  border: 4px solid #f3f3f3;
+
+  color: white;
+  font-size: 13px;
+  font-weight: 900;
+
+  background:
+    radial-gradient(
+      circle at 34% 25%,
+      #fff 0 5%,
+      #ff6a6a 11%,
+      #e00000 42%,
+      #680000 82%
+    );
+
+  box-shadow:
+    inset 0 5px 7px rgba(255,255,255,.85),
+    inset 0 -10px 13px rgba(0,0,0,.78),
+    0 5px 0 #050505,
+    0 0 0 4px #151515,
+    0 0 0 7px #cfcfcf,
+    0 0 14px #fff,
+    0 0 21px var(--yellow);
+
+  text-shadow:
+    0 0 7px #fff;
+}
+
+.stop-button::before {
+  content: "";
+  position: absolute;
+  inset: -7px;
+
+  border: 2px solid var(--yellow);
+  border-radius: 50%;
+
+  box-shadow:
+    0 0 9px #fff,
+    0 0 16px var(--yellow);
+
+  pointer-events: none;
+}
+
+.stop-button:active,
+.stop-button.pressed {
+  transform:
+    translateY(5px)
+    scale(.97);
+
+  box-shadow:
+    inset 0 9px 14px rgba(0,0,0,.82),
+    0 1px 0 #050505,
+    0 0 0 4px #151515,
+    0 0 0 7px #cfcfcf,
+    0 0 9px var(--yellow);
+}
+
+/* =========================================================
+   無効状態
+========================================================= */
+
+button:disabled {
+  opacity: .35;
+  filter: grayscale(.65);
+}
+
+/* =========================================================
+   フッター
+========================================================= */
+
+.footer {
+  position: relative;
+  z-index: 10;
+
+  color: #e8dda4;
+
+  font-size: 10px;
+  line-height: 1.45;
+}
