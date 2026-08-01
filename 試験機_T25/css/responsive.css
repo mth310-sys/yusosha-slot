@@ -1,186 +1,26 @@
 /* =========================================================
    responsive.css
-   スマホ・小型画面対応
-========================================================= */
-
-/* =========================================================
-   360px以下
+   小型画面調整
 ========================================================= */
 
 @media (max-width: 360px) {
-  .page {
-    padding-left: 2px;
-    padding-right: 2px;
+
+  .title{
+    font-size:27px;
   }
 
-  .machine {
-    padding-left: 12px;
-    padding-right: 12px;
+  .reel{
+    height:219px;
   }
 
-  .title {
-    font-size: 27px;
+  .symbol{
+    height:73px;
+    font-size:34px;
   }
 
-  .reel-row {
-    grid-template-columns: 47px 1fr;
-    gap: 6px;
+  .stop-button{
+    width:62px;
+    height:62px;
   }
 
-  .lamp {
-    height: 46px;
-    font-size: 11px;
-  }
-
-  .reel-window {
-    padding-left: 6px;
-    padding-right: 6px;
-  }
-
-  .reels {
-    gap: 5px;
-  }
-
-  .reel {
-    height: 222px;
-  }
-
-  .symbol {
-    height: 74px;
-    font-size: 37px;
-  }
-
-  .symbol.red7 {
-    font-size: 51px;
-  }
-
-  .symbol.bar {
-    font-size: 22px;
-  }
-
-  .message {
-    font-size: 17px;
-  }
-
-  .info-value {
-    font-size: 26px;
-  }
-
-  .control-row {
-    gap: 6px;
-  }
-
-  .metal-button {
-    min-height: 51px;
-    font-size: 14px;
-  }
-
-  .stop-row {
-    gap: 8px;
-  }
-
-  .stop-button {
-    width: 62px;
-    height: 62px;
-    font-size: 12px;
-  }
-
-  .footer {
-    font-size: 9px;
-  }
-}
-
-/* =========================================================
-   320px以下
-========================================================= */
-
-@media (max-width: 320px) {
-  .machine {
-    padding-left: 10px;
-    padding-right: 10px;
-  }
-
-  .title {
-    font-size: 24px;
-  }
-
-  .version {
-    font-size: 9px;
-  }
-
-  .reel-row {
-    grid-template-columns: 43px 1fr;
-    gap: 5px;
-  }
-
-  .lamp-frame {
-    padding: 3px;
-  }
-
-  .lamp {
-    height: 43px;
-    font-size: 10px;
-  }
-
-  .reel-window {
-    padding: 7px 5px;
-  }
-
-  .reels {
-    gap: 4px;
-  }
-
-  .reel {
-    height: 210px;
-  }
-
-  .symbol {
-    height: 70px;
-    font-size: 34px;
-  }
-
-  .symbol.red7 {
-    font-size: 47px;
-  }
-
-  .symbol.bar {
-    font-size: 20px;
-  }
-
-  .message {
-    font-size: 16px;
-  }
-
-  .info-panel {
-    padding-left: 3px;
-    padding-right: 3px;
-  }
-
-  .info-label {
-    font-size: 8px;
-  }
-
-  .info-value {
-    font-size: 24px;
-  }
-
-  .operation-panel {
-    padding-left: 7px;
-    padding-right: 7px;
-  }
-
-  .metal-button {
-    min-height: 48px;
-    font-size: 13px;
-  }
-
-  .stop-button {
-    width: 58px;
-    height: 58px;
-    font-size: 11px;
-  }
-
-  .footer {
-    font-size: 8px;
-  }
 }
