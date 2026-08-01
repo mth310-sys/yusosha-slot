@@ -1,1 +1,186 @@
+/* =========================================================
+   effects.css
+   画面演出・払い出し表示・アニメーション
+========================================================= */
 
+/* =========================================================
+   画面全体の演出
+========================================================= */
+
+body.flash {
+  animation: screenFlash .22s 4;
+}
+
+body.shake .machine {
+  animation: machineShake .08s 8;
+}
+
+/* =========================================================
+   払い出し表示
+========================================================= */
+
+.pay-effect {
+  position: fixed;
+  z-index: 100;
+
+  left: 50%;
+  top: 45%;
+
+  transform: translate(-50%, -50%);
+
+  display: none;
+
+  font-size: 42px;
+  font-weight: 900;
+  color: var(--yellow);
+
+  text-shadow:
+    0 0 12px #fff,
+    0 0 24px var(--orange);
+
+  pointer-events: none;
+}
+
+.pay-effect.show {
+  display: block;
+  animation: payPop .9s forwards;
+}
+
+/* =========================================================
+   LEDアニメーション
+========================================================= */
+
+@keyframes sidePulse {
+  from {
+    opacity: .55;
+    filter: brightness(.85);
+  }
+
+  to {
+    opacity: 1;
+    filter: brightness(1.7);
+  }
+}
+
+@keyframes topLed {
+  0% {
+    filter: brightness(.85);
+  }
+
+  50% {
+    filter: brightness(1.8);
+  }
+
+  100% {
+    filter: brightness(.85);
+  }
+}
+
+/* =========================================================
+   PEKAランプ
+========================================================= */
+
+@keyframes lampPulse {
+  from {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+
+  to {
+    transform: scale(1.04);
+    filter: brightness(1.7);
+  }
+}
+
+/* =========================================================
+   リール停止演出
+========================================================= */
+
+@keyframes reelStopFlash {
+  0% {
+    transform: scale(1.05);
+    filter: brightness(1.8);
+  }
+
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+
+/* =========================================================
+   画面フラッシュ
+========================================================= */
+
+@keyframes screenFlash {
+  0% {
+    background: #fff;
+  }
+
+  45% {
+    background: var(--yellow);
+  }
+
+  100% {
+    background:
+      radial-gradient(
+        circle at 50% 28%,
+        #4c3c00 0%,
+        #171100 28%,
+        #030303 72%
+      );
+  }
+}
+
+/* =========================================================
+   筐体振動
+========================================================= */
+
+@keyframes machineShake {
+  0% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(3px);
+  }
+
+  50% {
+    transform: translateX(-3px);
+  }
+
+  75% {
+    transform: translateX(2px);
+  }
+
+  100% {
+    transform: translateX(0);
+  }
+}
+
+/* =========================================================
+   払い出し数字
+========================================================= */
+
+@keyframes payPop {
+  0% {
+    opacity: 0;
+    transform:
+      translate(-50%, -20%)
+      scale(.4);
+  }
+
+  30% {
+    opacity: 1;
+    transform:
+      translate(-50%, -50%)
+      scale(1.25);
+  }
+
+  100% {
+    opacity: 0;
+    transform:
+      translate(-50%, -100%)
+      scale(1);
+  }
+}
