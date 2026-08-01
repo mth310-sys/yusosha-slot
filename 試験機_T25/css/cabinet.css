@@ -3,4 +3,22 @@
    筐体・外装・タイトル・LED
 ========================================================= */
 
+.machine
+.machine::before
+.machine::after
 
+#fxCanvas
+
+.side-led
+.side-led.left
+.side-led.right
+
+.top-led
+
+.panel
+.panel::after
+
+.title-panel
+.brand
+.title
+.version
