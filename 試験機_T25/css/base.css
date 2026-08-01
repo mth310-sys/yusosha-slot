@@ -1,1 +1,86 @@
+/* =========================================================
+   遊創舎 2.5D筐体試験機 Ver.T25-0.2
+   base.css
 
+   役割
+   ・リセット
+   ・共通変数
+   ・ページ全体
+   ・基本フォント
+   ・共通ボタン設定
+========================================================= */
+
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+  --machine-width: 390px;
+
+  --black-1: #020202;
+  --black-2: #0a0a0a;
+  --black-3: #171717;
+
+  --gold-1: #fff28a;
+  --gold-2: #e5bd00;
+  --gold-3: #8a5d00;
+
+  --yellow: #fff200;
+  --orange: #ff9700;
+  --red: #e80000;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+html {
+  background: #030303;
+}
+
+body {
+  margin: 0;
+  color: white;
+
+  font-family:
+    -apple-system,
+    BlinkMacSystemFont,
+    "Hiragino Kaku Gothic ProN",
+    "Yu Gothic",
+    Meiryo,
+    sans-serif;
+
+  background:
+    radial-gradient(
+      circle at 50% 28%,
+      #4c3c00 0%,
+      #171100 28%,
+      #030303 72%
+    );
+
+  text-align: center;
+  overflow-x: hidden;
+}
+
+button {
+  font: inherit;
+  touch-action: manipulation;
+}
+
+.page {
+  width: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  padding: 8px 4px 30px;
+}
+
+.wrap {
+  position: relative;
+  width: min(100%, var(--machine-width));
+}
