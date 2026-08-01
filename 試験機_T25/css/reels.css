@@ -1,17 +1,267 @@
+/* =========================================================
+   reels.css
+   リール・PEKAランプ・メッセージ
+========================================================= */
+
 .reel-panel {
-   ...
+  padding: 9px 6px 7px;
+  margin-bottom: 7px;
 }
 
 .reel-row {
-   ...
+  display: grid;
+  grid-template-columns: 51px 1fr;
+  align-items: center;
+  gap: 7px;
 }
 
 .lamp-frame {
-   ...
+  position: relative;
+  padding: 4px;
+
+  border-radius: 13px;
+
+  background:
+    linear-gradient(
+      145deg,
+      #fffbc7,
+      #9d7400 22%,
+      #332500 55%,
+      #ffd900
+    );
+
+  box-shadow:
+    0 0 10px #fff,
+    0 0 17px var(--yellow),
+    inset 0 0 6px #000;
 }
 
-/* 以下ずっと続く */
+.lamp {
+  height: 50px;
+
+  display: grid;
+  place-items: center;
+
+  border-radius: 9px;
+
+  color: #9e7e20;
+  font-size: 12px;
+  font-weight: 900;
+
+  border: 1px solid #685000;
+
+  background:
+    radial-gradient(
+      circle,
+      #372600,
+      #120b00 75%
+    );
+
+  box-shadow:
+    inset 0 0 11px #000;
+}
+
+.lamp.on {
+  color: #543000;
+
+  background:
+    radial-gradient(
+      circle,
+      #fff 0 9%,
+      #fff9a6 18%,
+      #ffe500 46%,
+      #ff8b00 100%
+    );
+
+  box-shadow:
+    0 0 13px #fff,
+    0 0 25px var(--yellow),
+    0 0 42px var(--orange),
+    inset 0 0 7px #fff;
+
+  animation: lampPulse .28s infinite alternate;
+}
+
+.reel-window {
+  position: relative;
+  padding: 8px 7px;
+
+  border-radius: 14px;
+
+  background:
+    linear-gradient(
+      #353535,
+      #070707 12%,
+      #101010 88%,
+      #3d3d3d
+    );
+
+  border: 3px solid #a7a7a7;
+
+  box-shadow:
+    inset 0 8px 15px #000,
+    inset 0 -8px 15px #000,
+    0 0 0 2px #080808,
+    0 0 12px #fff,
+    0 0 19px #ffdd00;
+}
+
+.reel-window::before {
+  content: "";
+  position: absolute;
+  inset: 7px;
+
+  border-radius: 9px;
+
+  background:
+    linear-gradient(
+      to bottom,
+      rgba(0,0,0,.68),
+      transparent 24%,
+      transparent 75%,
+      rgba(0,0,0,.72)
+    );
+
+  pointer-events: none;
+  z-index: 5;
+}
+
+.reel-window::after {
+  content: "";
+  position: absolute;
+  inset: 7px;
+
+  border-radius: 9px;
+
+  background:
+    linear-gradient(
+      115deg,
+      transparent 0 25%,
+      rgba(255,255,255,.32) 29%,
+      transparent 34% 66%,
+      rgba(255,255,255,.12) 70%,
+      transparent 75%
+    );
+
+  pointer-events: none;
+  z-index: 6;
+}
+
+.reels {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+
+.reel {
+  position: relative;
+  height: 240px;
+  overflow: hidden;
+
+  border-radius: 9px;
+
+  background:
+    linear-gradient(
+      90deg,
+      #aaa,
+      #fff 15%,
+      #fff 85%,
+      #999
+    );
+
+  border: 2px solid #666;
+
+  box-shadow:
+    inset 0 0 13px #888,
+    0 0 0 2px #111;
+}
+
+.reel-strip {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+
+  will-change: transform;
+}
+
+.symbol {
+  height: 80px;
+
+  display: grid;
+  place-items: center;
+
+  font-size: 40px;
+  font-weight: 900;
+
+  color: #111;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #f5f5f5,
+      #fff 45%,
+      #ddd 55%,
+      #fafafa
+    );
+
+  border-bottom: 1px solid #d0d0d0;
+
+  text-shadow: 0 1px 0 #fff;
+}
+
+.symbol.red7 {
+  color: #e00000;
+
+  font-family:
+    "Arial Black",
+    Arial,
+    sans-serif;
+
+  font-size: 55px;
+
+  text-shadow:
+    2px 2px 0 #ffd000,
+    0 0 8px rgba(255,0,0,.45);
+}
+
+.symbol.bar {
+  font-size: 24px;
+  letter-spacing: -2px;
+
+  color: #111;
+
+  background:
+    linear-gradient(
+      #fafafa,
+      #fff,
+      #e8e8e8
+    );
+}
+
+.reel.stop-flash {
+  animation: reelStopFlash .24s;
+}
+
+.reel.hot {
+  box-shadow:
+    inset 0 0 13px #888,
+    0 0 0 2px #111,
+    0 0 11px #fff,
+    0 0 20px var(--yellow),
+    0 0 31px var(--orange);
+}
 
 .message {
-   ...
+  min-height: 28px;
+  margin-top: 7px;
+
+  font-size: 18px;
+  font-weight: 900;
+
+  color: var(--yellow);
+
+  text-shadow:
+    0 0 6px #fff,
+    0 0 13px var(--orange);
 }
