@@ -1,6 +1,6 @@
 /* =========================================================
    reels.css
-   リール部・PEKAランプ・リール窓・シンボル・メッセージ
+   リール部・告知ランプ・リール窓・シンボル・メッセージ
 ========================================================= */
 
 /* =========================================================
@@ -20,13 +20,12 @@
 }
 
 /* =========================================================
-   PEKAランプ
+   告知ランプ
 ========================================================= */
 
 .lamp-frame {
   position: relative;
   padding: 4px;
-
   border-radius: 13px;
 
   background:
@@ -51,12 +50,11 @@
   place-items: center;
 
   border-radius: 9px;
+  border: 1px solid #685000;
 
   color: #9e7e20;
   font-size: 12px;
   font-weight: 900;
-
-  border: 1px solid #685000;
 
   background:
     radial-gradient(
@@ -93,13 +91,19 @@
 
 /* =========================================================
    リール窓
+   目標サイズ：約240px × 210px
 ========================================================= */
 
 .reel-window {
   position: relative;
-  padding: 8px 7px;
 
-  border-radius: 14px;
+  width: 240px;
+  justify-self: center;
+
+  padding: 6px;
+
+  border-radius: 13px;
+  border: 3px solid #a7a7a7;
 
   background:
     linear-gradient(
@@ -109,30 +113,28 @@
       #3d3d3d
     );
 
-  border: 3px solid #a7a7a7;
-
   box-shadow:
-    inset 0 8px 15px #000,
-    inset 0 -8px 15px #000,
+    inset 0 7px 13px #000,
+    inset 0 -7px 13px #000,
     0 0 0 2px #080808,
-    0 0 12px #fff,
-    0 0 19px #ffdd00;
+    0 0 10px #fff,
+    0 0 17px #ffdd00;
 }
 
 .reel-window::before {
   content: "";
   position: absolute;
-  inset: 7px;
+  inset: 6px;
 
-  border-radius: 9px;
+  border-radius: 8px;
 
   background:
     linear-gradient(
       to bottom,
-      rgba(0,0,0,.68),
-      transparent 24%,
-      transparent 75%,
-      rgba(0,0,0,.72)
+      rgba(0,0,0,.62),
+      transparent 23%,
+      transparent 76%,
+      rgba(0,0,0,.68)
     );
 
   pointer-events: none;
@@ -142,17 +144,17 @@
 .reel-window::after {
   content: "";
   position: absolute;
-  inset: 7px;
+  inset: 6px;
 
-  border-radius: 9px;
+  border-radius: 8px;
 
   background:
     linear-gradient(
       115deg,
       transparent 0 25%,
-      rgba(255,255,255,.32) 29%,
+      rgba(255,255,255,.28) 29%,
       transparent 34% 66%,
-      rgba(255,255,255,.12) 70%,
+      rgba(255,255,255,.1) 70%,
       transparent 75%
     );
 
@@ -167,15 +169,19 @@
 .reels {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 6px;
+  gap: 5px;
 }
 
 .reel {
   position: relative;
-  height: 240px;
+
+  height: 210px;
+  min-width: 0;
+
   overflow: hidden;
 
-  border-radius: 9px;
+  border-radius: 8px;
+  border: 2px solid #666;
 
   background:
     linear-gradient(
@@ -186,33 +192,33 @@
       #999
     );
 
-  border: 2px solid #666;
-
   box-shadow:
-    inset 0 0 13px #888,
+    inset 0 0 11px #888,
     0 0 0 2px #111;
 }
 
 .reel-strip {
   position: absolute;
+
+  top: 0;
   left: 0;
   right: 0;
-  top: 0;
 
   will-change: transform;
 }
 
 /* =========================================================
    シンボル
+   70px × 3コマ表示
 ========================================================= */
 
 .symbol {
-  height: 80px;
+  height: 70px;
 
   display: grid;
   place-items: center;
 
-  font-size: 38px;
+  font-size: 33px;
   font-weight: 900;
 
   color: #111;
@@ -240,7 +246,7 @@
     "Arial Black",
     sans-serif;
 
-  font-size: 48px;
+  font-size: 42px;
 
   text-shadow:
     2px 2px 0 #ffd000,
@@ -248,7 +254,7 @@
 }
 
 .symbol.bar {
-  font-size: 24px;
+  font-size: 21px;
   letter-spacing: -2px;
 
   color: #111;
@@ -261,19 +267,18 @@
     );
 }
 
-.symbol.replay{
-    display:flex;
-    justify-content:center;
-    align-items:center;
+.symbol.replay {
+  display: grid;
+  place-items: center;
 
-    font-size:44px;
-    font-weight:bold;
+  font-size: 38px;
+  font-weight: 900;
 
-    color:#33b8ff;
+  color: #33b8ff;
 
-    text-shadow:
-        0 0 6px #8de7ff,
-        0 0 14px #00bfff;
+  text-shadow:
+    0 0 6px #8de7ff,
+    0 0 14px #00bfff;
 }
 
 /* =========================================================
@@ -287,11 +292,11 @@
 
 .reel.hot {
   box-shadow:
-    inset 0 0 13px #888,
+    inset 0 0 11px #888,
     0 0 0 2px #111,
-    0 0 11px #fff,
-    0 0 20px var(--yellow),
-    0 0 31px var(--orange);
+    0 0 10px #fff,
+    0 0 18px var(--yellow),
+    0 0 27px var(--orange);
 }
 
 /* =========================================================
@@ -299,10 +304,10 @@
 ========================================================= */
 
 .message {
-  min-height: 28px;
-  margin-top: 7px;
+  min-height: 25px;
+  margin-top: 6px;
 
-  font-size: 18px;
+  font-size: 17px;
   font-weight: 900;
 
   color: var(--yellow);
