@@ -261,25 +261,19 @@
     );
 }
 
-.symbol.replay {
-  font-size: 17px;
-  font-weight: 900;
-  letter-spacing: 1px;
+.symbol.replay{
+    display:flex;
+    justify-content:center;
+    align-items:center;
 
-  color: #0077cc;
+    font-size:44px;
+    font-weight:bold;
 
-  background:
-    linear-gradient(
-      to bottom,
-      #ffffff,
-      #edfaff 45%,
-      #c9f1ff 55%,
-      #f8fdff
-    );
+    color:#33b8ff;
 
-  text-shadow:
-    0 0 4px #ffffff,
-    0 0 8px rgba(0,170,255,.75);
+    text-shadow:
+        0 0 6px #8de7ff,
+        0 0 14px #00bfff;
 }
 
 /* =========================================================
