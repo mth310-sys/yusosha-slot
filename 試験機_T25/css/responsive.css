@@ -72,3 +72,38 @@
     height: 68px;
   }
 }
+/* =========================================================
+   リールサイズ最終固定
+   50px × 3コマ = 150px
+========================================================= */
+
+.reel-window {
+  width: 200px !important;
+  padding: 5px !important;
+}
+
+.reels {
+  gap: 4px !important;
+}
+
+.reel {
+  height: 150px !important;
+}
+
+.symbol {
+  height: 50px !important;
+  min-height: 50px !important;
+  max-height: 50px !important;
+}
+
+.symbol.red7 {
+  font-size: 34px !important;
+}
+
+.symbol.bar {
+  font-size: 17px !important;
+}
+
+.symbol.replay {
+  font-size: 30px !important;
+}
