@@ -187,6 +187,8 @@ function win(amount, text) {
 }
 function replay() {
   payout = 0;
+
+  credit += 3;
   bet = 3;
 
   setMessage("リプレイ");
