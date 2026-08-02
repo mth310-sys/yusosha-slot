@@ -1,3 +1,10 @@
+"use strict";
+
+/* =========================================================
+   effects.js
+   Canvas・雷・火花・粒子演出
+========================================================= */
+
 const canvas  = document.getElementById("fxCanvas");
 const context = canvas.getContext("2d");
 
