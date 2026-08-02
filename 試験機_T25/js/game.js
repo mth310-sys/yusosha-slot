@@ -150,7 +150,7 @@ function judgeResult() {
   else if (left === "STAR"  && center === "STAR"  && right === "STAR")  { win(15, "STAR 15枚"); }
   else if (left === "BELL"  && center === "BELL"  && right === "BELL")  { win(10, "ベル 10枚"); }
   else if (left === "GRAPE" && center === "GRAPE" && right === "GRAPE") { win(8,  "ブドウ 8枚"); }
-  else if (left === "REPLAY" &&center === "REPLAY" &&right === "REPLAY") {replay(); }
+  else if (left === "REPLAY" &&center === "REPLAY" &&right === "REPLAY") {replay();return; }
   else if (currentSymbols.includes("CHERRY"))                           { win(2,  "チェリー 2枚"); }
   else {
     payout = 0;
