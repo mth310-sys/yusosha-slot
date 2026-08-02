@@ -60,16 +60,17 @@
 
 /* =========================================================
    操作卓
+   全体をコンパクト化
 ========================================================= */
 
 .operation-panel {
   position: relative;
   z-index: 10;
 
-  padding: 9px 9px 11px;
-  margin-bottom: 8px;
+  padding: 6px 7px 8px;
+  margin-bottom: 6px;
 
-  border-radius: 17px;
+  border-radius: 15px;
   border: 2px solid #c89c00;
 
   background:
@@ -84,10 +85,10 @@
     );
 
   box-shadow:
-    0 8px 8px rgba(0,0,0,.75),
-    0 0 12px #fff,
-    0 0 20px var(--yellow),
-    inset 0 0 15px #000;
+    0 6px 7px rgba(0,0,0,.75),
+    0 0 10px #fff,
+    0 0 17px var(--yellow),
+    inset 0 0 13px #000;
 }
 
 /* =========================================================
@@ -97,18 +98,21 @@
 .control-row {
   display: grid;
   grid-template-columns: 1.15fr 1fr 1fr;
-  gap: 8px;
+  gap: 6px;
 
-  margin-bottom: 10px;
+  margin-bottom: 8px;
 }
 
 .metal-button {
-  min-height: 54px;
+  min-height: 44px;
+  padding: 3px 4px;
 
   border: 3px solid #bfc2c5;
-  border-radius: 12px;
+  border-radius: 10px;
 
   color: #181100;
+  font-size: 14px;
+  line-height: 1.08;
   font-weight: 900;
 
   background:
@@ -122,11 +126,11 @@
 
   box-shadow:
     inset 0 3px 4px rgba(255,255,255,.95),
-    inset 0 -8px 10px rgba(0,0,0,.55),
-    0 5px 0 #171717,
+    inset 0 -6px 8px rgba(0,0,0,.55),
+    0 4px 0 #171717,
     0 0 0 3px #252525,
-    0 0 13px #fff,
-    0 0 18px var(--yellow);
+    0 0 10px #fff,
+    0 0 15px var(--yellow);
 
   text-shadow:
     0 1px 2px #fff;
@@ -134,12 +138,12 @@
 
 .metal-button:active,
 .metal-button.pressed {
-  transform: translateY(4px);
+  transform: translateY(3px);
 
   box-shadow:
-    inset 0 4px 10px rgba(0,0,0,.65),
+    inset 0 4px 9px rgba(0,0,0,.65),
     0 1px 0 #111,
-    0 0 8px var(--yellow);
+    0 0 7px var(--yellow);
 
   filter: brightness(.83);
 }
@@ -151,21 +155,21 @@
 .stop-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 8px;
 }
 
 .stop-button {
   position: relative;
 
-  width: 68px;
-  height: 68px;
+  width: 58px;
+  height: 58px;
   margin: auto;
 
   border-radius: 50%;
-  border: 4px solid #f3f3f3;
+  border: 3px solid #f3f3f3;
 
   color: white;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 900;
 
   background:
@@ -178,29 +182,29 @@
     );
 
   box-shadow:
-    inset 0 5px 7px rgba(255,255,255,.85),
-    inset 0 -10px 13px rgba(0,0,0,.78),
-    0 5px 0 #050505,
-    0 0 0 4px #151515,
-    0 0 0 7px #cfcfcf,
-    0 0 14px #fff,
-    0 0 21px var(--yellow);
+    inset 0 4px 6px rgba(255,255,255,.85),
+    inset 0 -8px 11px rgba(0,0,0,.78),
+    0 4px 0 #050505,
+    0 0 0 3px #151515,
+    0 0 0 6px #cfcfcf,
+    0 0 11px #fff,
+    0 0 17px var(--yellow);
 
   text-shadow:
-    0 0 7px #fff;
+    0 0 6px #fff;
 }
 
 .stop-button::before {
   content: "";
   position: absolute;
-  inset: -7px;
+  inset: -6px;
 
   border: 2px solid var(--yellow);
   border-radius: 50%;
 
   box-shadow:
-    0 0 9px #fff,
-    0 0 16px var(--yellow);
+    0 0 7px #fff,
+    0 0 13px var(--yellow);
 
   pointer-events: none;
 }
@@ -208,15 +212,15 @@
 .stop-button:active,
 .stop-button.pressed {
   transform:
-    translateY(5px)
+    translateY(4px)
     scale(.97);
 
   box-shadow:
-    inset 0 9px 14px rgba(0,0,0,.82),
+    inset 0 8px 12px rgba(0,0,0,.82),
     0 1px 0 #050505,
-    0 0 0 4px #151515,
-    0 0 0 7px #cfcfcf,
-    0 0 9px var(--yellow);
+    0 0 0 3px #151515,
+    0 0 0 6px #cfcfcf,
+    0 0 8px var(--yellow);
 }
 
 /* =========================================================
