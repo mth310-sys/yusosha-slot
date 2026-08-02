@@ -261,6 +261,27 @@
     );
 }
 
+.symbol.replay {
+  font-size: 17px;
+  font-weight: 900;
+  letter-spacing: 1px;
+
+  color: #0077cc;
+
+  background:
+    linear-gradient(
+      to bottom,
+      #ffffff,
+      #edfaff 45%,
+      #c9f1ff 55%,
+      #f8fdff
+    );
+
+  text-shadow:
+    0 0 4px #ffffff,
+    0 0 8px rgba(0,170,255,.75);
+}
+
 /* =========================================================
    停止・当選演出
 ========================================================= */
