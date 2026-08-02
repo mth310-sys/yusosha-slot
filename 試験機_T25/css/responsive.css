@@ -5,22 +5,70 @@
 
 @media (max-width: 360px) {
 
-  .title{
-    font-size:27px;
+  /* =======================================================
+     タイトル
+  ======================================================= */
+
+  .title {
+    font-size: 27px;
   }
 
-  .reel{
-    height:219px;
+  /* =======================================================
+     リール部
+     基本設定と同じ50px × 3コマを維持
+  ======================================================= */
+
+  .reel-window {
+    width: 200px;
+    padding: 5px;
   }
 
-  .symbol{
-    height:73px;
-    font-size:34px;
+  .reels {
+    gap: 4px;
   }
 
-  .stop-button{
-    width:62px;
-    height:62px;
+  .reel {
+    height: 150px;
   }
 
+  .symbol {
+    height: 50px;
+    font-size: 26px;
+  }
+
+  .symbol.red7 {
+    font-size: 34px;
+  }
+
+  .symbol.bar {
+    font-size: 17px;
+  }
+
+  .symbol.replay {
+    font-size: 30px;
+  }
+
+  /* =======================================================
+     告知ランプ
+  ======================================================= */
+
+  .reel-row {
+    grid-template-columns: 48px 1fr;
+    gap: 6px;
+  }
+
+  .lamp {
+    height: 48px;
+    font-size: 11px;
+  }
+
+  /* =======================================================
+     STOPボタン
+     現時点では元サイズを維持
+  ======================================================= */
+
+  .stop-button {
+    width: 68px;
+    height: 68px;
+  }
 }
