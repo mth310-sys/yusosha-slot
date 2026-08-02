@@ -8,15 +8,15 @@
 ========================================================= */
 
 .reel-panel {
-  padding: 9px 6px 7px;
+  padding: 8px 6px 6px;
   margin-bottom: 7px;
 }
 
 .reel-row {
   display: grid;
-  grid-template-columns: 51px 1fr;
+  grid-template-columns: 48px 1fr;
   align-items: center;
-  gap: 7px;
+  gap: 6px;
 }
 
 /* =========================================================
@@ -25,8 +25,8 @@
 
 .lamp-frame {
   position: relative;
-  padding: 4px;
-  border-radius: 13px;
+  padding: 3px;
+  border-radius: 12px;
 
   background:
     linear-gradient(
@@ -38,22 +38,22 @@
     );
 
   box-shadow:
-    0 0 10px #fff,
-    0 0 17px var(--yellow),
+    0 0 9px #fff,
+    0 0 15px var(--yellow),
     inset 0 0 6px #000;
 }
 
 .lamp {
-  height: 50px;
+  height: 44px;
 
   display: grid;
   place-items: center;
 
-  border-radius: 9px;
+  border-radius: 8px;
   border: 1px solid #685000;
 
   color: #9e7e20;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 900;
 
   background:
@@ -64,7 +64,7 @@
     );
 
   box-shadow:
-    inset 0 0 11px #000;
+    inset 0 0 10px #000;
 }
 
 .lamp.on {
@@ -80,9 +80,9 @@
     );
 
   box-shadow:
-    0 0 13px #fff,
-    0 0 25px var(--yellow),
-    0 0 42px var(--orange),
+    0 0 11px #fff,
+    0 0 21px var(--yellow),
+    0 0 34px var(--orange),
     inset 0 0 7px #fff;
 
   animation:
@@ -91,18 +91,18 @@
 
 /* =========================================================
    リール窓
-   目標サイズ：約240px × 210px
+   目標サイズ：約220px × 180px
 ========================================================= */
 
 .reel-window {
   position: relative;
 
-  width: 240px;
+  width: 220px;
   justify-self: center;
 
-  padding: 6px;
+  padding: 5px;
 
-  border-radius: 13px;
+  border-radius: 12px;
   border: 3px solid #a7a7a7;
 
   background:
@@ -114,27 +114,27 @@
     );
 
   box-shadow:
-    inset 0 7px 13px #000,
-    inset 0 -7px 13px #000,
+    inset 0 6px 11px #000,
+    inset 0 -6px 11px #000,
     0 0 0 2px #080808,
-    0 0 10px #fff,
-    0 0 17px #ffdd00;
+    0 0 9px #fff,
+    0 0 15px #ffdd00;
 }
 
 .reel-window::before {
   content: "";
   position: absolute;
-  inset: 6px;
+  inset: 5px;
 
-  border-radius: 8px;
+  border-radius: 7px;
 
   background:
     linear-gradient(
       to bottom,
-      rgba(0,0,0,.62),
+      rgba(0,0,0,.6),
       transparent 23%,
       transparent 76%,
-      rgba(0,0,0,.68)
+      rgba(0,0,0,.66)
     );
 
   pointer-events: none;
@@ -144,17 +144,17 @@
 .reel-window::after {
   content: "";
   position: absolute;
-  inset: 6px;
+  inset: 5px;
 
-  border-radius: 8px;
+  border-radius: 7px;
 
   background:
     linear-gradient(
       115deg,
       transparent 0 25%,
-      rgba(255,255,255,.28) 29%,
+      rgba(255,255,255,.26) 29%,
       transparent 34% 66%,
-      rgba(255,255,255,.1) 70%,
+      rgba(255,255,255,.09) 70%,
       transparent 75%
     );
 
@@ -169,18 +169,18 @@
 .reels {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 5px;
+  gap: 4px;
 }
 
 .reel {
   position: relative;
 
-  height: 210px;
+  height: 180px;
   min-width: 0;
 
   overflow: hidden;
 
-  border-radius: 8px;
+  border-radius: 7px;
   border: 2px solid #666;
 
   background:
@@ -193,7 +193,7 @@
     );
 
   box-shadow:
-    inset 0 0 11px #888,
+    inset 0 0 10px #888,
     0 0 0 2px #111;
 }
 
@@ -209,16 +209,16 @@
 
 /* =========================================================
    シンボル
-   70px × 3コマ表示
+   60px × 3コマ表示
 ========================================================= */
 
 .symbol {
-  height: 70px;
+  height: 60px;
 
   display: grid;
   place-items: center;
 
-  font-size: 33px;
+  font-size: 29px;
   font-weight: 900;
 
   color: #111;
@@ -246,15 +246,15 @@
     "Arial Black",
     sans-serif;
 
-  font-size: 42px;
+  font-size: 37px;
 
   text-shadow:
     2px 2px 0 #ffd000,
-    0 0 8px rgba(255,0,0,.45);
+    0 0 7px rgba(255,0,0,.45);
 }
 
 .symbol.bar {
-  font-size: 21px;
+  font-size: 18px;
   letter-spacing: -2px;
 
   color: #111;
@@ -271,14 +271,14 @@
   display: grid;
   place-items: center;
 
-  font-size: 38px;
+  font-size: 33px;
   font-weight: 900;
 
   color: #33b8ff;
 
   text-shadow:
-    0 0 6px #8de7ff,
-    0 0 14px #00bfff;
+    0 0 5px #8de7ff,
+    0 0 12px #00bfff;
 }
 
 /* =========================================================
@@ -292,11 +292,11 @@
 
 .reel.hot {
   box-shadow:
-    inset 0 0 11px #888,
+    inset 0 0 10px #888,
     0 0 0 2px #111,
-    0 0 10px #fff,
-    0 0 18px var(--yellow),
-    0 0 27px var(--orange);
+    0 0 9px #fff,
+    0 0 16px var(--yellow),
+    0 0 24px var(--orange);
 }
 
 /* =========================================================
@@ -304,15 +304,15 @@
 ========================================================= */
 
 .message {
-  min-height: 25px;
-  margin-top: 6px;
+  min-height: 23px;
+  margin-top: 5px;
 
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 900;
 
   color: var(--yellow);
 
   text-shadow:
     0 0 6px #fff,
-    0 0 13px var(--orange);
+    0 0 12px var(--orange);
 }
