@@ -15,7 +15,7 @@ const REEL_LAYOUTS = [
 
 /* リール設定 */
 
-const SH = 80;
+const SH = 70;
 const N = 7;
 const LOOP_LEN = N * SH;
 
@@ -25,7 +25,7 @@ const ACCEL = 0.5;
 /* 初期位置 */
 
 const INIT_DISPLAY_POS = [
-  640,
+  630,
   560,
   560
 ];
