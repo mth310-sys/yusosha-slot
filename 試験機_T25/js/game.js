@@ -45,7 +45,7 @@ function chooseResult() {
   if (r < 0.52) return "GRAPE";
   if (r < 0.62) return "REPLAY";
   if (r < 0.70) return "CHERRY";
-　
+
   return "MISS";
 }
 function startSpin() {
@@ -95,8 +95,8 @@ function stopReel(index) {
   /* --- 停止図柄の決定 --- */
   let finalSymbol;
 
-  if (["RED7", "BAR", "STAR", "BELL", "GRAPE"].includes(targetResult)) {
-    finalSymbol = targetResult;
+  if (["RED7", "BAR", "STAR", "BELL", "GRAPE", "REPLAY"].includes(targetResult)) {
+  finalSymbol = targetResult;
 
   } else if (targetResult === "CHERRY") {
     if (index === 0) {
@@ -150,6 +150,7 @@ function judgeResult() {
   else if (left === "STAR"  && center === "STAR"  && right === "STAR")  { win(15, "STAR 15枚"); }
   else if (left === "BELL"  && center === "BELL"  && right === "BELL")  { win(10, "ベル 10枚"); }
   else if (left === "GRAPE" && center === "GRAPE" && right === "GRAPE") { win(8,  "ブドウ 8枚"); }
+  else if (left === "REPLAY" &&center === "REPLAY" &&right === "REPLAY") {replay(); }
   else if (currentSymbols.includes("CHERRY"))                           { win(2,  "チェリー 2枚"); }
   else {
     payout = 0;
@@ -183,4 +184,11 @@ function win(amount, text) {
   window.setTimeout(() => {
     document.body.classList.remove("flash", "shake");
   }, 900);
+}
+function replay() {
+  payout = 0;
+  bet = 3;
+
+  setMessage("リプレイ");
+  updateUi();
 }
