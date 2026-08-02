@@ -8,15 +8,15 @@
 /* リールレイアウト */
 
 const REEL_LAYOUTS = [
-  ["RED7", "GRAPE", "BELL", "CHERRY", "STAR", "BAR"],
-  ["BELL", "RED7", "GRAPE", "CHERRY", "STAR", "BAR"],
-  ["GRAPE", "CHERRY", "BELL", "RED7", "STAR", "BAR"]
+  ["RED7", "GRAPE", "BELL", "CHERRY", "STAR", "BAR", "REPLAY"],
+  ["BELL", "RED7", "GRAPE", "CHERRY", "STAR", "BAR", "REPLAY"],
+  ["GRAPE", "CHERRY", "BELL", "RED7", "STAR", "BAR", "REPLAY"]
 ];
 
 /* リール設定 */
 
 const SH = 80;
-const N = 6;
+const N = 7;
 const LOOP_LEN = N * SH;
 
 const MAX_SPEED = 8;
