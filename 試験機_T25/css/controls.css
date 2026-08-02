@@ -80,7 +80,6 @@
 
 /* =========================================================
    右：情報パネル
-   横幅を全体の約65%に固定
 ========================================================= */
 
 .info-panel {
@@ -219,21 +218,6 @@
     0 0 17px #ffd500;
 }
 
-.start-button::before {
-  content: "";
-  position: absolute;
-  inset: -6px;
-
-  border: 2px solid var(--yellow);
-  border-radius: 50%;
-
-  box-shadow:
-    0 0 7px #fff,
-    0 0 13px var(--yellow);
-
-  pointer-events: none;
-}
-
 .start-main {
   font-size: 10px;
   line-height: 1;
@@ -285,19 +269,11 @@
     0 0 6px #fff;
 }
 
+/* 外側の黄色い疑似要素は使用しない */
+.start-button::before,
 .stop-button::before {
-  content: "";
-  position: absolute;
-  inset: -6px;
-
-  border: 2px solid var(--yellow);
-  border-radius: 50%;
-
-  box-shadow:
-    0 0 7px #fff,
-    0 0 13px var(--yellow);
-
-  pointer-events: none;
+  content: none;
+  display: none;
 }
 
 /* =========================================================
