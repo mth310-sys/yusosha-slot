@@ -7,312 +7,310 @@
    リール部
 ========================================================= */
 
-.reel-panel {
-  padding: 8px 6px 6px;
-  margin-bottom: 7px;
+.reel-panel{
+    padding:8px 6px 6px;
+    margin-bottom:6px;
 }
 
-.reel-row {
-  display: grid;
-  grid-template-columns: 48px 1fr;
-  align-items: center;
-  gap: 6px;
+.reel-row{
+    display:grid;
+    grid-template-columns:48px 1fr;
+    align-items:center;
+    gap:6px;
 }
 
 /* =========================================================
    告知ランプ
 ========================================================= */
 
-.lamp-frame {
-  position: relative;
-  padding: 3px;
-  border-radius: 12px;
+.lamp-frame{
+    position:relative;
+    padding:3px;
+    border-radius:12px;
 
-  background:
-    linear-gradient(
-      145deg,
-      #fffbc7,
-      #9d7400 22%,
-      #332500 55%,
-      #ffd900
-    );
+    background:linear-gradient(
+        145deg,
+        #fffbc7,
+        #9d7400 22%,
+        #332500 55%,
+        #ffd900);
 
-  box-shadow:
-    0 0 9px #fff,
-    0 0 15px var(--yellow),
-    inset 0 0 6px #000;
+    box-shadow:
+        0 0 8px #fff,
+        0 0 14px var(--yellow),
+        inset 0 0 5px #000;
 }
 
-.lamp {
-  height: 44px;
+.lamp{
 
-  display: grid;
-  place-items: center;
+    height:48px;
 
-  border-radius: 8px;
-  border: 1px solid #685000;
+    display:grid;
+    place-items:center;
 
-  color: #9e7e20;
-  font-size: 11px;
-  font-weight: 900;
+    border-radius:8px;
+    border:1px solid #685000;
 
-  background:
-    radial-gradient(
-      circle,
-      #372600,
-      #120b00 75%
-    );
+    color:#9e7e20;
+    font-size:11px;
+    font-weight:900;
 
-  box-shadow:
-    inset 0 0 10px #000;
+    background:
+        radial-gradient(circle,#372600,#120b00 75%);
+
+    box-shadow:
+        inset 0 0 10px #000;
 }
 
-.lamp.on {
-  color: #543000;
+.lamp.on{
 
-  background:
-    radial-gradient(
-      circle,
-      #fff 0 9%,
-      #fff9a6 18%,
-      #ffe500 46%,
-      #ff8b00 100%
-    );
+    color:#543000;
 
-  box-shadow:
-    0 0 11px #fff,
-    0 0 21px var(--yellow),
-    0 0 34px var(--orange),
-    inset 0 0 7px #fff;
+    background:
+        radial-gradient(
+            circle,
+            #fff,
+            #fff9a6 18%,
+            #ffe500 46%,
+            #ff8b00);
 
-  animation:
-    lampPulse .28s infinite alternate;
+    box-shadow:
+        0 0 12px #fff,
+        0 0 22px var(--yellow),
+        0 0 36px var(--orange),
+        inset 0 0 6px #fff;
+
+    animation:
+        lampPulse .28s infinite alternate;
 }
 
 /* =========================================================
    リール窓
-   目標サイズ：約220px × 180px
 ========================================================= */
 
-.reel-window {
-  position: relative;
+.reel-window{
 
-  width: 220px;
-  justify-self: center;
+    width:200px;
 
-  padding: 5px;
+    justify-self:center;
 
-  border-radius: 12px;
-  border: 3px solid #a7a7a7;
+    padding:5px;
 
-  background:
-    linear-gradient(
-      #353535,
-      #070707 12%,
-      #101010 88%,
-      #3d3d3d
-    );
+    border-radius:12px;
 
-  box-shadow:
-    inset 0 6px 11px #000,
-    inset 0 -6px 11px #000,
-    0 0 0 2px #080808,
-    0 0 9px #fff,
-    0 0 15px #ffdd00;
+    border:3px solid #a7a7a7;
+
+    background:
+        linear-gradient(
+            #353535,
+            #070707 12%,
+            #101010 88%,
+            #3d3d3d);
+
+    box-shadow:
+        inset 0 6px 12px #000,
+        inset 0 -6px 12px #000,
+        0 0 0 2px #080808,
+        0 0 10px #fff,
+        0 0 16px #ffdd00;
 }
 
-.reel-window::before {
-  content: "";
-  position: absolute;
-  inset: 5px;
+.reel-window::before{
 
-  border-radius: 7px;
+    content:"";
+    position:absolute;
+    inset:5px;
 
-  background:
-    linear-gradient(
-      to bottom,
-      rgba(0,0,0,.6),
-      transparent 23%,
-      transparent 76%,
-      rgba(0,0,0,.66)
-    );
+    border-radius:8px;
 
-  pointer-events: none;
-  z-index: 5;
+    background:
+        linear-gradient(
+            to bottom,
+            rgba(0,0,0,.62),
+            transparent 23%,
+            transparent 76%,
+            rgba(0,0,0,.68));
+
+    pointer-events:none;
+    z-index:5;
 }
 
-.reel-window::after {
-  content: "";
-  position: absolute;
-  inset: 5px;
+.reel-window::after{
 
-  border-radius: 7px;
+    content:"";
+    position:absolute;
+    inset:5px;
 
-  background:
-    linear-gradient(
-      115deg,
-      transparent 0 25%,
-      rgba(255,255,255,.26) 29%,
-      transparent 34% 66%,
-      rgba(255,255,255,.09) 70%,
-      transparent 75%
-    );
+    border-radius:8px;
 
-  pointer-events: none;
-  z-index: 6;
+    background:
+        linear-gradient(
+            115deg,
+            transparent 0 25%,
+            rgba(255,255,255,.25) 30%,
+            transparent 36% 64%,
+            rgba(255,255,255,.08) 70%,
+            transparent 76%);
+
+    pointer-events:none;
+    z-index:6;
 }
 
 /* =========================================================
-   3リール
+   リール
 ========================================================= */
 
-.reels {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 4px;
+.reels{
+
+    display:grid;
+
+    grid-template-columns:repeat(3,1fr);
+
+    gap:4px;
 }
 
-.reel {
-  position: relative;
+.reel{
 
-  height: 180px;
-  min-width: 0;
+    position:relative;
 
-  overflow: hidden;
+    height:150px;
 
-  border-radius: 7px;
-  border: 2px solid #666;
+    overflow:hidden;
 
-  background:
-    linear-gradient(
-      90deg,
-      #aaa,
-      #fff 15%,
-      #fff 85%,
-      #999
-    );
+    border-radius:7px;
 
-  box-shadow:
-    inset 0 0 10px #888,
-    0 0 0 2px #111;
+    border:2px solid #666;
+
+    background:
+        linear-gradient(
+            90deg,
+            #aaa,
+            #fff 15%,
+            #fff 85%,
+            #999);
+
+    box-shadow:
+        inset 0 0 10px #888,
+        0 0 0 2px #111;
 }
 
-.reel-strip {
-  position: absolute;
+.reel-strip{
 
-  top: 0;
-  left: 0;
-  right: 0;
+    position:absolute;
 
-  will-change: transform;
+    top:0;
+    left:0;
+    right:0;
+
+    will-change:transform;
 }
 
 /* =========================================================
    シンボル
-   60px × 3コマ表示
 ========================================================= */
 
-.symbol {
-  height: 60px;
+.symbol{
 
-  display: grid;
-  place-items: center;
+    height:50px;
 
-  font-size: 29px;
-  font-weight: 900;
+    display:grid;
 
-  color: #111;
+    place-items:center;
 
-  background:
-    linear-gradient(
-      to bottom,
-      #f5f5f5,
-      #fff 45%,
-      #ddd 55%,
-      #fafafa
-    );
+    font-size:26px;
 
-  border-bottom:
-    1px solid #d0d0d0;
+    font-weight:900;
 
-  text-shadow:
-    0 1px 0 #fff;
+    color:#111;
+
+    background:
+        linear-gradient(
+            to bottom,
+            #f5f5f5,
+            #fff 45%,
+            #ddd 55%,
+            #fafafa);
+
+    border-bottom:1px solid #d0d0d0;
+
+    text-shadow:
+        0 1px 0 #fff;
 }
 
-.symbol.red7 {
-  color: #e00000;
+.symbol.red7{
 
-  font-family:
-    "Arial Black",
-    sans-serif;
+    color:#e00000;
 
-  font-size: 37px;
+    font-family:"Arial Black",sans-serif;
 
-  text-shadow:
-    2px 2px 0 #ffd000,
-    0 0 7px rgba(255,0,0,.45);
+    font-size:34px;
+
+    text-shadow:
+        2px 2px 0 #ffd000,
+        0 0 7px rgba(255,0,0,.45);
 }
 
-.symbol.bar {
-  font-size: 18px;
-  letter-spacing: -2px;
+.symbol.bar{
 
-  color: #111;
+    font-size:17px;
 
-  background:
-    linear-gradient(
-      #fafafa,
-      #fff,
-      #e8e8e8
-    );
+    letter-spacing:-1px;
 }
 
-.symbol.replay {
-  display: grid;
-  place-items: center;
+.symbol.replay{
 
-  font-size: 33px;
-  font-weight: 900;
+    display:grid;
 
-  color: #33b8ff;
+    place-items:center;
 
-  text-shadow:
-    0 0 5px #8de7ff,
-    0 0 12px #00bfff;
+    font-size:30px;
+
+    font-weight:900;
+
+    color:#33b8ff;
+
+    text-shadow:
+        0 0 5px #8de7ff,
+        0 0 10px #00bfff;
 }
 
 /* =========================================================
-   停止・当選演出
+   停止演出
 ========================================================= */
 
-.reel.stop-flash {
-  animation:
-    reelStopFlash .24s;
+.reel.stop-flash{
+
+    animation:
+        reelStopFlash .24s;
 }
 
-.reel.hot {
-  box-shadow:
-    inset 0 0 10px #888,
-    0 0 0 2px #111,
-    0 0 9px #fff,
-    0 0 16px var(--yellow),
-    0 0 24px var(--orange);
+.reel.hot{
+
+    box-shadow:
+        inset 0 0 10px #888,
+        0 0 0 2px #111,
+        0 0 8px #fff,
+        0 0 16px var(--yellow),
+        0 0 24px var(--orange);
 }
 
 /* =========================================================
    メッセージ
 ========================================================= */
 
-.message {
-  min-height: 23px;
-  margin-top: 5px;
+.message{
 
-  font-size: 16px;
-  font-weight: 900;
+    min-height:22px;
 
-  color: var(--yellow);
+    margin-top:5px;
 
-  text-shadow:
-    0 0 6px #fff,
-    0 0 12px var(--orange);
+    font-size:16px;
+
+    font-weight:900;
+
+    color:var(--yellow);
+
+    text-shadow:
+        0 0 6px #fff,
+        0 0 10px var(--orange);
 }
