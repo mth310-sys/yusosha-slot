@@ -5,17 +5,26 @@
 
 /* =========================================================
    情報パネル
+   高さを抑えたコンパクト仕様
 ========================================================= */
 
 .info-panel {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
+  align-items: center;
 
-  padding: 7px 5px;
-  margin-bottom: 7px;
+  padding: 4px 5px;
+  margin-bottom: 6px;
 }
 
 .info-box {
+  min-height: 42px;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
   border-right: 1px solid #292929;
 }
 
@@ -24,25 +33,29 @@
 }
 
 .info-label {
-  font-size: 9px;
+  font-size: 8px;
+  line-height: 1;
+
   color: #fff0a3;
+  letter-spacing: .5px;
 }
 
 .info-value {
-  margin-top: 1px;
+  margin-top: 2px;
 
   font-family:
     "Courier New",
     monospace;
 
-  font-size: 28px;
+  font-size: 23px;
+  line-height: 1;
   font-weight: 900;
 
   color: #ff2828;
 
   text-shadow:
-    0 0 7px red,
-    0 0 13px #6c0000;
+    0 0 6px red,
+    0 0 11px #6c0000;
 }
 
 /* =========================================================
