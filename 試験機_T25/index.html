@@ -357,28 +357,6 @@ function onReelPhysicallyStopped(index) {
 /* =========================================================
    表示更新
 ========================================================= */
-
-function updateUi() {
-  creditElement.textContent = String(credit);
-  betElement.textContent    = String(bet);
-  payoutElement.textContent = String(payout);
-
-  const anySpinning = spinning.includes(true);
-  const busy        = anySpinning || gameActive;
-
-  startButton.disabled  = bet !== 3 || busy;
-  betButton.disabled    = busy || bet >= 3 || credit <= 0;
-  maxBetButton.disabled = busy || bet >= 3 || credit <= 0;
-
-  stopButtons.forEach((button, index) => {
-    button.disabled = !spinning[index] || stopPressed[index];
-  });
-}
-
-function setMessage(text) {
-  message.textContent = text;
-}
-
 /* =========================================================
    BET
 ========================================================= */
@@ -570,10 +548,7 @@ function win(amount, text) {
    押下表現
 ========================================================= */
 
-function pressVisual(element) {
-  element.classList.add("pressed");
-  window.setTimeout(() => element.classList.remove("pressed"), 130);
-}
+
 
 /* =========================================================
    Canvas演出
