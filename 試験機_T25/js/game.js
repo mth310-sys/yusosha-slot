@@ -43,8 +43,9 @@ function chooseResult() {
   if (r < 0.23) return "STAR";
   if (r < 0.36) return "BELL";
   if (r < 0.52) return "GRAPE";
+  if (r < 0.62) return "REPLAY";
   if (r < 0.70) return "CHERRY";
-
+　
   return "MISS";
 }
 function startSpin() {
