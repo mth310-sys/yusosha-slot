@@ -58,15 +58,26 @@ const stateClasses = [
     今後追加するときは、この配列へ追加する。
   */
   const demoSteps = [
-  { number: "L-001", name: "idle",  duration: 4000 },
-  { number: "L-002", name: "bet",   duration: 4000 },
-  { number: "L-003", name: "start", duration: 5000 },
-  { number: "L-004", name: "stop1", duration: 3000 },
-  { number: "L-005", name: "stop2", duration: 3000 },
-  { number: "L-006", name: "stop3", duration: 3000 },
-  { number: "L-007", name: "big",   duration: 5000 },
-  { number: "L-008", name: "super", duration: 5000 },
-  { number: "L-009", name: "off",   duration: 3000 }
+  { number: "L-001", name: "idle",      duration: 4000 },
+  { number: "L-002", name: "bet",       duration: 4000 },
+  { number: "L-003", name: "start",     duration: 5000 },
+  { number: "L-004", name: "stop1",     duration: 3000 },
+  { number: "L-005", name: "stop2",     duration: 3000 },
+  { number: "L-006", name: "stop3",     duration: 3000 },
+  { number: "L-007", name: "big",       duration: 5000 },
+  { number: "L-008", name: "super",     duration: 5000 },
+  { number: "L-009", name: "off",       duration: 3000 },
+
+  { number: "L-010", name: "rainbow",   duration: 5000 },
+  { number: "L-011", name: "police",    duration: 4000 },
+  { number: "L-012", name: "charge",    duration: 5000 },
+  { number: "L-013", name: "wave",      duration: 5000 },
+  { number: "L-014", name: "scan",      duration: 5000 },
+  { number: "L-015", name: "explosion", duration: 4000 },
+  { number: "L-016", name: "crystal",   duration: 5000 },
+  { number: "L-017", name: "fire",      duration: 5000 },
+  { number: "L-018", name: "aurora",    duration: 6000 },
+  { number: "L-019", name: "hyper",     duration: 3000 }
 ];
 
   let selectedIndex = 0;
