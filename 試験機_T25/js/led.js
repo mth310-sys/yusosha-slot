@@ -36,16 +36,16 @@ const LED = (() => {
     今後追加するときは、この配列へ追加する。
   */
   const demoSteps = [
-    { number: "001", name: "idle",  duration: 4000 },
-    { number: "002", name: "bet",   duration: 4000 },
-    { number: "003", name: "start", duration: 5000 },
-    { number: "004", name: "stop1", duration: 3000 },
-    { number: "005", name: "stop2", duration: 3000 },
-    { number: "006", name: "stop3", duration: 3000 },
-    { number: "007", name: "big",   duration: 5000 },
-    { number: "008", name: "super", duration: 5000 },
-    { number: "009", name: "off",   duration: 3000 }
-  ];
+  { number: "L-001", name: "idle",  duration: 4000 },
+  { number: "L-002", name: "bet",   duration: 4000 },
+  { number: "L-003", name: "start", duration: 5000 },
+  { number: "L-004", name: "stop1", duration: 3000 },
+  { number: "L-005", name: "stop2", duration: 3000 },
+  { number: "L-006", name: "stop3", duration: 3000 },
+  { number: "L-007", name: "big",   duration: 5000 },
+  { number: "L-008", name: "super", duration: 5000 },
+  { number: "L-009", name: "off",   duration: 3000 }
+];
 
   let selectedIndex = 0;
   let demoMode = false;
