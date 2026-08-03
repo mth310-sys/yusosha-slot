@@ -209,10 +209,49 @@
   >
 </section>
 
-<div class="footer">
-        2D固定視点＋CSS立体表現＋Canvas演出<br>
-        外部画像・外部ライブラリ不使用
-      </div>
+<!-- =======================================================
+     デモ操作
+======================================================== -->
+
+<div class="footer demo-controller">
+
+  <button
+    id="demoModeButton"
+    class="demo-mode-button"
+    type="button"
+  >
+    DEMO
+  </button>
+
+  <div
+    id="demoNumber"
+    class="demo-number"
+    aria-live="polite"
+  >
+    001
+  </div>
+
+  <button
+    id="demoPrevButton"
+    class="demo-arrow-button"
+    type="button"
+    aria-label="前のデモ"
+    disabled
+  >
+    ←
+  </button>
+
+  <button
+    id="demoNextButton"
+    class="demo-arrow-button"
+    type="button"
+    aria-label="次のデモ"
+    disabled
+  >
+    →
+  </button>
+
+</div>
     </div>
   </div>
 </div>
