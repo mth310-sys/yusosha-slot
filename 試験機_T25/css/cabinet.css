@@ -260,21 +260,27 @@
    下パネル
 ========================================================= */
 
-.lower-panel{
-    margin-top:8px;
+/* =========================================================
+   下パネル
+========================================================= */
 
-    padding:4px;      /* 枠だけ残す */
+.lower-panel {
+  margin-top: 8px;
 
-    height:auto;      /* 高さ固定をやめる */
+  height: 180px;   /* 元のパネルサイズを維持 */
+  padding: 0;
 
-    display:flex;
+  overflow: hidden;
 }
 
-.lower-panel-image{
-    display:block;
+.lower-panel-image {
+  display: block;
 
-    width:100%;
-    height:auto;      /* 画像本来の比率 */
+  width: 100%;
+  height: 100%;
 
-    border-radius:10px;
+  object-fit: cover;   /* 枠いっぱいに表示 */
+  object-position: center;
+
+  background: #fff;
 }
