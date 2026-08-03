@@ -1,1 +1,362 @@
-(
+/* =========================================================
+   led.css
+   遊創舎 LED演出ライブラリ
+========================================================= */
+
+/* =========================================================
+   共通
+========================================================= */
+
+.machine .side-led,
+.machine .top-led {
+  transition:
+    opacity .25s ease,
+    filter .25s ease,
+    box-shadow .25s ease,
+    background .25s ease;
+}
+
+/* =========================================================
+   01 待機：呼吸発光
+========================================================= */
+
+.machine.led-idle .side-led {
+  animation: ledBreath 3.2s ease-in-out infinite;
+}
+
+.machine.led-idle .top-led {
+  animation: ledBreath 3.2s ease-in-out .4s infinite;
+}
+
+/* =========================================================
+   02 BET：色変化
+========================================================= */
+
+.machine.led-bet .side-led {
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      #00382f 0 8px,
+      #00ffb7 9px 16px,
+      #ffffff 17px 22px,
+      #00d9ff 23px 30px,
+      #00382f 31px 40px
+    );
+
+  background-size: 100% 40px;
+
+  box-shadow:
+    0 0 8px #fff,
+    0 0 17px #00ffb7,
+    0 0 29px #00d9ff;
+
+  animation: ledBetPulse .75s ease-in-out infinite alternate;
+}
+
+.machine.led-bet .top-led {
+  background:
+    linear-gradient(
+      90deg,
+      #00382f,
+      #00ffb7,
+      #ffffff,
+      #00d9ff,
+      #ffffff,
+      #00ffb7,
+      #00382f
+    );
+
+  box-shadow:
+    0 0 10px #fff,
+    0 0 20px #00ffb7,
+    0 0 32px #00d9ff;
+
+  animation: ledBetPulse .75s ease-in-out infinite alternate;
+}
+
+/* =========================================================
+   03 START：左右・上部ランニング
+========================================================= */
+
+.machine.led-start .side-led {
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      #211900 0 12px,
+      #fff200 13px 22px,
+      #ffffff 23px 29px,
+      #ff9d00 30px 39px,
+      #211900 40px 54px
+    );
+
+  background-size: 100% 54px;
+
+  box-shadow:
+    0 0 9px #fff,
+    0 0 19px #fff200,
+    0 0 31px #ff9d00;
+
+  animation: ledSideRun .5s linear infinite;
+}
+
+.machine.led-start .top-led {
+  background:
+    linear-gradient(
+      90deg,
+      #211900 0%,
+      #fff200 20%,
+      #ffffff 40%,
+      #ff9d00 58%,
+      #211900 80%
+    );
+
+  background-size: 220% 100%;
+
+  animation: ledTopRun .7s linear infinite;
+}
+
+/* =========================================================
+   04 STOP①：少し減光
+========================================================= */
+
+.machine.led-stop-1 .side-led,
+.machine.led-stop-1 .top-led {
+  opacity: .72;
+  filter: brightness(.82) saturate(.82);
+  animation: none;
+}
+
+/* =========================================================
+   05 STOP②：半減光
+========================================================= */
+
+.machine.led-stop-2 .side-led,
+.machine.led-stop-2 .top-led {
+  opacity: .42;
+  filter: brightness(.52) saturate(.48);
+  animation: none;
+}
+
+/* =========================================================
+   06 STOP③：消灯寸前
+========================================================= */
+
+.machine.led-stop-3 .side-led,
+.machine.led-stop-3 .top-led {
+  opacity: .12;
+  filter: brightness(.22) grayscale(.75);
+  animation: none;
+}
+
+/* =========================================================
+   07 BIG：筐体全体連動・高速ゴールド
+========================================================= */
+
+.machine.led-big .side-led,
+.machine.led-big .top-led {
+  background:
+    linear-gradient(
+      90deg,
+      #5a1500,
+      #ff5a00,
+      #fff200,
+      #ffffff,
+      #fff200,
+      #ff5a00,
+      #5a1500
+    );
+
+  background-size: 240% 100%;
+
+  box-shadow:
+    0 0 12px #fff,
+    0 0 25px #fff200,
+    0 0 44px #ff5a00;
+
+  animation:
+    ledBigRun .55s linear infinite,
+    ledBigFlash .26s ease-in-out infinite alternate;
+}
+
+.machine.led-big {
+  box-shadow:
+    0 20px 28px rgba(0,0,0,.75),
+    0 0 32px rgba(255,242,0,1),
+    0 0 68px rgba(255,105,0,.72),
+    inset 0 0 0 3px #231d05,
+    inset 0 0 35px #000;
+}
+
+/* =========================================================
+   08 SUPER：左右逆走・青紫白
+========================================================= */
+
+.machine.led-super .side-led {
+  background:
+    repeating-linear-gradient(
+      to bottom,
+      #031139 0 10px,
+      #00c8ff 11px 20px,
+      #ffffff 21px 28px,
+      #b600ff 29px 39px,
+      #031139 40px 54px
+    );
+
+  background-size: 100% 54px;
+
+  box-shadow:
+    0 0 12px #fff,
+    0 0 25px #00c8ff,
+    0 0 40px #b600ff;
+}
+
+.machine.led-super .side-led.left {
+  animation: ledSuperForward .42s linear infinite;
+}
+
+.machine.led-super .side-led.right {
+  animation: ledSuperReverse .42s linear infinite;
+}
+
+.machine.led-super .top-led {
+  background:
+    linear-gradient(
+      90deg,
+      #031139,
+      #00c8ff,
+      #ffffff,
+      #b600ff,
+      #ffffff,
+      #00c8ff,
+      #031139
+    );
+
+  background-size: 240% 100%;
+
+  box-shadow:
+    0 0 12px #fff,
+    0 0 26px #00c8ff,
+    0 0 42px #b600ff;
+
+  animation: ledSuperTop .55s linear infinite alternate;
+}
+
+.machine.led-super {
+  box-shadow:
+    0 20px 28px rgba(0,0,0,.75),
+    0 0 32px rgba(0,200,255,.95),
+    0 0 70px rgba(182,0,255,.68),
+    inset 0 0 0 3px #231d05,
+    inset 0 0 35px #000;
+}
+
+/* =========================================================
+   09 消灯
+========================================================= */
+
+.machine.led-off .side-led,
+.machine.led-off .top-led {
+  opacity: .03;
+  filter: brightness(.08) grayscale(1);
+  box-shadow: none;
+  animation: none;
+}
+
+/* =========================================================
+   アニメーション
+========================================================= */
+
+@keyframes ledBreath {
+  0%,
+  100% {
+    opacity: .45;
+    filter: brightness(.7) saturate(.8);
+  }
+
+  50% {
+    opacity: 1;
+    filter: brightness(1.85) saturate(1.25);
+  }
+}
+
+@keyframes ledBetPulse {
+  from {
+    opacity: .58;
+    filter: brightness(.9);
+  }
+
+  to {
+    opacity: 1;
+    filter: brightness(1.85);
+  }
+}
+
+@keyframes ledSideRun {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: 0 54px;
+  }
+}
+
+@keyframes ledTopRun {
+  from {
+    background-position: 110% 0;
+  }
+
+  to {
+    background-position: -110% 0;
+  }
+}
+
+@keyframes ledBigRun {
+  from {
+    background-position: 120% 0;
+  }
+
+  to {
+    background-position: -120% 0;
+  }
+}
+
+@keyframes ledBigFlash {
+  from {
+    filter: brightness(.92);
+  }
+
+  to {
+    filter: brightness(2.2);
+  }
+}
+
+@keyframes ledSuperForward {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: 0 54px;
+  }
+}
+
+@keyframes ledSuperReverse {
+  from {
+    background-position: 0 54px;
+  }
+
+  to {
+    background-position: 0 0;
+  }
+}
+
+@keyframes ledSuperTop {
+  from {
+    background-position: 120% 0;
+  }
+
+  to {
+    background-position: -120% 0;
+  }
+}
