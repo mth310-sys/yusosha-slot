@@ -7,17 +7,28 @@
 
 const LED = (() => {
 
-  const stateClasses = [
-    "led-idle",
-    "led-bet",
-    "led-start",
-    "led-stop-1",
-    "led-stop-2",
-    "led-stop-3",
-    "led-big",
-    "led-super",
-    "led-off"
-  ];
+const stateClasses = [
+  "led-idle",
+  "led-bet",
+  "led-start",
+  "led-stop-1",
+  "led-stop-2",
+  "led-stop-3",
+  "led-big",
+  "led-super",
+  "led-off",
+
+  "led-rainbow",
+  "led-police",
+  "led-charge",
+  "led-wave",
+  "led-scan",
+  "led-explosion",
+  "led-crystal",
+  "led-fire",
+  "led-aurora",
+  "led-hyper"
+];
 
   const classMap = {
     idle:  "led-idle",
