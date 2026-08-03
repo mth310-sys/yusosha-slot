@@ -9,158 +9,99 @@
      タイトル
   ======================================================= */
 
-  .title {
-    font-size: 27px;
+  .title{
+    font-size:27px;
   }
 
   /* =======================================================
      リール部
-     基本設定と同じ50px × 3コマを維持
   ======================================================= */
 
-  .reel-window {
-    width: 200px;
-    padding: 5px;
+  .reel-window{
+    width:200px;
+    padding:5px;
   }
 
-  .reels {
-    gap: 4px;
+  .reels{
+    gap:4px;
   }
 
-  .reel {
-    height: 150px;
+  .reel{
+    height:150px;
   }
 
-  .symbol {
-    height: 50px;
-    font-size: 26px;
+  .symbol{
+    height:50px;
+    font-size:26px;
   }
 
-  .symbol.red7 {
-    font-size: 34px;
+  .symbol.red7{
+    font-size:34px;
   }
 
-  .symbol.bar {
-    font-size: 17px;
+  .symbol.bar{
+    font-size:17px;
   }
 
-  .symbol.replay {
-    font-size: 30px;
+  .symbol.replay{
+    font-size:30px;
   }
 
   /* =======================================================
      告知ランプ
   ======================================================= */
 
-  .reel-row {
-    grid-template-columns: 48px 1fr;
-    gap: 6px;
+  .reel-row{
+    grid-template-columns:48px 1fr;
+    gap:6px;
   }
 
-  .lamp {
-    height: 48px;
-    font-size: 11px;
+  .lamp{
+    height:48px;
+    font-size:11px;
   }
 
   /* =======================================================
      STOPボタン
-     現時点では元サイズを維持
   ======================================================= */
 
-  .stop-button {
-    width: 68px;
-    height: 68px;
+  .stop-button{
+    width:68px;
+    height:68px;
   }
 }
-/* =========================================================
-   リールサイズ最終固定
-   50px × 3コマ = 150px
-========================================================= */
-
-.reel-window {
-  width: 200px !important;
-  padding: 5px !important;
-}
-
-.reels {
-  gap: 4px !important;
-}
-
-.reel {
-  height: 150px !important;
-}
-
-.symbol {
-  height: 50px !important;
-  min-height: 50px !important;
-  max-height: 50px !important;
-}
-
-.symbol.red7 {
-  font-size: 34px !important;
-}
-
-.symbol.bar {
-  font-size: 17px !important;
-}
-
-.symbol.replay {
-  font-size: 30px !important;
-}
 
 /* =========================================================
-   下パネル高さ 最終固定
-   現在の細い状態から約6倍
+   リールサイズ固定
 ========================================================= */
 
-.lower-panel {
-  display: block !important;
-
-  width: 100% !important;
-  height: 180px !important;
-  min-height: 180px !important;
-  max-height: none !important;
-
-  margin-top: 8px !important;
-  padding: 7px !important;
+.reel-window{
+  width:200px !important;
+  padding:5px !important;
 }
 
-.lower-panel-inner {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-
-  width: 100% !important;
-  height: 100% !important;
-  min-height: 164px !important;
-
-  border-radius: 12px !important;
-
-  background:
-    radial-gradient(
-      circle at 50% 35%,
-      #292929,
-      #080808 78%
-    ) !important;
-
-  border: 2px solid #888 !important;
-
-  box-shadow:
-    inset 0 0 20px #000,
-    inset 0 2px 3px rgba(255,255,255,.18) !important;
+.reels{
+  gap:4px !important;
 }
 
-.lower-placeholder {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
+.reel{
+  height:150px !important;
+}
 
-  width: 100% !important;
-  height: 100% !important;
-  min-height: 160px !important;
+.symbol{
+  height:50px !important;
+  min-height:50px !important;
+  max-height:50px !important;
+}
 
-  color: #777 !important;
-  font-size: 24px !important;
-  font-weight: 900 !important;
-  letter-spacing: 3px !important;
+.symbol.red7{
+  font-size:34px !important;
+}
+
+.symbol.bar{
+  font-size:17px !important;
+}
+
+.symbol.replay{
+  font-size:30px !important;
 }
