@@ -263,6 +263,134 @@
 }
 
 /* =========================================================
+   10 Rainbow Cycle
+========================================================= */
+
+.machine.led-rainbow .side-led,
+.machine.led-rainbow .top-led{
+    animation:
+        ledRainbow .8s linear infinite,
+        ledFlash 1.2s ease-in-out infinite;
+}
+
+/* =========================================================
+   11 Police Flash
+========================================================= */
+
+.machine.led-police .left{
+    animation:ledPoliceRed .22s infinite;
+}
+
+.machine.led-police .right{
+    animation:ledPoliceBlue .22s infinite;
+}
+
+.machine.led-police .top-led{
+    animation:ledPoliceTop .22s infinite;
+}
+
+/* =========================================================
+   12 Lightning Charge
+========================================================= */
+
+.machine.led-charge .side-led,
+.machine.led-charge .top-led{
+
+    animation:
+        ledCharge 1.6s ease-in-out infinite;
+
+}
+
+/* =========================================================
+   13 Wave Flow
+========================================================= */
+
+.machine.led-wave .side-led{
+
+    animation:
+        ledWave .55s linear infinite;
+
+}
+
+.machine.led-wave .top-led{
+
+    animation:
+        ledTopWave .7s linear infinite;
+
+}
+
+/* =========================================================
+   14 Scanner
+========================================================= */
+
+.machine.led-scan .top-led{
+
+    animation:
+        ledScanner .8s linear infinite;
+
+}
+
+/* =========================================================
+   15 Explosion
+========================================================= */
+
+.machine.led-explosion .side-led,
+.machine.led-explosion .top-led{
+
+    animation:
+        ledExplosion .45s ease infinite;
+
+}
+
+/* =========================================================
+   16 Crystal
+========================================================= */
+
+.machine.led-crystal .side-led,
+.machine.led-crystal .top-led{
+
+    animation:
+        ledCrystal 1.5s ease-in-out infinite;
+
+}
+
+/* =========================================================
+   17 Fire
+========================================================= */
+
+.machine.led-fire .side-led,
+.machine.led-fire .top-led{
+
+    animation:
+        ledFire .4s linear infinite;
+
+}
+
+/* =========================================================
+   18 Aurora
+========================================================= */
+
+.machine.led-aurora .side-led,
+.machine.led-aurora .top-led{
+
+    animation:
+        ledAurora 2.4s linear infinite;
+
+}
+
+/* =========================================================
+   19 Hyper Flash
+========================================================= */
+
+.machine.led-hyper .side-led,
+.machine.led-hyper .top-led{
+
+    animation:
+        ledHyper .08s linear infinite;
+
+}
+
+/* =========================================================
    アニメーション
 ========================================================= */
 
