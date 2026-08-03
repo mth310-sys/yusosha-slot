@@ -267,7 +267,7 @@
 .lower-panel {
   margin-top: 8px;
 
-  height: 180px;   /* 元のパネルサイズを維持 */
+  height: 145px;
   padding: 0;
 
   overflow: hidden;
