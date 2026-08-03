@@ -31,16 +31,27 @@ const stateClasses = [
 ];
 
   const classMap = {
-    idle:  "led-idle",
-    bet:   "led-bet",
-    start: "led-start",
-    stop1: "led-stop-1",
-    stop2: "led-stop-2",
-    stop3: "led-stop-3",
-    big:   "led-big",
-    super: "led-super",
-    off:   "led-off"
-  };
+  idle:      "led-idle",
+  bet:       "led-bet",
+  start:     "led-start",
+  stop1:     "led-stop-1",
+  stop2:     "led-stop-2",
+  stop3:     "led-stop-3",
+  big:       "led-big",
+  super:     "led-super",
+  off:       "led-off",
+
+  rainbow:   "led-rainbow",
+  police:    "led-police",
+  charge:    "led-charge",
+  wave:      "led-wave",
+  scan:      "led-scan",
+  explosion: "led-explosion",
+  crystal:   "led-crystal",
+  fire:      "led-fire",
+  aurora:    "led-aurora",
+  hyper:     "led-hyper"
+};
 
   /*
     デモ番号順。
