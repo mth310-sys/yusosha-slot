@@ -28,6 +28,19 @@
   animation: ledBreath 3.2s ease-in-out .4s infinite;
 }
 
+@keyframes ledBreath {
+  0%,
+  100% {
+    opacity: .45;
+    filter: brightness(.7) saturate(.8);
+  }
+
+  50% {
+    opacity: 1;
+    filter: brightness(1.85) saturate(1.25);
+  }
+}
+
 /* =========================================================
    02 BET：色変化
 ========================================================= */
@@ -74,6 +87,18 @@
   animation: ledBetPulse .75s ease-in-out infinite alternate;
 }
 
+@keyframes ledBetPulse {
+  from {
+    opacity: .58;
+    filter: brightness(.9);
+  }
+
+  to {
+    opacity: 1;
+    filter: brightness(1.85);
+  }
+}
+
 /* =========================================================
    03 START：左右・上部ランニング
 ========================================================= */
@@ -113,6 +138,26 @@
   background-size: 220% 100%;
 
   animation: ledTopRun .7s linear infinite;
+}
+
+@keyframes ledSideRun {
+  from {
+    background-position: 0 0;
+  }
+
+  to {
+    background-position: 0 54px;
+  }
+}
+
+@keyframes ledTopRun {
+  from {
+    background-position: 110% 0;
+  }
+
+  to {
+    background-position: -110% 0;
+  }
 }
 
 /* =========================================================
@@ -187,6 +232,26 @@
     inset 0 0 35px #000;
 }
 
+@keyframes ledBigRun {
+  from {
+    background-position: 120% 0;
+  }
+
+  to {
+    background-position: -120% 0;
+  }
+}
+
+@keyframes ledBigFlash {
+  from {
+    filter: brightness(.92);
+  }
+
+  to {
+    filter: brightness(2.2);
+  }
+}
+
 /* =========================================================
    08 SUPER：左右逆走・青紫白
 ========================================================= */
@@ -250,215 +315,6 @@
     inset 0 0 35px #000;
 }
 
-/* =========================================================
-   09 消灯
-========================================================= */
-
-.machine.led-off .side-led,
-.machine.led-off .top-led {
-  opacity: .03;
-  filter: brightness(.08) grayscale(1);
-  box-shadow: none;
-  animation: none;
-}
-
-/* =========================================================
-   10 Rainbow Cycle
-========================================================= */
-
-.machine.led-rainbow .side-led,
-.machine.led-rainbow .top-led{
-    animation:
-        ledRainbow .8s linear infinite,
-        ledFlash 1.2s ease-in-out infinite;
-}
-
-/* =========================================================
-   11 Police Flash
-========================================================= */
-
-.machine.led-police .left{
-    animation:ledPoliceRed .22s infinite;
-}
-
-.machine.led-police .right{
-    animation:ledPoliceBlue .22s infinite;
-}
-
-.machine.led-police .top-led{
-    animation:ledPoliceTop .22s infinite;
-}
-
-/* =========================================================
-   12 Lightning Charge
-========================================================= */
-
-.machine.led-charge .side-led,
-.machine.led-charge .top-led{
-
-    animation:
-        ledCharge 1.6s ease-in-out infinite;
-
-}
-
-/* =========================================================
-   13 Wave Flow
-========================================================= */
-
-.machine.led-wave .side-led{
-
-    animation:
-        ledWave .55s linear infinite;
-
-}
-
-.machine.led-wave .top-led{
-
-    animation:
-        ledTopWave .7s linear infinite;
-
-}
-
-/* =========================================================
-   14 Scanner
-========================================================= */
-
-.machine.led-scan .top-led{
-
-    animation:
-        ledScanner .8s linear infinite;
-
-}
-
-/* =========================================================
-   15 Explosion
-========================================================= */
-
-.machine.led-explosion .side-led,
-.machine.led-explosion .top-led{
-
-    animation:
-        ledExplosion .45s ease infinite;
-
-}
-
-/* =========================================================
-   16 Crystal
-========================================================= */
-
-.machine.led-crystal .side-led,
-.machine.led-crystal .top-led{
-
-    animation:
-        ledCrystal 1.5s ease-in-out infinite;
-
-}
-
-/* =========================================================
-   17 Fire
-========================================================= */
-
-.machine.led-fire .side-led,
-.machine.led-fire .top-led{
-
-    animation:
-        ledFire .4s linear infinite;
-
-}
-
-/* =========================================================
-   18 Aurora
-========================================================= */
-
-.machine.led-aurora .side-led,
-.machine.led-aurora .top-led{
-
-    animation:
-        ledAurora 2.4s linear infinite;
-
-}
-
-/* =========================================================
-   19 Hyper Flash
-========================================================= */
-
-.machine.led-hyper .side-led,
-.machine.led-hyper .top-led{
-
-    animation:
-        ledHyper .08s linear infinite;
-
-}
-
-/* =========================================================
-   アニメーション
-========================================================= */
-
-@keyframes ledBreath {
-  0%,
-  100% {
-    opacity: .45;
-    filter: brightness(.7) saturate(.8);
-  }
-
-  50% {
-    opacity: 1;
-    filter: brightness(1.85) saturate(1.25);
-  }
-}
-
-@keyframes ledBetPulse {
-  from {
-    opacity: .58;
-    filter: brightness(.9);
-  }
-
-  to {
-    opacity: 1;
-    filter: brightness(1.85);
-  }
-}
-
-@keyframes ledSideRun {
-  from {
-    background-position: 0 0;
-  }
-
-  to {
-    background-position: 0 54px;
-  }
-}
-
-@keyframes ledTopRun {
-  from {
-    background-position: 110% 0;
-  }
-
-  to {
-    background-position: -110% 0;
-  }
-}
-
-@keyframes ledBigRun {
-  from {
-    background-position: 120% 0;
-  }
-
-  to {
-    background-position: -120% 0;
-  }
-}
-
-@keyframes ledBigFlash {
-  from {
-    filter: brightness(.92);
-  }
-
-  to {
-    filter: brightness(2.2);
-  }
-}
-
 @keyframes ledSuperForward {
   from {
     background-position: 0 0;
@@ -490,8 +346,27 @@
 }
 
 /* =========================================================
+   09 消灯
+========================================================= */
+
+.machine.led-off .side-led,
+.machine.led-off .top-led {
+  opacity: .03;
+  filter: brightness(.08) grayscale(1);
+  box-shadow: none;
+  animation: none;
+}
+
+/* =========================================================
    10 Rainbow Cycle
 ========================================================= */
+
+.machine.led-rainbow .side-led,
+.machine.led-rainbow .top-led {
+  animation:
+    ledRainbow .8s linear infinite,
+    ledFlash 1.2s ease-in-out infinite;
+}
 
 @keyframes ledRainbow {
   0% {
@@ -523,6 +398,18 @@
 /* =========================================================
    11 Police Flash
 ========================================================= */
+
+.machine.led-police .left {
+  animation: ledPoliceRed .22s infinite;
+}
+
+.machine.led-police .right {
+  animation: ledPoliceBlue .22s infinite;
+}
+
+.machine.led-police .top-led {
+  animation: ledPoliceTop .22s infinite;
+}
 
 @keyframes ledPoliceRed {
   0%,
@@ -606,6 +493,12 @@
    12 Lightning Charge
 ========================================================= */
 
+.machine.led-charge .side-led,
+.machine.led-charge .top-led {
+  animation:
+    ledCharge 1.6s ease-in-out infinite;
+}
+
 @keyframes ledCharge {
   0% {
     opacity: .15;
@@ -652,6 +545,16 @@
    13 Wave Flow
 ========================================================= */
 
+.machine.led-wave .side-led {
+  animation:
+    ledWave .55s linear infinite;
+}
+
+.machine.led-wave .top-led {
+  animation:
+    ledTopWave .7s linear infinite;
+}
+
 @keyframes ledWave {
   from {
     background-position: 0 0;
@@ -682,6 +585,11 @@
    14 Scanner
 ========================================================= */
 
+.machine.led-scan .top-led {
+  animation:
+    ledScanner .8s linear infinite;
+}
+
 @keyframes ledScanner {
   0% {
     background-position: 130% 0;
@@ -701,6 +609,12 @@
 /* =========================================================
    15 Explosion
 ========================================================= */
+
+.machine.led-explosion .side-led,
+.machine.led-explosion .top-led {
+  animation:
+    ledExplosion .45s ease infinite;
+}
 
 @keyframes ledExplosion {
   0%,
@@ -733,6 +647,12 @@
 /* =========================================================
    16 Crystal
 ========================================================= */
+
+.machine.led-crystal .side-led,
+.machine.led-crystal .top-led {
+  animation:
+    ledCrystal 1.5s ease-in-out infinite;
+}
 
 @keyframes ledCrystal {
   0%,
@@ -776,6 +696,12 @@
 /* =========================================================
    17 Fire
 ========================================================= */
+
+.machine.led-fire .side-led,
+.machine.led-fire .top-led {
+  animation:
+    ledFire .4s linear infinite;
+}
 
 @keyframes ledFire {
   0% {
@@ -828,6 +754,12 @@
    18 Aurora
 ========================================================= */
 
+.machine.led-aurora .side-led,
+.machine.led-aurora .top-led {
+  animation:
+    ledAurora 2.4s linear infinite;
+}
+
 @keyframes ledAurora {
   0% {
     filter:
@@ -861,6 +793,12 @@
 /* =========================================================
    19 Hyper Flash
 ========================================================= */
+
+.machine.led-hyper .side-led,
+.machine.led-hyper .top-led {
+  animation:
+    ledHyper .08s linear infinite;
+}
 
 @keyframes ledHyper {
   0%,
