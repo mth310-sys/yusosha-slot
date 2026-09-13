@@ -1,0 +1,97 @@
+/* Control Deck V7 — main-display / operation-deck proportion pass.
+   The main LCD is extended vertically and the three-stage operation deck is
+   given a little more breathing room while preserving the established layout. */
+
+/* Main display: keep width, extend vertically downward. */
+.display-window{
+  top:22.6%!important;
+  height:30.4%!important;
+}
+.display-led{
+  top:21.7%!important;
+  height:32.4%!important;
+}
+
+/* Lower panel moves down to make room for the taller operation deck. */
+.lower-panel{
+  top:73%!important;
+  height:25%!important;
+}
+
+/* Row 1: information display directly below the enlarged LCD. */
+.bet-row{
+  top:54.2%!important;
+  height:4.1%!important;
+  z-index:27!important;
+}
+
+/* Row 2: MAX BET. */
+.bet-row #maxBet{
+  position:absolute!important;
+  top:33px!important;
+  left:43%!important;
+  width:14%!important;
+  height:29px!important;
+  z-index:33!important;
+  border-radius:50%!important;
+  padding:0!important;
+  background:radial-gradient(circle at 40% 30%,#42474a 0 22%,#17191a 48%,#070808 78%,#000 100%)!important;
+  border:2px solid #85898b!important;
+  box-shadow:inset 0 2px 3px rgba(255,255,255,.28),0 2px 3px rgba(0,0,0,.72)!important;
+}
+
+/* Row 2 visual shelf: slightly taller black/chrome operation surface. */
+.machine .bet-row::after{
+  content:"";
+  position:absolute;
+  left:-21%;
+  right:-21%;
+  top:25px;
+  height:46px;
+  z-index:28;
+  pointer-events:none;
+  background:linear-gradient(180deg,#25282a 0,#080909 35%,#020202 72%,#303335 100%);
+  border-top:2px solid #8f9395;
+  border-bottom:2px solid #191a1b;
+  clip-path:polygon(6% 0,94% 0,100% 35%,96% 100%,4% 100%,0 35%);
+  box-shadow:inset 0 2px 2px rgba(255,255,255,.16),0 2px 3px rgba(0,0,0,.7);
+}
+
+/* Row 3: compact silver three-button unit. */
+.control-row{
+  left:27%!important;
+  top:65.2%!important;
+  width:46%!important;
+  height:7.5%!important;
+  grid-template-columns:repeat(3,1fr)!important;
+  gap:8px!important;
+  align-items:center!important;
+  padding:5px 10px!important;
+  z-index:30!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.9),rgba(167,171,174,.96) 28%,rgba(73,77,80,.98) 58%,rgba(214,216,216,.95) 100%)!important;
+  border:2px solid #2c2e30!important;
+  border-radius:5px 5px 11px 11px!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),inset 0 -3px 5px rgba(0,0,0,.55),0 2px 3px rgba(0,0,0,.72)!important;
+}
+
+.control-row .stop{
+  width:100%!important;
+  height:auto!important;
+  aspect-ratio:1/1!important;
+  justify-self:center!important;
+  border-radius:50%!important;
+  outline:2px solid #5c6062!important;
+  box-shadow:inset 0 -5px 8px rgba(0,0,0,.55),inset 0 2px 5px rgba(255,255,255,.55),0 0 0 2px rgba(20,20,20,.8)!important;
+}
+
+/* START remains on row 2, aligned with MAX BET. */
+.control-row .start{
+  position:absolute!important;
+  left:-34%!important;
+  top:-42px!important;
+  width:25%!important;
+  height:29px!important;
+  z-index:34!important;
+  border-radius:50%!important;
+  box-shadow:inset 0 -4px 6px rgba(0,0,0,.5),inset 0 2px 4px rgba(255,255,255,.42),0 2px 3px rgba(0,0,0,.72)!important;
+}

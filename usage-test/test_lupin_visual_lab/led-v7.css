@@ -1,0 +1,82 @@
+@import url("./lab-layout.css?v=2");
+
+/* Side LED V18 — LED-in-frame sliding reveal study.
+   NORMAL: amber/blue segmented LEDs are visibly built into the silver sliding frames.
+   FULL/BONUS: each illuminated frame slides outward as one piece and reveals the
+   round-lamp face behind it. No clear cover in this study.
+   Round-lamp geometry stays at its original SVG position.
+   Left/right side-frame slide travel is matched at 30px.
+   Visual-lab approximation only; the real cabinet mechanism remains unverified. */
+
+/* Round lamps sit behind the movable illuminated frames. */
+.machine:not(.full-load):not(.bonus-mode) .shell-svg g[fill="url(#lpLamp)"] circle{
+  opacity:0!important;
+  transform-box:fill-box!important;
+  transform-origin:center!important;
+  transform:scale(.72)!important;
+  filter:none!important;
+  transition:transform .42s cubic-bezier(.22,.75,.25,1),opacity .18s ease!important;
+}
+.machine.full-load .shell-svg g[fill="url(#lpLamp)"] circle,
+.machine.bonus-mode .shell-svg g[fill="url(#lpLamp)"] circle{
+  opacity:1!important;
+  transform-box:fill-box!important;
+  transform-origin:center!important;
+  transform:scale(.78)!important;
+  transition:transform .42s cubic-bezier(.22,.75,.25,1) .10s,opacity .22s ease .12s!important;
+}
+
+/* Movable units. The LED layers are painted above the silver body so the frame
+   itself visibly contains the light. */
+.machine::after{
+  content:""!important;
+  position:absolute!important;
+  inset:0!important;
+  z-index:24!important;
+  pointer-events:none!important;
+  background-image:
+    repeating-linear-gradient(to bottom,#fffbe5 0 3px,#ffd56b 4px 7px,#ff9f19 8px 11px,#704000 12px 15px),
+    repeating-linear-gradient(to bottom,#fffbe5 0 3px,#ffd56b 4px 7px,#ff9f19 8px 11px,#704000 12px 15px),
+    repeating-linear-gradient(to bottom,#effcff 0 3px,#8de3ff 4px 7px,#28aee9 8px 11px,#07577d 12px 15px),
+    repeating-linear-gradient(to bottom,#effcff 0 3px,#8de3ff 4px 7px,#28aee9 8px 11px,#07577d 12px 15px),
+    linear-gradient(90deg,#4b4e50 0 5%,#f8f9f6 12%,#a9aeb0 24%,#f4f5f1 38%,#555b5e 52%,#fafaf5 68%,#7d8385 82%,#eceeeb 94%,#44484a 100%),
+    linear-gradient(90deg,#44484a 0 6%,#eceeeb 14%,#7d8385 27%,#fafaf5 43%,#555b5e 57%,#f4f5f1 72%,#a9aeb0 86%,#f8f9f6 95%,#4b4e50 100%),
+    linear-gradient(90deg,#4b4e50 0 5%,#f8f9f6 12%,#a9aeb0 24%,#f4f5f1 38%,#555b5e 52%,#fafaf5 68%,#7d8385 82%,#eceeeb 94%,#44484a 100%),
+    linear-gradient(90deg,#44484a 0 6%,#eceeeb 14%,#7d8385 27%,#fafaf5 43%,#555b5e 57%,#f4f5f1 72%,#a9aeb0 86%,#f8f9f6 95%,#4b4e50 100%)!important;
+  background-size:
+    7px 88px,7px 88px,7px 109px,7px 109px,
+    30px 105px,30px 105px,31px 135px,31px 135px!important;
+  background-position:
+    33px 120px,331px 120px,33px 233px,331px 233px,
+    22px 111px,320px 111px,21px 220px,320px 220px!important;
+  background-repeat:no-repeat!important;
+  filter:drop-shadow(0 2px 2px rgba(0,0,0,.82)) drop-shadow(0 0 4px rgba(240,250,255,.38))!important;
+  opacity:1!important;
+  transition:background-position .52s cubic-bezier(.18,.78,.22,1),filter .18s ease,opacity .18s ease!important;
+}
+
+/* FULL/BONUS: both side frames travel 30px outward from NORMAL. */
+.machine.full-load::after,
+.machine.bonus-mode::after{
+  background-position:
+    3px 120px,361px 120px,3px 233px,361px 233px,
+    -8px 111px,350px 111px,-9px 220px,350px 220px!important;
+}
+
+.machine:not(.led-off)::after{
+  animation:frameLedBreathe 1.9s ease-in-out infinite alternate;
+}
+@keyframes frameLedBreathe{
+  to{filter:drop-shadow(0 2px 2px rgba(0,0,0,.82)) drop-shadow(0 0 6px rgba(138,219,255,.58)) brightness(1.07)}
+}
+.machine.led-off::after{opacity:.30!important;filter:none!important;animation:none!important}
+.machine.led-off .shell-svg g[fill="url(#lpLamp)"] circle{opacity:.10!important;filter:none!important}
+
+@media(prefers-reduced-motion:reduce){
+  .machine::after,.shell-svg g[fill="url(#lpLamp)"] circle{transition:none!important;animation:none!important}
+}
+
+/* Control symmetry pass: START is absolute, so the three STOP tracks must all be equal. */
+.control-row{
+  grid-template-columns:repeat(3,1fr)!important;
+}
