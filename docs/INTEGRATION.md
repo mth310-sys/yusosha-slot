@@ -26,10 +26,10 @@
 
 ## 検証
 
-- 全656コピーと既存57ファイルを元の作業コピーとバイト単位で照合済み。
+- 全656コピーと既存57ファイルを元のGitオブジェクトとバイト単位で照合する。Windowsのチェックアウト時の改行変換も持ち込まない。
 - Chromiumで全49 HTMLページを移設前後それぞれ開き、HTTPステータス、タイトル、読み込み失敗、JavaScriptエラーを比較。49/49一致、新規差分なし。
-- Usage Test: 統合後310件中289成功、21失敗。元版との全件比較およびGitHub Actions結果は最終報告に記載。
-- Windows WebKitによるDesign Labテストは2件失敗。元版との比較および元と同じLinux/Playwright 1.52.0のGitHub Actionsで検証する。
+- Usage Test: 統合後310件中289成功、21失敗。元版も289成功、21失敗。310件それぞれの合否が一致。GitHub Actions結果は最終報告に記載。
+- Windows WebKitによるDesign Labテストは2件失敗。元版でも2件失敗。元と同じLinux/Playwright 1.52.0のGitHub Actionsで別途検証する。
 
 ## 統合前から存在する問題
 
