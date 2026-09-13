@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="theme-color" content="#090909" />
+  <title>パチスロ ルパン三世～消されたルパン～</title>
+  <link rel="stylesheet" href="./style.css" />
+  <link rel="stylesheet" href="./cabinet-enhancements.css" />
+</head>
+<body>
+  <main class="app-shell">
+    <section class="machine" aria-label="パチスロ ルパン三世 消されたルパン">
+      <div class="cabinet-rib cabinet-rib-left" aria-hidden="true"></div>
+      <div class="cabinet-rib cabinet-rib-right" aria-hidden="true"></div>
+      <div class="crown-wing crown-wing-left" aria-hidden="true"></div>
+      <div class="crown-wing crown-wing-right" aria-hidden="true"></div>
+      <div class="crown-crest" aria-hidden="true"><span>Ⅲ</span></div>
+      <header class="crown"><div class="brand">LUPIN THE THIRD</div><div id="phaseBadge" class="phase-badge">SYSTEM</div></header>
+      <div class="prism-housing" aria-hidden="true"></div>
+      <div id="prismMechanism" class="prism-mechanism" data-state="closed" aria-label="Prism mechanism"><div class="prism-round-led" aria-hidden="true"><span></span></div><div class="prism-body" aria-hidden="true"><span class="prism-face prism-face-a"></span><span class="prism-face prism-face-b"></span><span class="prism-face prism-face-c"></span></div></div>
+      <section class="lcd-shell"><div id="game" class="game-host" aria-label="Main LCD"></div><div class="lcd-glass" aria-hidden="true"></div></section>
+      <div class="center-spine" aria-hidden="true"><span></span></div>
+      <section class="meter-row" aria-live="polite"><div><span class="meter-label">CREDIT</span><strong id="creditValue">50</strong></div><div><span class="meter-label">BET</span><strong id="betValue">0</strong></div><div><span class="meter-label">STATE</span><strong id="stateValue">IDLE</strong></div></section>
+      <section class="control-deck">
+        <div class="deck-edge deck-edge-left" aria-hidden="true"></div><div class="deck-edge deck-edge-right" aria-hidden="true"></div>
+        <section class="controls" aria-label="Machine controls"><button id="betBtn" type="button">BET</button><button id="maxBetBtn" type="button">MAX</button><button id="startBtn" class="start" type="button">START</button></section>
+        <section class="stop-row" aria-label="Stop buttons"><button class="stop" data-reel="0" type="button">1</button><button class="stop" data-reel="1" type="button">2</button><button class="stop" data-reel="2" type="button">3</button></section>
+      </section>
+      <footer class="lower-panel"><div class="panel-emblem" aria-hidden="true">Ⅲ</div><div class="panel-title">消されたルパン</div><div id="message" class="message">BETしてSTART</div></footer>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/phaser@4.2.1/dist/phaser.min.js"></script>
+  <script type="module" src="./src/main.js"></script>
+  <script type="module" src="./src/extra-bonus-duration-boundary-runtime.js"></script>
+  <script type="module" src="./src/spin-presentation-runtime.js"></script>
+  <script type="module" src="./src/reel-symbol-presentation-runtime.js"></script>
+  <script type="module" src="./src/rupin-replay-presentation-runtime.js"></script>
+  <script type="module" src="./src/mode-world-presentation-runtime.js"></script>
+  <script type="module" src="./src/character-presentation-runtime.js"></script>
+  <script type="module" src="./src/normal-mini-presentation-runtime.js"></script>
+  <script type="module" src="./src/chance-zone-runtime.js"></script>
+  <script type="module" src="./src/precursor-zone-runtime.js"></script>
+  <script type="module" src="./src/mode-lcd-runtime.js"></script>
+  <script type="module" src="./src/golden-time-set-phase-runtime.js"></script>
+  <script type="module" src="./src/golden-time-stage-runtime.js"></script>
+  <script type="module" src="./src/ikukan-runtime.js"></script>
+  <script type="module" src="./src/lupin-rush-runtime.js"></script>
+  <script type="module" src="./src/treasure-hunt-presentation-runtime.js"></script>
+  <script type="module" src="./src/art-presentation-guarantee-runtime.js"></script>
+  <script type="module" src="./src/treasure-rush-runtime.js"></script>
+  <script type="module" src="./src/golden-time-direct-add-presentation-runtime.js"></script>
+  <script type="module" src="./src/golden-time-lcd-runtime.js"></script>
+  <script type="module" src="./src/mode-surface-runtime.js"></script>
+  <script type="module" src="./src/legend-gate-runtime.js"></script>
+  <script type="module" src="./src/golden-time-stock-runtime.js"></script>
+  <script type="module" src="./src/revenge-chance-runtime.js"></script>
+  <script type="module" src="./src/revenge-chance-lcd-runtime.js"></script>
+  <script type="module" src="./src/treasure-battle-runtime.js"></script>
+  <script type="module" src="./src/treasure-battle-lcd-runtime.js"></script>
+  <script type="module" src="./src/treasure-battle-cabinet-cue-runtime.js"></script>
+  <script type="module" src="./src/breakthrough-guarantee-runtime.js"></script>
+  <script type="module" src="./src/lupin-bonus-runtime.js"></script>
+  <script type="module" src="./src/liquid-reel-alignment-runtime.js"></script>
+  <script type="module" src="./src/ceiling-runtime.js"></script>
+  <script type="module" src="./src/next-initial-hit-runtime.js"></script>
+  <script type="module" src="./src/seven-tenpai-failure-runtime.js"></script>
+  <script type="module" src="./src/chance-eye-initial-hit-runtime.js"></script>
+  <script type="module" src="./src/confirmed-presentation-runtime.js"></script>
+  <script type="module" src="./src/extra-bonus-game-presentation-runtime.js"></script>
+  <script type="module" src="./src/gold-rush-runtime.js"></script>
+  <script type="module" src="./src/gold-rush-game-presentation-runtime.js"></script>
+  <script type="module" src="./src/gold-rush-red-alignment-presentation-runtime.js"></script>
+  <script type="module" src="./src/gold-rush-transition-presentation-runtime.js"></script>
+</body>
+</html>

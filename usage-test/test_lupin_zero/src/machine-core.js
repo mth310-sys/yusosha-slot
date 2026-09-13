@@ -1,0 +1,190 @@
+import { createMachineState, reduceMachine, KernelPhase } from './machine-kernel.js';
+import { GameMode } from './game-flow-spec.js';
+
+export const MachineState = KernelPhase;
+
+export class MachineCore extends EventTarget {
+  constructor({ credit = 50, maxBet = 3 } = {}) {
+    super();
+    this.kernelState = createMachineState({ credit, maxBet });
+  }
+
+  snapshot() {
+    return Object.freeze({
+      credit: this.kernelState.credit,
+      bet: this.kernelState.bet,
+      state: this.kernelState.phase,
+      stopped: [...this.kernelState.stopped],
+      spinId: this.kernelState.spinId,
+      mode: this.kernelState.mode,
+      modeGamesRemaining: this.kernelState.modeGamesRemaining,
+      modeEvidenceStatus: this.kernelState.modeEvidenceStatus,
+      modeResult: this.kernelState.modeResult,
+      modeResultEvidenceStatus: this.kernelState.modeResultEvidenceStatus,
+      lastSettledRole: this.kernelState.lastSettledRole,
+      lastPayout: this.kernelState.lastPayout,
+      mbFollowupGamesRemaining: this.kernelState.mbFollowupGamesRemaining,
+      normalGamesSinceWantedReset: this.kernelState.normalGamesSinceWantedReset,
+      wantedWindow: this.kernelState.wantedWindow ? { ...this.kernelState.wantedWindow } : null,
+      wantedWindowContext: this.kernelState.wantedWindowContext,
+      wantedTriggerGame: this.kernelState.wantedTriggerGame,
+      wantedTriggerEvidenceStatus: this.kernelState.wantedTriggerEvidenceStatus,
+      raiunPoints: this.kernelState.raiunPoints,
+      raiunHighGamesRemaining: this.kernelState.raiunHighGamesRemaining,
+      raiunHighRank: this.kernelState.raiunHighRank,
+      raiunHighLastResult: this.kernelState.raiunHighLastResult ? { ...this.kernelState.raiunHighLastResult } : null,
+      raiunModeLastResult: this.kernelState.raiunModeLastResult ? { ...this.kernelState.raiunModeLastResult } : null,
+      goldenTimeTreasure: this.kernelState.goldenTimeTreasure,
+      goldenTimeSetNumber: this.kernelState.goldenTimeSetNumber,
+      goldenTimeLastContinuation: this.kernelState.goldenTimeLastContinuation ? { ...this.kernelState.goldenTimeLastContinuation } : null,
+      goldenTimeStockCount: this.kernelState.goldenTimeStockCount ?? 0,
+      extraBonusAbsorbedGoldenTimeGames: this.kernelState.extraBonusAbsorbedGoldenTimeGames ?? 0,
+      extraBonusLastResult: this.kernelState.extraBonusLastResult ? { ...this.kernelState.extraBonusLastResult } : null
+    });
+  }
+
+  emit(type, detail = {}) {
+    this.dispatchEvent(new CustomEvent(type, { detail: { ...detail, snapshot: this.snapshot() } }));
+  }
+
+  apply(command) {
+    const reduced = reduceMachine(this.kernelState, command);
+    if (!reduced.accepted) return false;
+    this.kernelState = reduced.state;
+
+    for (const event of reduced.events) {
+      if (event.type === 'CHANGE') this.emit('change', { reason: event.reason });
+      if (event.type === 'SPIN_START') this.emit('spin-start', { spinId: event.spinId });
+      if (event.type === 'REEL_STOP') this.emit('reel-stop', { reelIndex: event.reelIndex, spinId: event.spinId, complete: event.complete });
+      if (event.type === 'SPIN_END') this.emit('spin-end', { reelIndex: event.reelIndex, spinId: event.spinId, mode: event.mode });
+      if (event.type === 'NORMAL_ROLE_SETTLED') this.emit('normal-role-settled', { role: event.role, creditDelta: event.creditDelta, replayAutoBet: event.replayAutoBet, mbFollowupGames: event.mbFollowupGames, evidenceStatus: event.evidenceStatus });
+      if (event.type === 'MB_FOLLOWUP_GAME_SETTLED') this.emit('mb-followup-game-settled', { creditDelta: event.creditDelta, remaining: event.remaining, evidenceStatus: event.evidenceStatus });
+      if (event.type === 'WANTED_WINDOW_CONFIGURED') this.emit('wanted-window-configured', { window: event.window, triggerGame: event.triggerGame, context: event.context });
+      if (event.type === 'NORMAL_PROGRESSION_ADVANCED') this.emit('normal-progression-advanced', { games: event.games });
+      if (event.type === 'RAIUN_POINTS_SET') this.emit('raiun-points-set', { points: event.points, evidenceStatus: event.evidenceStatus });
+      if (event.type === 'RAIUN_POINTS_ADDED') this.emit('raiun-points-added', { from: event.from, points: event.points, to: event.to, evidenceStatus: event.evidenceStatus });
+      if (event.type === 'RAIUN_COUNTER_RESET') this.emit('raiun-counter-reset', { points: event.points, rank: event.rank, evidenceStatus: event.evidenceStatus });
+      if (event.type === 'RAIUN_HIGH_RANK_SET') this.emit('raiun-high-rank-set', { rank: event.rank, evidenceStatus: event.evidenceStatus });
+      if (event.type === 'RAIUN_HIGH_ENTER') this.emit('raiun-high-enter', { games: event.games, points: event.points, rank: event.rank });
+      if (event.type === 'RAIUN_HIGH_GAME_RESOLVED') this.emit('raiun-high-game-resolved', { rank: event.rank, hit: event.hit, remaining: event.remaining, resolution: event.resolution });
+      if (event.type === 'RAIUN_HIGH_EXHAUSTED') this.emit('raiun-high-exhausted', { rank: event.rank, redUpgradeStatus: event.redUpgradeStatus });
+      if (event.type === 'RAIUN_MODE_GAME_SETTLED') this.emit('raiun-mode-game-settled', { payoutCoins: event.payoutCoins, remaining: event.remaining, artHit: event.artHit, evidenceStatus: event.evidenceStatus });
+      if (event.type === 'RAIUN_MODE_ART_SUCCESS') this.emit('raiun-mode-art-success', { successPresentation: event.successPresentation, destination: event.destination, evidenceStatus: event.evidenceStatus });
+      if (event.type === 'GOLDEN_TIME_GAME_SETTLED') this.emit('golden-time-game-settled', { payoutCoins: event.payoutCoins, remaining: event.remaining, treasure: event.treasure, evidenceStatus: event.evidenceStatus });
+      if (event.type === 'GOLDEN_TIME_BATTLE_READY') this.emit('golden-time-battle-ready', { treasure: event.treasure });
+      if (event.type === 'GOLDEN_TIME_CONTINUED') this.emit('golden-time-continued', { treasure: event.treasure, continuationPercent: event.continuationPercent, setNumber: event.setNumber, evidenceStatus: event.evidenceStatus });
+      if (event.type === 'GOLDEN_TIME_ENDED') this.emit('golden-time-ended', { treasure: event.treasure, continuationPercent: event.continuationPercent, setNumber: event.setNumber, evidenceStatus: event.evidenceStatus });
+      if (event.type === 'MODE_ENTER') this.emit('mode-enter', { mode: event.mode, games: event.games, evidenceStatus: event.evidenceStatus, sourceWindow: event.sourceWindow ?? null, treasure: event.treasure ?? null });
+      if (event.type === 'MODE_EXIT') this.emit('mode-exit', { from: event.from, to: event.to });
+      if (event.type === 'MODE_GAME_ADVANCED') this.emit('mode-game-advanced', { mode: event.mode, remaining: event.remaining });
+      if (event.type === 'MODE_WINDOW_EXHAUSTED') this.emit('mode-window-exhausted', { mode: event.mode });
+      if (event.type === 'CHANCE_ZONE_SUCCESS') this.emit('chance-zone-success', { mode: event.mode, successPresentation: event.successPresentation, pendingDestination: event.pendingDestination, destinationSplitStatus: event.destinationSplitStatus, evidenceStatus: event.evidenceStatus });
+    }
+    return true;
+  }
+
+  betOne() { return this.apply({ type: 'BET_ONE' }); }
+  maxBetNow() { return this.apply({ type: 'MAX_BET' }); }
+  start() { return this.apply({ type: 'START' }); }
+  stop(reelIndex) { return this.apply({ type: 'STOP_REEL', reelIndex }); }
+
+  settleNormalRole(settlement) {
+    if (!settlement?.accepted) return false;
+    return this.apply({ type: 'SETTLE_NORMAL_ROLE', role: settlement.role, creditDelta: settlement.creditDelta, replayAutoBet: settlement.replayAutoBet, mbFollowupGames: settlement.mbFollowupGames, evidenceStatus: settlement.evidenceStatus });
+  }
+
+  settleMbFollowupGame(settlement) {
+    if (!settlement?.accepted) return false;
+    return this.apply({ type: 'SETTLE_MB_FOLLOWUP_GAME', creditDelta: settlement.creditDelta, evidenceStatus: settlement.evidenceStatus });
+  }
+
+  configureWantedWindow(selection) {
+    if (!selection?.window) return false;
+    return this.apply({ type: 'CONFIGURE_WANTED_WINDOW', window: selection.window, triggerGame: selection.productionTriggerGame, context: selection.context, evidenceStatus: selection.productionTriggerEvidenceStatus });
+  }
+
+  advanceNormalProgression() { return this.apply({ type: 'ADVANCE_NORMAL_PROGRESSION' }); }
+  setRaiunPoints(points, evidenceStatus = 'UNRESOLVED') { return this.apply({ type: 'SET_RAIUN_POINTS', points, evidenceStatus }); }
+  addRaiunPoints(points, evidenceStatus = 'UNRESOLVED') { return this.apply({ type: 'ADD_RAIUN_POINTS', points, evidenceStatus }); }
+  resolveRaiunHighGame(resolution) { return this.apply({ type: 'RESOLVE_RAIUN_HIGH_GAME', resolution }); }
+  resetRaiunCounter(points, evidenceStatus = 'UNRESOLVED') { return this.apply({ type: 'RESET_RAIUN_COUNTER', points, evidenceStatus }); }
+  setRaiunHighRank(rank, evidenceStatus = 'UNRESOLVED') { return this.apply({ type: 'SET_RAIUN_HIGH_RANK', rank, evidenceStatus }); }
+  settleRaiunModeGame(resolution) { return this.apply({ type: 'SETTLE_RAIUN_MODE_GAME', resolution }); }
+  enterGoldenTime(profile) { return this.apply({ type: 'ENTER_GOLDEN_TIME', profile }); }
+  settleGoldenTimeGame(payoutCoins, evidenceStatus = 'INFERRED_HIGH_CONFIDENCE') { return this.apply({ type: 'SETTLE_GOLDEN_TIME_GAME', payoutCoins, evidenceStatus }); }
+
+  addGoldenTimeTreasure(acquisition) {
+    const snapshot = this.snapshot();
+    if (snapshot.mode !== GameMode.GOLDEN_TIME || !acquisition?.hit || !Number.isInteger(acquisition.treasure) || acquisition.treasure <= 0) return false;
+    const from = snapshot.goldenTimeTreasure;
+    const to = Math.min(1000000, from + acquisition.treasure);
+    this.kernelState = Object.freeze({ ...this.kernelState, goldenTimeTreasure: to });
+    this.emit('golden-time-treasure-acquired', {
+      from,
+      added: to - from,
+      to,
+      extraBonusReached: to >= 1000000,
+      evidenceStatus: acquisition.evidenceStatus,
+      inference: acquisition.inference ?? null
+    });
+    return true;
+  }
+
+  enterExtraBonus(profile) {
+    const snapshot = this.snapshot();
+    if (snapshot.mode !== GameMode.GOLDEN_TIME || snapshot.goldenTimeTreasure < 1000000 || !profile || !Number.isInteger(profile.games) || profile.games <= 0) return false;
+    this.kernelState = Object.freeze({
+      ...this.kernelState,
+      mode: GameMode.EXTRA_BONUS,
+      modeGamesRemaining: profile.games,
+      modeEvidenceStatus: profile.evidenceStatus,
+      modeResult: null,
+      modeResultEvidenceStatus: null,
+      extraBonusAbsorbedGoldenTimeGames: profile.absorbedGoldenTimeGames,
+      extraBonusLastResult: null,
+      goldenTimeStockCount: this.kernelState.goldenTimeStockCount ?? 0
+    });
+    this.emit('extra-bonus-enter', { games: profile.games, absorbedGoldenTimeGames: profile.absorbedGoldenTimeGames, evidenceStatus: profile.evidenceStatus });
+    this.emit('mode-enter', { mode: GameMode.EXTRA_BONUS, games: profile.games, evidenceStatus: profile.evidenceStatus, treasure: 1000000 });
+    return true;
+  }
+
+  settleExtraBonusGame(resolution) {
+    const snapshot = this.snapshot();
+    if (snapshot.mode !== GameMode.EXTRA_BONUS || snapshot.modeGamesRemaining <= 0 || snapshot.modeResult || !resolution || !Number.isInteger(resolution.payoutCoins) || resolution.payoutCoins < 0) return false;
+    const remaining = snapshot.modeGamesRemaining - 1;
+    const stockAdded = resolution.oddAligned ? 1 : 0;
+    const stockCount = snapshot.goldenTimeStockCount + stockAdded;
+    const goldRushPending = resolution.goldRushHit === true;
+    this.kernelState = Object.freeze({
+      ...this.kernelState,
+      credit: snapshot.credit + resolution.payoutCoins,
+      lastSettledRole: 'EXTRA_BONUS_GAME',
+      lastPayout: resolution.payoutCoins,
+      modeGamesRemaining: goldRushPending ? 0 : remaining,
+      modeResult: goldRushPending ? 'PENDING_GOLD_RUSH' : null,
+      modeResultEvidenceStatus: goldRushPending ? resolution.evidenceStatus : null,
+      goldenTimeStockCount: stockCount,
+      extraBonusLastResult: Object.freeze({ ...resolution })
+    });
+    this.emit('extra-bonus-game-settled', { remaining: goldRushPending ? 0 : remaining, payoutCoins: resolution.payoutCoins, oddAligned: resolution.oddAligned, stockAdded, stockCount, goldRushHit: goldRushPending, evidenceStatus: resolution.evidenceStatus });
+    if (stockAdded) this.emit('golden-time-stock-added', { stockAdded, stockCount, source: 'EXTRA_BONUS_ODD_ALIGNMENT', evidenceStatus: resolution.evidenceStatus });
+    if (goldRushPending) {
+      this.emit('extra-bonus-gold-rush-hit', { destination: GameMode.GOLD_RUSH, evidenceStatus: resolution.evidenceStatus });
+      return true;
+    }
+    if (remaining === 0) {
+      this.kernelState = Object.freeze({ ...this.kernelState, mode: GameMode.GOLDEN_TIME, modeGamesRemaining: 0, modeResult: 'PENDING_GT_CONTINUATION', modeResultEvidenceStatus: 'PUBLISHED_ANALYSIS' });
+      this.emit('extra-bonus-ended', { stockCount, evidenceStatus: resolution.evidenceStatus });
+      this.emit('golden-time-battle-ready', { treasure: 1000000 });
+    }
+    return true;
+  }
+
+  resolveGoldenTimeContinuation(resolution, profile) { return this.apply({ type: 'RESOLVE_GOLDEN_TIME_CONTINUATION', resolution, profile }); }
+  exitRaiunMode() { return this.apply({ type: 'EXIT_RAIUN_MODE' }); }
+  exitWantedChance() { return this.apply({ type: 'EXIT_WANTED_CHANCE' }); }
+  enterMode(mode, games, evidenceStatus = 'UNRESOLVED') { return this.apply({ type: 'ENTER_MODE', mode, games, evidenceStatus }); }
+  advanceModeGame() { return this.apply({ type: 'ADVANCE_MODE_GAME' }); }
+  resolveChanceZoneOddAlignment() { return this.apply({ type: 'CHANCE_ZONE_ODD_ALIGNED' }); }
+}
